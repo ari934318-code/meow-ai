@@ -1,1 +1,144 @@
-progress_page.dart
+import 'package:flutter/material.dart';
+
+class ProgressPage extends StatelessWidget {
+  const ProgressPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Progress'),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Text(
+                    'Your English Level',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'A1',
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Beginner',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 16),
+                  LinearProgressIndicator(
+                    value: 0.35,
+                    minHeight: 8,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text('35% progress'),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          Text(
+            'Skills',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+
+          const SizedBox(height: 12),
+
+          _SkillCard(
+            title: 'Vocabulary',
+            icon: Icons.translate_outlined,
+            progress: 0.45,
+          ),
+
+          _SkillCard(
+            title: 'Grammar',
+            icon: Icons.edit_outlined,
+            progress: 0.30,
+          ),
+
+          _SkillCard(
+            title: 'Listening',
+            icon: Icons.headphones_outlined,
+            progress: 0.25,
+          ),
+
+          _SkillCard(
+            title: 'Speaking',
+            icon: Icons.record_voice_over_outlined,
+            progress: 0.20,
+          ),
+
+          _SkillCard(
+            title: 'Reading',
+            icon: Icons.menu_book_outlined,
+            progress: 0.40,
+          ),
+
+          _SkillCard(
+            title: 'Writing',
+            icon: Icons.create_outlined,
+            progress: 0.30,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SkillCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final double progress;
+
+  const _SkillCard({
+    required this.title,
+    required this.icon,
+    required this.progress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 24,
+              child: Icon(icon),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 10),
+                  LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 6,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text('${(progress * 100).round()}%'),
+          ],
+        ),
+      ),
+    );
+  }
+}
