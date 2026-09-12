@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/theme/app_theme.dart';
+import 'features/learn/learn_page.dart';
 
 class MeowApp extends StatelessWidget {
   const MeowApp({super.key});
@@ -13,19 +14,61 @@ class MeowApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-
       supportedLocales: const [
         Locale('en'),
         Locale('fa'),
       ],
+      home: const MeowAppShell(),
+    );
+  }
+}
 
-      home: const MeowHomePage(),
+class MeowAppShell extends StatefulWidget {
+  const MeowAppShell({super.key});
+
+  @override
+  State<MeowAppShell> createState() => _MeowAppShellState();
+}
+
+class _MeowAppShellState extends State<MeowAppShell> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = const [
+    MeowHomePage(),
+    LearnPage(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: _pages[_selectedIndex],
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.menu_book_outlined),
+            selectedIcon: Icon(Icons.menu_book),
+            label: 'Learn',
+          ),
+        ],
+      ),
     );
   }
 }
@@ -49,27 +92,20 @@ class MeowHomePage extends StatelessWidget {
                 'Hello! 🐾',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-
               const SizedBox(height: 8),
-
               Text(
                 'Ready to learn some English?',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-
               const SizedBox(height: 24),
-
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Row(
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 32,
-                        child: Icon(
-                          Icons.pets,
-                          size: 32,
-                        ),
+                        child: Icon(Icons.pets, size: 32),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
@@ -96,9 +132,7 @@ class MeowHomePage extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
-
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -124,9 +158,7 @@ class MeowHomePage extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
-
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.menu_book),
@@ -135,9 +167,7 @@ class MeowHomePage extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right),
                 ),
               ),
-
               const SizedBox(height: 12),
-
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.auto_awesome),
@@ -146,9 +176,7 @@ class MeowHomePage extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right),
                 ),
               ),
-
               const SizedBox(height: 12),
-
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.chat_bubble_outline),
@@ -157,16 +185,12 @@ class MeowHomePage extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right),
                 ),
               ),
-
               const SizedBox(height: 24),
-
               Text(
                 'Current Level',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-
               const SizedBox(height: 8),
-
               Text(
                 'A1 · Beginner',
                 style: Theme.of(context).textTheme.headlineSmall,
