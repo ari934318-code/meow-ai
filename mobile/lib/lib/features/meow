@@ -1,1 +1,152 @@
-meow_page.dart
+import 'package:flutter/material.dart';
+
+class MeowPage extends StatefulWidget {
+  const MeowPage({super.key});
+
+  @override
+  State<MeowPage> createState() => _MeowPageState();
+}
+
+class _MeowPageState extends State<MeowPage> {
+  final TextEditingController _controller = TextEditingController();
+
+  bool _funnyMode = false;
+
+  final List<_Message> _messages = [
+    _Message(
+      text: 'Hi! I’m Meow. Ask me anything about English.',
+      isMeow: true,
+    ),
+  ];
+
+  void _sendMessage() {
+    final text = _controller.text.trim();
+
+    if (text.isEmpty) return;
+
+    setState(() {
+      _messages.add(
+        _Message(
+          text: text,
+          isMeow: false,
+        ),
+      );
+
+      _messages.add(
+        _Message(
+          text: _funnyMode
+              ? 'Hmm... let me think. 😼'
+              : 'Got it. Let’s learn together.',
+          isMeow: true,
+        ),
+      );
+    });
+
+    _controller.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Meow'),
+        actions: [
+          IconButton(
+            tooltip: 'Funny Meow',
+            icon: Icon(
+              _funnyMode
+                  ? Icons.sentiment_very_satisfied
+                  : Icons.menu_book_outlined,
+            ),
+            onPressed: () {
+              setState(() {
+                _funnyMode = !_funnyMode;
+              });
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final message = _messages[index];
+
+                return Align(
+                  alignment: message.isMeow
+                      ? Alignment.centerLeft
+                      : Alignment.centerRight,
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    constraints: const BoxConstraints(
+                      maxWidth: 320,
+                    ),
+                    decoration: BoxDecoration(
+                      color: message.isMeow
+                          ? Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest
+                          : Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: Text(
+                      message.text,
+                      style: TextStyle(
+                        color: message.isMeow
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      textInputAction: TextInputAction.send,
+                      onSubmitted: (_) => _sendMessage(),
+                      decoration: const InputDecoration(
+                        hintText: 'Ask Meow...',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton.filled(
+                    onPressed: _sendMessage,
+                    icon: const Icon(Icons.send),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Message {
+  final String text;
+  final bool isMeow;
+
+  const _Message({
+    required this.text,
+    required this.isMeow,
+  });
+}
