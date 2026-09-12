@@ -3,6 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/theme/app_theme.dart';
 import 'features/learn/learn_page.dart';
+import 'features/practice/practice_page.dart';
+import 'features/meow/meow_page.dart';
+import 'features/progress/progress_page.dart';
 
 class MeowApp extends StatelessWidget {
   const MeowApp({super.key});
@@ -41,6 +44,9 @@ class _MeowAppShellState extends State<MeowAppShell> {
   final List<Widget> _pages = const [
     MeowHomePage(),
     LearnPage(),
+    PracticePage(),
+    MeowPage(),
+    ProgressPage(),
   ];
 
   @override
@@ -66,6 +72,21 @@ class _MeowAppShellState extends State<MeowAppShell> {
             icon: Icon(Icons.menu_book_outlined),
             selectedIcon: Icon(Icons.menu_book),
             label: 'Learn',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.fitness_center_outlined),
+            selectedIcon: Icon(Icons.fitness_center),
+            label: 'Practice',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.chat_bubble_outline),
+            selectedIcon: Icon(Icons.chat_bubble),
+            label: 'Meow',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.insights_outlined),
+            selectedIcon: Icon(Icons.insights),
+            label: 'Progress',
           ),
         ],
       ),
@@ -98,6 +119,7 @@ class MeowHomePage extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(height: 24),
+
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -105,7 +127,10 @@ class MeowHomePage extends StatelessWidget {
                     children: [
                       const CircleAvatar(
                         radius: 32,
-                        child: Icon(Icons.pets, size: 32),
+                        child: Icon(
+                          Icons.pets,
+                          size: 32,
+                        ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
@@ -132,7 +157,9 @@ class MeowHomePage extends StatelessWidget {
                   ),
                 ),
               ),
+
               const SizedBox(height: 16),
+
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -158,7 +185,9 @@ class MeowHomePage extends StatelessWidget {
                   ),
                 ),
               ),
+
               const SizedBox(height: 16),
+
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.menu_book),
@@ -167,7 +196,9 @@ class MeowHomePage extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right),
                 ),
               ),
+
               const SizedBox(height: 12),
+
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.auto_awesome),
@@ -176,7 +207,9 @@ class MeowHomePage extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right),
                 ),
               ),
+
               const SizedBox(height: 12),
+
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.chat_bubble_outline),
@@ -185,12 +218,16 @@ class MeowHomePage extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right),
                 ),
               ),
+
               const SizedBox(height: 24),
+
               Text(
                 'Current Level',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+
               const SizedBox(height: 8),
+
               Text(
                 'A1 · Beginner',
                 style: Theme.of(context).textTheme.headlineSmall,
