@@ -30,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Settings ⚙️',
+          'Settings',
           style: TextStyle(
             fontWeight: FontWeight.w700,
           ),
