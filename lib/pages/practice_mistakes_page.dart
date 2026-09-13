@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/practice_service.dart';
 import '../localization.dart';
+import 'practice_a1_mistake_review_page.dart';
 
 class PracticeMistakesPage extends StatefulWidget {
   const PracticeMistakesPage({super.key});
@@ -44,6 +45,18 @@ class _PracticeMistakesPageState
     setState(() {
       _mistakes = [];
     });
+  }
+
+  Future<void> _openMistakePractice() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            const PracticeA1MistakeReviewPage(),
+      ),
+    );
+
+    await _loadMistakes();
   }
 
   @override
@@ -168,12 +181,39 @@ class _PracticeMistakesPageState
           ),
         ),
 
+        const SizedBox(height: 16),
+
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: _openMistakePractice,
+            icon: const Icon(
+              Icons.refresh_rounded,
+            ),
+            label: Text(
+              isPersian
+                  ? 'تمرین دوباره اشتباهات'
+                  : 'Practice Mistakes Again',
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: lavender,
+              foregroundColor: Colors.white,
+              padding:
+                  const EdgeInsets.symmetric(
+                vertical: 15,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(17),
+              ),
+            ),
+          ),
+        ),
+
         const SizedBox(height: 24),
 
         Text(
-          isPersian
-              ? 'Basics Exam'
-              : 'Basics Exam',
+          'Basics Exam',
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,
@@ -274,12 +314,14 @@ class _PracticeMistakesPageState
 
               if (category.isNotEmpty)
                 Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding:
+                      const EdgeInsets.symmetric(
                     horizontal: 9,
                     vertical: 5,
                   ),
                   decoration: BoxDecoration(
-                    color: lavender.withOpacity(0.10),
+                    color:
+                        lavender.withOpacity(0.10),
                     borderRadius:
                         BorderRadius.circular(12),
                   ),
