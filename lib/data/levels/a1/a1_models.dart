@@ -1,60 +1,67 @@
-class A1ExamQuestion {
+class A1Lesson {
   final String id;
-  final String lessonId;
-  final String category;
+  final String title;
+  final String topic;
+  final List<A1Word> words;
+  final List<A1Sentence> sentences;
+  final List<A1Question> questions;
+  final List<A1SpeakingQuestion> speakingQuestions;
+
+  const A1Lesson({
+    required this.id,
+    required this.title,
+    required this.topic,
+    required this.words,
+    required this.sentences,
+    required this.questions,
+    required this.speakingQuestions,
+  });
+}
+
+class A1Word {
+  final String english;
+  final String persian;
+  final String pronunciation;
+  final String example;
+
+  const A1Word({
+    required this.english,
+    required this.persian,
+    required this.pronunciation,
+    required this.example,
+  });
+}
+
+class A1Sentence {
+  final String english;
+  final String persian;
+
+  const A1Sentence({
+    required this.english,
+    required this.persian,
+  });
+}
+
+class A1Question {
   final String question;
   final List<String> options;
-  final String correctAnswer;
+  final String answer;
 
-  const A1ExamQuestion({
-    required this.id,
-    required this.lessonId,
-    required this.category,
+  const A1Question({
     required this.question,
     required this.options,
-    required this.correctAnswer,
+    required this.answer,
   });
 }
 
-class A1ExamAnswer {
-  final String questionId;
-  final String selectedAnswer;
-  final String correctAnswer;
-  final bool isCorrect;
+class A1SpeakingQuestion {
+  final String question;
+  final String persian;
+  final List<String> acceptableAnswers;
 
-  const A1ExamAnswer({
-    required this.questionId,
-    required this.selectedAnswer,
-    required this.correctAnswer,
-    required this.isCorrect,
+  const A1SpeakingQuestion({
+    required this.question,
+    required this.persian,
+    required this.acceptableAnswers,
   });
-}
-
-class A1ExamResult {
-  final int totalQuestions;
-  final int correctAnswers;
-  final int wrongAnswers;
-  final int score;
-  final List<A1ExamAnswer> answers;
-
-  const A1ExamResult({
-    required this.totalQuestions,
-    required this.correctAnswers,
-    required this.wrongAnswers,
-    required this.score,
-    required this.answers,
-  });
-
-  List<A1ExamAnswer> get wrongAnswerList {
-    return answers.where((answer) => !answer.isCorrect).toList();
-  }
-
-  double get accuracy {
-    if (totalQuestions == 0) return 0;
-    return correctAnswers / totalQuestions;
-  }
-
-  bool get passed {
-    return score >= 70;
-  }
 }
