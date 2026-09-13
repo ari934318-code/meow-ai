@@ -4,188 +4,190 @@ const A1Lesson a1Lesson05 = A1Lesson(
   id: 'a1_05',
   title: 'Everyday Objects',
   topic: 'وسایل روزمره',
+
   words: [
     A1Word(
-      english: 'Phone',
+      english: 'phone',
       persian: 'گوشی / تلفن',
       pronunciation: 'فون',
       example: 'This is my phone.',
     ),
     A1Word(
-      english: 'Book',
+      english: 'book',
       persian: 'کتاب',
       pronunciation: 'بوک',
       example: 'This is my book.',
     ),
     A1Word(
-      english: 'Pen',
+      english: 'pen',
       persian: 'خودکار',
       pronunciation: 'پِن',
       example: 'I have a pen.',
     ),
     A1Word(
-      english: 'Pencil',
+      english: 'pencil',
       persian: 'مداد',
       pronunciation: 'پِنسِل',
       example: 'I have a pencil.',
     ),
     A1Word(
-      english: 'Bag',
+      english: 'bag',
       persian: 'کیف',
       pronunciation: 'بَگ',
       example: 'My bag is black.',
     ),
     A1Word(
-      english: 'Table',
+      english: 'table',
       persian: 'میز',
       pronunciation: 'تِیبِل',
       example: 'The book is on the table.',
     ),
     A1Word(
-      english: 'Chair',
+      english: 'chair',
       persian: 'صندلی',
       pronunciation: 'چِر',
       example: 'The chair is near the table.',
     ),
     A1Word(
-      english: 'Door',
+      english: 'door',
       persian: 'در',
       pronunciation: 'دور',
       example: 'Please close the door.',
     ),
     A1Word(
-      english: 'Window',
+      english: 'window',
       persian: 'پنجره',
       pronunciation: 'ویندو',
       example: 'Open the window, please.',
     ),
     A1Word(
-      english: 'Room',
+      english: 'room',
       persian: 'اتاق',
       pronunciation: 'روم',
       example: 'My room is small.',
     ),
     A1Word(
-      english: 'House',
+      english: 'house',
       persian: 'خانه',
       pronunciation: 'هاوس',
       example: 'My house is near the school.',
     ),
     A1Word(
-      english: 'Computer',
+      english: 'computer',
       persian: 'کامپیوتر',
       pronunciation: 'کامپیوتِر',
       example: 'I have a computer.',
     ),
     A1Word(
-      english: 'Key',
+      english: 'key',
       persian: 'کلید',
       pronunciation: 'کی',
       example: 'Where is my key?',
     ),
     A1Word(
-      english: 'Wallet',
+      english: 'wallet',
       persian: 'کیف پول',
       pronunciation: 'والِت',
       example: 'My wallet is in my bag.',
     ),
     A1Word(
-      english: 'Bottle',
+      english: 'bottle',
       persian: 'بطری',
       pronunciation: 'باتِل',
       example: 'The bottle is on the table.',
     ),
     A1Word(
-      english: 'Cup',
+      english: 'cup',
       persian: 'فنجان / لیوان',
       pronunciation: 'کاپ',
       example: 'The cup is on the table.',
     ),
     A1Word(
-      english: 'Glass',
+      english: 'glass',
       persian: 'لیوان شیشه‌ای',
       pronunciation: 'گِلَس',
       example: 'The glass is full.',
     ),
     A1Word(
-      english: 'Water',
+      english: 'water',
       persian: 'آب',
       pronunciation: 'واتِر',
       example: 'The water is cold.',
     ),
     A1Word(
-      english: 'Clock',
+      english: 'clock',
       persian: 'ساعت',
       pronunciation: 'کلاک',
       example: 'The clock is on the wall.',
     ),
     A1Word(
-      english: 'Watch',
+      english: 'watch',
       persian: 'ساعت مچی',
       pronunciation: 'واچ',
       example: 'My watch is new.',
     ),
     A1Word(
-      english: 'Light',
+      english: 'light',
       persian: 'چراغ / نور',
       pronunciation: 'لایت',
       example: 'Turn on the light.',
     ),
     A1Word(
-      english: 'Bed',
+      english: 'bed',
       persian: 'تختخواب',
       pronunciation: 'بِد',
       example: 'My bed is comfortable.',
     ),
     A1Word(
-      english: 'Box',
+      english: 'box',
       persian: 'جعبه',
       pronunciation: 'باکس',
       example: 'The phone is in the box.',
     ),
     A1Word(
-      english: 'Picture',
+      english: 'picture',
       persian: 'عکس / تصویر',
       pronunciation: 'پیکچِر',
       example: 'There is a picture on the wall.',
     ),
     A1Word(
-      english: 'Wall',
+      english: 'wall',
       persian: 'دیوار',
       pronunciation: 'وال',
       example: 'The picture is on the wall.',
     ),
     A1Word(
-      english: 'Open',
+      english: 'open',
       persian: 'باز کردن / باز',
       pronunciation: 'اوپِن',
       example: 'Open the door, please.',
     ),
     A1Word(
-      english: 'Close',
+      english: 'close',
       persian: 'بستن / بسته',
       pronunciation: 'کلوز',
       example: 'Close the window, please.',
     ),
     A1Word(
-      english: 'Here',
+      english: 'here',
       persian: 'اینجا',
       pronunciation: 'هِیر',
       example: 'My phone is here.',
     ),
     A1Word(
-      english: 'There',
+      english: 'there',
       persian: 'آنجا',
       pronunciation: 'ذِر',
       example: 'The bag is there.',
     ),
     A1Word(
-      english: 'Near',
+      english: 'near',
       persian: 'نزدیک',
       pronunciation: 'نیر',
       example: 'The chair is near the table.',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'This is my phone.',
@@ -307,7 +309,16 @@ const A1Lesson a1Lesson05 = A1Lesson(
       english: 'Where is my phone?',
       persian: 'گوشی من کجاست؟',
     ),
+    A1Sentence(
+      english: 'The key is on the table.',
+      persian: 'کلید روی میز است.',
+    ),
+    A1Sentence(
+      english: 'The book is in my bag.',
+      persian: 'کتاب داخل کیف من است.',
+    ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "Phone" mean?',
@@ -609,16 +620,6 @@ const A1Lesson a1Lesson05 = A1Lesson(
       ],
       answer: 'اینجا',
     ),
-    A1Question(
-      question: 'What does "There" mean?',
-      options: [
-        'اینجا',
-        'آنجا',
-        'نزدیک',
-        'روی',
-      ],
-      answer: 'آنجا',
-    ),
   ],
 
   speakingQuestions: [
@@ -663,6 +664,7 @@ const A1Lesson a1Lesson05 = A1Lesson(
       acceptableAnswers: [
         'the book is on the table',
         'it is on the table',
+        'the book is in my bag',
       ],
     ),
     A1SpeakingQuestion(
@@ -725,6 +727,29 @@ const A1Lesson a1Lesson05 = A1Lesson(
       persian: 'بگو: «آب سرد است.»',
       acceptableAnswers: [
         'the water is cold',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where is the key?',
+      persian: 'کلید کجاست؟',
+      acceptableAnswers: [
+        'the key is on the table',
+        'it is on the table',
+        'my key is on the table',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Turn on the light."',
+      persian: 'بگو: «چراغ را روشن کن.»',
+      acceptableAnswers: [
+        'turn on the light',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Turn off the light."',
+      persian: 'بگو: «چراغ را خاموش کن.»',
+      acceptableAnswers: [
+        'turn off the light',
       ],
     ),
   ],
