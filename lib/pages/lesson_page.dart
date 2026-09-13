@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -26,8 +27,8 @@ class _LessonPageState extends State<LessonPage> {
 
   final FlutterTts _tts = FlutterTts();
   final stt.SpeechToText _speech = stt.SpeechToText();
-
   final PageController _pageController = PageController();
+  final Random _random = Random();
 
   bool practiceStarted = false;
   bool answered = false;
@@ -42,6 +43,12 @@ class _LessonPageState extends State<LessonPage> {
   String speechResultMessage = '';
 
   final Map<LessonQuestion, int> _sectionAnswers = {};
+
+  // گزینه‌های تصادفی‌شده برای هر سؤال
+  final Map<LessonQuestion, List<String>> _shuffledOptions = {};
+
+  // محل جدید جواب درست بعد از تصادفی شدن گزینه‌ها
+  final Map<LessonQuestion, int> _shuffledCorrectIndex = {};
 
   List<LessonQuestion> get multipleChoiceQuestions {
     final result = <LessonQuestion>[];
@@ -61,8 +68,57 @@ class _LessonPageState extends State<LessonPage> {
   @override
   void initState() {
     super.initState();
+    _shuffleAllQuestionOptions();
     _setupTts();
     _setupSpeech();
+  }
+
+  void _shuffleAllQuestionOptions() {
+    for (final section in widget.lesson.sections) {
+      for (final question in section.questions) {
+        if (question.type == LessonQuestionType.multipleChoice ||
+            question.type == LessonQuestionType.fillBlank) {
+          _createShuffledOptions(question);
+        }
+      }
+    }
+  }
+
+  void _createShuffledOptions(LessonQuestion question) {
+    final originalOptions = List<String>.from(question.options);
+
+    if (originalOptions.isEmpty) {
+      _shuffledOptions[question] = [];
+      _shuffledCorrectIndex[question] = -1;
+      return;
+    }
+
+    final correctAnswer = question.correctAnswer;
+
+    originalOptions.shuffle(_random);
+
+    _shuffledOptions[question] = originalOptions;
+
+    _shuffledCorrectIndex[question] =
+        originalOptions.indexOf(correctAnswer);
+  }
+
+  List<String> _optionsFor(LessonQuestion question) {
+    return _shuffledOptions[question] ??
+        List<String>.from(question.options);
+  }
+
+  int _correctIndexFor(LessonQuestion question) {
+    return _shuffledCorrectIndex[question] ??
+        question.correctIndex;
+  }
+
+  @override
+  void dispose() {
+    _speech.stop();
+    _tts.stop();
+    _pageController.dispose();
+    super.dispose();
   }
 
   Future<void> _setupTts() async {
@@ -237,17 +293,14 @@ class _LessonPageState extends State<LessonPage> {
         (firstWords.length + secondWords.length);
   }
 
-  @override
-  void dispose() {
-    _speech.stop();
-    _tts.stop();
-    _pageController.dispose();
-    super.dispose();
-  }
-
   void startPractice() {
     if (multipleChoiceQuestions.isEmpty) {
       return;
+    }
+
+    // هر بار شروع Practice ترتیب گزینه‌ها دوباره تصادفی می‌شود.
+    for (final question in multipleChoiceQuestions) {
+      _createShuffledOptions(question);
     }
 
     setState(() {
@@ -263,12 +316,13 @@ class _LessonPageState extends State<LessonPage> {
     if (answered) return;
 
     final question = multipleChoiceQuestions[currentQuestion];
+    final correctIndex = _correctIndexFor(question);
 
     setState(() {
       selectedAnswer = index;
       answered = true;
 
-      if (index == question.correctIndex) {
+      if (index == correctIndex) {
         score++;
       }
     });
@@ -1011,6 +1065,9 @@ class _LessonPageState extends State<LessonPage> {
     final selected = _sectionAnswers[question];
     final hasAnswered = selected != null;
 
+    final options = _optionsFor(question);
+    final correctIndex = _correctIndexFor(question);
+
     return Container(
       margin:
           const EdgeInsets.only(bottom: 12),
@@ -1059,11 +1116,10 @@ class _LessonPageState extends State<LessonPage> {
           ],
           const SizedBox(height: 12),
           ...List.generate(
-            question.options.length,
+            options.length,
             (index) {
               final isSelected = selected == index;
-              final isCorrect =
-                  index == question.correctIndex;
+              final isCorrect = index == correctIndex;
 
               Color backgroundColor;
               Color borderColor;
@@ -1141,7 +1197,7 @@ class _LessonPageState extends State<LessonPage> {
                       children: [
                         Expanded(
                           child: Text(
-                            question.options[index],
+                            options[index],
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight:
@@ -1186,8 +1242,7 @@ class _LessonPageState extends State<LessonPage> {
                   const EdgeInsets.all(11),
               decoration: BoxDecoration(
                 color:
-                    selected ==
-                            question.correctIndex
+                    selected == correctIndex
                         ? Colors.green
                             .withOpacity(0.08)
                         : Colors.orange
@@ -1196,8 +1251,7 @@ class _LessonPageState extends State<LessonPage> {
                     BorderRadius.circular(13),
               ),
               child: Text(
-                selected ==
-                        question.correctIndex
+                selected == correctIndex
                     ? (lang.isPersian
                         ? 'درست گفتی! 🎉'
                         : 'Correct! 🎉')
@@ -1209,8 +1263,7 @@ class _LessonPageState extends State<LessonPage> {
                   fontWeight:
                       FontWeight.w700,
                   color:
-                      selected ==
-                              question.correctIndex
+                      selected == correctIndex
                           ? Colors.green.shade700
                           : Colors.orange.shade700,
                 ),
@@ -1484,6 +1537,9 @@ class _LessonPageState extends State<LessonPage> {
     final question =
         multipleChoiceQuestions[currentQuestion];
 
+    final options = _optionsFor(question);
+    final correctIndex = _correctIndexFor(question);
+
     final progress =
         (currentQuestion + 1) /
             multipleChoiceQuestions.length;
@@ -1634,13 +1690,12 @@ class _LessonPageState extends State<LessonPage> {
         ),
         const SizedBox(height: 16),
         ...List.generate(
-          question.options.length,
+          options.length,
           (index) {
             final isSelected =
                 selectedAnswer == index;
             final isCorrect =
-                index ==
-                    question.correctIndex;
+                index == correctIndex;
 
             return Padding(
               padding:
@@ -1650,8 +1705,9 @@ class _LessonPageState extends State<LessonPage> {
               child: InkWell(
                 borderRadius:
                     BorderRadius.circular(20),
-                onTap: () =>
-                    selectAnswer(index),
+                onTap: answered
+                    ? null
+                    : () => selectAnswer(index),
                 child: Container(
                   padding:
                       const EdgeInsets.all(17),
@@ -1679,8 +1735,7 @@ class _LessonPageState extends State<LessonPage> {
                     children: [
                       Expanded(
                         child: Text(
-                          question.options[
-                              index],
+                          options[index],
                           style:
                               const TextStyle(
                             fontSize: 16,
@@ -1709,7 +1764,7 @@ class _LessonPageState extends State<LessonPage> {
             decoration: BoxDecoration(
               color:
                   selectedAnswer ==
-                          question.correctIndex
+                          correctIndex
                       ? Colors.green
                           .withOpacity(0.10)
                       : Colors.orange
@@ -1719,7 +1774,7 @@ class _LessonPageState extends State<LessonPage> {
             ),
             child: Text(
               selectedAnswer ==
-                      question.correctIndex
+                      correctIndex
                   ? (lang.isPersian
                       ? 'درست گفتی! 🎉'
                       : 'Correct! 🎉')
