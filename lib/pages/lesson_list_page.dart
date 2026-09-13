@@ -2,14 +2,54 @@ import 'package:flutter/material.dart';
 
 import '../lesson_localization.dart';
 import '../localization.dart';
+import '../services/a1_progress_service.dart';
 import '../services/lesson_service.dart';
 import 'lesson_page.dart';
 import 'a1_exam_page.dart';
 
-class LessonListPage extends StatelessWidget {
+class LessonListPage extends StatefulWidget {
   const LessonListPage({super.key});
 
+  @override
+  State<LessonListPage> createState() => _LessonListPageState();
+}
+
+class _LessonListPageState extends State<LessonListPage> {
   static const Color lavender = Color(0xFFB9A7E8);
+
+  Set<String> completedLessons = {};
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProgress();
+  }
+
+  Future<void> _loadProgress() async {
+    final completed = await A1ProgressService.getCompletedLessons();
+
+    if (!mounted) return;
+
+    setState(() {
+      completedLessons = completed;
+      isLoading = false;
+    });
+  }
+
+  bool _isUnlocked(int index) {
+    if (index == 0) return true;
+
+    final previousLesson = LessonService.a1Lessons[index - 1];
+
+    return completedLessons.contains(previousLesson.id);
+  }
+
+  bool _isCompleted(int index) {
+    final lesson = LessonService.a1Lessons[index];
+
+    return completedLessons.contains(lesson.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +61,19 @@ class LessonListPage extends StatelessWidget {
 
     final lessons = LessonService.a1Lessons;
 
+    final completedCount = lessons
+        .where((lesson) => completedLessons.contains(lesson.id))
+        .length;
+
+    final progress =
+        lessons.isEmpty ? 0.0 : completedCount / lessons.length;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          lang.isPersian ? 'درس‌های A1 📚' : 'A1 Lessons 📚',
+          lang.isPersian ? 'مسیر A1 📚' : 'A1 Journey 📚',
           style: const TextStyle(
             fontWeight: FontWeight.w700,
             letterSpacing: -0.3,
@@ -34,74 +81,91 @@ class LessonListPage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
-          children: [
-            Text(
-              lang.isPersian
-                  ? 'مسیر A1 تو'
-                  : 'Your A1 journey',
-              style: const TextStyle(
-                fontSize: 29,
-                fontWeight: FontWeight.w700,
-                letterSpacing: -0.8,
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: lavender,
+                ),
+              )
+            : ListView(
+                padding: const EdgeInsets.fromLTRB(
+                  20,
+                  8,
+                  20,
+                  40,
+                ),
+                children: [
+                  Text(
+                    lang.isPersian
+                        ? 'مسیر A1 تو'
+                        : 'Your A1 journey',
+                    style: const TextStyle(
+                      fontSize: 29,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.8,
+                    ),
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  Text(
+                    lang.isPersian
+                        ? 'مرحله‌به‌مرحله جلو برو و انگلیسی واقعی یاد بگیر 🐱'
+                        : 'Move through each stage and learn real-life English 🐱',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
+                  ),
+
+                  const SizedBox(height: 22),
+
+                  _progressCard(
+                    context,
+                    lang,
+                    completedCount,
+                    lessons.length,
+                    progress,
+                  ),
+
+                  const SizedBox(height: 22),
+
+                  ...List.generate(
+                    lessons.length,
+                    (index) {
+                      final lesson = lessons[index];
+
+                      final title = lessonLang.lessonTitle(
+                        lesson.id,
+                        lesson.title,
+                      );
+
+                      final description = lessonLang.lessonDescription(
+                        lesson.id,
+                        lesson.description,
+                      );
+
+                      return _stageCard(
+                        context,
+                        lang,
+                        index,
+                        lesson.xp,
+                        title,
+                        description,
+                        lesson,
+                      );
+                    },
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  _finalExamCard(
+                    context,
+                    lang,
+                    completedCount == lessons.length,
+                  ),
+                ],
               ),
-            ),
-
-            const SizedBox(height: 6),
-
-            Text(
-              lang.isPersian
-                  ? 'درس‌ها رو یکی‌یکی جلو برو و انگلیسی واقعی یاد بگیر 🐱'
-                  : 'Go lesson by lesson and learn real-life English 🐱',
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.grey,
-              ),
-            ),
-
-            const SizedBox(height: 22),
-
-            _progressCard(
-              context,
-              lang,
-              lessons.length,
-            ),
-
-            const SizedBox(height: 20),
-
-            ...List.generate(
-              lessons.length,
-              (index) {
-                final lesson = lessons[index];
-
-                final title = lessonLang.lessonTitle(
-                  lesson.id,
-                  lesson.title,
-                );
-
-                final description = lessonLang.lessonDescription(
-                  lesson.id,
-                  lesson.description,
-                );
-
-                return _lessonCard(
-                  context,
-                  lang,
-                  index,
-                  lesson.xp,
-                  title,
-                  description,
-                  lesson,
-                );
-              },
-            ),
-
-            const SizedBox(height: 8),
-
-            _finalExamCard(context, lang),
-          ],
-        ),
       ),
     );
   }
@@ -109,8 +173,12 @@ class LessonListPage extends StatelessWidget {
   Widget _progressCard(
     BuildContext context,
     MeowLocalizations lang,
+    int completedCount,
     int totalLessons,
+    double progress,
   ) {
+    final percent = (progress * 100).round();
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -129,15 +197,15 @@ class LessonListPage extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 CircularProgressIndicator(
-                  value: 0,
+                  value: progress,
                   strokeWidth: 6,
                   backgroundColor: lavender.withOpacity(0.18),
                   valueColor:
                       const AlwaysStoppedAnimation<Color>(lavender),
                 ),
-                const Text(
-                  '0%',
-                  style: TextStyle(
+                Text(
+                  lang.isPersian ? '$percent٪' : '$percent%',
+                  style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                   ),
@@ -166,8 +234,8 @@ class LessonListPage extends StatelessWidget {
 
                 Text(
                   lang.isPersian
-                      ? '$totalLessons درس برای یادگیری'
-                      : '$totalLessons lessons to learn',
+                      ? '$completedCount از $totalLessons مرحله کامل شده'
+                      : '$completedCount of $totalLessons stages completed',
                   style: const TextStyle(
                     fontSize: 13,
                     color: Colors.grey,
@@ -181,7 +249,7 @@ class LessonListPage extends StatelessWidget {
     );
   }
 
-  Widget _lessonCard(
+  Widget _stageCard(
     BuildContext context,
     MeowLocalizations lang,
     int index,
@@ -190,143 +258,230 @@ class LessonListPage extends StatelessWidget {
     String description,
     dynamic lesson,
   ) {
-    final isFirst = index == 0;
+    final completed = _isCompleted(index);
+    final unlocked = _isUnlocked(index);
+
+    final stageNumber = index + 1;
+
+    Color borderColor;
+    Color circleColor;
+    Color numberColor;
+
+    if (completed) {
+      borderColor = const Color(0xFF4CAF50).withOpacity(0.30);
+      circleColor = const Color(0xFF4CAF50).withOpacity(0.12);
+      numberColor = const Color(0xFF4CAF50);
+    } else if (unlocked) {
+      borderColor = lavender.withOpacity(0.30);
+      circleColor = lavender.withOpacity(0.13);
+      numberColor = lavender;
+    } else {
+      borderColor = Colors.grey.withOpacity(0.12);
+      circleColor = Colors.grey.withOpacity(0.10);
+      numberColor = Colors.grey;
+    }
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: InkWell(
         borderRadius: BorderRadius.circular(24),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => LessonPage(
-                lesson: lesson,
-              ),
-            ),
-          );
-        },
-        child: Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: isFirst
-                  ? lavender.withOpacity(0.28)
-                  : Colors.grey.withOpacity(0.14),
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 54,
-                height: 54,
-                decoration: BoxDecoration(
-                  color: lavender.withOpacity(0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Text(
-                    '${index + 1}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: lavender,
+        onTap: unlocked
+            ? () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => LessonPage(
+                      lesson: lesson,
                     ),
                   ),
-                ),
+                ).then((_) {
+                  _loadProgress();
+                });
+              }
+            : null,
+        child: Opacity(
+          opacity: unlocked ? 1.0 : 0.58,
+          child: Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: borderColor,
+                width: completed || unlocked ? 1.3 : 1,
               ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 54,
+                  height: 54,
+                  decoration: BoxDecoration(
+                    color: circleColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: completed
+                        ? const Icon(
+                            Icons.check_rounded,
+                            color: Color(0xFF4CAF50),
+                            size: 27,
+                          )
+                        : unlocked
+                            ? Text(
+                                '$stageNumber',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                  color: numberColor,
+                                ),
+                              )
+                            : const Icon(
+                                Icons.lock_outline_rounded,
+                                color: Colors.grey,
+                                size: 24,
+                              ),
+                  ),
+                ),
 
-              const SizedBox(width: 14),
+                const SizedBox(width: 14),
 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-
-                    const SizedBox(height: 5),
-
-                    Text(
-                      description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey,
-                        height: 1.35,
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 9,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: lavender.withOpacity(0.11),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            '+$xp XP',
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              color: lavender,
-                            ),
-                          ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lang.isPersian
+                            ? 'مرحله $stageNumber'
+                            : 'Stage $stageNumber',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: completed
+                              ? const Color(0xFF4CAF50)
+                              : unlocked
+                                  ? lavender
+                                  : Colors.grey,
                         ),
+                      ),
 
-                        if (isFirst) ...[
-                          const SizedBox(width: 7),
+                      const SizedBox(height: 3),
+
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+
+                      const SizedBox(height: 5),
+
+                      Text(
+                        description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey,
+                          height: 1.35,
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      Row(
+                        children: [
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 9,
                               vertical: 5,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF4CAF50)
-                                  .withOpacity(0.10),
+                              color: lavender.withOpacity(0.11),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
-                              lang.isPersian
-                                  ? 'شروع'
-                                  : 'START',
+                              '+$xp XP',
                               style: const TextStyle(
-                                fontSize: 10,
+                                fontSize: 11,
                                 fontWeight: FontWeight.w800,
-                                color: Color(0xFF4CAF50),
+                                color: lavender,
                               ),
                             ),
                           ),
+
+                          const SizedBox(width: 7),
+
+                          if (completed)
+                            _statusChip(
+                              lang.isPersian
+                                  ? 'تکمیل شد ✓'
+                                  : 'COMPLETED ✓',
+                              const Color(0xFF4CAF50),
+                            )
+                          else if (unlocked)
+                            _statusChip(
+                              lang.isPersian
+                                  ? 'باز است'
+                                  : 'UNLOCKED',
+                              lavender,
+                            )
+                          else
+                            _statusChip(
+                              lang.isPersian
+                                  ? 'قفل'
+                                  : 'LOCKED',
+                              Colors.grey,
+                            ),
                         ],
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-              const SizedBox(width: 8),
+                const SizedBox(width: 8),
 
-              const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 17,
-                color: Colors.grey,
-              ),
-            ],
+                Icon(
+                  completed
+                      ? Icons.check_circle_outline_rounded
+                      : unlocked
+                          ? Icons.arrow_forward_ios_rounded
+                          : Icons.lock_outline_rounded,
+                  size: 18,
+                  color: completed
+                      ? const Color(0xFF4CAF50)
+                      : unlocked
+                          ? Colors.grey
+                          : Colors.grey,
+                ),
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _statusChip(
+    String text,
+    Color color,
+  ) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 9,
+        vertical: 5,
+      ),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.10),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w800,
+          color: color,
         ),
       ),
     );
@@ -335,81 +490,95 @@ class LessonListPage extends StatelessWidget {
   Widget _finalExamCard(
     BuildContext context,
     MeowLocalizations lang,
+    bool allLessonsCompleted,
   ) {
     return InkWell(
       borderRadius: BorderRadius.circular(24),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const A1ExamPage(),
+      onTap: allLessonsCompleted
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const A1ExamPage(),
+                ),
+              );
+            }
+          : null,
+      child: Opacity(
+        opacity: allLessonsCompleted ? 1.0 : 0.55,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: lavender.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: lavender.withOpacity(0.30),
+              width: 1.5,
+            ),
           ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: lavender.withOpacity(0.12),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: lavender.withOpacity(0.30),
-            width: 1.5,
+          child: Row(
+            children: [
+              Container(
+                width: 58,
+                height: 58,
+                decoration: BoxDecoration(
+                  color: lavender.withOpacity(0.18),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  allLessonsCompleted
+                      ? Icons.school_rounded
+                      : Icons.lock_outline_rounded,
+                  color: lavender,
+                  size: 29,
+                ),
+              ),
+
+              const SizedBox(width: 16),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lang.isPersian
+                          ? 'امتحان نهایی A1 🎓'
+                          : 'A1 Final Exam 🎓',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+
+                    const SizedBox(height: 6),
+
+                    Text(
+                      allLessonsCompleted
+                          ? lang.isPersian
+                              ? 'همه مراحل رو کامل کردی! وقت امتحانه.'
+                              : 'You completed all stages! Time for the exam.'
+                          : lang.isPersian
+                              ? 'اول هر ۱۲ مرحله رو کامل کن'
+                              : 'Complete all 12 stages first',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Icon(
+                allLessonsCompleted
+                    ? Icons.arrow_forward_ios_rounded
+                    : Icons.lock_outline_rounded,
+                size: 18,
+                color: Colors.grey,
+              ),
+            ],
           ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 58,
-              height: 58,
-              decoration: BoxDecoration(
-                color: lavender.withOpacity(0.18),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.school_rounded,
-                color: lavender,
-                size: 29,
-              ),
-            ),
-
-            const SizedBox(width: 16),
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    lang.isPersian
-                        ? 'امتحان نهایی A1 🎓'
-                        : 'A1 Final Exam 🎓',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-
-                  const SizedBox(height: 6),
-
-                  Text(
-                    lang.isPersian
-                        ? 'دانسته‌هات رو امتحان کن و نتیجه‌ات رو ببین'
-                        : 'Test your knowledge and see your result',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey,
-                      height: 1.35,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 18,
-              color: Colors.grey,
-            ),
-          ],
         ),
       ),
     );
