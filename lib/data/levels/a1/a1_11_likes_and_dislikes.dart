@@ -685,4 +685,131 @@ const A1Lesson a1Lesson11 = A1Lesson(
       answer: 'The cat is cute.',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'What do you like?',
+      persian: 'چه چیزی را دوست داری؟',
+      acceptableAnswers: [
+        'i like music',
+        'i like cats',
+        'i like dogs',
+        'i like movies',
+        'i like books',
+        'i like games',
+        'i like pizza',
+        'i like football',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is your favorite food?',
+      persian: 'غذای موردعلاقه‌ات چیست؟',
+      acceptableAnswers: [
+        'my favorite food is pizza',
+        'my favorite food is rice',
+        'i like pizza',
+        'i like rice',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is your favorite color?',
+      persian: 'رنگ موردعلاقه‌ات چیست؟',
+      acceptableAnswers: [
+        'my favorite color is blue',
+        'my favorite color is red',
+        'my favorite color is green',
+        'my favorite color is black',
+        'my favorite color is white',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Do you like cats?',
+      persian: 'گربه‌ها را دوست داری؟',
+      acceptableAnswers: [
+        'yes i do',
+        'no i do not',
+        'yes i like cats',
+        'no i do not like cats',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Do you like dogs?',
+      persian: 'سگ‌ها را دوست داری؟',
+      acceptableAnswers: [
+        'yes i do',
+        'no i do not',
+        'yes i like dogs',
+        'no i do not like dogs',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Do you like pizza?',
+      persian: 'پیتزا دوست داری؟',
+      acceptableAnswers: [
+        'yes i do',
+        'no i do not',
+        'yes i like pizza',
+        'no i do not like pizza',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What kind of music do you like?',
+      persian: 'چه نوع موسیقی‌ای دوست داری؟',
+      acceptableAnswers: [
+        'i like pop music',
+        'i like rock music',
+        'i like classical music',
+        'i like music',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you prefer, tea or coffee?',
+      persian: 'چای را ترجیح می‌دهی یا قهوه؟',
+      acceptableAnswers: [
+        'i prefer tea',
+        'i prefer coffee',
+        'i like tea',
+        'i like coffee',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you dislike?',
+      persian: 'چه چیزی را دوست نداری؟',
+      acceptableAnswers: [
+        'i dislike loud music',
+        'i dislike difficult games',
+        'i dislike coffee',
+        'i do not like coffee',
+        'i do not like loud music',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you enjoy doing?',
+      persian: 'از انجام چه کاری لذت می‌بری؟',
+      acceptableAnswers: [
+        'i enjoy reading',
+        'i enjoy listening to music',
+        'i enjoy playing games',
+        'i enjoy watching movies',
+        'i enjoy basketball',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I love cats."',
+      persian: 'بگو: «من عاشق گربه‌ها هستم.»',
+      acceptableAnswers: [
+        'i love cats',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Tell Meow three things you like.',
+      persian: 'سه چیزی که دوست داری به میو بگو.',
+      acceptableAnswers: [
+        'i like music cats and pizza',
+        'i like cats dogs and pizza',
+        'i like books movies and games',
+        'i like music movies and games',
+      ],
+    ),
+  ],
 );
