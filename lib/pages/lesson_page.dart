@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../lesson_localization.dart';
 import '../localization.dart';
 import '../models/lesson.dart';
 
@@ -118,27 +119,51 @@ class _LessonPageState extends State<LessonPage> {
   Widget build(BuildContext context) {
     final lang = MeowLocalizations.of(context);
 
+    final lessonLang = LessonLocalization(
+      Localizations.localeOf(context),
+    );
+
+    final lessonTitle = lessonLang.lessonTitle(
+      widget.lesson.id,
+      widget.lesson.title,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${widget.lesson.title} 📚',
+          '$lessonTitle 📚',
         ),
       ),
       body: practiceStarted
           ? _buildPractice(context, lang)
-          : _buildLessonContent(context, lang),
+          : _buildLessonContent(
+              context,
+              lang,
+              lessonLang,
+            ),
     );
   }
 
   Widget _buildLessonContent(
     BuildContext context,
     MeowLocalizations lang,
+    LessonLocalization lessonLang,
   ) {
+    final lessonTitle = lessonLang.lessonTitle(
+      widget.lesson.id,
+      widget.lesson.title,
+    );
+
+    final lessonDescription = lessonLang.lessonDescription(
+      widget.lesson.id,
+      widget.lesson.description,
+    );
+
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
         Text(
-          widget.lesson.title,
+          lessonTitle,
           style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -148,7 +173,7 @@ class _LessonPageState extends State<LessonPage> {
         const SizedBox(height: 8),
 
         Text(
-          widget.lesson.description,
+          lessonDescription,
           style: TextStyle(
             fontSize: 16,
             color: Theme.of(context)
@@ -197,6 +222,7 @@ class _LessonPageState extends State<LessonPage> {
             context,
             section,
             lang,
+            lessonLang,
           ),
         ),
 
@@ -230,6 +256,7 @@ class _LessonPageState extends State<LessonPage> {
     BuildContext context,
     LessonSection section,
     MeowLocalizations lang,
+    LessonLocalization lessonLang,
   ) {
     IconData icon;
 
@@ -285,7 +312,7 @@ class _LessonPageState extends State<LessonPage> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    section.title,
+                    lessonLang.sectionTitle(section.title),
                     style: const TextStyle(
                       fontSize: 19,
                       fontWeight: FontWeight.bold,
@@ -298,7 +325,9 @@ class _LessonPageState extends State<LessonPage> {
             if (section.explanation.isNotEmpty) ...[
               const SizedBox(height: 14),
               Text(
-                section.explanation,
+                lessonLang.sectionExplanation(
+                  section.explanation,
+                ),
                 style: const TextStyle(
                   fontSize: 15,
                   height: 1.5,
@@ -385,9 +414,10 @@ class _LessonPageState extends State<LessonPage> {
           if (item.example.isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
-              lang.isPersian
-                  ? 'مثال: ${item.example}'
-                  : 'Example: ${item.example}',
+              lessonLangExample(
+                lang,
+                item.example,
+              ),
               style: const TextStyle(
                 fontSize: 14,
               ),
@@ -396,6 +426,15 @@ class _LessonPageState extends State<LessonPage> {
         ],
       ),
     );
+  }
+
+  String lessonLangExample(
+    MeowLocalizations lang,
+    String example,
+  ) {
+    return lang.isPersian
+        ? 'مثال: $example'
+        : 'Example: $example';
   }
 
   Widget _buildPractice(
