@@ -12,6 +12,7 @@ import 'pages/practice_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/progress_page.dart';
 import 'pages/settings_page.dart';
+import 'pages/a1_exam_page.dart';
 
 final ValueNotifier<ThemeMode> appThemeMode =
     ValueNotifier<ThemeMode>(ThemeMode.system);
@@ -84,6 +85,7 @@ class MeowApp extends StatelessWidget {
             '/home': (context) => const HomePage(),
             '/learn': (context) => const LearnPage(),
             '/a1-lessons': (context) => const LessonListPage(),
+            '/a1-exam': (context) => const A1ExamPage(),
             '/practice': (context) => const PracticePage(),
             '/meow': (context) => const MeowPage(),
             '/profile': (context) => const ProfilePage(),
