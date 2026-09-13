@@ -1,56 +1,4 @@
-class A1Lesson {
-  final String id;
-  final String title;
-  final String topic;
-  final List<A1Word> words;
-  final List<A1Sentence> sentences;
-  final List<A1Question> questions;
-
-  const A1Lesson({
-    required this.id,
-    required this.title,
-    required this.topic,
-    required this.words,
-    required this.sentences,
-    required this.questions,
-  });
-}
-
-class A1Word {
-  final String english;
-  final String persian;
-  final String pronunciation;
-  final String example;
-
-  const A1Word({
-    required this.english,
-    required this.persian,
-    required this.pronunciation,
-    required this.example,
-  });
-}
-
-class A1Sentence {
-  final String english;
-  final String persian;
-
-  const A1Sentence({
-    required this.english,
-    required this.persian,
-  });
-}
-
-class A1Question {
-  final String question;
-  final List<String> options;
-  final String answer;
-
-  const A1Question({
-    required this.question,
-    required this.options,
-    required this.answer,
-  });
-}
+import 'a1_models.dart';
 
 const A1Lesson a1Lesson01 = A1Lesson(
   id: 'a1_01',
@@ -58,142 +6,122 @@ const A1Lesson a1Lesson01 = A1Lesson(
   topic: 'سلام و احوالپرسی',
   words: [
     A1Word(
-      english: 'Hello',
+      english: 'hello',
       persian: 'سلام',
       pronunciation: 'هِلُو',
       example: 'Hello! How are you?',
     ),
     A1Word(
-      english: 'Hi',
+      english: 'hi',
       persian: 'سلام',
       pronunciation: 'های',
       example: 'Hi! Nice to meet you.',
     ),
     A1Word(
-      english: 'Good morning',
-      persian: 'صبح بخیر',
-      pronunciation: 'گود مورنینگ',
-      example: 'Good morning, Sarah!',
-    ),
-    A1Word(
-      english: 'Good afternoon',
-      persian: 'بعدازظهر بخیر',
-      pronunciation: 'گود اَفتِرنون',
-      example: 'Good afternoon, Tom.',
-    ),
-    A1Word(
-      english: 'Good evening',
-      persian: 'عصر بخیر',
-      pronunciation: 'گود ایونینگ',
-      example: 'Good evening, Mr. Brown.',
-    ),
-    A1Word(
-      english: 'Good night',
-      persian: 'شب بخیر',
-      pronunciation: 'گود نایت',
-      example: 'Good night! See you tomorrow.',
-    ),
-    A1Word(
-      english: 'Goodbye',
+      english: 'goodbye',
       persian: 'خداحافظ',
       pronunciation: 'گودبای',
       example: 'Goodbye! See you tomorrow.',
     ),
     A1Word(
-      english: 'Bye',
+      english: 'bye',
       persian: 'خداحافظ / بای',
       pronunciation: 'بای',
-      example: 'Bye! See you later.',
+      example: 'Bye! Have a nice day.',
     ),
     A1Word(
-      english: 'Thanks',
-      persian: 'ممنون',
-      pronunciation: 'ثَنکس',
-      example: 'Thanks for your help.',
-    ),
-    A1Word(
-      english: 'Thank you',
-      persian: 'متشکرم / ممنون',
-      pronunciation: 'ثَنک یو',
-      example: 'Thank you very much.',
-    ),
-    A1Word(
-      english: 'Please',
+      english: 'please',
       persian: 'لطفاً',
       pronunciation: 'پلیز',
       example: 'Please sit down.',
     ),
     A1Word(
-      english: 'Sorry',
-      persian: 'ببخشید / متأسفم',
+      english: 'thank you',
+      persian: 'ممنون',
+      pronunciation: 'ثَنک یو',
+      example: 'Thank you for your help.',
+    ),
+    A1Word(
+      english: 'thanks',
+      persian: 'ممنون / مرسی',
+      pronunciation: 'ثَنکس',
+      example: 'Thanks for the gift.',
+    ),
+    A1Word(
+      english: 'sorry',
+      persian: 'متأسفم / ببخشید',
       pronunciation: 'ساری',
       example: 'Sorry, I am late.',
     ),
     A1Word(
-      english: 'Excuse me',
-      persian: 'ببخشید',
-      pronunciation: 'اِکسکیوز می',
-      example: 'Excuse me, where is the bathroom?',
-    ),
-    A1Word(
-      english: 'Welcome',
+      english: 'welcome',
       persian: 'خوش آمدید',
       pronunciation: 'وِلکِم',
       example: 'Welcome to our home.',
     ),
     A1Word(
-      english: 'Nice',
-      persian: 'خوب / خوشایند',
+      english: 'morning',
+      persian: 'صبح',
+      pronunciation: 'مورنینگ',
+      example: 'Good morning!',
+    ),
+    A1Word(
+      english: 'afternoon',
+      persian: 'بعدازظهر',
+      pronunciation: 'اَفتِرنون',
+      example: 'Good afternoon!',
+    ),
+    A1Word(
+      english: 'evening',
+      persian: 'عصر / شب',
+      pronunciation: 'ایونینگ',
+      example: 'Good evening!',
+    ),
+    A1Word(
+      english: 'night',
+      persian: 'شب',
+      pronunciation: 'نایت',
+      example: 'Good night!',
+    ),
+    A1Word(
+      english: 'nice',
+      persian: 'خوب / دلپذیر',
       pronunciation: 'نایس',
       example: 'Nice to meet you.',
     ),
     A1Word(
-      english: 'Meet',
-      persian: 'ملاقات کردن / آشنا شدن',
+      english: 'meet',
+      persian: 'ملاقات کردن / دیدن',
       pronunciation: 'میت',
       example: 'Nice to meet you.',
     ),
     A1Word(
-      english: 'Later',
-      persian: 'بعداً',
-      pronunciation: 'لِیتِر',
-      example: 'See you later.',
+      english: 'name',
+      persian: 'اسم / نام',
+      pronunciation: 'نِیم',
+      example: 'What is your name?',
     ),
     A1Word(
-      english: 'Tomorrow',
-      persian: 'فردا',
-      pronunciation: 'تِمارو',
-      example: 'See you tomorrow.',
+      english: 'you',
+      persian: 'تو / شما',
+      pronunciation: 'یو',
+      example: 'How are you?',
+    ),
+    A1Word(
+      english: 'fine',
+      persian: 'خوب',
+      pronunciation: 'فاین',
+      example: 'I am fine, thank you.',
     ),
   ],
   sentences: [
     A1Sentence(
-      english: 'Hello! How are you?',
-      persian: 'سلام! حالت چطوره؟',
+      english: 'Hello!',
+      persian: 'سلام!',
     ),
     A1Sentence(
-      english: 'Hi! How are you?',
-      persian: 'سلام! حالت چطوره؟',
-    ),
-    A1Sentence(
-      english: 'I am fine, thank you.',
-      persian: 'من خوبم، ممنون.',
-    ),
-    A1Sentence(
-      english: 'I am good, thanks.',
-      persian: 'خوبم، ممنون.',
-    ),
-    A1Sentence(
-      english: 'I am great!',
-      persian: 'عالی‌ام!',
-    ),
-    A1Sentence(
-      english: 'Nice to meet you.',
-      persian: 'از آشنایی با تو خوشحالم.',
-    ),
-    A1Sentence(
-      english: 'Nice to meet you too.',
-      persian: 'من هم از آشنایی با تو خوشحالم.',
+      english: 'Hi!',
+      persian: 'سلام!',
     ),
     A1Sentence(
       english: 'Good morning!',
@@ -216,246 +144,191 @@ const A1Lesson a1Lesson01 = A1Lesson(
       persian: 'خداحافظ!',
     ),
     A1Sentence(
-      english: 'Bye! See you later.',
-      persian: 'بای! بعداً می‌بینمت.',
+      english: 'Bye!',
+      persian: 'بای!',
+    ),
+    A1Sentence(
+      english: 'How are you?',
+      persian: 'حالت چطوره؟',
+    ),
+    A1Sentence(
+      english: 'I am fine, thank you.',
+      persian: 'من خوبم، ممنون.',
+    ),
+    A1Sentence(
+      english: 'I am good.',
+      persian: 'من خوبم.',
+    ),
+    A1Sentence(
+      english: 'I am great.',
+      persian: 'من عالی‌ام.',
+    ),
+    A1Sentence(
+      english: 'Nice to meet you.',
+      persian: 'از آشنایی با شما خوشحالم.',
+    ),
+    A1Sentence(
+      english: 'Nice to meet you too.',
+      persian: 'من هم از آشنایی با شما خوشحالم.',
+    ),
+    A1Sentence(
+      english: 'What is your name?',
+      persian: 'اسمت چیه؟',
+    ),
+    A1Sentence(
+      english: 'My name is Sara.',
+      persian: 'اسم من سارا است.',
+    ),
+    A1Sentence(
+      english: 'Please come in.',
+      persian: 'لطفاً بیا داخل.',
+    ),
+    A1Sentence(
+      english: 'Thank you.',
+      persian: 'ممنون.',
+    ),
+    A1Sentence(
+      english: 'You are welcome.',
+      persian: 'خواهش می‌کنم.',
+    ),
+    A1Sentence(
+      english: 'Sorry.',
+      persian: 'ببخشید.',
+    ),
+    A1Sentence(
+      english: 'See you later.',
+      persian: 'بعداً می‌بینمت.',
     ),
     A1Sentence(
       english: 'See you tomorrow.',
       persian: 'فردا می‌بینمت.',
     ),
-    A1Sentence(
-      english: 'Thank you very much.',
-      persian: 'خیلی ممنون.',
-    ),
-    A1Sentence(
-      english: 'Thanks for your help.',
-      persian: 'ممنون بابت کمکت.',
-    ),
-    A1Sentence(
-      english: 'Please sit down.',
-      persian: 'لطفاً بنشین.',
-    ),
-    A1Sentence(
-      english: 'Sorry, I am late.',
-      persian: 'ببخشید، دیر کردم.',
-    ),
-    A1Sentence(
-      english: 'Excuse me.',
-      persian: 'ببخشید.',
-    ),
-    A1Sentence(
-      english: 'Welcome!',
-      persian: 'خوش آمدی!',
-    ),
-    A1Sentence(
-      english: 'How about you?',
-      persian: 'تو چطور؟',
-    ),
-    A1Sentence(
-      english: 'I am okay.',
-      persian: 'من خوبم.',
-    ),
   ],
   questions: [
     A1Question(
-      question: 'What does "Hello" mean?',
-      options: [
-        'خداحافظ',
-        'سلام',
-        'ممنون',
-        'لطفاً',
-      ],
+      question: 'What do you say when you meet someone?',
+      options: ['Hello', 'Goodbye', 'Good night', 'Sorry'],
+      answer: 'Hello',
+    ),
+    A1Question(
+      question: 'What does "Hi" mean?',
+      options: ['سلام', 'خداحافظ', 'ممنون', 'ببخشید'],
       answer: 'سلام',
     ),
     A1Question(
-      question: 'Which one means "ممنون"?',
-      options: [
-        'Please',
-        'Goodbye',
-        'Thanks',
-        'Sorry',
-      ],
-      answer: 'Thanks',
+      question: 'What does "Goodbye" mean?',
+      options: ['سلام', 'خداحافظ', 'صبح بخیر', 'ممنون'],
+      answer: 'خداحافظ',
     ),
     A1Question(
       question: 'What do you say in the morning?',
-      options: [
-        'Good night',
-        'Good morning',
-        'Goodbye',
-        'Sorry',
-      ],
+      options: ['Good morning', 'Good night', 'Goodbye', 'Sorry'],
       answer: 'Good morning',
     ),
     A1Question(
       question: 'What do you say before going to sleep?',
-      options: [
-        'Good morning',
-        'Good afternoon',
-        'Good night',
-        'Welcome',
-      ],
+      options: ['Good morning', 'Good night', 'Hello', 'Thank you'],
       answer: 'Good night',
     ),
     A1Question(
-      question: 'What does "Please" mean?',
+      question: 'How do you ask about someone’s condition?',
       options: [
-        'ممنون',
-        'ببخشید',
-        'لطفاً',
-        'خداحافظ',
+        'How are you?',
+        'What is your name?',
+        'Goodbye!',
+        'Thank you.'
       ],
+      answer: 'How are you?',
+    ),
+    A1Question(
+      question: 'What is a common answer to "How are you?"',
+      options: [
+        'I am fine.',
+        'Goodbye.',
+        'My name is Ali.',
+        'Good night.'
+      ],
+      answer: 'I am fine.',
+    ),
+    A1Question(
+      question: 'What does "Thank you" mean?',
+      options: ['ممنون', 'سلام', 'خداحافظ', 'لطفاً'],
+      answer: 'ممنون',
+    ),
+    A1Question(
+      question: 'What does "Please" mean?',
+      options: ['لطفاً', 'ممنون', 'ببخشید', 'خوش آمدید'],
       answer: 'لطفاً',
     ),
     A1Question(
       question: 'What does "Sorry" mean?',
-      options: [
-        'ببخشید / متأسفم',
-        'صبح بخیر',
-        'خوش آمدید',
-        'ممنون',
-      ],
-      answer: 'ببخشید / متأسفم',
-    ),
-    A1Question(
-      question: 'What does "Excuse me" mean?',
-      options: [
-        'خداحافظ',
-        'ببخشید',
-        'ممنون',
-        'صبح بخیر',
-      ],
+      options: ['ببخشید', 'ممنون', 'سلام', 'خداحافظ'],
       answer: 'ببخشید',
     ),
     A1Question(
       question: 'Complete: Nice to ___ you.',
-      options: [
-        'meet',
-        'thanks',
-        'please',
-        'good',
-      ],
+      options: ['meet', 'name', 'please', 'night'],
       answer: 'meet',
     ),
     A1Question(
-      question: 'Complete: See you ___.',
-      options: [
-        'sorry',
-        'tomorrow',
-        'please',
-        'morning',
-      ],
-      answer: 'tomorrow',
+      question: 'Complete: My ___ is Ali.',
+      options: ['name', 'morning', 'sorry', 'welcome'],
+      answer: 'name',
     ),
     A1Question(
-      question: 'Someone says "Nice to meet you." What do you say?',
-      options: [
-        'Good night.',
-        'Nice to meet you too.',
-        'I am sorry.',
-        'Please sit down.',
-      ],
-      answer: 'Nice to meet you too.',
+      question: 'What does "You are welcome" mean?',
+      options: ['خواهش می‌کنم', 'خداحافظ', 'سلام', 'صبح بخیر'],
+      answer: 'خواهش می‌کنم',
     ),
     A1Question(
-      question: 'Someone says "Thank you." What can you say?',
-      options: [
-        'You are welcome.',
-        'Good night.',
-        'See you tomorrow.',
-        'I am late.',
-      ],
-      answer: 'You are welcome.',
+      question: 'Which one is a goodbye expression?',
+      options: ['See you later', 'How are you?', 'Hello', 'Nice to meet you'],
+      answer: 'See you later',
     ),
     A1Question(
-      question: 'Which greeting is usually used in the evening?',
-      options: [
-        'Good morning',
-        'Good evening',
-        'Good night',
-        'Goodbye',
-      ],
+      question: 'Which greeting is used in the evening?',
+      options: ['Good evening', 'Good morning', 'Good night', 'Goodbye'],
       answer: 'Good evening',
     ),
     A1Question(
-      question: 'Which sentence means "فردا می‌بینمت."?',
-      options: [
-        'See you later.',
-        'See you tomorrow.',
-        'Good evening.',
-        'Thank you very much.',
-      ],
-      answer: 'See you tomorrow.',
+      question: 'What does "Thanks" mean?',
+      options: ['ممنون', 'سلام', 'ببخشید', 'لطفاً'],
+      answer: 'ممنون',
     ),
     A1Question(
-      question: 'Which sentence means "خیلی ممنون."?',
+      question: 'Choose the correct sentence:',
       options: [
-        'Thank you very much.',
-        'Good morning.',
-        'Nice to meet you.',
-        'Excuse me.',
+        'How are you?',
+        'How you are?',
+        'Are how you?',
+        'You how are?'
       ],
-      answer: 'Thank you very much.',
+      answer: 'How are you?',
     ),
     A1Question(
-      question: 'Which sentence is correct?',
+      question: 'Choose the correct sentence:',
       options: [
-        'Nice meet you.',
+        'My name is Anna.',
+        'My is name Anna.',
+        'Name my is Anna.',
+        'Anna my name.'
+      ],
+      answer: 'My name is Anna.',
+    ),
+    A1Question(
+      question: 'Complete: See you ___.',
+      options: ['tomorrow', 'name', 'please', 'fine'],
+      answer: 'tomorrow',
+    ),
+    A1Question(
+      question: 'Which phrase means "از آشنایی با شما خوشحالم"?',
+      options: [
         'Nice to meet you.',
-        'Nice meeting you to.',
-        'To nice meet you.',
+        'Goodbye.',
+        'How are you?',
+        'Thank you.'
       ],
       answer: 'Nice to meet you.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'I am fine, thank you.',
-        'I fine am thank you.',
-        'I am thank fine you.',
-        'Fine I thank am you.',
-      ],
-      answer: 'I am fine, thank you.',
-    ),
-    A1Question(
-      question: 'What can you say when you leave?',
-      options: [
-        'Goodbye!',
-        'Welcome!',
-        'Good morning!',
-        'Thank you!',
-      ],
-      answer: 'Goodbye!',
-    ),
-    A1Question(
-      question: 'What does "Welcome" mean?',
-      options: [
-        'خوش آمدید',
-        'خداحافظ',
-        'ببخشید',
-        'صبح بخیر',
-      ],
-      answer: 'خوش آمدید',
-    ),
-    A1Question(
-      question: 'Complete: Good ___, Sarah!',
-      options: [
-        'morning',
-        'sorry',
-        'please',
-        'meet',
-      ],
-      answer: 'morning',
-    ),
-    A1Question(
-      question: 'Complete: Good ___, Mr. Brown.',
-      options: [
-        'evening',
-        'thanks',
-        'please',
-        'sorry',
-      ],
-      answer: 'evening',
     ),
   ],
 );
