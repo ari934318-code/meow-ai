@@ -48,16 +48,31 @@ class _LessonPageState extends State<LessonPage> {
   final Map<LessonQuestion, String> _recognizedTextByQuestion = {};
   final Map<LessonQuestion, String> _speechMessageByQuestion = {};
 
+  // پاسخ سؤال‌های چهارگزینه‌ای داخل خود بخش‌ها.
   final Map<LessonQuestion, int> _sectionAnswers = {};
 
-  // گزینه‌های تصادفی‌شده برای هر سؤال
+  // گزینه‌های تصادفی‌شده برای هر سؤال.
   final Map<LessonQuestion, List<String>> _shuffledOptions = {};
 
-  // محل جدید جواب درست بعد از تصادفی شدن گزینه‌ها
+  // محل جدید جواب درست بعد از تصادفی شدن گزینه‌ها.
   final Map<LessonQuestion, int> _shuffledCorrectIndex = {};
 
-  // سؤال‌های Speaking که قبلاً با موفقیت پاسخ داده شده‌اند.
+  // سؤال‌های Speaking که با موفقیت پاسخ داده شده‌اند.
   final Set<LessonQuestion> _completedSpeakingQuestions = {};
+
+  // آیتم‌هایی که صدایشان تا انتها پخش شده است.
+  final Set<LessonItem> _completedAudioItems = {};
+
+  // سؤال‌های read aloud که صدایشان تا انتها پخش شده است.
+  final Set<LessonQuestion> _completedAudioQuestions = {};
+
+  // سؤال‌های بخش که پاسخ داده شده‌اند.
+  // جواب غلط هم کامل‌شده محسوب می‌شود.
+  final Set<LessonQuestion> _completedSectionQuestions = {};
+
+  // آیتم/سؤالی که در حال پخش صدای آن هستیم.
+  LessonItem? _activeAudioItem;
+  LessonQuestion? _activeAudioQuestion;
 
   List<LessonQuestion> get multipleChoiceQuestions {
     final result = <LessonQuestion>[];
@@ -136,6 +151,26 @@ class _LessonPageState extends State<LessonPage> {
     await _tts.setSpeechRate(0.45);
     await _tts.setPitch(1.0);
     await _tts.setVolume(1.0);
+
+    _tts.setCompletionHandler(() {
+      if (!mounted) return;
+
+      final completedItem = _activeAudioItem;
+      final completedQuestion = _activeAudioQuestion;
+
+      setState(() {
+        if (completedItem != null) {
+          _completedAudioItems.add(completedItem);
+        }
+
+        if (completedQuestion != null) {
+          _completedAudioQuestions.add(completedQuestion);
+        }
+      });
+
+      _activeAudioItem = null;
+      _activeAudioQuestion = null;
+    });
   }
 
   Future<void> _setupSpeech() async {
@@ -187,10 +222,18 @@ class _LessonPageState extends State<LessonPage> {
     }
   }
 
-  Future<void> _speak(String text) async {
+  Future<void> _speak(
+    String text, {
+    LessonItem? lessonItem,
+    LessonQuestion? lessonQuestion,
+  }) async {
     if (text.trim().isEmpty) return;
 
     await _tts.stop();
+
+    _activeAudioItem = lessonItem;
+    _activeAudioQuestion = lessonQuestion;
+
     await _tts.setLanguage('en-US');
     await _tts.setSpeechRate(0.45);
     await _tts.setPitch(1.0);
@@ -306,6 +349,9 @@ class _LessonPageState extends State<LessonPage> {
         setState(() {
           _speechMessageByQuestion[question] =
               'Correct! 🎉';
+
+          _completedSectionQuestions.add(question);
+          _completedSpeakingQuestions.add(question);
         });
       }
 
@@ -313,9 +359,7 @@ class _LessonPageState extends State<LessonPage> {
       await _speak('Correct!');
 
       // هر سؤال فقط یک بار در Speaking Sessions ثبت می‌شود.
-      if (!_completedSpeakingQuestions.contains(question)) {
-        _completedSpeakingQuestions.add(question);
-
+      if (_completedSpeakingQuestions.contains(question)) {
         await ProgressService.addSpeakingSession();
       }
     } else {
@@ -368,6 +412,10 @@ class _LessonPageState extends State<LessonPage> {
       return;
     }
 
+    if (!_allLessonContentCompleted()) {
+      return;
+    }
+
     for (final question in multipleChoiceQuestions) {
       _createShuffledOptions(question);
     }
@@ -394,6 +442,9 @@ class _LessonPageState extends State<LessonPage> {
       selectedAnswer = index;
       answered = true;
 
+      // درست یا غلط، سؤال پاسخ داده شده است.
+      _completedSectionQuestions.add(question);
+
       if (index == correctIndex) {
         score++;
       }
@@ -401,6 +452,8 @@ class _LessonPageState extends State<LessonPage> {
   }
 
   void nextQuestion() {
+    if (!answered) return;
+
     if (currentQuestion <
         multipleChoiceQuestions.length - 1) {
       setState(() {
@@ -415,7 +468,8 @@ class _LessonPageState extends State<LessonPage> {
 
   void nextSection() {
     if (currentSection <
-        widget.lesson.sections.length - 1) {
+        widget.lesson.sections.length - 1 &&
+        _isCurrentSectionCompleted()) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 350),
         curve: Curves.easeOutCubic,
@@ -430,6 +484,51 @@ class _LessonPageState extends State<LessonPage> {
         curve: Curves.easeOutCubic,
       );
     }
+  }
+
+  bool _isQuestionCompleted(LessonQuestion question) {
+    if (question.type == LessonQuestionType.readAloud) {
+      return _completedAudioQuestions.contains(question);
+    }
+
+    if (question.type == LessonQuestionType.speaking) {
+      return _completedSpeakingQuestions.contains(question);
+    }
+
+    if (question.type == LessonQuestionType.multipleChoice ||
+        question.type == LessonQuestionType.fillBlank) {
+      return _completedSectionQuestions.contains(question);
+    }
+
+    return _completedSectionQuestions.contains(question);
+  }
+
+  bool _isSectionCompleted(LessonSection section) {
+    final allItemsCompleted = section.items.every(
+      (item) => _completedAudioItems.contains(item),
+    );
+
+    final allQuestionsCompleted = section.questions.every(
+      _isQuestionCompleted,
+    );
+
+    return allItemsCompleted && allQuestionsCompleted;
+  }
+
+  bool _isCurrentSectionCompleted() {
+    if (widget.lesson.sections.isEmpty) {
+      return true;
+    }
+
+    return _isSectionCompleted(
+      widget.lesson.sections[currentSection],
+    );
+  }
+
+  bool _allLessonContentCompleted() {
+    return widget.lesson.sections.every(
+      _isSectionCompleted,
+    );
   }
 
   void _showResult() {
@@ -550,6 +649,9 @@ class _LessonPageState extends State<LessonPage> {
 
     final sections = widget.lesson.sections;
 
+    final canStartPractice =
+        _allLessonContentCompleted();
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(
         20,
@@ -625,6 +727,7 @@ class _LessonPageState extends State<LessonPage> {
         _buildStartPracticeButton(
           context,
           lang,
+          enabled: canStartPractice,
         ),
       ],
     );
@@ -696,6 +799,18 @@ class _LessonPageState extends State<LessonPage> {
               ],
             ),
           ),
+          if (_isCurrentSectionCompleted())
+            const Icon(
+              Icons.check_circle_rounded,
+              color: Colors.green,
+              size: 22,
+            )
+          else
+            const Icon(
+              Icons.lock_outline_rounded,
+              color: Colors.grey,
+              size: 21,
+            ),
         ],
       ),
     );
@@ -709,6 +824,9 @@ class _LessonPageState extends State<LessonPage> {
     final isFirst = currentSection == 0;
     final isLast =
         currentSection == totalSections - 1;
+
+    final sectionCompleted =
+        _isCurrentSectionCompleted();
 
     return Row(
       children: [
@@ -753,7 +871,9 @@ class _LessonPageState extends State<LessonPage> {
         Expanded(
           child: FilledButton.icon(
             onPressed:
-                isLast ? null : nextSection,
+                isLast || !sectionCompleted
+                    ? null
+                    : nextSection,
             style: FilledButton.styleFrom(
               backgroundColor: lavender,
               foregroundColor: Colors.white,
@@ -860,10 +980,14 @@ class _LessonPageState extends State<LessonPage> {
 
   Widget _buildStartPracticeButton(
     BuildContext context,
-    MeowLocalizations lang,
-  ) {
+    MeowLocalizations lang, {
+    required bool enabled,
+  }) {
     final hasQuestions =
         multipleChoiceQuestions.isNotEmpty;
+
+    final canStart =
+        hasQuestions && enabled;
 
     return SizedBox(
       width: double.infinity,
@@ -871,6 +995,10 @@ class _LessonPageState extends State<LessonPage> {
         style: FilledButton.styleFrom(
           backgroundColor: lavender,
           foregroundColor: Colors.white,
+          disabledBackgroundColor:
+              lavender.withOpacity(0.18),
+          disabledForegroundColor:
+              Colors.white.withOpacity(0.55),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius:
@@ -882,11 +1010,15 @@ class _LessonPageState extends State<LessonPage> {
           ),
         ),
         onPressed:
-            hasQuestions ? startPractice : null,
+            canStart ? startPractice : null,
         child: Text(
-          lang.isPersian
-              ? 'شروع تمرین 🐱'
-              : 'Start Practice 🐱',
+          canStart
+              ? (lang.isPersian
+                  ? 'شروع تمرین 🐱'
+                  : 'Start Practice 🐱')
+              : (lang.isPersian
+                  ? 'اول درس را کامل کن 🔒'
+                  : 'Complete the lesson first 🔒'),
           style: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w700,
@@ -986,17 +1118,24 @@ class _LessonPageState extends State<LessonPage> {
     MeowLocalizations lang,
     LessonLocalization lessonLang,
   ) {
+    final audioCompleted =
+        _completedAudioItems.contains(item);
+
     return Container(
       width: double.infinity,
       margin:
           const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: lavender.withOpacity(0.07),
+        color: audioCompleted
+            ? Colors.green.withOpacity(0.06)
+            : lavender.withOpacity(0.07),
         borderRadius:
             BorderRadius.circular(18),
         border: Border.all(
-          color: lavender.withOpacity(0.10),
+          color: audioCompleted
+              ? Colors.green.withOpacity(0.18)
+              : lavender.withOpacity(0.10),
         ),
       ),
       child: Column(
@@ -1024,11 +1163,17 @@ class _LessonPageState extends State<LessonPage> {
                   tooltip: lang.isPersian
                       ? 'پخش تلفظ'
                       : 'Play pronunciation',
-                  onPressed: () =>
-                      _speak(item.english),
-                  icon: const Icon(
-                    Icons.volume_up_rounded,
-                    color: lavender,
+                  onPressed: () => _speak(
+                    item.english,
+                    lessonItem: item,
+                  ),
+                  icon: Icon(
+                    audioCompleted
+                        ? Icons.check_circle_rounded
+                        : Icons.volume_up_rounded,
+                    color: audioCompleted
+                        ? Colors.green
+                        : lavender,
                     size: 20,
                   ),
                 ),
@@ -1094,6 +1239,18 @@ class _LessonPageState extends State<LessonPage> {
               ),
             ),
           ],
+          if (!audioCompleted) ...[
+            const SizedBox(height: 8),
+            Text(
+              lang.isPersian
+                  ? '🔊 برای ادامه، تلفظ را کامل گوش بده.'
+                  : '🔊 Listen to the full pronunciation to continue.',
+              style: const TextStyle(
+                fontSize: 11,
+                color: Colors.grey,
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -1152,7 +1309,9 @@ class _LessonPageState extends State<LessonPage> {
         borderRadius:
             BorderRadius.circular(20),
         border: Border.all(
-          color: lavender.withOpacity(0.14),
+          color: hasAnswered
+              ? Colors.green.withOpacity(0.18)
+              : lavender.withOpacity(0.14),
         ),
       ),
       child: Column(
@@ -1250,6 +1409,11 @@ class _LessonPageState extends State<LessonPage> {
                           setState(() {
                             _sectionAnswers[
                                 question] = index;
+
+                            // درست یا غلط،
+                            // سؤال انجام‌شده محسوب می‌شود.
+                            _completedSectionQuestions
+                                .add(question);
                           });
                         },
                   child: Container(
@@ -1364,28 +1528,59 @@ class _LessonPageState extends State<LessonPage> {
     final speechResultMessage =
         _speechMessageByQuestion[question] ?? '';
 
+    final audioCompleted =
+        _completedAudioQuestions.contains(question);
+
+    final speakingCompleted =
+        _completedSpeakingQuestions.contains(question);
+
+    final questionCompleted =
+        readAloud
+            ? audioCompleted
+            : speakingCompleted;
+
+    final textToSpeak = question.sentence.isNotEmpty
+        ? question.sentence
+        : question.correctAnswer;
+
     return Container(
       margin:
           const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: lavender.withOpacity(0.08),
+        color: questionCompleted
+            ? Colors.green.withOpacity(0.06)
+            : lavender.withOpacity(0.08),
         borderRadius:
             BorderRadius.circular(20),
         border: Border.all(
-          color: lavender.withOpacity(0.15),
+          color: questionCompleted
+              ? Colors.green.withOpacity(0.18)
+              : lavender.withOpacity(0.15),
         ),
       ),
       child: Column(
         crossAxisAlignment:
             CrossAxisAlignment.start,
         children: [
-          Text(
-            question.prompt,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  question.prompt,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              if (questionCompleted)
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: Colors.green,
+                  size: 21,
+                ),
+            ],
           ),
           if (question.promptPersian.isNotEmpty)
             Padding(
@@ -1422,9 +1617,8 @@ class _LessonPageState extends State<LessonPage> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _speak(
-                    question.sentence.isNotEmpty
-                        ? question.sentence
-                        : question.correctAnswer,
+                    textToSpeak,
+                    lessonQuestion: question,
                   ),
                   icon: const Icon(
                     Icons.volume_up_rounded,
@@ -1449,49 +1643,51 @@ class _LessonPageState extends State<LessonPage> {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: FilledButton.icon(
-                  onPressed: isListening
-                      ? () => _stopListening(
-                            question,
-                          )
-                      : () => _startListening(
-                            question,
-                          ),
-                  icon: Icon(
-                    isListening
-                        ? Icons.stop_rounded
-                        : Icons.mic_rounded,
-                  ),
-                  label: Text(
-                    isListening
-                        ? (lang.isPersian
-                            ? 'توقف'
-                            : 'Stop')
-                        : (lang.isPersian
-                            ? 'بگو 🎤'
-                            : 'Speak 🎤'),
-                  ),
-                  style:
-                      FilledButton.styleFrom(
-                    backgroundColor:
-                        isListening
-                            ? Colors.redAccent
-                            : lavender,
-                    foregroundColor:
-                        Colors.white,
-                    shape:
-                        RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(16),
+              if (!readAloud) ...[
+                const SizedBox(width: 10),
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: isListening
+                        ? () => _stopListening(
+                              question,
+                            )
+                        : () => _startListening(
+                              question,
+                            ),
+                    icon: Icon(
+                      isListening
+                          ? Icons.stop_rounded
+                          : Icons.mic_rounded,
+                    ),
+                    label: Text(
+                      isListening
+                          ? (lang.isPersian
+                              ? 'توقف'
+                              : 'Stop')
+                          : (lang.isPersian
+                              ? 'بگو 🎤'
+                              : 'Speak 🎤'),
+                    ),
+                    style:
+                        FilledButton.styleFrom(
+                      backgroundColor:
+                          isListening
+                              ? Colors.redAccent
+                              : lavender,
+                      foregroundColor:
+                          Colors.white,
+                      shape:
+                          RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(16),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ],
           ),
-          if (isListening) ...[
+          if (!readAloud && isListening) ...[
             const SizedBox(height: 12),
             Row(
               children: [
@@ -1554,6 +1750,22 @@ class _LessonPageState extends State<LessonPage> {
                             .startsWith('Correct')
                         ? Colors.green
                         : Colors.orange,
+              ),
+            ),
+          ],
+          if (!questionCompleted) ...[
+            const SizedBox(height: 9),
+            Text(
+              readAloud
+                  ? (lang.isPersian
+                      ? '🔊 صدا را کامل گوش بده تا این بخش باز شود.'
+                      : '🔊 Listen to the full audio to unlock the next section.')
+                  : (lang.isPersian
+                      ? '🎤 پاسخ درست بده تا این بخش کامل شود.'
+                      : '🎤 Give the correct answer to complete this section.'),
+              style: const TextStyle(
+                fontSize: 11,
+                color: Colors.grey,
               ),
             ),
           ],
@@ -1757,6 +1969,7 @@ class _LessonPageState extends State<LessonPage> {
                       onPressed: () =>
                           _speak(
                         question.sentence,
+                        lessonQuestion: question,
                       ),
                       icon: const Icon(
                         Icons
