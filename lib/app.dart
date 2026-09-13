@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'localization.dart';
 
@@ -31,18 +32,14 @@ class MeowApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Meow AI',
-
           locale: currentLocale,
-
           supportedLocales: const [
             Locale('en'),
             Locale('fa'),
           ],
-
           localizationsDelegates: const [
             MeowLocalizationsDelegate(),
           ],
-
           theme: ThemeData(
             brightness: Brightness.light,
             primaryColor: lavender,
@@ -57,7 +54,6 @@ class MeowApp extends StatelessWidget {
               elevation: 0,
             ),
           ),
-
           darkTheme: ThemeData(
             brightness: Brightness.dark,
             primaryColor: lavender,
@@ -69,9 +65,7 @@ class MeowApp extends StatelessWidget {
               elevation: 0,
             ),
           ),
-
           themeMode: currentTheme,
-
           builder: (context, child) {
             final isPersian = currentLocale.languageCode == 'fa';
 
@@ -81,9 +75,7 @@ class MeowApp extends StatelessWidget {
               child: child ?? const SizedBox(),
             );
           },
-
           initialRoute: '/home',
-
           routes: {
             '/home': (context) => const HomePage(),
             '/learn': (context) => const LearnPage(),
