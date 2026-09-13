@@ -615,4 +615,116 @@ const A1Lesson a1Lesson08 = A1Lesson(
       answer: 'موجود',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'What do you want to buy?',
+      persian: 'چی می‌خواهی بخری؟',
+      acceptableAnswers: [
+        'i want to buy a shirt',
+        'i want to buy a dress',
+        'i want to buy shoes',
+        'i want to buy a bag',
+        'i want to buy a hat',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How much is this?',
+      persian: 'این چقدر است؟',
+      acceptableAnswers: [
+        'how much is this',
+        'what is the price',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What color do you like?',
+      persian: 'چه رنگی دوست داری؟',
+      acceptableAnswers: [
+        'i like black',
+        'i like white',
+        'i like red',
+        'i like blue',
+        'i like green',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What size do you need?',
+      persian: 'چه سایزی نیاز داری؟',
+      acceptableAnswers: [
+        'i need a small',
+        'i need a medium',
+        'i need a large',
+        'i need a large size',
+        'i need a medium size',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Is this cheap or expensive?',
+      persian: 'این ارزان است یا گران؟',
+      acceptableAnswers: [
+        'it is cheap',
+        'it is expensive',
+        'this is cheap',
+        'this is expensive',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Can you ask to try on a shirt?',
+      persian: 'چطور می‌گویی می‌توانی یک پیراهن را پرو کنی؟',
+      acceptableAnswers: [
+        'can i try it on',
+        'can i try this on',
+        'can i try the shirt on',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Can you ask if they have this in blue?',
+      persian: 'چطور می‌پرسی این را به رنگ آبی دارند؟',
+      acceptableAnswers: [
+        'do you have this in blue',
+        'do you have it in blue',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How can you ask to pay by card?',
+      persian: 'چطور می‌گویی می‌توانی با کارت پرداخت کنی؟',
+      acceptableAnswers: [
+        'can i pay by card',
+        'can i pay with a card',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How can you ask for a receipt?',
+      persian: 'چطور رسید می‌خواهی؟',
+      acceptableAnswers: [
+        'can i have the receipt',
+        'can i have a receipt',
+        'can i get the receipt',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I am looking for a black shirt."',
+      persian: 'بگو: «دنبال یک پیراهن مشکی می‌گردم.»',
+      acceptableAnswers: [
+        'i am looking for a black shirt',
+        'im looking for a black shirt',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Do you have another one?"',
+      persian: 'بگو: «یکی دیگر دارید؟»',
+      acceptableAnswers: [
+        'do you have another one',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Imagine you are in a clothing store. Ask for a shirt, its price, and a different color.',
+      persian: 'فرض کن در فروشگاه لباس هستی. یک پیراهن بخواه، قیمتش را بپرس و یک رنگ دیگر درخواست کن.',
+      acceptableAnswers: [
+        'i want a shirt how much is it do you have it in blue',
+        'i want a shirt how much is this do you have this in blue',
+        'i would like a shirt how much is it do you have it in blue',
+      ],
+    ),
+  ],
 );
