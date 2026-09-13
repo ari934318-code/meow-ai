@@ -4,152 +4,190 @@ const A1Lesson a1Lesson04 = A1Lesson(
   id: 'a1_04',
   title: 'Family',
   topic: 'خانواده',
+
   words: [
     A1Word(
-      english: 'Family',
+      english: 'family',
       persian: 'خانواده',
       pronunciation: 'فَمِلی',
       example: 'I love my family.',
     ),
     A1Word(
-      english: 'Mother',
+      english: 'mother',
       persian: 'مادر',
       pronunciation: 'مادِر',
       example: 'My mother is kind.',
     ),
     A1Word(
-      english: 'Father',
+      english: 'father',
       persian: 'پدر',
       pronunciation: 'فادِر',
       example: 'My father is at work.',
     ),
     A1Word(
-      english: 'Parents',
+      english: 'parent',
+      persian: 'والد',
+      pronunciation: 'پِرِنت',
+      example: 'My mother is a parent.',
+    ),
+    A1Word(
+      english: 'parents',
       persian: 'والدین',
       pronunciation: 'پِرِنتس',
       example: 'My parents are nice.',
     ),
     A1Word(
-      english: 'Brother',
+      english: 'brother',
       persian: 'برادر',
-      pronunciation: 'برا‌ذِر',
+      pronunciation: 'بْرادِر',
       example: 'I have one brother.',
     ),
     A1Word(
-      english: 'Sister',
+      english: 'sister',
       persian: 'خواهر',
       pronunciation: 'سیستِر',
       example: 'I have two sisters.',
     ),
     A1Word(
-      english: 'Son',
-      persian: 'پسر',
+      english: 'son',
+      persian: 'پسر / فرزند پسر',
       pronunciation: 'سان',
       example: 'He is my son.',
     ),
     A1Word(
-      english: 'Daughter',
-      persian: 'دختر',
+      english: 'daughter',
+      persian: 'دختر / فرزند دختر',
       pronunciation: 'داتِر',
       example: 'She is my daughter.',
     ),
     A1Word(
-      english: 'Child',
+      english: 'child',
       persian: 'بچه / فرزند',
-      pronunciation: 'چایلد',
+      pronunciation: 'چایْلد',
       example: 'The child is happy.',
     ),
     A1Word(
-      english: 'Children',
+      english: 'children',
       persian: 'بچه‌ها / فرزندان',
-      pronunciation: 'چیلدرِن',
+      pronunciation: 'چیلدْرِن',
       example: 'They have two children.',
     ),
     A1Word(
-      english: 'Husband',
+      english: 'husband',
       persian: 'شوهر',
       pronunciation: 'هازبِند',
       example: 'Her husband is a teacher.',
     ),
     A1Word(
-      english: 'Wife',
+      english: 'wife',
       persian: 'همسر / زن',
       pronunciation: 'وایف',
       example: 'His wife is kind.',
     ),
     A1Word(
-      english: 'Grandmother',
+      english: 'grandmother',
       persian: 'مادربزرگ',
-      pronunciation: 'گِرَندمادِر',
+      pronunciation: 'گْرَندمادِر',
       example: 'My grandmother is sweet.',
     ),
     A1Word(
-      english: 'Grandfather',
+      english: 'grandfather',
       persian: 'پدربزرگ',
-      pronunciation: 'گِرَندفادِر',
+      pronunciation: 'گْرَندفادِر',
       example: 'My grandfather is old.',
     ),
     A1Word(
-      english: 'Aunt',
+      english: 'grandparents',
+      persian: 'پدربزرگ و مادربزرگ',
+      pronunciation: 'گْرَندپِرِنتس',
+      example: 'I visit my grandparents.',
+    ),
+    A1Word(
+      english: 'aunt',
       persian: 'خاله / عمه / زن‌دایی / زن‌عمو',
       pronunciation: 'اَنت',
       example: 'My aunt lives nearby.',
     ),
     A1Word(
-      english: 'Uncle',
+      english: 'uncle',
       persian: 'دایی / عمو / شوهرخاله / شوهرعمه',
       pronunciation: 'آنکِل',
       example: 'My uncle is funny.',
     ),
     A1Word(
-      english: 'Cousin',
+      english: 'cousin',
       persian: 'پسرعمو / دخترعمو / پسرخاله / دخترخاله و...',
       pronunciation: 'کازِن',
       example: 'My cousin is my friend.',
     ),
     A1Word(
-      english: 'Grandparents',
-      persian: 'پدربزرگ و مادربزرگ',
-      pronunciation: 'گِرَندپِرِنتس',
-      example: 'I visit my grandparents.',
-    ),
-    A1Word(
-      english: 'Home',
+      english: 'home',
       persian: 'خانه',
       pronunciation: 'هوم',
       example: 'My family is at home.',
     ),
     A1Word(
-      english: 'Together',
+      english: 'together',
       persian: 'با هم',
       pronunciation: 'تُگِذِر',
       example: 'We eat together.',
     ),
     A1Word(
-      english: 'Love',
+      english: 'love',
       persian: 'دوست داشتن / عشق',
       pronunciation: 'لاو',
       example: 'I love my family.',
     ),
     A1Word(
-      english: 'Kind',
+      english: 'kind',
       persian: 'مهربان',
       pronunciation: 'کایند',
       example: 'My mother is kind.',
     ),
     A1Word(
-      english: 'Older',
+      english: 'nice',
+      persian: 'خوب / مهربان',
+      pronunciation: 'نایس',
+      example: 'My parents are nice.',
+    ),
+    A1Word(
+      english: 'older',
       persian: 'بزرگ‌تر / مسن‌تر',
       pronunciation: 'اُلدِر',
       example: 'My brother is older than me.',
     ),
     A1Word(
-      english: 'Younger',
+      english: 'younger',
       persian: 'کوچک‌تر / جوان‌تر',
       pronunciation: 'یانگِر',
       example: 'My sister is younger than me.',
     ),
+    A1Word(
+      english: 'live',
+      persian: 'زندگی کردن',
+      pronunciation: 'لیو',
+      example: 'I live with my family.',
+    ),
+    A1Word(
+      english: 'visit',
+      persian: 'به دیدن کسی رفتن',
+      pronunciation: 'وِزیت',
+      example: 'I visit my grandparents.',
+    ),
+    A1Word(
+      english: 'with',
+      persian: 'با',
+      pronunciation: 'ویذ',
+      example: 'I live with my parents.',
+    ),
+    A1Word(
+      english: 'small',
+      persian: 'کوچک',
+      pronunciation: 'اِسمال',
+      example: 'I have a small family.',
+    ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'This is my family.',
@@ -245,7 +283,7 @@ const A1Lesson a1Lesson04 = A1Lesson(
     ),
     A1Sentence(
       english: 'My cousin is my friend.',
-      persian: 'فامیلم / پسر یا دختر عمو و... من دوستم است.',
+      persian: 'پسرعمو / دخترعمو / پسرخاله / دخترخاله من دوستم است.',
     ),
     A1Sentence(
       english: 'I visit my grandparents.',
@@ -260,6 +298,10 @@ const A1Lesson a1Lesson04 = A1Lesson(
       persian: 'ما با هم غذا می‌خوریم.',
     ),
     A1Sentence(
+      english: 'I live with my parents.',
+      persian: 'من با والدینم زندگی می‌کنم.',
+    ),
+    A1Sentence(
       english: 'My brother is older than me.',
       persian: 'برادرم از من بزرگ‌تر است.',
     ),
@@ -268,6 +310,7 @@ const A1Lesson a1Lesson04 = A1Lesson(
       persian: 'خواهرم از من کوچک‌تر است.',
     ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "Family" mean?',
@@ -318,16 +361,6 @@ const A1Lesson a1Lesson04 = A1Lesson(
         'همسر',
       ],
       answer: 'خواهر',
-    ),
-    A1Question(
-      question: 'What does "Son" mean?',
-      options: [
-        'دختر',
-        'پسر',
-        'برادر',
-        'پدر',
-      ],
-      answer: 'پسر',
     ),
     A1Question(
       question: 'What does "Daughter" mean?',
@@ -390,14 +423,14 @@ const A1Lesson a1Lesson04 = A1Lesson(
       answer: 'پسر یا دختر فامیل',
     ),
     A1Question(
-      question: 'Complete: This is my ___.',
+      question: 'What does "Children" mean?',
       options: [
-        'mother',
-        'family',
-        'together',
-        'older',
+        'والدین',
+        'بچه‌ها',
+        'پدربزرگ‌ها',
+        'دوستان',
       ],
-      answer: 'mother',
+      answer: 'بچه‌ها',
     ),
     A1Question(
       question: 'Complete: I have one ___.',
@@ -418,6 +451,36 @@ const A1Lesson a1Lesson04 = A1Lesson(
         'mother',
       ],
       answer: 'sisters',
+    ),
+    A1Question(
+      question: 'Complete: My mother ___ kind.',
+      options: [
+        'am',
+        'are',
+        'is',
+        'have',
+      ],
+      answer: 'is',
+    ),
+    A1Question(
+      question: 'Complete: She ___ my sister.',
+      options: [
+        'am',
+        'is',
+        'are',
+        'have',
+      ],
+      answer: 'is',
+    ),
+    A1Question(
+      question: 'Complete: He ___ my brother.',
+      options: [
+        'is',
+        'are',
+        'am',
+        'have',
+      ],
+      answer: 'is',
     ),
     A1Question(
       question: 'Someone asks: "Do you have any brothers?" What can you say?',
@@ -470,16 +533,6 @@ const A1Lesson a1Lesson04 = A1Lesson(
       answer: 'She is my sister.',
     ),
     A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'My mother are kind.',
-        'My mother is kind.',
-        'My mother am kind.',
-        'My mother kind is.',
-      ],
-      answer: 'My mother is kind.',
-    ),
-    A1Question(
       question: 'Who is your mother’s mother?',
       options: [
         'Your aunt',
@@ -500,34 +553,14 @@ const A1Lesson a1Lesson04 = A1Lesson(
       answer: 'Your grandfather',
     ),
     A1Question(
-      question: 'What does "Parents" mean?',
+      question: 'Which sentence means "ما با هم غذا می‌خوریم."?',
       options: [
-        'بچه‌ها',
-        'والدین',
-        'دوستان',
-        'فامیل',
+        'We eat together.',
+        'We live together.',
+        'We work together.',
+        'We play together.',
       ],
-      answer: 'والدین',
-    ),
-    A1Question(
-      question: 'What does "Children" mean?',
-      options: [
-        'والدین',
-        'بچه‌ها',
-        'پدربزرگ‌ها',
-        'دوستان',
-      ],
-      answer: 'بچه‌ها',
-    ),
-    A1Question(
-      question: 'Complete: We eat ___.',
-      options: [
-        'older',
-        'together',
-        'mother',
-        'family',
-      ],
-      answer: 'together',
+      answer: 'We eat together.',
     ),
     A1Question(
       question: 'What does "Older" mean?',
@@ -550,14 +583,34 @@ const A1Lesson a1Lesson04 = A1Lesson(
       answer: 'کوچک‌تر',
     ),
     A1Question(
-      question: 'Which sentence means "ما با هم غذا می‌خوریم."?',
+      question: 'Which sentence means "من با والدینم زندگی می‌کنم."?',
       options: [
-        'We eat together.',
-        'We live together.',
-        'We work together.',
-        'We play together.',
+        'I visit my parents.',
+        'I love my parents.',
+        'I live with my parents.',
+        'I see my parents.',
       ],
-      answer: 'We eat together.',
+      answer: 'I live with my parents.',
+    ),
+    A1Question(
+      question: 'Which sentence is correct?',
+      options: [
+        'My parents is nice.',
+        'My parents are nice.',
+        'My parents am nice.',
+        'My parents has nice.',
+      ],
+      answer: 'My parents are nice.',
+    ),
+    A1Question(
+      question: 'Which sentence is correct?',
+      options: [
+        'My brother are older than me.',
+        'My brother is older than me.',
+        'My brother am older than me.',
+        'My brother older is than me.',
+      ],
+      answer: 'My brother is older than me.',
     ),
   ],
 
@@ -649,6 +702,8 @@ const A1Lesson a1Lesson04 = A1Lesson(
         'yes i love my family',
         'yes i do',
         'i love my family',
+        'no i do not',
+        'no i dont',
       ],
     ),
     A1SpeakingQuestion(
@@ -670,6 +725,27 @@ const A1Lesson a1Lesson04 = A1Lesson(
       persian: 'بگو: «ما با هم غذا می‌خوریم.»',
       acceptableAnswers: [
         'we eat together',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I live with my parents."',
+      persian: 'بگو: «من با والدینم زندگی می‌کنم.»',
+      acceptableAnswers: [
+        'i live with my parents',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "My brother is older than me."',
+      persian: 'بگو: «برادرم از من بزرگ‌تر است.»',
+      acceptableAnswers: [
+        'my brother is older than me',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "My sister is younger than me."',
+      persian: 'بگو: «خواهرم از من کوچک‌تر است.»',
+      acceptableAnswers: [
+        'my sister is younger than me',
       ],
     ),
   ],
