@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
+import '../data/meow_brain.dart';
 import '../localization.dart';
 
 class MeowPage extends StatefulWidget {
@@ -10,14 +13,6 @@ class MeowPage extends StatefulWidget {
 
   @override
   State<MeowPage> createState() => _MeowPageState();
-}
-
-enum MeowMood {
-  calm,
-  happy,
-  surprised,
-  angry,
-  cheering,
 }
 
 class _MeowPageState extends State<MeowPage> {
@@ -334,10 +329,22 @@ class _MeowPageState extends State<MeowPage> {
         .trim();
   }
 
+  // ─────────────────────────────
+  // MEOW BRAIN CONNECTION
+  // ─────────────────────────────
+
   void _sendText() {
     final text = _controller.text.trim();
 
     if (text.isEmpty) return;
+
+    final response = MeowBrain.respond(text);
+    final lang = MeowLocalizations.of(context);
+
+    final meowText = _buildBrainMessage(
+      response,
+      lang,
+    );
 
     setState(() {
       messages.add({
@@ -347,13 +354,82 @@ class _MeowPageState extends State<MeowPage> {
 
       messages.add({
         'sender': 'meow',
-        'text': 'Nice! Let’s keep practicing 😺',
+        'text': meowText,
       });
 
-      _mood = MeowMood.happy;
+      _mood = response.mood;
+
+      if (response.english.trim().isNotEmpty &&
+          response.intent != MeowIntent.unknown) {
+        _practiceSentence = response.english;
+      }
     });
 
     _controller.clear();
+  }
+
+  String _buildBrainMessage(
+    MeowResponse response,
+    MeowLocalizations lang,
+  ) {
+    final buffer = StringBuffer();
+
+    if (lang.isPersian) {
+      buffer.writeln(response.persian);
+
+      if (response.english.trim().isNotEmpty) {
+        buffer.writeln();
+        buffer.writeln('🇬🇧 ${response.english}');
+      }
+
+      if (response.pronunciation != null &&
+          response.pronunciation!.trim().isNotEmpty) {
+        buffer.writeln();
+        buffer.writeln(
+          '🔊 ${response.pronunciation}',
+        );
+      }
+    } else {
+      buffer.writeln(response.english);
+
+      if (response.persian.trim().isNotEmpty) {
+        buffer.writeln();
+        buffer.writeln('🇮🇷 ${response.persian}');
+      }
+
+      if (response.pronunciation != null &&
+          response.pronunciation!.trim().isNotEmpty) {
+        buffer.writeln();
+        buffer.writeln(
+          '🔊 ${response.pronunciation}',
+        );
+      }
+    }
+
+    if (response.examples.isNotEmpty) {
+      buffer.writeln();
+      buffer.writeln(
+        lang.isPersian
+            ? 'مثال‌ها:'
+            : 'Examples:',
+      );
+
+      for (final example in response.examples.take(3)) {
+        buffer.writeln('• $example');
+      }
+    }
+
+    if (response.note != null &&
+        response.note!.trim().isNotEmpty) {
+      buffer.writeln();
+      buffer.writeln(
+        lang.isPersian
+            ? '💡 ${response.note}'
+            : '💡 ${response.note}',
+      );
+    }
+
+    return buffer.toString().trim();
   }
 
   Future<void> _openHomeworkPicker() async {
@@ -580,9 +656,7 @@ class _MeowPageState extends State<MeowPage> {
                     cardColor,
                     lang,
                   ),
-
                   const SizedBox(height: 20),
-
                   ...messages.map((message) {
                     final isUser =
                         message['sender'] == 'user';
@@ -594,7 +668,6 @@ class _MeowPageState extends State<MeowPage> {
                       cardColor,
                     );
                   }),
-
                   if (_homeworkImage != null) ...[
                     const SizedBox(height: 10),
                     _homeworkPreview(
@@ -603,16 +676,12 @@ class _MeowPageState extends State<MeowPage> {
                       lang,
                     ),
                   ],
-
                   const SizedBox(height: 28),
-
                   _liveMeow(
                     context,
                     lang,
                   ),
-
                   const SizedBox(height: 30),
-
                   _speakingPracticeCard(
                     context,
                     lang,
@@ -621,7 +690,6 @@ class _MeowPageState extends State<MeowPage> {
                 ],
               ),
             ),
-
             _messageInput(
               context,
               lang,
@@ -811,9 +879,7 @@ class _MeowPageState extends State<MeowPage> {
             ),
           ),
         ),
-
         const SizedBox(height: 18),
-
         AnimatedSwitcher(
           duration: const Duration(
             milliseconds: 220,
@@ -829,9 +895,7 @@ class _MeowPageState extends State<MeowPage> {
             ),
           ),
         ),
-
         const SizedBox(height: 5),
-
         Text(
           _isListening
               ? (lang.isPersian
@@ -847,9 +911,7 @@ class _MeowPageState extends State<MeowPage> {
                 .withValues(alpha: 0.55),
           ),
         ),
-
         const SizedBox(height: 18),
-
         GestureDetector(
           onTap: _toggleListening,
           child: AnimatedContainer(
@@ -933,9 +995,7 @@ class _MeowPageState extends State<MeowPage> {
               ),
             ],
           ),
-
           const SizedBox(height: 13),
-
           Text(
             lang.isPersian
                 ? 'این جمله را بگو:'
@@ -946,9 +1006,7 @@ class _MeowPageState extends State<MeowPage> {
                   .withValues(alpha: 0.55),
             ),
           ),
-
           const SizedBox(height: 5),
-
           Text(
             _practiceSentence,
             style:
@@ -956,9 +1014,7 @@ class _MeowPageState extends State<MeowPage> {
               fontWeight: FontWeight.w800,
             ),
           ),
-
           const SizedBox(height: 14),
-
           SizedBox(
             width: double.infinity,
             height: 44,
@@ -995,7 +1051,6 @@ class _MeowPageState extends State<MeowPage> {
               ),
             ),
           ),
-
           if (_recognizedText.isNotEmpty) ...[
             const SizedBox(height: 14),
             Text(
@@ -1069,13 +1124,11 @@ class _MeowPageState extends State<MeowPage> {
               ),
             ],
           ),
-
           const SizedBox(height: 8),
-
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: Image.network(
-              _homeworkImage!.path,
+            child: Image.file(
+              File(_homeworkImage!.path),
               height: 220,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -1098,9 +1151,7 @@ class _MeowPageState extends State<MeowPage> {
               },
             ),
           ),
-
           const SizedBox(height: 10),
-
           Text(
             lang.isPersian
                 ? 'این عکس فعلاً فقط به‌عنوان ثبت انجام تکلیف استفاده می‌شود.'
@@ -1160,9 +1211,7 @@ class _MeowPageState extends State<MeowPage> {
               ),
             ),
           ),
-
           const SizedBox(width: 8),
-
           Expanded(
             child: Container(
               constraints: const BoxConstraints(
@@ -1207,9 +1256,7 @@ class _MeowPageState extends State<MeowPage> {
               ),
             ),
           ),
-
           const SizedBox(width: 9),
-
           Material(
             color: lavender,
             shape: const CircleBorder(),
