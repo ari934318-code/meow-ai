@@ -9,48 +9,55 @@ import 'pages/profile_page.dart';
 import 'pages/lesson_list_page.dart';
 import 'pages/settings_page.dart';
 
-class MeowApp extends StatefulWidget {
+final ValueNotifier<Locale> appLocale =
+    ValueNotifier(const Locale('en'));
+
+class MeowApp extends StatelessWidget {
   const MeowApp({super.key});
 
   @override
-  State<MeowApp> createState() => _MeowAppState();
-}
-
-class _MeowAppState extends State<MeowApp> {
-  Locale _locale = const Locale('en');
-
-  void changeLanguage(String language) {
-    setState(() {
-      _locale = Locale(language);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Meow AI',
-      locale: _locale,
-      supportedLocales: const [
-        Locale('en'),
-        Locale('fa'),
-      ],
-      localizationsDelegates: const [
-        MeowLocalizationsDelegate(),
-      ],
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
-      routes: {
-        '/a1-lessons': (_) => const LessonListPage(),
-        '/learn': (_) => const LearnPage(),
-        '/practice': (_) => const PracticePage(),
-        '/meow': (_) => const MeowPage(),
-        '/progress': (_) => const ProgressPage(),
-        '/profile': (_) => const ProfilePage(),
-        '/settings': (_) => const SettingsPage(),
+    return ValueListenableBuilder<Locale>(
+      valueListenable: appLocale,
+      builder: (context, locale, child) {
+        final isPersian = locale.languageCode == 'fa';
+
+        return Directionality(
+          textDirection:
+              isPersian ? TextDirection.rtl : TextDirection.ltr,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Meow AI',
+
+            locale: locale,
+
+            supportedLocales: const [
+              Locale('en'),
+              Locale('fa'),
+            ],
+
+            localizationsDelegates: const [
+              MeowLocalizationsDelegate(),
+            ],
+
+            theme: ThemeData(
+              brightness: Brightness.dark,
+              useMaterial3: true,
+            ),
+
+            home: const HomePage(),
+
+            routes: {
+              '/a1-lessons': (_) => const LessonListPage(),
+              '/learn': (_) => const LearnPage(),
+              '/practice': (_) => const PracticePage(),
+              '/meow': (_) => const MeowPage(),
+              '/progress': (_) => const ProgressPage(),
+              '/profile': (_) => const ProfilePage(),
+              '/settings': (_) => const SettingsPage(),
+            },
+          ),
+        );
       },
     );
   }
@@ -71,45 +78,26 @@ class MeowLocalizations {
 
   bool get isPersian => locale.languageCode == 'fa';
 
-  String get home {
-    return isPersian ? 'خانه' : 'Home';
-  }
+  String get home => isPersian ? 'خانه' : 'Home';
 
-  String get learn {
-    return isPersian ? 'یادگیری' : 'Learn';
-  }
+  String get learn => isPersian ? 'یادگیری' : 'Learn';
 
-  String get practice {
-    return isPersian ? 'تمرین' : 'Practice';
-  }
+  String get practice => isPersian ? 'تمرین' : 'Practice';
 
-  String get meow {
-    return isPersian ? 'میو' : 'Meow';
-  }
+  String get meow => isPersian ? 'میو' : 'Meow';
 
-  String get progress {
-    return isPersian ? 'پیشرفت' : 'Progress';
-  }
+  String get progress => isPersian ? 'پیشرفت' : 'Progress';
 
-  String get profile {
-    return isPersian ? 'پروفایل' : 'Profile';
-  }
+  String get profile => isPersian ? 'پروفایل' : 'Profile';
 
-  String get settings {
-    return isPersian ? 'تنظیمات' : 'Settings';
-  }
+  String get settings => isPersian ? 'تنظیمات' : 'Settings';
 
-  String get appLanguage {
-    return isPersian ? 'زبان برنامه' : 'App Language';
-  }
+  String get appLanguage =>
+      isPersian ? 'زبان برنامه' : 'App Language';
 
-  String get english {
-    return 'English';
-  }
+  String get english => 'English';
 
-  String get persian {
-    return 'فارسی';
-  }
+  String get persian => 'فارسی';
 }
 
 class MeowLocalizationsDelegate
