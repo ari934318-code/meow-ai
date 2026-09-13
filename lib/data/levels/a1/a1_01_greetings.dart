@@ -4,6 +4,7 @@ const A1Lesson a1Lesson01 = A1Lesson(
   id: 'a1_01',
   title: 'Greetings',
   topic: 'سلام و احوالپرسی',
+
   words: [
     A1Word(
       english: 'hello',
@@ -114,6 +115,7 @@ const A1Lesson a1Lesson01 = A1Lesson(
       example: 'I am fine, thank you.',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'Hello!',
@@ -204,6 +206,7 @@ const A1Lesson a1Lesson01 = A1Lesson(
       persian: 'فردا می‌بینمت.',
     ),
   ],
+
   questions: [
     A1Question(
       question: 'What do you say when you meet someone?',
@@ -236,7 +239,7 @@ const A1Lesson a1Lesson01 = A1Lesson(
         'How are you?',
         'What is your name?',
         'Goodbye!',
-        'Thank you.'
+        'Thank you.',
       ],
       answer: 'How are you?',
     ),
@@ -246,7 +249,7 @@ const A1Lesson a1Lesson01 = A1Lesson(
         'I am fine.',
         'Goodbye.',
         'My name is Ali.',
-        'Good night.'
+        'Good night.',
       ],
       answer: 'I am fine.',
     ),
@@ -282,12 +285,22 @@ const A1Lesson a1Lesson01 = A1Lesson(
     ),
     A1Question(
       question: 'Which one is a goodbye expression?',
-      options: ['See you later', 'How are you?', 'Hello', 'Nice to meet you'],
+      options: [
+        'See you later',
+        'How are you?',
+        'Hello',
+        'Nice to meet you',
+      ],
       answer: 'See you later',
     ),
     A1Question(
       question: 'Which greeting is used in the evening?',
-      options: ['Good evening', 'Good morning', 'Good night', 'Goodbye'],
+      options: [
+        'Good evening',
+        'Good morning',
+        'Good night',
+        'Goodbye',
+      ],
       answer: 'Good evening',
     ),
     A1Question(
@@ -301,7 +314,7 @@ const A1Lesson a1Lesson01 = A1Lesson(
         'How are you?',
         'How you are?',
         'Are how you?',
-        'You how are?'
+        'You how are?',
       ],
       answer: 'How are you?',
     ),
@@ -311,7 +324,7 @@ const A1Lesson a1Lesson01 = A1Lesson(
         'My name is Anna.',
         'My is name Anna.',
         'Name my is Anna.',
-        'Anna my name.'
+        'Anna my name.',
       ],
       answer: 'My name is Anna.',
     ),
@@ -326,9 +339,64 @@ const A1Lesson a1Lesson01 = A1Lesson(
         'Nice to meet you.',
         'Goodbye.',
         'How are you?',
-        'Thank you.'
+        'Thank you.',
       ],
       answer: 'Nice to meet you.',
+    ),
+  ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'Say hello to Meow.',
+      persian: 'به میو سلام کن.',
+      acceptableAnswers: [
+        'hello',
+        'hi',
+        'hello meow',
+        'hi meow',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How are you today?',
+      persian: 'امروز حالت چطوره؟',
+      acceptableAnswers: [
+        'i am fine',
+        'i am good',
+        'i am great',
+        'fine',
+        'good',
+        'great',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is your name?',
+      persian: 'اسمت چیه؟',
+      acceptableAnswers: [
+        'my name is sara',
+        'my name is ali',
+        'my name is anna',
+        'my name is',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: Nice to meet you.',
+      persian: 'بگو: از آشنایی با شما خوشحالم.',
+      acceptableAnswers: [
+        'nice to meet you',
+        'nice meeting you',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say goodbye to Meow.',
+      persian: 'با میو خداحافظی کن.',
+      acceptableAnswers: [
+        'goodbye',
+        'bye',
+        'bye meow',
+        'goodbye meow',
+        'see you',
+        'see you later',
+      ],
     ),
   ],
 );
