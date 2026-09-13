@@ -6,6 +6,7 @@ import 'a1_04_family.dart';
 import 'a1_05_everyday_objects.dart';
 import 'a1_06_daily_routine.dart';
 import 'a1_07_food_and_drinks.dart';
+import 'a1_08_shopping.dart';
 
 const List<A1Lesson> a1Lessons = [
   a1Lesson01,
@@ -15,4 +16,5 @@ const List<A1Lesson> a1Lessons = [
   a1Lesson05,
   a1Lesson06,
   a1Lesson07,
+  a1Lesson08,
 ];
