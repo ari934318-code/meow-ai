@@ -39,12 +39,20 @@ class LessonItem {
   final String examplePersian;
   final String pronunciation;
 
+  // Used for Common Mistakes sections.
+  final String questionPersian;
+  final String wrongAnswer;
+  final String correctAnswer;
+
   const LessonItem({
     required this.english,
     required this.persian,
     this.example = '',
     this.examplePersian = '',
     this.pronunciation = '',
+    this.questionPersian = '',
+    this.wrongAnswer = '',
+    this.correctAnswer = '',
   });
 }
 
@@ -57,26 +65,12 @@ enum LessonQuestionType {
 
 class LessonQuestion {
   final LessonQuestionType type;
-
-  /// جمله یا سؤال اصلی انگلیسی
   final String prompt;
-
-  /// معنی فارسی جمله یا سؤال اصلی
   final String promptPersian;
-
-  /// جمله‌ای که ممکن است جای خالی داشته باشد
   final String sentence;
-
-  /// گزینه‌های انگلیسی
   final List<String> options;
-
-  /// شماره گزینه درست
   final int correctIndex;
-
-  /// جواب مورد انتظار برای جای خالی یا تمرین گفتاری
   final String correctAnswer;
-
-  /// توضیح فارسی در صورت نیاز
   final String explanation;
 
   const LessonQuestion({
