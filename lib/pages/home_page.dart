@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../localization.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,6 +8,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = MeowLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -20,7 +23,7 @@ class HomePage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            tooltip: 'Profile',
+            tooltip: lang.profile,
             onPressed: () {
               Navigator.pushNamed(context, '/profile');
             },
@@ -33,16 +36,16 @@ class HomePage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 110),
           children: [
-            _greeting(),
+            _greeting(lang),
             const SizedBox(height: 22),
 
-            _meowCard(context),
+            _meowCard(context, lang),
             const SizedBox(height: 18),
 
-            _levelCard(),
+            _levelCard(lang),
             const SizedBox(height: 18),
 
-            _continueLearning(context),
+            _continueLearning(context, lang),
             const SizedBox(height: 18),
 
             Row(
@@ -50,8 +53,8 @@ class HomePage extends StatelessWidget {
                 Expanded(
                   child: _smallStat(
                     icon: Icons.local_fire_department_outlined,
-                    title: 'Streak',
-                    value: '0 days',
+                    title: lang.isPersian ? 'روزهای پشت سر هم' : 'Streak',
+                    value: lang.isPersian ? '۰ روز' : '0 days',
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -67,36 +70,38 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 18),
 
-            _dailyGoal(),
+            _dailyGoal(lang),
             const SizedBox(height: 18),
 
-            _smartReview(context),
+            _smartReview(context, lang),
             const SizedBox(height: 18),
 
-            _talkToMeow(context),
+            _talkToMeow(context, lang),
           ],
         ),
       ),
-      bottomNavigationBar: _bottomNavigation(context),
+      bottomNavigationBar: _bottomNavigation(context, lang),
     );
   }
 
-  Widget _greeting() {
-    return const Column(
+  Widget _greeting(MeowLocalizations lang) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Welcome back 👋',
-          style: TextStyle(
+          lang.isPersian ? 'خوش برگشتی 👋' : 'Welcome back 👋',
+          style: const TextStyle(
             fontSize: 29,
             fontWeight: FontWeight.w700,
             letterSpacing: -0.8,
           ),
         ),
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         Text(
-          'Ready to continue your English journey?',
-          style: TextStyle(
+          lang.isPersian
+              ? 'آماده‌ای مسیر یادگیری انگلیسی‌ات رو ادامه بدی؟'
+              : 'Ready to continue your English journey?',
+          style: const TextStyle(
             fontSize: 15,
             color: Colors.grey,
           ),
@@ -105,7 +110,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _meowCard(BuildContext context) {
+  Widget _meowCard(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -130,21 +138,23 @@ class HomePage extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Meow',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'Your English teacher is ready.',
-                  style: TextStyle(
+                  lang.isPersian
+                      ? 'معلم انگلیسی تو آماده‌ست.'
+                      : 'Your English teacher is ready.',
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
                   ),
@@ -161,7 +171,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _levelCard() {
+  Widget _levelCard(MeowLocalizations lang) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -173,10 +183,10 @@ class HomePage extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Current level',
-                  style: TextStyle(
+                  lang.isPersian ? 'سطح فعلی' : 'Current level',
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
                   ),
@@ -202,9 +212,9 @@ class HomePage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Beginner',
-            style: TextStyle(
+          Text(
+            lang.isPersian ? 'مبتدی' : 'Beginner',
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w700,
             ),
@@ -222,9 +232,9 @@ class HomePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 9),
-          const Text(
-            '25% completed',
-            style: TextStyle(
+          Text(
+            lang.isPersian ? '۲۵٪ تکمیل شده' : '25% completed',
+            style: const TextStyle(
               fontSize: 13,
               color: Colors.grey,
             ),
@@ -234,13 +244,16 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _continueLearning(BuildContext context) {
+  Widget _continueLearning(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
     return _sectionCard(
       context,
       icon: Icons.menu_book_outlined,
-      title: 'Continue Learning',
-      subtitle: 'Greetings',
-      trailing: 'A1 • Lesson 1',
+      title: lang.isPersian ? 'ادامه یادگیری' : 'Continue Learning',
+      subtitle: lang.isPersian ? 'احوالپرسی' : 'Greetings',
+      trailing: 'A1 • ${lang.isPersian ? 'درس ۱' : 'Lesson 1'}',
       onTap: () {
         Navigator.pushNamed(context, '/a1-lessons');
       },
@@ -287,7 +300,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _dailyGoal() {
+  Widget _dailyGoal(MeowLocalizations lang) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -309,9 +322,9 @@ class HomePage extends StatelessWidget {
                   valueColor:
                       const AlwaysStoppedAnimation<Color>(lavender),
                 ),
-                const Text(
-                  '0%',
-                  style: TextStyle(
+                Text(
+                  lang.isPersian ? '۰٪' : '0%',
+                  style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                   ),
@@ -320,21 +333,23 @@ class HomePage extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Daily Goal',
-                  style: TextStyle(
+                  lang.dailyGoal,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
-                  '20 minutes today',
-                  style: TextStyle(
+                  lang.isPersian
+                      ? 'امروز ۲۰ دقیقه'
+                      : '20 minutes today',
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 14,
                   ),
@@ -348,24 +363,36 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _smartReview(BuildContext context) {
+  Widget _smartReview(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
     return _sectionCard(
       context,
       icon: Icons.auto_awesome_outlined,
-      title: 'Smart Review',
-      subtitle: 'Review words and mistakes that need attention.',
-      trailing: 'Review',
+      title: lang.isPersian ? 'مرور هوشمند' : 'Smart Review',
+      subtitle: lang.isPersian
+          ? 'کلمات و اشتباهاتی که نیاز به مرور دارند.'
+          : 'Review words and mistakes that need attention.',
+      trailing: lang.isPersian ? 'مرور' : 'Review',
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Smart Review is coming soon 🐱'),
+          SnackBar(
+            content: Text(
+              lang.isPersian
+                  ? 'مرور هوشمند به‌زودی میاد 🐱'
+                  : 'Smart Review is coming soon 🐱',
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _talkToMeow(BuildContext context) {
+  Widget _talkToMeow(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -390,21 +417,23 @@ class HomePage extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Live Meow',
-                  style: TextStyle(
+                  lang.meow,
+                  style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'Practice English naturally with your AI teacher.',
-                  style: TextStyle(
+                  lang.isPersian
+                      ? 'با معلم هوش مصنوعی‌ات طبیعی انگلیسی تمرین کن.'
+                      : 'Practice English naturally with your AI teacher.',
+                  style: const TextStyle(
                     fontSize: 13,
                     color: Colors.grey,
                   ),
@@ -494,37 +523,40 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _bottomNavigation(BuildContext context) {
+  Widget _bottomNavigation(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
     return NavigationBar(
       selectedIndex: 0,
       height: 70,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       indicatorColor: lavender.withOpacity(0.20),
-      destinations: const [
+      destinations: [
         NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home_rounded),
-          label: 'Home',
+          icon: const Icon(Icons.home_outlined),
+          selectedIcon: const Icon(Icons.home_rounded),
+          label: lang.home,
         ),
         NavigationDestination(
-          icon: Icon(Icons.menu_book_outlined),
-          selectedIcon: Icon(Icons.menu_book_rounded),
-          label: 'Learn',
+          icon: const Icon(Icons.menu_book_outlined),
+          selectedIcon: const Icon(Icons.menu_book_rounded),
+          label: lang.learn,
         ),
         NavigationDestination(
-          icon: Icon(Icons.fitness_center_outlined),
-          selectedIcon: Icon(Icons.fitness_center_rounded),
-          label: 'Practice',
+          icon: const Icon(Icons.fitness_center_outlined),
+          selectedIcon: const Icon(Icons.fitness_center_rounded),
+          label: lang.practice,
         ),
         NavigationDestination(
-          icon: Icon(Icons.pets_outlined),
-          selectedIcon: Icon(Icons.pets_rounded),
-          label: 'Meow',
+          icon: const Icon(Icons.pets_outlined),
+          selectedIcon: const Icon(Icons.pets_rounded),
+          label: lang.meow,
         ),
         NavigationDestination(
-          icon: Icon(Icons.insights_outlined),
-          selectedIcon: Icon(Icons.insights_rounded),
-          label: 'Progress',
+          icon: const Icon(Icons.insights_outlined),
+          selectedIcon: const Icon(Icons.insights_rounded),
+          label: lang.progress,
         ),
       ],
       onDestinationSelected: (index) {
