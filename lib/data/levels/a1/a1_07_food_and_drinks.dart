@@ -595,4 +595,133 @@ const A1Lesson a1Lesson07 = A1Lesson(
       answer: 'Can I have some water, please?',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'What is your favorite food?',
+      persian: 'غذای مورد علاقه‌ات چیست؟',
+      acceptableAnswers: [
+        'my favorite food is rice',
+        'my favorite food is chicken',
+        'my favorite food is pizza',
+        'my favorite food is bread',
+        'i like rice',
+        'i like chicken',
+        'i like pizza',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you like to drink?',
+      persian: 'دوست داری چه چیزی بنوشی؟',
+      acceptableAnswers: [
+        'i like tea',
+        'i like coffee',
+        'i like milk',
+        'i like juice',
+        'i like water',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you want to drink?',
+      persian: 'چی می‌خواهی بنوشی؟',
+      acceptableAnswers: [
+        'i want some water',
+        'i want some juice',
+        'i want some tea',
+        'i want some milk',
+        'i want some coffee',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you want to eat?',
+      persian: 'چی می‌خواهی بخوری؟',
+      acceptableAnswers: [
+        'i want a sandwich',
+        'i want some rice',
+        'i want some chicken',
+        'i want some bread',
+        'i want an apple',
+        'i want some food',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Are you hungry or thirsty?',
+      persian: 'گرسنه‌ای یا تشنه؟',
+      acceptableAnswers: [
+        'i am hungry',
+        'i am thirsty',
+        'i am hungry and thirsty',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you eat for breakfast?',
+      persian: 'برای صبحانه چه می‌خوری؟',
+      acceptableAnswers: [
+        'i eat bread for breakfast',
+        'i eat an egg for breakfast',
+        'i eat an apple for breakfast',
+        'i eat eggs for breakfast',
+        'i have bread for breakfast',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you eat for dinner?',
+      persian: 'برای شام چه می‌خوری؟',
+      acceptableAnswers: [
+        'i eat rice for dinner',
+        'i eat chicken for dinner',
+        'i eat fish for dinner',
+        'i have rice for dinner',
+        'i have chicken for dinner',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Do you like tea?',
+      persian: 'چای دوست داری؟',
+      acceptableAnswers: [
+        'yes i like tea',
+        'yes i do',
+        'no i do not like tea',
+        'no i dont like tea',
+        'no i dont',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Do you like coffee?',
+      persian: 'قهوه دوست داری؟',
+      acceptableAnswers: [
+        'yes i like coffee',
+        'yes i do',
+        'no i do not like coffee',
+        'no i dont like coffee',
+        'no i dont',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I am hungry. I want some food."',
+      persian: 'بگو: «من گرسنه‌ام. کمی غذا می‌خواهم.»',
+      acceptableAnswers: [
+        'i am hungry i want some food',
+        'i am hungry i want food',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I am thirsty. I want some water."',
+      persian: 'بگو: «من تشنه‌ام. کمی آب می‌خواهم.»',
+      acceptableAnswers: [
+        'i am thirsty i want some water',
+        'i am thirsty i want water',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say three foods you like.',
+      persian: 'سه غذایی که دوست داری را بگو.',
+      acceptableAnswers: [
+        'i like rice chicken and bread',
+        'i like chicken rice and bread',
+        'i like pizza chicken and rice',
+        'i like bread rice and chicken',
+      ],
+    ),
+  ],
 );
