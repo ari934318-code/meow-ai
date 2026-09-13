@@ -4,6 +4,7 @@ const A1Lesson a1Lesson11 = A1Lesson(
   id: 'a1_11',
   title: 'Likes and Dislikes',
   topic: 'علاقه‌مندی‌ها و چیزهایی که دوست نداریم',
+
   words: [
     A1Word(
       english: 'like',
@@ -132,6 +133,12 @@ const A1Lesson a1Lesson11 = A1Lesson(
       example: 'I love pizza.',
     ),
     A1Word(
+      english: 'chocolate',
+      persian: 'شکلات',
+      pronunciation: 'چاکلِت',
+      example: 'I love chocolate.',
+    ),
+    A1Word(
       english: 'rice',
       persian: 'برنج',
       pronunciation: 'رایس',
@@ -213,7 +220,7 @@ const A1Lesson a1Lesson11 = A1Lesson(
       english: 'beautiful',
       persian: 'زیبا',
       pronunciation: 'بیوتیفُل',
-      example: 'I like this beautiful place.',
+      example: 'This place is beautiful.',
     ),
     A1Word(
       english: 'cute',
@@ -225,13 +232,13 @@ const A1Lesson a1Lesson11 = A1Lesson(
       english: 'easy',
       persian: 'آسان',
       pronunciation: 'ایزی',
-      example: 'I like easy games.',
+      example: 'This game is easy.',
     ),
     A1Word(
       english: 'difficult',
       persian: 'سخت',
       pronunciation: 'دیفیکِلت',
-      example: 'I dislike difficult games.',
+      example: 'This game is difficult.',
     ),
     A1Word(
       english: 'funny',
@@ -246,6 +253,7 @@ const A1Lesson a1Lesson11 = A1Lesson(
       example: 'I dislike loud music.',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'I like music.',
@@ -388,10 +396,6 @@ const A1Lesson a1Lesson11 = A1Lesson(
       persian: 'من واقعاً این آهنگ را دوست دارم.',
     ),
     A1Sentence(
-      english: 'I really love this movie.',
-      persian: 'من واقعاً این فیلم را خیلی دوست دارم.',
-    ),
-    A1Sentence(
       english: 'This game is fun.',
       persian: 'این بازی سرگرم‌کننده است.',
     ),
@@ -404,10 +408,15 @@ const A1Lesson a1Lesson11 = A1Lesson(
       persian: 'این کتاب جالب است.',
     ),
     A1Sentence(
+      english: 'This place is beautiful.',
+      persian: 'این مکان زیباست.',
+    ),
+    A1Sentence(
       english: 'The cat is cute.',
       persian: 'گربه بامزه است.',
     ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "like" mean?',
@@ -425,24 +434,9 @@ const A1Lesson a1Lesson11 = A1Lesson(
       answer: 'لذت بردن',
     ),
     A1Question(
-      question: 'What does "want" mean?',
-      options: ['خواستن', 'دوست داشتن', 'شنیدن', 'خوردن'],
-      answer: 'خواستن',
-    ),
-    A1Question(
-      question: 'What does "need" mean?',
-      options: ['نیاز داشتن', 'دویدن', 'دوست داشتن', 'دیدن'],
-      answer: 'نیاز داشتن',
-    ),
-    A1Question(
       question: 'What does "prefer" mean?',
       options: ['ترجیح دادن', 'متنفر بودن', 'خندیدن', 'بازی کردن'],
       answer: 'ترجیح دادن',
-    ),
-    A1Question(
-      question: 'What does "hate" mean?',
-      options: ['متنفر بودن / خیلی دوست نداشتن', 'دوست داشتن', 'لذت بردن', 'خواستن'],
-      answer: 'متنفر بودن / خیلی دوست نداشتن',
     ),
     A1Question(
       question: 'What does "dislike" mean?',
@@ -500,32 +494,12 @@ const A1Lesson a1Lesson11 = A1Lesson(
       answer: 'like',
     ),
     A1Question(
-      question: 'Complete: My favorite color ___ blue.',
-      options: ['is', 'are', 'am', 'be'],
-      answer: 'is',
-    ),
-    A1Question(
-      question: 'Complete: My favorite food ___ pizza.',
-      options: ['is', 'are', 'am', 'be'],
-      answer: 'is',
-    ),
-    A1Question(
-      question: 'Which sentence means "من موسیقی دوست دارم"؟',
-      options: [
-        'I like music.',
-        'I hate music.',
-        'I need music.',
-        'I want music.'
-      ],
-      answer: 'I like music.',
-    ),
-    A1Question(
       question: 'Which sentence means "من عاشق گربه‌ها هستم"؟',
       options: [
         'I love cats.',
         'I dislike cats.',
         'I need cats.',
-        'I want cats.'
+        'I want cats.',
       ],
       answer: 'I love cats.',
     ),
@@ -535,7 +509,7 @@ const A1Lesson a1Lesson11 = A1Lesson(
         'I do not like coffee.',
         'I love coffee.',
         'I want coffee.',
-        'I enjoy coffee.'
+        'I enjoy coffee.',
       ],
       answer: 'I do not like coffee.',
     ),
@@ -545,7 +519,7 @@ const A1Lesson a1Lesson11 = A1Lesson(
         'My favorite color is blue.',
         'My favorite food is blue.',
         'I dislike blue.',
-        'I need blue.'
+        'I need blue.',
       ],
       answer: 'My favorite color is blue.',
     ),
@@ -555,39 +529,9 @@ const A1Lesson a1Lesson11 = A1Lesson(
         'What is your favorite color?',
         'Where is your color?',
         'Do you have a color?',
-        'What color are you?'
+        'What color are you?',
       ],
       answer: 'What is your favorite color?',
-    ),
-    A1Question(
-      question: 'Which question asks if someone likes cats?',
-      options: [
-        'Do you like cats?',
-        'Where are the cats?',
-        'What are cats?',
-        'How are cats?'
-      ],
-      answer: 'Do you like cats?',
-    ),
-    A1Question(
-      question: 'How can you answer "Do you like pizza?" positively?',
-      options: [
-        'Yes, I do.',
-        'No, I do not.',
-        'Yes, I am.',
-        'No, I am.'
-      ],
-      answer: 'Yes, I do.',
-    ),
-    A1Question(
-      question: 'How can you answer "Do you like pizza?" negatively?',
-      options: [
-        'No, I do not.',
-        'Yes, I do.',
-        'No, I am.',
-        'Yes, I am.'
-      ],
-      answer: 'No, I do not.',
     ),
     A1Question(
       question: 'Which sentence is correct?',
@@ -595,94 +539,9 @@ const A1Lesson a1Lesson11 = A1Lesson(
         'I like playing games.',
         'I like play games.',
         'I liking playing games.',
-        'I likes playing games.'
+        'I likes playing games.',
       ],
       answer: 'I like playing games.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'I enjoy reading.',
-        'I enjoy read.',
-        'I enjoys reading.',
-        'I enjoying read.'
-      ],
-      answer: 'I enjoy reading.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'I prefer tea.',
-        'I prefers tea.',
-        'I preferring tea.',
-        'I prefering tea.'
-      ],
-      answer: 'I prefer tea.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'I do not like coffee.',
-        'I do not likes coffee.',
-        'I does not like coffee.',
-        'I not like coffee.'
-      ],
-      answer: 'I do not like coffee.',
-    ),
-    A1Question(
-      question: 'What is the opposite of "like"?',
-      options: ['dislike', 'love', 'enjoy', 'prefer'],
-      answer: 'dislike',
-    ),
-    A1Question(
-      question: 'What is the stronger word for "like"?',
-      options: ['love', 'need', 'want', 'prefer'],
-      answer: 'love',
-    ),
-    A1Question(
-      question: 'Which one is a food?',
-      options: ['Pizza', 'Music', 'Movie', 'Game'],
-      answer: 'Pizza',
-    ),
-    A1Question(
-      question: 'Which one is an animal?',
-      options: ['Cat', 'Coffee', 'Pizza', 'Football'],
-      answer: 'Cat',
-    ),
-    A1Question(
-      question: 'Which one is a sport?',
-      options: ['Football', 'Pizza', 'Coffee', 'Movie'],
-      answer: 'Football',
-    ),
-    A1Question(
-      question: 'Which sentence means "این بازی سرگرم‌کننده است"؟',
-      options: [
-        'This game is fun.',
-        'This game is boring.',
-        'This game is difficult.',
-        'This game is loud.'
-      ],
-      answer: 'This game is fun.',
-    ),
-    A1Question(
-      question: 'Which sentence means "این فیلم خسته‌کننده است"؟',
-      options: [
-        'This movie is boring.',
-        'This movie is fun.',
-        'This movie is cute.',
-        'This movie is easy.'
-      ],
-      answer: 'This movie is boring.',
-    ),
-    A1Question(
-      question: 'Which sentence means "گربه بامزه است"؟',
-      options: [
-        'The cat is cute.',
-        'The cat is boring.',
-        'The cat is difficult.',
-        'The cat is loud.'
-      ],
-      answer: 'The cat is cute.',
     ),
   ],
 
@@ -707,6 +566,7 @@ const A1Lesson a1Lesson11 = A1Lesson(
       acceptableAnswers: [
         'my favorite food is pizza',
         'my favorite food is rice',
+        'my favorite food is chocolate',
         'i like pizza',
         'i like rice',
       ],
@@ -795,10 +655,34 @@ const A1Lesson a1Lesson11 = A1Lesson(
       ],
     ),
     A1SpeakingQuestion(
+      question: 'What kind of movies do you like?',
+      persian: 'چه نوع فیلم‌هایی دوست داری؟',
+      acceptableAnswers: [
+        'i like funny movies',
+        'i like interesting movies',
+        'i like beautiful movies',
+        'i like movies',
+      ],
+    ),
+    A1SpeakingQuestion(
       question: 'Say: "I love cats."',
       persian: 'بگو: «من عاشق گربه‌ها هستم.»',
       acceptableAnswers: [
         'i love cats',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I prefer tea."',
+      persian: 'بگو: «من چای را ترجیح می‌دهم.»',
+      acceptableAnswers: [
+        'i prefer tea',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "This game is fun."',
+      persian: 'بگو: «این بازی سرگرم‌کننده است.»',
+      acceptableAnswers: [
+        'this game is fun',
       ],
     ),
     A1SpeakingQuestion(
