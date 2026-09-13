@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../localization.dart';
+import '../real_english_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -46,6 +47,9 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 18),
 
             _continueLearning(context, lang),
+            const SizedBox(height: 18),
+
+            _realEnglishCard(context, lang),
             const SizedBox(height: 18),
 
             Row(
@@ -256,6 +260,29 @@ class HomePage extends StatelessWidget {
       trailing: 'A1 • ${lang.isPersian ? 'درس ۱' : 'Lesson 1'}',
       onTap: () {
         Navigator.pushNamed(context, '/a1-lessons');
+      },
+    );
+  }
+
+  Widget _realEnglishCard(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    return _sectionCard(
+      context,
+      icon: Icons.language_rounded,
+      title: lang.isPersian ? 'انگلیسی واقعی' : 'Real English',
+      subtitle: lang.isPersian
+          ? 'اصطلاحات، اسلنگ، مخفف‌ها و شکل‌های کوتاه گفتاری'
+          : 'Idioms, slang, abbreviations & spoken short forms',
+      trailing: lang.isPersian ? 'ببین' : 'Explore',
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const RealEnglishPage(),
+          ),
+        );
       },
     );
   }
