@@ -506,4 +506,96 @@ const A1Lesson a1Lesson03 = A1Lesson(
       answer: 'Thirteen',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'What number is this? Say "five".',
+      persian: 'چه عددی است؟ بگو «پنج».',
+      acceptableAnswers: [
+        'five',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Count from one to five.',
+      persian: 'از یک تا پنج بشمار.',
+      acceptableAnswers: [
+        'one two three four five',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Count from five to ten.',
+      persian: 'از پنج تا ده بشمار.',
+      acceptableAnswers: [
+        'five six seven eight nine ten',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What number comes after five?',
+      persian: 'بعد از پنج چه عددی می‌آید؟',
+      acceptableAnswers: [
+        'six',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What number comes before ten?',
+      persian: 'قبل از ده چه عددی می‌آید؟',
+      acceptableAnswers: [
+        'nine',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How many fingers do you have?',
+      persian: 'چند انگشت داری؟',
+      acceptableAnswers: [
+        'ten',
+        'i have ten fingers',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How many days are there in a week?',
+      persian: 'یک هفته چند روز دارد؟',
+      acceptableAnswers: [
+        'seven',
+        'there are seven days',
+        'there are seven days in a week',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How many months are there in a year?',
+      persian: 'یک سال چند ماه دارد؟',
+      acceptableAnswers: [
+        'twelve',
+        'there are twelve months',
+        'there are twelve months in a year',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What number is "twenty"?',
+      persian: 'عدد «بیست» چیست؟',
+      acceptableAnswers: [
+        'twenty',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say the number "thirty".',
+      persian: 'عدد «سی» را بگو.',
+      acceptableAnswers: [
+        'thirty',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say the number "forty".',
+      persian: 'عدد «چهل» را بگو.',
+      acceptableAnswers: [
+        'forty',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say "One plus one is two."',
+      persian: 'بگو: «یک به علاوه یک می‌شود دو.»',
+      acceptableAnswers: [
+        'one plus one is two',
+      ],
+    ),
+  ],
 );
