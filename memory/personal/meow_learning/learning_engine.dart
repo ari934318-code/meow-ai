@@ -2,47 +2,60 @@ import 'candidate_memory.dart';
 import 'learned_phrases.dart';
 import 'learned_intents.dart';
 import 'learned_vocabulary.dart';
+import 'privacy_filter.dart';
 
 /// موتور یادگیری Meow.
 ///
 /// وظیفه این کلاس:
 /// 1. دریافت جمله جدید
-/// 2. نرمال‌سازی جمله
-/// 3. بررسی اینکه جمله قبلاً دیده شده یا نه
-/// 4. ساخت Candidate برای جمله‌های ناشناخته
-/// 5. آماده‌سازی جمله برای اتصال به Intent و Vocabulary
+/// 2. بررسی حریم خصوصی
+/// 3. پاک‌سازی اطلاعات شخصی
+/// 4. نرمال‌سازی جمله
+/// 5. بررسی دانش قبلی
+/// 6. ساخت یا افزایش Candidate
 ///
-/// نکته مهم:
-/// اطلاعات شخصی کاربران نباید مستقیماً وارد دانش عمومی Meow شود.
+/// اطلاعات شخصی کاربران نباید وارد دانش عمومی Meow شود.
 class LearningEngine {
   final List<CandidateMemory> candidates;
   final List<LearnedPhrase> learnedPhrases;
   final List<LearnedIntent> learnedIntents;
   final List<LearnedVocabulary> learnedVocabulary;
 
+  final PrivacyFilter privacyFilter;
+
   LearningEngine({
     List<CandidateMemory>? candidates,
     List<LearnedPhrase>? learnedPhrases,
     List<LearnedIntent>? learnedIntents,
     List<LearnedVocabulary>? learnedVocabulary,
+    PrivacyFilter? privacyFilter,
   })  : candidates = candidates ?? [],
         learnedPhrases = learnedPhrases ?? [],
         learnedIntents = learnedIntents ?? [],
-        learnedVocabulary = learnedVocabulary ?? [];
+        learnedVocabulary = learnedVocabulary ?? [],
+        privacyFilter = privacyFilter ?? const PrivacyFilter();
 
   /// دریافت یک جمله جدید از کاربر.
   ///
-  /// جمله ابتدا نرمال می‌شود.
-  /// اگر قبلاً یاد گرفته شده باشد، دوباره به عنوان Candidate ثبت نمی‌شود.
-  /// اگر ناشناخته باشد، به صورت Candidate ذخیره می‌شود.
+  /// قبل از اینکه جمله وارد سیستم یادگیری شود،
+  /// اطلاعات شخصی احتمالی از آن حذف می‌شود.
   void observePhrase(String phrase) {
-    final normalizedPhrase = _normalizePhrase(phrase);
+    // اول جمله را برای یادگیری امن آماده می‌کنیم.
+    final safePhrase = privacyFilter.prepareForLearning(phrase);
+
+    // اگر چیزی قابل یادگیری باقی نمانده باشد، متوقف می‌شویم.
+    if (safePhrase == null) {
+      return;
+    }
+
+    final normalizedPhrase = _normalizePhrase(safePhrase);
 
     if (normalizedPhrase.isEmpty) {
       return;
     }
 
-    // اگر Meow قبلاً این عبارت را یاد گرفته، نیازی به Candidate جدید نیست.
+    // اگر Meow قبلاً این عبارت را یاد گرفته،
+    // دوباره Candidate نمی‌سازیم.
     final alreadyLearned = learnedPhrases.any(
       (item) => _normalizePhrase(item.phrase) == normalizedPhrase,
     );
@@ -51,7 +64,8 @@ class LearningEngine {
       return;
     }
 
-    // اگر قبلاً به عنوان Candidate دیده شده، تعداد مشاهده را افزایش می‌دهیم.
+    // اگر قبلاً Candidate مشابه وجود دارد،
+    // تعداد مشاهده آن را افزایش می‌دهیم.
     final candidateIndex = candidates.indexWhere(
       (item) => _normalizePhrase(item.phrase) == normalizedPhrase,
     );
@@ -63,7 +77,8 @@ class LearningEngine {
       return;
     }
 
-    // اگر کاملاً جدید است، یک Candidate جدید می‌سازیم.
+    // اگر جمله کاملاً جدید است،
+    // آن را به عنوان Candidate ذخیره می‌کنیم.
     candidates.add(
       CandidateMemory(
         phrase: normalizedPhrase,
@@ -75,14 +90,10 @@ class LearningEngine {
     );
   }
 
-  /// نرمال‌سازی جمله برای اینکه شکل‌های مختلف یک جمله
-  /// به عنوان عبارت‌های کاملاً متفاوت ذخیره نشوند.
+  /// نرمال‌سازی جمله.
   ///
-  /// مثال:
-  /// "  آب می‌خوام  "
-  /// "آب می‌خوام"
-  ///
-  /// هر دو به یک شکل تبدیل می‌شوند.
+  /// فاصله‌های اضافی حذف می‌شوند و حروف انگلیسی
+  /// به حالت کوچک تبدیل می‌شوند.
   String _normalizePhrase(String phrase) {
     return phrase
         .trim()
