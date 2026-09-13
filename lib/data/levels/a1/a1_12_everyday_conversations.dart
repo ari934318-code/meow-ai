@@ -675,4 +675,129 @@ const A1Lesson a1Lesson12 = A1Lesson(
       answer: 'Can you help me?',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'Say: "Hello! How are you?"',
+      persian: 'بگو: «سلام! حالت چطوره؟»',
+      acceptableAnswers: [
+        'hello how are you',
+        'hi how are you',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How are you?',
+      persian: 'حالت چطوره؟',
+      acceptableAnswers: [
+        'i am fine',
+        'i am good',
+        'i am great',
+        'i am okay',
+        'i am fine thank you',
+        'i am good thank you',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is your name?',
+      persian: 'اسمت چیست؟',
+      acceptableAnswers: [
+        'my name is anna',
+        'my name is alex',
+        'my name is sara',
+        'my name is meow',
+        'i am anna',
+        'i am alex',
+        'i am sara',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How old are you?',
+      persian: 'چند سالته؟',
+      acceptableAnswers: [
+        'i am twenty years old',
+        'i am eighteen years old',
+        'i am nineteen years old',
+        'i am twenty one years old',
+        'i am twenty two years old',
+        'i am twenty three years old',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where are you from?',
+      persian: 'اهل کجایی؟',
+      acceptableAnswers: [
+        'i am from iran',
+        'i am from japan',
+        'i am from korea',
+        'i am from america',
+        'i am from england',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Can you speak English?',
+      persian: 'می‌توانی انگلیسی صحبت کنی؟',
+      acceptableAnswers: [
+        'yes i can',
+        'yes i can speak english',
+        'i can speak english',
+        'i speak a little english',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What can you say when you do not understand someone?',
+      persian: 'وقتی حرف کسی را متوجه نمی‌شوی چه می‌گویی؟',
+      acceptableAnswers: [
+        'i do not understand',
+        'can you repeat that',
+        'can you say that again',
+        'please speak slowly',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What can you say when you need help?',
+      persian: 'وقتی به کمک نیاز داری چه می‌گویی؟',
+      acceptableAnswers: [
+        'can you help me',
+        'i need help',
+        'please help me',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you say after someone helps you?',
+      persian: 'بعد از اینکه کسی به تو کمک کرد چه می‌گویی؟',
+      acceptableAnswers: [
+        'thank you',
+        'thank you very much',
+        'thanks',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you say when someone says "Thank you"?',
+      persian: 'وقتی کسی می‌گوید «ممنون»، چه می‌گویی؟',
+      acceptableAnswers: [
+        'you are welcome',
+        'welcome',
+        'no problem',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Excuse me, where is the bank?"',
+      persian: 'بگو: «ببخشید، بانک کجاست؟»',
+      acceptableAnswers: [
+        'excuse me where is the bank',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Imagine you meet someone for the first time. Introduce yourself in English.',
+      persian: 'فرض کن برای اولین بار کسی را می‌بینی. خودت را به انگلیسی معرفی کن.',
+      acceptableAnswers: [
+        'hello my name is anna',
+        'hi my name is anna',
+        'hello i am anna',
+        'hi i am anna',
+        'hello my name is alex',
+        'hi my name is alex',
+      ],
+    ),
+  ],
 );
