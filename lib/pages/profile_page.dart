@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import '../localization.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final lang = MeowLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile 👤'),
+        title: Text('${lang.profile} 👤'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -36,8 +39,10 @@ class ProfilePage extends StatelessWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.language),
-              title: const Text('English Level'),
-              subtitle: const Text('A1 - Beginner'),
+              title: Text(lang.englishLevel),
+              subtitle: Text(
+                lang.isPersian ? 'A1 - مبتدی' : 'A1 - Beginner',
+              ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
@@ -46,8 +51,10 @@ class ProfilePage extends StatelessWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.volume_up),
-              title: const Text('Voice'),
-              subtitle: const Text('Default'),
+              title: Text(lang.voice),
+              subtitle: Text(
+                lang.isPersian ? 'پیش‌فرض' : 'Default',
+              ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
@@ -56,7 +63,7 @@ class ProfilePage extends StatelessWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
+              title: Text(lang.settings),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
                 Navigator.pushNamed(context, '/settings');
