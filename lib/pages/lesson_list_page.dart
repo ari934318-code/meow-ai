@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../lesson_localization.dart';
 import '../localization.dart';
 import '../services/lesson_service.dart';
 import 'lesson_page.dart';
@@ -10,6 +11,10 @@ class LessonListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lang = MeowLocalizations.of(context);
+    final lessonLang = LessonLocalization(
+      Localizations.localeOf(context),
+    );
+
     final lessons = LessonService.a1Lessons;
 
     return Scaffold(
@@ -23,6 +28,16 @@ class LessonListPage extends StatelessWidget {
         itemCount: lessons.length,
         itemBuilder: (context, index) {
           final lesson = lessons[index];
+
+          final title = lessonLang.lessonTitle(
+            lesson.id,
+            lesson.title,
+          );
+
+          final description = lessonLang.lessonDescription(
+            lesson.id,
+            lesson.description,
+          );
 
           return Card(
             margin: const EdgeInsets.only(bottom: 14),
@@ -39,7 +54,7 @@ class LessonListPage extends StatelessWidget {
               ),
 
               title: Text(
-                lesson.title,
+                title,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -49,7 +64,7 @@ class LessonListPage extends StatelessWidget {
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 6),
                 child: Text(
-                  lesson.description,
+                  description,
                 ),
               ),
 
@@ -59,7 +74,9 @@ class LessonListPage extends StatelessWidget {
                   Text(
                     '+${lesson.xp} XP',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
