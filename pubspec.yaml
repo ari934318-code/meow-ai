@@ -28,4 +28,4 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/meow_icon.png
+  - meow_icon.png
