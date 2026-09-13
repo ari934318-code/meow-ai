@@ -7,6 +7,7 @@ import 'pages/meow_page.dart';
 import 'pages/progress_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/lesson_list_page.dart';
+import 'pages/settings_page.dart';
 
 class MeowApp extends StatelessWidget {
   const MeowApp({super.key});
@@ -28,6 +29,7 @@ class MeowApp extends StatelessWidget {
         '/meow': (_) => const MeowPage(),
         '/progress': (_) => const ProgressPage(),
         '/profile': (_) => const ProfilePage(),
+        '/settings': (_) => const SettingsPage(),
       },
     );
   }
