@@ -77,6 +77,12 @@ const List<A1Lesson> a1Lessons = [
         example: 'Good morning, Sarah!',
       ),
       A1Word(
+        english: 'Good evening',
+        persian: 'عصر بخیر',
+        pronunciation: 'گود ایونینگ',
+        example: 'Good evening, Mr. Brown.',
+      ),
+      A1Word(
         english: 'Goodbye',
         persian: 'خداحافظ',
         pronunciation: 'گودبای',
@@ -94,6 +100,12 @@ const List<A1Lesson> a1Lessons = [
         pronunciation: 'پلیز',
         example: 'Please sit down.',
       ),
+      A1Word(
+        english: 'Sorry',
+        persian: 'ببخشید / متأسفم',
+        pronunciation: 'ساری',
+        example: 'Sorry, I am late.',
+      ),
     ],
     sentences: [
       A1Sentence(
@@ -109,8 +121,16 @@ const List<A1Lesson> a1Lessons = [
         persian: 'از آشنایی با تو خوشحالم.',
       ),
       A1Sentence(
+        english: 'Good morning!',
+        persian: 'صبح بخیر!',
+      ),
+      A1Sentence(
         english: 'See you tomorrow.',
         persian: 'فردا می‌بینمت.',
+      ),
+      A1Sentence(
+        english: 'Thank you very much.',
+        persian: 'خیلی ممنون.',
       ),
     ],
     questions: [
@@ -134,6 +154,16 @@ const List<A1Lesson> a1Lessons = [
         ],
         answer: 'Thanks',
       ),
+      A1Question(
+        question: 'What do you say in the morning?',
+        options: [
+          'Good night',
+          'Good morning',
+          'Goodbye',
+          'Sorry',
+        ],
+        answer: 'Good morning',
+      ),
     ],
   ),
 
@@ -144,21 +174,27 @@ const List<A1Lesson> a1Lessons = [
     words: [
       A1Word(
         english: 'Name',
-        persian: 'اسم',
+        persian: 'اسم / نام',
         pronunciation: 'نِیم',
-        example: 'My name is Ali.',
+        example: 'My name is Sara.',
       ),
       A1Word(
-        english: 'I',
-        persian: 'من',
-        pronunciation: 'آی',
-        example: 'I am a student.',
+        english: 'Age',
+        persian: 'سن',
+        pronunciation: 'اِیج',
+        example: 'I am 20 years old.',
       ),
       A1Word(
-        english: 'You',
-        persian: 'تو / شما',
-        pronunciation: 'یو',
-        example: 'You are very kind.',
+        english: 'Country',
+        persian: 'کشور',
+        pronunciation: 'کانتری',
+        example: 'Japan is a country.',
+      ),
+      A1Word(
+        english: 'City',
+        persian: 'شهر',
+        pronunciation: 'سیتی',
+        example: 'I live in Tokyo.',
       ),
       A1Word(
         english: 'Student',
@@ -167,38 +203,100 @@ const List<A1Lesson> a1Lessons = [
         example: 'I am a student.',
       ),
       A1Word(
-        english: 'From',
-        persian: 'از',
-        pronunciation: 'فرام',
-        example: 'I am from Iran.',
+        english: 'Teacher',
+        persian: 'معلم',
+        pronunciation: 'تیچِر',
+        example: 'She is a teacher.',
+      ),
+      A1Word(
+        english: 'Friend',
+        persian: 'دوست',
+        pronunciation: 'فِرِند',
+        example: 'He is my friend.',
+      ),
+      A1Word(
+        english: 'Hobby',
+        persian: 'سرگرمی / علاقه',
+        pronunciation: 'هابی',
+        example: 'My hobby is reading.',
       ),
       A1Word(
         english: 'Live',
         persian: 'زندگی کردن',
-        pronunciation: 'لیو',
+        pronunciation: 'لِیو',
         example: 'I live in Tokyo.',
+      ),
+      A1Word(
+        english: 'From',
+        persian: 'از / اهلِ',
+        pronunciation: 'فرام',
+        example: 'I am from Iran.',
+      ),
+      A1Word(
+        english: 'Old',
+        persian: 'ساله',
+        pronunciation: 'اُلد',
+        example: 'I am 20 years old.',
+      ),
+      A1Word(
+        english: 'Meet',
+        persian: 'ملاقات کردن / آشنا شدن',
+        pronunciation: 'میت',
+        example: 'Nice to meet you.',
       ),
     ],
     sentences: [
+      A1Sentence(
+        english: 'What is your name?',
+        persian: 'اسمت چیه؟',
+      ),
       A1Sentence(
         english: 'My name is Sara.',
         persian: 'اسم من سارا است.',
       ),
       A1Sentence(
-        english: 'I am a student.',
-        persian: 'من دانش‌آموز / دانشجو هستم.',
-      ),
-      A1Sentence(
-        english: 'I am from Iran.',
-        persian: 'من اهل ایران هستم.',
+        english: 'I am 20 years old.',
+        persian: 'من ۲۰ ساله هستم.',
       ),
       A1Sentence(
         english: 'Where are you from?',
         persian: 'اهل کجایی؟',
       ),
       A1Sentence(
-        english: 'What is your name?',
-        persian: 'اسمت چیه؟',
+        english: 'I am from Iran.',
+        persian: 'من اهل ایران هستم.',
+      ),
+      A1Sentence(
+        english: 'Where do you live?',
+        persian: 'کجا زندگی می‌کنی؟',
+      ),
+      A1Sentence(
+        english: 'I live in Tokyo.',
+        persian: 'من در توکیو زندگی می‌کنم.',
+      ),
+      A1Sentence(
+        english: 'I am a student.',
+        persian: 'من دانش‌آموز / دانشجو هستم.',
+      ),
+      A1Sentence(
+        english: 'My hobby is reading.',
+        persian: 'سرگرمی من کتاب خواندن است.',
+      ),
+      A1Sentence(
+        english: 'Nice to meet you.',
+        persian: 'از آشنایی با تو خوشحالم.',
+      ),
+      A1Sentence(
+        english: 'Nice to meet you too.',
+        persian: 'من هم از آشنایی با تو خوشحالم.',
+      ),
+      A1Sentence(
+        english: 'How about you?',
+        persian: 'تو چطور؟',
+      ),
+      A1Sentence(
+        english: 'I am a teacher.',
+        persian: 'من معلم هستم.',
       ),
     ],
     questions: [
@@ -208,9 +306,39 @@ const List<A1Lesson> a1Lessons = [
           'سن',
           'اسم',
           'کشور',
-          'خانه',
+          'شهر',
         ],
         answer: 'اسم',
+      ),
+      A1Question(
+        question: 'What does "Age" mean?',
+        options: [
+          'اسم',
+          'شغل',
+          'سن',
+          'دوست',
+        ],
+        answer: 'سن',
+      ),
+      A1Question(
+        question: 'What does "Country" mean?',
+        options: [
+          'کشور',
+          'شهر',
+          'سن',
+          'اسم',
+        ],
+        answer: 'کشور',
+      ),
+      A1Question(
+        question: 'What does "Hobby" mean?',
+        options: [
+          'شغل',
+          'سرگرمی / علاقه',
+          'کشور',
+          'سن',
+        ],
+        answer: 'سرگرمی / علاقه',
       ),
       A1Question(
         question: 'Complete: My ___ is Sara.',
@@ -221,6 +349,116 @@ const List<A1Lesson> a1Lessons = [
           'live',
         ],
         answer: 'name',
+      ),
+      A1Question(
+        question: 'Complete: I am ___ Iran.',
+        options: [
+          'from',
+          'live',
+          'name',
+          'student',
+        ],
+        answer: 'from',
+      ),
+      A1Question(
+        question: 'Complete: I ___ in Tokyo.',
+        options: [
+          'from',
+          'name',
+          'live',
+          'age',
+        ],
+        answer: 'live',
+      ),
+      A1Question(
+        question: 'Complete: I am 20 years ___.',
+        options: [
+          'name',
+          'old',
+          'from',
+          'live',
+        ],
+        answer: 'old',
+      ),
+      A1Question(
+        question: 'Someone asks: "What is your name?" What do you say?',
+        options: [
+          'I live in Tokyo.',
+          'I am from Iran.',
+          'My name is Sara.',
+          'I am a student.',
+        ],
+        answer: 'My name is Sara.',
+      ),
+      A1Question(
+        question: 'Someone asks: "Where are you from?" What do you say?',
+        options: [
+          'My name is Ali.',
+          'I am from Iran.',
+          'I am 20 years old.',
+          'I am a student.',
+        ],
+        answer: 'I am from Iran.',
+      ),
+      A1Question(
+        question: 'Someone asks: "Where do you live?" What do you say?',
+        options: [
+          'I live in Tokyo.',
+          'I am from Tokyo.',
+          'My name is Tokyo.',
+          'I am Tokyo.',
+        ],
+        answer: 'I live in Tokyo.',
+      ),
+      A1Question(
+        question: 'Someone asks: "What do you do?" What do you say?',
+        options: [
+          'I am from Japan.',
+          'I live in Osaka.',
+          'I am a student.',
+          'My name is Mike.',
+        ],
+        answer: 'I am a student.',
+      ),
+      A1Question(
+        question: 'Which sentence is correct?',
+        options: [
+          'I am student.',
+          'I a student.',
+          'I am a student.',
+          'I is a student.',
+        ],
+        answer: 'I am a student.',
+      ),
+      A1Question(
+        question: 'Which sentence is correct?',
+        options: [
+          'I from Iran.',
+          'I am from Iran.',
+          'I am Iran from.',
+          'I from am Iran.',
+        ],
+        answer: 'I am from Iran.',
+      ),
+      A1Question(
+        question: 'What does "Nice to meet you" mean?',
+        options: [
+          'خداحافظ',
+          'اسمت چیه؟',
+          'از آشنایی با تو خوشحالم.',
+          'کجا زندگی می‌کنی؟',
+        ],
+        answer: 'از آشنایی با تو خوشحالم.',
+      ),
+      A1Question(
+        question: 'What can you say after "Nice to meet you"?',
+        options: [
+          'Nice to meet you too.',
+          'I live too.',
+          'My name too.',
+          'Good morning too.',
+        ],
+        answer: 'Nice to meet you too.',
       ),
     ],
   ),
