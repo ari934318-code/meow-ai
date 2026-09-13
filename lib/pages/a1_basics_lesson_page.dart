@@ -36,9 +36,33 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
 
   bool _speechAvailable = false;
   bool _isListening = false;
+
   int? _currentSpeakingIndex;
   String _recognizedText = '';
   String _selectedAnswer = '';
+
+  int _currentStage = 0;
+
+  /*
+   * هر Stage شامل:
+   *
+   * questions: شماره سؤال‌های مربوط به آن مرحله
+   * speaking: شماره Speakingهای مربوط به آن مرحله
+   *
+   * برای Pronouns:
+   *
+   * Stage 1 → I / You
+   * Stage 2 → He / She
+   * Stage 3 → It
+   * Stage 4 → We / They
+   * Stage 5 → Mixed Pronouns
+   * Stage 6 → am / is / are + mistakes
+   * Stage 7 → Translation + Word Order
+   * Stage 8 → Speaking
+   * Final Exam → همه سؤال‌ها
+   */
+
+  late final List<_A1Stage> _stages;
 
   @override
   void initState() {
@@ -47,8 +71,186 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     _questions = List<A1BasicQuestion>.from(widget.lesson.questions)
       ..shuffle(Random());
 
+    _stages = _buildStages();
+
     _initializeSpeech();
     _initializeTts();
+    _loadProgress();
+  }
+
+  List<_A1Stage> _buildStages() {
+    final totalQuestions = widget.lesson.questions.length;
+    final totalSpeaking = widget.lesson.speakingQuestions.length;
+
+    /*
+     * اگر این درس همان Pronouns باشد، سؤال‌ها را به شکل
+     * مرحله‌ای تقسیم می‌کنیم.
+     *
+     * چون سؤال‌ها در initState shuffle می‌شوند،
+     * شماره‌ها بر اساس لیست فعلی _questions هستند.
+     *
+     * بنابراین بعد از shuffle، تقسیم مرحله‌ای تصادفی می‌شود.
+     * برای جلوگیری از این موضوع، پایین‌تر shuffle را برای
+     * درس‌های مرحله‌ای غیرفعال می‌کنیم.
+     */
+
+    if (widget.lesson.id == 'a1_basic_01') {
+      return [
+        _A1Stage(
+          title: 'I & You',
+          titleFa: 'مرحله ۱: I و You',
+          description:
+              'اول با I و You آشنا شو و کاربردشان را یاد بگیر.',
+          questionStart: 0,
+          questionEnd: min(6, totalQuestions),
+        ),
+        _A1Stage(
+          title: 'He & She',
+          titleFa: 'مرحله ۲: He و She',
+          description:
+              'حالا تفاوت He و She را یاد بگیر.',
+          questionStart: 6,
+          questionEnd: min(12, totalQuestions),
+        ),
+        _A1Stage(
+          title: 'It',
+          titleFa: 'مرحله ۳: It',
+          description:
+              'کاربرد It برای چیزها، موقعیت‌ها و حیوانات.',
+          questionStart: 12,
+          questionEnd: min(17, totalQuestions),
+        ),
+        _A1Stage(
+          title: 'We & They',
+          titleFa: 'مرحله ۴: We و They',
+          description:
+              'ضمیرهای مربوط به گروه‌ها را تمرین کن.',
+          questionStart: 17,
+          questionEnd: min(23, totalQuestions),
+        ),
+        _A1Stage(
+          title: 'Mixed Pronouns',
+          titleFa: 'مرحله ۵: ترکیب ضمیرها',
+          description:
+              'همه ضمیرها را با هم تمرین کن.',
+          questionStart: 23,
+          questionEnd: min(29, totalQuestions),
+        ),
+        _A1Stage(
+          title: 'Grammar Practice',
+          titleFa: 'مرحله ۶: am / is / are',
+          description:
+              'ضمیرها را با am، is و are درست استفاده کن.',
+          questionStart: 29,
+          questionEnd: min(34, totalQuestions),
+        ),
+        _A1Stage(
+          title: 'Translation & Word Order',
+          titleFa: 'مرحله ۷: ترجمه و ترتیب کلمات',
+          description:
+              'حالا جمله‌سازی و ترجمه را تمرین کن.',
+          questionStart: 34,
+          questionEnd: totalQuestions,
+        ),
+        _A1Stage(
+          title: 'Speaking',
+          titleFa: 'مرحله ۸: مکالمه',
+          description:
+              'حالا نوبت حرف زدنه. با صدای خودت جواب بده.',
+          questionStart: totalQuestions,
+          questionEnd: totalQuestions,
+          speakingStart: 0,
+          speakingEnd: totalSpeaking,
+        ),
+      ];
+    }
+
+    /*
+     * برای درس‌های دیگر، اگر هنوز Stage اختصاصی تعریف نکرده‌ایم،
+     * سؤال‌ها را به چند مرحله مساوی تقسیم می‌کنیم.
+     */
+    return _buildGenericStages(
+      totalQuestions,
+      totalSpeaking,
+    );
+  }
+
+  List<_A1Stage> _buildGenericStages(
+    int totalQuestions,
+    int totalSpeaking,
+  ) {
+    if (totalQuestions == 0 && totalSpeaking == 0) {
+      return [];
+    }
+
+    final stages = <_A1Stage>[];
+
+    const stageCount = 5;
+
+    for (int i = 0; i < stageCount; i++) {
+      final start =
+          ((totalQuestions * i) / stageCount).floor();
+
+      final end =
+          ((totalQuestions * (i + 1)) / stageCount).floor();
+
+      if (start == end && totalQuestions > 0) {
+        continue;
+      }
+
+      stages.add(
+        _A1Stage(
+          title: 'Stage ${i + 1}',
+          titleFa: 'مرحله ${i + 1}',
+          description: 'تمرین‌های این بخش را کامل کن.',
+          questionStart: start,
+          questionEnd: end,
+        ),
+      );
+    }
+
+    if (totalSpeaking > 0) {
+      stages.add(
+        _A1Stage(
+          title: 'Speaking',
+          titleFa: 'تمرین مکالمه',
+          description:
+              'با صدای خودت به سؤال‌ها پاسخ بده.',
+          questionStart: totalQuestions,
+          questionEnd: totalQuestions,
+          speakingStart: 0,
+          speakingEnd: totalSpeaking,
+        ),
+      );
+    }
+
+    return stages;
+  }
+
+  Future<void> _loadProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final savedStage = prefs.getInt(
+      _stageKey,
+    );
+
+    if (!mounted) return;
+
+    setState(() {
+      _currentStage = savedStage ?? 0;
+    });
+  }
+
+  String get _stageKey =>
+      'a1_basics_stage_${widget.lesson.id}';
+
+  Future<void> _saveStage(int stage) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setInt(
+      _stageKey,
+      stage,
+    );
   }
 
   Future<void> _initializeTts() async {
@@ -110,7 +312,10 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
         });
 
         if (result.finalResult) {
-          _checkSpeakingAnswer(index, result.recognizedWords);
+          _checkSpeakingAnswer(
+            index,
+            result.recognizedWords,
+          );
         }
       },
       localeId: 'en_US',
@@ -131,7 +336,10 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     }
   }
 
-  void _checkSpeakingAnswer(int index, String spokenText) {
+  void _checkSpeakingAnswer(
+    int index,
+    String spokenText,
+  ) {
     final normalizedSpoken = _normalize(spokenText);
 
     if (normalizedSpoken.isEmpty) {
@@ -139,7 +347,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     }
 
     final acceptable =
-        widget.lesson.speakingQuestions[index].acceptableAnswers;
+        widget.lesson.speakingQuestions[index]
+            .acceptableAnswers;
 
     double bestScore = 0;
 
@@ -202,7 +411,10 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     }
 
     final distance = _levenshtein(a, b);
-    final maxLength = max(a.length, b.length);
+    final maxLength = max(
+      a.length,
+      b.length,
+    );
 
     return 1 - (distance / maxLength);
   }
@@ -222,7 +434,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       current[0] = i;
 
       for (int j = 1; j <= b.length; j++) {
-        final cost = a[i - 1] == b[j - 1] ? 0 : 1;
+        final cost =
+            a[i - 1] == b[j - 1] ? 0 : 1;
 
         current[j] = min(
           min(
@@ -241,29 +454,82 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     return previous[b.length];
   }
 
-  bool get _canComplete {
-    final examplesCompleted =
-        _listenedExamples.length >= widget.lesson.examples.length;
+  bool _stageCompleted(_A1Stage stage) {
+    final questionDone =
+        List.generate(
+          stage.questionEnd - stage.questionStart,
+          (i) => stage.questionStart + i,
+        ).every(
+          (index) => _answeredQuestions.contains(index),
+        );
 
-    final questionsCompleted =
-        _answeredQuestions.length >= widget.lesson.questions.length;
+    final speakingDone =
+        List.generate(
+          stage.speakingEnd - stage.speakingStart,
+          (i) => stage.speakingStart + i,
+        ).every(
+          (index) => _completedSpeaking.contains(index),
+        );
 
-    final speakingCompleted =
-        _completedSpeaking.length >=
-            widget.lesson.speakingQuestions.length;
+    return questionDone && speakingDone;
+  }
 
-    return examplesCompleted &&
-        questionsCompleted &&
-        speakingCompleted;
+  bool _canEnterStage(int index) {
+    if (index == 0) {
+      return true;
+    }
+
+    return index <= _currentStage;
+  }
+
+  Future<void> _finishCurrentStage() async {
+    final stage = _stages[_currentStage];
+
+    if (!_stageCompleted(stage)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'اول همه تمرین‌های این مرحله رو کامل کن 😼',
+          ),
+        ),
+      );
+      return;
+    }
+
+    if (_currentStage < _stages.length - 1) {
+      final nextStage = _currentStage + 1;
+
+      setState(() {
+        _currentStage = nextStage;
+      });
+
+      await _saveStage(nextStage);
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'مرحله بعد باز شد! 🎉\n'
+            '${_stages[nextStage].titleFa}',
+          ),
+        ),
+      );
+
+      return;
+    }
+
+    await _completeLesson();
   }
 
   Future<void> _completeLesson() async {
-    if (!_canComplete) return;
-
     final prefs = await SharedPreferences.getInstance();
 
     final completed =
-        prefs.getStringList(_completedLessonsKey) ?? [];
+        prefs.getStringList(
+              _completedLessonsKey,
+            ) ??
+            [];
 
     if (!completed.contains(widget.lesson.id)) {
       completed.add(widget.lesson.id);
@@ -280,9 +546,12 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('درس کامل شد 🎉'),
+          title: const Text(
+            'درس کامل شد 🎉',
+          ),
           content: Text(
-            'آفرین! درس «${widget.lesson.titleFa}» را کامل کردی.\n\n'
+            'آفرین! درس «${widget.lesson.titleFa}» '
+            'را کامل کردی.\n\n'
             'حالا می‌تونی بری سراغ درس بعدی 😼💜',
           ),
           actions: [
@@ -302,6 +571,126 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     }
   }
 
+  Widget _buildProgressHeader() {
+    final total = _stages.length;
+
+    if (total == 0) {
+      return const SizedBox.shrink();
+    }
+
+    final progress =
+        (_currentStage + 1) / total;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'مرحله ${_currentStage + 1} از $total',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Text(
+                  '${(progress * 100).round()}%',
+                  style: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(20),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 8,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStageList() {
+    return Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
+      children: [
+        _buildSectionTitle(
+          'Stages',
+          'مراحل درس',
+        ),
+        ...List.generate(
+          _stages.length,
+          (index) {
+            final stage = _stages[index];
+            final unlocked =
+                _canEnterStage(index);
+
+            final completed =
+                _stageCompleted(stage);
+
+            return Card(
+              margin:
+                  const EdgeInsets.only(bottom: 10),
+              child: ListTile(
+                enabled: unlocked,
+                leading: CircleAvatar(
+                  child: Icon(
+                    completed
+                        ? Icons.check
+                        : unlocked
+                            ? Icons.play_arrow
+                            : Icons.lock,
+                  ),
+                ),
+                title: Text(
+                  stage.titleFa,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  stage.description,
+                ),
+                trailing: unlocked
+                    ? const Icon(
+                        Icons.chevron_right,
+                      )
+                    : const Icon(
+                        Icons.lock_outline,
+                      ),
+                onTap: unlocked
+                    ? () {
+                        setState(() {
+                          _currentStage = index;
+                        });
+
+                        _saveStage(index);
+                      }
+                    : null,
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _buildSectionTitle(
     String title,
     String titleFa,
@@ -312,7 +701,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
         bottom: 10,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
         children: [
           Text(
             titleFa,
@@ -345,14 +735,17 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     A1BasicExample example,
     int index,
   ) {
-    final listened = _listenedExamples.contains(index);
+    final listened =
+        _listenedExamples.contains(index);
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin:
+          const EdgeInsets.only(bottom: 10),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -361,18 +754,22 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                     example.english,
                     style: const TextStyle(
                       fontSize: 17,
-                      fontWeight: FontWeight.bold,
+                      fontWeight:
+                          FontWeight.bold,
                     ),
                   ),
                 ),
                 IconButton(
                   tooltip: 'Listen',
                   onPressed: () async {
-                    await _speak(example.english);
+                    await _speak(
+                      example.english,
+                    );
 
                     if (mounted) {
                       setState(() {
-                        _listenedExamples.add(index);
+                        _listenedExamples
+                            .add(index);
                       });
                     }
                   },
@@ -386,7 +783,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
             ),
             const SizedBox(height: 5),
             Text(example.persian),
-            if (example.pronunciation != null) ...[
+            if (example.pronunciation !=
+                null) ...[
               const SizedBox(height: 5),
               Text(
                 example.pronunciation!,
@@ -407,30 +805,37 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     A1BasicQuestion question,
     int index,
   ) {
-    final answered = _answeredQuestions.contains(index);
+    final answered =
+        _answeredQuestions.contains(index);
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 14),
+      margin:
+          const EdgeInsets.only(bottom: 14),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(
                     question.question,
                     style: const TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight:
+                          FontWeight.bold,
                     ),
                   ),
                 ),
                 IconButton(
                   onPressed: () {
-                    _speak(question.question);
+                    _speak(
+                      question.question,
+                    );
                   },
                   icon: const Icon(
                     Icons.volume_up_outlined,
@@ -441,11 +846,16 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
             const SizedBox(height: 10),
             ...question.options.map(
               (option) {
-                final selected = _selectedAnswer == option &&
-                    answered;
+                final selected =
+                    _selectedAnswer ==
+                            option &&
+                        answered;
 
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding:
+                      const EdgeInsets.only(
+                    bottom: 8,
+                  ),
                   child: SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
@@ -453,29 +863,41 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                           ? null
                           : () {
                               setState(() {
-                                _selectedAnswer = option;
-                                _answeredQuestions.add(index);
+                                _selectedAnswer =
+                                    option;
+
+                                _answeredQuestions
+                                    .add(index);
                               });
 
                               final isCorrect =
-                                  option == question.answer;
+                                  option ==
+                                      question.answer;
 
-                              ScaffoldMessenger.of(context)
+                              ScaffoldMessenger
+                                      .of(context)
                                   .showSnackBar(
                                 SnackBar(
                                   content: Text(
                                     isCorrect
                                         ? 'درست! 😼💜'
-                                        : 'جواب درست: ${question.answer}',
+                                        : 'جواب درست: '
+                                            '${question.answer}',
                                   ),
                                   duration:
-                                      const Duration(seconds: 2),
+                                      const Duration(
+                                    seconds: 2,
+                                  ),
                                 ),
                               );
                             },
-                      style: OutlinedButton.styleFrom(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.symmetric(
+                      style:
+                          OutlinedButton.styleFrom(
+                        alignment:
+                            Alignment.centerLeft,
+                        padding:
+                            const EdgeInsets
+                                .symmetric(
                           horizontal: 14,
                           vertical: 12,
                         ),
@@ -483,11 +905,13 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Text(option),
+                            child:
+                                Text(option),
                           ),
                           if (selected)
                             const Icon(
-                              Icons.check_circle,
+                              Icons
+                                  .check_circle,
                               size: 20,
                             ),
                         ],
@@ -497,7 +921,9 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                 );
               },
             ),
-            if (answered && question.explanation != null) ...[
+            if (answered &&
+                question.explanation !=
+                    null) ...[
               const SizedBox(height: 8),
               Text(
                 question.explanation!,
@@ -518,31 +944,40 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     A1BasicSpeakingQuestion question,
     int index,
   ) {
-    final completed = _completedSpeaking.contains(index);
-    final active = _currentSpeakingIndex == index;
+    final completed =
+        _completedSpeaking.contains(index);
+
+    final active =
+        _currentSpeakingIndex == index;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 14),
+      margin:
+          const EdgeInsets.only(bottom: 14),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(
                     question.question,
                     style: const TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight:
+                          FontWeight.bold,
                     ),
                   ),
                 ),
                 IconButton(
                   onPressed: () {
-                    _speak(question.question);
+                    _speak(
+                      question.question,
+                    );
                   },
                   icon: const Icon(
                     Icons.volume_up_outlined,
@@ -553,9 +988,14 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
             const SizedBox(height: 6),
             Text(question.persian),
             const SizedBox(height: 14),
-            if (active && _recognizedText.isNotEmpty)
+            if (active &&
+                _recognizedText
+                    .isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+                padding:
+                    const EdgeInsets.only(
+                  bottom: 10,
+                ),
                 child: Text(
                   'شنیدم: $_recognizedText',
                   style: TextStyle(
@@ -572,7 +1012,10 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                     ? null
                     : (_isListening
                         ? _stopListening
-                        : () => _startListening(index)),
+                        : () =>
+                            _startListening(
+                              index,
+                            )),
                 icon: Icon(
                   _isListening && active
                       ? Icons.stop
@@ -581,7 +1024,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                 label: Text(
                   completed
                       ? 'Completed ✓'
-                      : (_isListening && active
+                      : (_isListening &&
+                              active
                           ? 'Stop'
                           : 'Speak'),
                 ),
@@ -590,6 +1034,130 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCurrentStage() {
+    if (_stages.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final stage =
+        _stages[_currentStage];
+
+    final stageQuestions =
+        List.generate(
+      stage.questionEnd -
+          stage.questionStart,
+      (index) =>
+          stage.questionStart + index,
+    );
+
+    final stageSpeaking =
+        List.generate(
+      stage.speakingEnd -
+          stage.speakingStart,
+      (index) =>
+          stage.speakingStart + index,
+    );
+
+    return Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
+      children: [
+        Card(
+          child: Padding(
+            padding:
+                const EdgeInsets.all(18),
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Text(
+                  stage.titleFa,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight:
+                        FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  stage.title,
+                  style: TextStyle(
+                    color:
+                        Theme.of(context)
+                            .colorScheme
+                            .primary,
+                    fontWeight:
+                        FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  stage.description,
+                  style:
+                      const TextStyle(
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        if (stageQuestions.isNotEmpty) ...[
+          _buildSectionTitle(
+            'Practice',
+            'تمرین',
+          ),
+          ...stageQuestions.map(
+            (index) => _buildQuestion(
+              _questions[index],
+              index,
+            ),
+          ),
+        ],
+
+        if (stageSpeaking.isNotEmpty) ...[
+          _buildSectionTitle(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+          ...stageSpeaking.map(
+            (index) =>
+                _buildSpeakingQuestion(
+              widget.lesson
+                  .speakingQuestions[index],
+              index,
+            ),
+          ),
+        ],
+
+        const SizedBox(height: 18),
+
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed:
+                _stageCompleted(stage)
+                    ? _finishCurrentStage
+                    : null,
+            icon: Icon(
+              _currentStage ==
+                      _stages.length - 1
+                  ? Icons.check_circle
+                  : Icons.arrow_forward,
+            ),
+            label: Text(
+              _currentStage ==
+                      _stages.length - 1
+                  ? 'Complete Lesson'
+                  : 'Complete Stage',
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -604,18 +1172,21 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.lesson.titleFa),
+        title:
+            Text(widget.lesson.titleFa),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(
+          padding:
+              const EdgeInsets.fromLTRB(
             16,
             12,
             16,
             30,
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
             children: [
               Text(
                 widget.lesson.title,
@@ -623,7 +1194,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                     .textTheme
                     .headlineSmall
                     ?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight:
+                          FontWeight.bold,
                     ),
               ),
               const SizedBox(height: 4),
@@ -633,18 +1205,28 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                     .textTheme
                     .bodyMedium
                     ?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary,
+                      color:
+                          Theme.of(context)
+                              .colorScheme
+                              .primary,
                     ),
               ),
+
               const SizedBox(height: 18),
+
+              _buildProgressHeader(),
+
+              const SizedBox(height: 8),
+
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding:
+                      const EdgeInsets.all(16),
                   child: Text(
-                    widget.lesson.explanation,
-                    style: const TextStyle(
+                    widget.lesson
+                        .explanation,
+                    style:
+                        const TextStyle(
                       fontSize: 16,
                       height: 1.6,
                     ),
@@ -652,56 +1234,94 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                 ),
               ),
 
-              if (widget.lesson.sections.isNotEmpty) ...[
+              if (widget.lesson.sections
+                  .isNotEmpty) ...[
                 _buildSectionTitle(
                   'Lesson Sections',
                   'بخش‌های درس',
                 ),
-                ...widget.lesson.sections.map(
+                ...widget.lesson.sections
+                    .map(
                   (section) => Card(
-                    margin: const EdgeInsets.only(bottom: 12),
+                    margin:
+                        const EdgeInsets.only(
+                      bottom: 12,
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding:
+                          const EdgeInsets
+                              .all(16),
                       child: Column(
                         crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                            CrossAxisAlignment
+                                .start,
                         children: [
                           Text(
                             section.titleFa,
-                            style: const TextStyle(
+                            style:
+                                const TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontWeight:
+                                  FontWeight
+                                      .bold,
                             ),
                           ),
-                          const SizedBox(height: 3),
-                          Text(section.title),
-                          const SizedBox(height: 10),
+                          const SizedBox(
+                            height: 3,
+                          ),
                           Text(
-                            section.explanation,
-                            style: const TextStyle(
+                            section.title,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            section
+                                .explanation,
+                            style:
+                                const TextStyle(
                               height: 1.5,
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          ...section.examples.map(
-                            (example) => ListTile(
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ...section
+                              .examples
+                              .map(
+                            (example) =>
+                                ListTile(
                               contentPadding:
-                                  EdgeInsets.zero,
+                                  EdgeInsets
+                                      .zero,
                               title: Text(
-                                example.english,
-                                style: const TextStyle(
+                                example
+                                    .english,
+                                style:
+                                    const TextStyle(
                                   fontWeight:
-                                      FontWeight.bold,
+                                      FontWeight
+                                          .bold,
                                 ),
                               ),
                               subtitle:
-                                  Text(example.persian),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  _speak(example.english);
+                                  Text(
+                                example
+                                    .persian,
+                              ),
+                              trailing:
+                                  IconButton(
+                                onPressed:
+                                    () {
+                                  _speak(
+                                    example
+                                        .english,
+                                  );
                                 },
-                                icon: const Icon(
-                                  Icons.volume_up_outlined,
+                                icon:
+                                    const Icon(
+                                  Icons
+                                      .volume_up_outlined,
                                 ),
                               ),
                             ),
@@ -713,65 +1333,58 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
                 ),
               ],
 
-              if (widget.lesson.examples.isNotEmpty) ...[
+              if (widget.lesson.examples
+                  .isNotEmpty) ...[
                 _buildSectionTitle(
                   'Examples',
                   'مثال‌ها',
                 ),
                 ...List.generate(
-                  widget.lesson.examples.length,
-                  (index) => _buildExample(
-                    widget.lesson.examples[index],
+                  widget.lesson.examples
+                      .length,
+                  (index) =>
+                      _buildExample(
+                    widget.lesson
+                        .examples[index],
                     index,
                   ),
                 ),
               ],
 
-              if (_questions.isNotEmpty) ...[
-                _buildSectionTitle(
-                  'Practice',
-                  'تمرین',
-                ),
-                ...List.generate(
-                  _questions.length,
-                  (index) => _buildQuestion(
-                    _questions[index],
-                    index,
-                  ),
-                ),
-              ],
+              _buildStageList(),
 
-              if (widget.lesson.speakingQuestions.isNotEmpty) ...[
-                _buildSectionTitle(
-                  'Speaking',
-                  'تمرین مکالمه',
-                ),
-                ...List.generate(
-                  widget.lesson.speakingQuestions.length,
-                  (index) => _buildSpeakingQuestion(
-                    widget.lesson.speakingQuestions[index],
-                    index,
-                  ),
-                ),
-              ],
-
-              const SizedBox(height: 12),
-
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed:
-                      _canComplete ? _completeLesson : null,
-                  icon: const Icon(Icons.check_circle_outline),
-                  label: const Text(
-                    'Complete Lesson',
-                  ),
-                ),
+              _buildSectionTitle(
+                'Current Stage',
+                'مرحله فعلی',
               ),
+
+              _buildCurrentStage(),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class _A1Stage {
+  final String title;
+  final String titleFa;
+  final String description;
+
+  final int questionStart;
+  final int questionEnd;
+
+  final int speakingStart;
+  final int speakingEnd;
+
+  const _A1Stage({
+    required this.title,
+    required this.titleFa,
+    required this.description,
+    required this.questionStart,
+    required this.questionEnd,
+    this.speakingStart = 0,
+    this.speakingEnd = 0,
+  });
 }
