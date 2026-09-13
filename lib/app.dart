@@ -1,122 +1,64 @@
 import 'package:flutter/material.dart';
 
-import 'pages/home_page.dart';
-import 'pages/learn_page.dart';
-import 'pages/practice_page.dart';
-import 'pages/meow_page.dart';
-import 'pages/progress_page.dart';
-import 'pages/profile_page.dart';
-import 'pages/lesson_list_page.dart';
-import 'pages/settings_page.dart';
-
-final ValueNotifier<Locale> appLocale =
-    ValueNotifier(const Locale('en'));
-
 class MeowApp extends StatelessWidget {
   const MeowApp({super.key});
 
+  static const Color lavender = Color(0xFF9B7EDE);
+
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Locale>(
-      valueListenable: appLocale,
-      builder: (context, locale, child) {
-        final isPersian = locale.languageCode == 'fa';
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
 
-        return Directionality(
-          textDirection:
-              isPersian ? TextDirection.rtl : TextDirection.ltr,
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Meow AI',
+      title: 'Meow AI',
 
-            locale: locale,
+      // تم روشن ☀️
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: lavender,
+        scaffoldBackgroundColor: Colors.white,
 
-            supportedLocales: const [
-              Locale('en'),
-              Locale('fa'),
-            ],
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: lavender,
+          brightness: Brightness.light,
+        ),
 
-            localizationsDelegates: const [
-              MeowLocalizationsDelegate(),
-            ],
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+        ),
+      ),
 
-            theme: ThemeData(
-              brightness: Brightness.dark,
-              useMaterial3: true,
+      // تم تیره 🌙
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: lavender,
+
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: lavender,
+          brightness: Brightness.dark,
+        ),
+
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+        ),
+      ),
+
+      // فعلاً روی System
+      themeMode: ThemeMode.system,
+
+      home: const Scaffold(
+        body: Center(
+          child: Text(
+            'Meow AI',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
             ),
-
-            home: const HomePage(),
-
-            routes: {
-              '/a1-lessons': (_) => const LessonListPage(),
-              '/learn': (_) => const LearnPage(),
-              '/practice': (_) => const PracticePage(),
-              '/meow': (_) => const MeowPage(),
-              '/progress': (_) => const ProgressPage(),
-              '/profile': (_) => const ProfilePage(),
-              '/settings': (_) => const SettingsPage(),
-            },
           ),
-        );
-      },
+        ),
+      ),
     );
-  }
-}
-
-class MeowLocalizations {
-  final Locale locale;
-
-  const MeowLocalizations(this.locale);
-
-  static MeowLocalizations of(BuildContext context) {
-    return Localizations.of<MeowLocalizations>(
-          context,
-          MeowLocalizations,
-        ) ??
-        const MeowLocalizations(Locale('en'));
-  }
-
-  bool get isPersian => locale.languageCode == 'fa';
-
-  String get home => isPersian ? 'خانه' : 'Home';
-
-  String get learn => isPersian ? 'یادگیری' : 'Learn';
-
-  String get practice => isPersian ? 'تمرین' : 'Practice';
-
-  String get meow => isPersian ? 'میو' : 'Meow';
-
-  String get progress => isPersian ? 'پیشرفت' : 'Progress';
-
-  String get profile => isPersian ? 'پروفایل' : 'Profile';
-
-  String get settings => isPersian ? 'تنظیمات' : 'Settings';
-
-  String get appLanguage =>
-      isPersian ? 'زبان برنامه' : 'App Language';
-
-  String get english => 'English';
-
-  String get persian => 'فارسی';
-}
-
-class MeowLocalizationsDelegate
-    extends LocalizationsDelegate<MeowLocalizations> {
-  const MeowLocalizationsDelegate();
-
-  @override
-  bool isSupported(Locale locale) {
-    return locale.languageCode == 'en' ||
-        locale.languageCode == 'fa';
-  }
-
-  @override
-  Future<MeowLocalizations> load(Locale locale) async {
-    return MeowLocalizations(locale);
-  }
-
-  @override
-  bool shouldReload(MeowLocalizationsDelegate old) {
-    return false;
   }
 }
