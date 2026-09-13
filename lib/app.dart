@@ -5,7 +5,6 @@ import 'localization.dart';
 import 'pages/home_page.dart';
 import 'pages/learn_page.dart';
 import 'pages/lesson_list_page.dart';
-import 'pages/lesson_page.dart';
 import 'pages/meow_page.dart';
 import 'pages/practice_page.dart';
 import 'pages/profile_page.dart';
@@ -89,7 +88,6 @@ class MeowApp extends StatelessWidget {
             '/home': (context) => const HomePage(),
             '/learn': (context) => const LearnPage(),
             '/a1-lessons': (context) => const LessonListPage(),
-            '/lesson': (context) => const LessonPage(),
             '/practice': (context) => const PracticePage(),
             '/meow': (context) => const MeowPage(),
             '/profile': (context) => const ProfilePage(),
