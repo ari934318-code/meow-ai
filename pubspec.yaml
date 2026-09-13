@@ -30,3 +30,8 @@ flutter:
 
   assets:
     - meow_icon.png
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "meow_icon.png"
