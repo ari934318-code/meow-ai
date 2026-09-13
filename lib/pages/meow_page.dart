@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import '../data/meow_brain.dart';
 import '../localization.dart';
+import '../memory/meow_learning/meow_learning_manager.dart';
 
 class MeowPage extends StatefulWidget {
   const MeowPage({super.key});
@@ -18,17 +19,26 @@ class MeowPage extends StatefulWidget {
 class _MeowPageState extends State<MeowPage> {
   static const Color lavender = Color(0xFFB9A7E8);
 
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller =
+      TextEditingController();
 
-  final stt.SpeechToText _speech = stt.SpeechToText();
-  final ImagePicker _imagePicker = ImagePicker();
+  final stt.SpeechToText _speech =
+      stt.SpeechToText();
+
+  final ImagePicker _imagePicker =
+      ImagePicker();
+
+  final MeowLearningManager _learningManager =
+      MeowLearningManager();
 
   bool _speechEnabled = false;
   bool _isListening = false;
+  bool _learningInitialized = false;
 
   String _recognizedText = '';
 
-  String _practiceSentence = "I'd like a drink, please.";
+  String _practiceSentence =
+      "I'd like a drink, please.";
 
   MeowMood _mood = MeowMood.calm;
 
@@ -48,7 +58,52 @@ class _MeowPageState extends State<MeowPage> {
   @override
   void initState() {
     super.initState();
+
     _initializeSpeech();
+    _initializeLearning();
+  }
+
+  // ─────────────────────────────
+  // MEOW LEARNING
+  // ─────────────────────────────
+
+  Future<void> _initializeLearning() async {
+    try {
+      await _learningManager.initialize();
+
+      if (!mounted) return;
+
+      setState(() {
+        _learningInitialized = true;
+      });
+    } catch (_) {
+      if (!mounted) return;
+
+      setState(() {
+        _learningInitialized = false;
+      });
+    }
+  }
+
+  Future<void> _observeUserPhrase(String phrase) async {
+    if (!_learningInitialized) {
+      return;
+    }
+
+    final cleanedPhrase = phrase.trim();
+
+    if (cleanedPhrase.isEmpty) {
+      return;
+    }
+
+    try {
+      await _learningManager.observe(
+        cleanedPhrase,
+      );
+    } catch (_) {
+      // خطای سیستم یادگیری نباید باعث خراب شدن
+      // چت اصلی Meow شود.
+    }
   }
 
   String get _moodAsset {
@@ -70,7 +125,9 @@ class _MeowPageState extends State<MeowPage> {
     }
   }
 
-  String _statusText(MeowLocalizations lang) {
+  String _statusText(
+    MeowLocalizations lang,
+  ) {
     if (_isListening) {
       return lang.isPersian
           ? 'دارم گوش می‌دم...'
@@ -105,6 +162,10 @@ class _MeowPageState extends State<MeowPage> {
     }
   }
 
+  // ─────────────────────────────
+  // SPEECH
+  // ─────────────────────────────
+
   Future<void> _initializeSpeech() async {
     final available = await _speech.initialize(
       onStatus: _onSpeechStatus,
@@ -137,11 +198,14 @@ class _MeowPageState extends State<MeowPage> {
     });
   }
 
-  void _onSpeechResult(SpeechRecognitionResult result) {
+  void _onSpeechResult(
+    SpeechRecognitionResult result,
+  ) {
     if (!mounted) return;
 
     setState(() {
-      _recognizedText = result.recognizedWords;
+      _recognizedText =
+          result.recognizedWords;
     });
   }
 
@@ -166,8 +230,12 @@ class _MeowPageState extends State<MeowPage> {
     await _speech.listen(
       onResult: _onSpeechResult,
       localeId: 'en_US',
-      listenFor: const Duration(seconds: 15),
-      pauseFor: const Duration(seconds: 3),
+      listenFor: const Duration(
+        seconds: 15,
+      ),
+      pauseFor: const Duration(
+        seconds: 3,
+      ),
       partialResults: true,
     );
   }
@@ -205,15 +273,21 @@ class _MeowPageState extends State<MeowPage> {
       return;
     }
 
-    final targetWords = _normalizeText(_practiceSentence)
-        .split(' ')
-        .where((word) => word.isNotEmpty)
-        .toList();
+    final targetWords =
+        _normalizeText(_practiceSentence)
+            .split(' ')
+            .where(
+              (word) => word.isNotEmpty,
+            )
+            .toList();
 
-    final spokenWords = _normalizeText(_recognizedText)
-        .split(' ')
-        .where((word) => word.isNotEmpty)
-        .toList();
+    final spokenWords =
+        _normalizeText(_recognizedText)
+            .split(' ')
+            .where(
+              (word) => word.isNotEmpty,
+            )
+            .toList();
 
     if (targetWords.isEmpty) return;
 
@@ -225,32 +299,37 @@ class _MeowPageState extends State<MeowPage> {
       }
     }
 
-    final score = ((matchedWords / targetWords.length) * 100)
-        .round()
-        .clamp(0, 100);
+    final score =
+        ((matchedWords / targetWords.length) * 100)
+            .round()
+            .clamp(0, 100);
 
     String resultMessage;
 
     if (score >= 90) {
-      resultMessage = 'Excellent! 😻 Your sentence was very close.';
+      resultMessage =
+          'Excellent! 😻 Your sentence was very close.';
 
       setState(() {
         _mood = MeowMood.cheering;
       });
     } else if (score >= 70) {
-      resultMessage = 'Good job! 😺 A little more practice!';
+      resultMessage =
+          'Good job! 😺 A little more practice!';
 
       setState(() {
         _mood = MeowMood.happy;
       });
     } else if (score >= 40) {
-      resultMessage = 'Keep practicing! 🐱 Try the sentence again.';
+      resultMessage =
+          'Keep practicing! 🐱 Try the sentence again.';
 
       setState(() {
         _mood = MeowMood.surprised;
       });
     } else {
-      resultMessage = "Let's try again together. 💜";
+      resultMessage =
+          "Let's try again together. 💜";
 
       setState(() {
         _mood = MeowMood.angry;
@@ -262,7 +341,8 @@ class _MeowPageState extends State<MeowPage> {
     showDialog(
       context: context,
       builder: (context) {
-        final lang = MeowLocalizations.of(context);
+        final lang =
+            MeowLocalizations.of(context);
 
         return AlertDialog(
           title: Text(
@@ -272,7 +352,8 @@ class _MeowPageState extends State<MeowPage> {
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
             children: [
               Text(
                 lang.isPersian
@@ -310,9 +391,12 @@ class _MeowPageState extends State<MeowPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () =>
+                  Navigator.pop(context),
               child: Text(
-                lang.isPersian ? 'باشه' : 'OK',
+                lang.isPersian
+                    ? 'باشه'
+                    : 'OK',
               ),
             ),
           ],
@@ -324,8 +408,14 @@ class _MeowPageState extends State<MeowPage> {
   String _normalizeText(String text) {
     return text
         .toLowerCase()
-        .replaceAll(RegExp(r"[^\w\s']"), '')
-        .replaceAll(RegExp(r'\s+'), ' ')
+        .replaceAll(
+          RegExp(r"[^\w\s']"),
+          '',
+        )
+        .replaceAll(
+          RegExp(r'\s+'),
+          ' ',
+        )
         .trim();
   }
 
@@ -333,13 +423,21 @@ class _MeowPageState extends State<MeowPage> {
   // MEOW BRAIN CONNECTION
   // ─────────────────────────────
 
-  void _sendText() {
+  Future<void> _sendText() async {
     final text = _controller.text.trim();
 
     if (text.isEmpty) return;
 
-    final response = MeowBrain.respond(text);
-    final lang = MeowLocalizations.of(context);
+    // جمله کاربر را وارد سیستم یادگیری می‌کنیم.
+    await _observeUserPhrase(text);
+
+    if (!mounted) return;
+
+    final response =
+        MeowBrain.respond(text);
+
+    final lang =
+        MeowLocalizations.of(context);
 
     final meowText = _buildBrainMessage(
       response,
@@ -360,8 +458,10 @@ class _MeowPageState extends State<MeowPage> {
       _mood = response.mood;
 
       if (response.english.trim().isNotEmpty &&
-          response.intent != MeowIntent.unknown) {
-        _practiceSentence = response.english;
+          response.intent !=
+              MeowIntent.unknown) {
+        _practiceSentence =
+            response.english;
       }
     });
 
@@ -377,13 +477,19 @@ class _MeowPageState extends State<MeowPage> {
     if (lang.isPersian) {
       buffer.writeln(response.persian);
 
-      if (response.english.trim().isNotEmpty) {
+      if (response.english
+          .trim()
+          .isNotEmpty) {
         buffer.writeln();
-        buffer.writeln('🇬🇧 ${response.english}');
+        buffer.writeln(
+          '🇬🇧 ${response.english}',
+        );
       }
 
       if (response.pronunciation != null &&
-          response.pronunciation!.trim().isNotEmpty) {
+          response.pronunciation!
+              .trim()
+              .isNotEmpty) {
         buffer.writeln();
         buffer.writeln(
           '🔊 ${response.pronunciation}',
@@ -392,13 +498,19 @@ class _MeowPageState extends State<MeowPage> {
     } else {
       buffer.writeln(response.english);
 
-      if (response.persian.trim().isNotEmpty) {
+      if (response.persian
+          .trim()
+          .isNotEmpty) {
         buffer.writeln();
-        buffer.writeln('🇮🇷 ${response.persian}');
+        buffer.writeln(
+          '🇮🇷 ${response.persian}',
+        );
       }
 
       if (response.pronunciation != null &&
-          response.pronunciation!.trim().isNotEmpty) {
+          response.pronunciation!
+              .trim()
+              .isNotEmpty) {
         buffer.writeln();
         buffer.writeln(
           '🔊 ${response.pronunciation}',
@@ -414,8 +526,11 @@ class _MeowPageState extends State<MeowPage> {
             : 'Examples:',
       );
 
-      for (final example in response.examples.take(3)) {
-        buffer.writeln('• $example');
+      for (final example
+          in response.examples.take(3)) {
+        buffer.writeln(
+          '• $example',
+        );
       }
     }
 
@@ -429,21 +544,32 @@ class _MeowPageState extends State<MeowPage> {
       );
     }
 
-    return buffer.toString().trim();
+    return buffer
+        .toString()
+        .trim();
   }
 
-  Future<void> _openHomeworkPicker() async {
-    final lang = MeowLocalizations.of(context);
+  // ─────────────────────────────
+  // HOMEWORK
+  // ─────────────────────────────
 
-    final source = await showModalBottomSheet<ImageSource>(
+  Future<void> _openHomeworkPicker() async {
+    final lang =
+        MeowLocalizations.of(context);
+
+    final source =
+        await showModalBottomSheet<ImageSource>(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        final theme = Theme.of(context);
-        final colors = theme.colorScheme;
+        final theme =
+            Theme.of(context);
+        final colors =
+            theme.colorScheme;
 
         return Container(
-          padding: const EdgeInsets.fromLTRB(
+          padding:
+              const EdgeInsets.fromLTRB(
             20,
             18,
             20,
@@ -451,41 +577,61 @@ class _MeowPageState extends State<MeowPage> {
           ),
           decoration: BoxDecoration(
             color: colors.surface,
-            borderRadius: const BorderRadius.vertical(
+            borderRadius:
+                const BorderRadius.vertical(
               top: Radius.circular(28),
             ),
           ),
           child: SafeArea(
             top: false,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize:
+                  MainAxisSize.min,
               children: [
                 Container(
                   width: 42,
                   height: 5,
-                  decoration: BoxDecoration(
-                    color: colors.onSurface.withValues(
+                  decoration:
+                      BoxDecoration(
+                    color: colors
+                        .onSurface
+                        .withValues(
                       alpha: 0.15,
                     ),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius:
+                        BorderRadius.circular(
+                      10,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(
+                  height: 20,
+                ),
                 Text(
                   lang.isPersian
                       ? 'عکس تکلیف را اضافه کن'
                       : 'Add homework photo',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
+                  style: theme
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(
+                    fontWeight:
+                        FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(
+                  height: 18,
+                ),
                 ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: lavender,
+                  leading:
+                      const CircleAvatar(
+                    backgroundColor:
+                        lavender,
                     child: Icon(
-                      Icons.camera_alt_rounded,
-                      color: Colors.white,
+                      Icons
+                          .camera_alt_rounded,
+                      color:
+                          Colors.white,
                     ),
                   ),
                   title: Text(
@@ -506,11 +652,15 @@ class _MeowPageState extends State<MeowPage> {
                   },
                 ),
                 ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: lavender,
+                  leading:
+                      const CircleAvatar(
+                    backgroundColor:
+                        lavender,
                     child: Icon(
-                      Icons.photo_library_rounded,
-                      color: Colors.white,
+                      Icons
+                          .photo_library_rounded,
+                      color:
+                          Colors.white,
                     ),
                   ),
                   title: Text(
@@ -546,7 +696,8 @@ class _MeowPageState extends State<MeowPage> {
     ImageSource source,
   ) async {
     try {
-      final image = await _imagePicker.pickImage(
+      final image =
+          await _imagePicker.pickImage(
         source: source,
         imageQuality: 85,
         maxWidth: 1600,
@@ -561,7 +712,8 @@ class _MeowPageState extends State<MeowPage> {
         _mood = MeowMood.happy;
       });
 
-      final lang = MeowLocalizations.of(context);
+      final lang =
+          MeowLocalizations.of(context);
 
       setState(() {
         messages.add({
@@ -575,7 +727,8 @@ class _MeowPageState extends State<MeowPage> {
       if (!mounted) return;
 
       setState(() {
-        _mood = MeowMood.surprised;
+        _mood =
+            MeowMood.surprised;
       });
 
       _showMessage(
@@ -593,47 +746,68 @@ class _MeowPageState extends State<MeowPage> {
   void _showMessage(String text) {
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
       SnackBar(
         content: Text(text),
-        behavior: SnackBarBehavior.floating,
+        behavior:
+            SnackBarBehavior.floating,
       ),
     );
   }
 
+  // ─────────────────────────────
+  // UI
+  // ─────────────────────────────
+
   @override
   Widget build(BuildContext context) {
-    final lang = MeowLocalizations.of(context);
-    final theme = Theme.of(context);
-    final colors = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
+    final lang =
+        MeowLocalizations.of(context);
+    final theme =
+        Theme.of(context);
+    final colors =
+        theme.colorScheme;
+    final isDark =
+        theme.brightness ==
+            Brightness.dark;
 
     final cardColor = isDark
         ? Color.alphaBlend(
-            Colors.white.withValues(alpha: 0.045),
+            Colors.white.withValues(
+              alpha: 0.045,
+            ),
             colors.surface,
           )
         : colors.surface;
 
     return Scaffold(
-      backgroundColor: colors.surface,
+      backgroundColor:
+          colors.surface,
       appBar: AppBar(
-        backgroundColor: colors.surface,
+        backgroundColor:
+            colors.surface,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
+            Icons
+                .arrow_back_ios_new_rounded,
           ),
           onPressed: () {
-            Navigator.of(context).maybePop();
+            Navigator.of(context)
+                .maybePop();
           },
         ),
         title: Text(
           lang.meow,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w700,
+          style: theme
+              .textTheme
+              .titleLarge
+              ?.copyWith(
+            fontWeight:
+                FontWeight.w700,
           ),
         ),
       ),
@@ -643,8 +817,10 @@ class _MeowPageState extends State<MeowPage> {
           children: [
             Expanded(
               child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(
+                physics:
+                    const BouncingScrollPhysics(),
+                padding:
+                    const EdgeInsets.fromLTRB(
                   20,
                   12,
                   20,
@@ -656,32 +832,44 @@ class _MeowPageState extends State<MeowPage> {
                     cardColor,
                     lang,
                   ),
-                  const SizedBox(height: 20),
-                  ...messages.map((message) {
-                    final isUser =
-                        message['sender'] == 'user';
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ...messages.map(
+                    (message) {
+                      final isUser =
+                          message['sender'] ==
+                              'user';
 
-                    return _messageBubble(
-                      context,
-                      message['text']!,
-                      isUser,
-                      cardColor,
-                    );
-                  }),
-                  if (_homeworkImage != null) ...[
-                    const SizedBox(height: 10),
+                      return _messageBubble(
+                        context,
+                        message['text']!,
+                        isUser,
+                        cardColor,
+                      );
+                    },
+                  ),
+                  if (_homeworkImage !=
+                      null) ...[
+                    const SizedBox(
+                      height: 10,
+                    ),
                     _homeworkPreview(
                       context,
                       cardColor,
                       lang,
                     ),
                   ],
-                  const SizedBox(height: 28),
+                  const SizedBox(
+                    height: 28,
+                  ),
                   _liveMeow(
                     context,
                     lang,
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   _speakingPracticeCard(
                     context,
                     lang,
@@ -705,20 +893,28 @@ class _MeowPageState extends State<MeowPage> {
     Color cardColor,
     MeowLocalizations lang,
   ) {
-    final theme = Theme.of(context);
-    final colors = theme.colorScheme;
+    final theme =
+        Theme.of(context);
+    final colors =
+        theme.colorScheme;
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(
+      padding:
+          const EdgeInsets.symmetric(
         horizontal: 17,
         vertical: 15,
       ),
-      decoration: BoxDecoration(
+      decoration:
+          BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(23),
+        borderRadius:
+            BorderRadius.circular(23),
         border: Border.all(
-          color: lavender.withValues(alpha: 0.13),
+          color:
+              lavender.withValues(
+            alpha: 0.13,
+          ),
         ),
       ),
       child: Row(
@@ -726,39 +922,56 @@ class _MeowPageState extends State<MeowPage> {
           Container(
             width: 42,
             height: 42,
-            decoration: BoxDecoration(
+            decoration:
+                BoxDecoration(
               shape: BoxShape.circle,
-              color: lavender.withValues(alpha: 0.11),
+              color:
+                  lavender.withValues(
+                alpha: 0.11,
+              ),
             ),
             child: const Icon(
-              Icons.auto_awesome_rounded,
+              Icons
+                  .auto_awesome_rounded,
               color: lavender,
               size: 21,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(
+            width: 12,
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment:
-                  CrossAxisAlignment.start,
+                  CrossAxisAlignment
+                      .start,
               children: [
                 Text(
                   lang.isPersian
                       ? 'میو آماده است'
                       : 'Meow is ready',
-                  style:
-                      theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
+                  style: theme
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(
+                    fontWeight:
+                        FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(
+                  height: 3,
+                ),
                 Text(
                   lang.isPersian
                       ? 'طبیعی انگلیسی تمرین کن'
                       : 'Practice speaking naturally',
-                  style:
-                      theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurface.withValues(
+                  style: theme
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(
+                    color: colors
+                        .onSurface
+                        .withValues(
                       alpha: 0.55,
                     ),
                   ),
@@ -769,7 +982,8 @@ class _MeowPageState extends State<MeowPage> {
           Container(
             width: 9,
             height: 9,
-            decoration: const BoxDecoration(
+            decoration:
+                const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.green,
             ),
@@ -785,37 +999,60 @@ class _MeowPageState extends State<MeowPage> {
     bool isUser,
     Color cardColor,
   ) {
-    final theme = Theme.of(context);
+    final theme =
+        Theme.of(context);
 
     return Align(
-      alignment:
-          isUser ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isUser
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
       child: Container(
-        constraints: const BoxConstraints(
+        constraints:
+            const BoxConstraints(
           maxWidth: 320,
         ),
-        margin: const EdgeInsets.only(bottom: 9),
-        padding: const EdgeInsets.symmetric(
+        margin:
+            const EdgeInsets.only(
+          bottom: 9,
+        ),
+        padding:
+            const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 11,
         ),
-        decoration: BoxDecoration(
-          color: isUser ? lavender : cardColor,
-          borderRadius: BorderRadius.circular(18),
+        decoration:
+            BoxDecoration(
+          color: isUser
+              ? lavender
+              : cardColor,
+          borderRadius:
+              BorderRadius.circular(
+            18,
+          ),
           border: isUser
               ? null
               : Border.all(
-                  color: theme.colorScheme.onSurface
-                      .withValues(alpha: 0.065),
+                  color: theme
+                      .colorScheme
+                      .onSurface
+                      .withValues(
+                    alpha: 0.065,
+                  ),
                 ),
         ),
         child: Text(
           text,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
+          style: theme
+              .textTheme
+              .bodyMedium
+              ?.copyWith(
+            fontWeight:
+                FontWeight.w500,
             color: isUser
                 ? Colors.white
-                : theme.colorScheme.onSurface,
+                : theme
+                    .colorScheme
+                    .onSurface,
           ),
         ),
       ),
@@ -826,37 +1063,59 @@ class _MeowPageState extends State<MeowPage> {
     BuildContext context,
     MeowLocalizations lang,
   ) {
-    final theme = Theme.of(context);
+    final theme =
+        Theme.of(context);
 
     return Column(
       children: [
         AnimatedScale(
-          scale: _isListening ? 1.06 : 1.0,
-          duration: const Duration(
+          scale:
+              _isListening ? 1.06 : 1.0,
+          duration:
+              const Duration(
             milliseconds: 300,
           ),
-          curve: Curves.easeOut,
-          child: AnimatedContainer(
-            duration: const Duration(
+          curve:
+              Curves.easeOut,
+          child:
+              AnimatedContainer(
+            duration:
+                const Duration(
               milliseconds: 300,
             ),
             width: 190,
             height: 190,
-            padding: const EdgeInsets.all(13),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: lavender.withValues(
-                alpha: _isListening ? 0.14 : 0.075,
+            padding:
+                const EdgeInsets.all(
+              13,
+            ),
+            decoration:
+                BoxDecoration(
+              shape:
+                  BoxShape.circle,
+              color:
+                  lavender.withValues(
+                alpha: _isListening
+                    ? 0.14
+                    : 0.075,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: lavender.withValues(
-                    alpha: _isListening ? 0.22 : 0.08,
+                  color:
+                      lavender.withValues(
+                    alpha:
+                        _isListening
+                            ? 0.22
+                            : 0.08,
                   ),
                   blurRadius:
-                      _isListening ? 38 : 22,
+                      _isListening
+                          ? 38
+                          : 22,
                   spreadRadius:
-                      _isListening ? 5 : 0,
+                      _isListening
+                          ? 5
+                          : 0,
                 ),
               ],
             ),
@@ -870,7 +1129,8 @@ class _MeowPageState extends State<MeowPage> {
                   stackTrace,
                 ) {
                   return const Icon(
-                    Icons.pets_rounded,
+                    Icons
+                        .pets_rounded,
                     color: lavender,
                     size: 72,
                   );
@@ -879,9 +1139,12 @@ class _MeowPageState extends State<MeowPage> {
             ),
           ),
         ),
-        const SizedBox(height: 18),
+        const SizedBox(
+          height: 18,
+        ),
         AnimatedSwitcher(
-          duration: const Duration(
+          duration:
+              const Duration(
             milliseconds: 220,
           ),
           child: Text(
@@ -889,13 +1152,18 @@ class _MeowPageState extends State<MeowPage> {
             key: ValueKey(
               _statusText(lang),
             ),
-            style:
-                theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w800,
+            style: theme
+                .textTheme
+                .titleMedium
+                ?.copyWith(
+              fontWeight:
+                  FontWeight.w800,
             ),
           ),
         ),
-        const SizedBox(height: 5),
+        const SizedBox(
+          height: 5,
+        ),
         Text(
           _isListening
               ? (lang.isPersian
@@ -904,35 +1172,56 @@ class _MeowPageState extends State<MeowPage> {
               : (lang.isPersian
                   ? 'برای صحبت روی میکروفون بزن'
                   : 'Tap the microphone to talk'),
-          textAlign: TextAlign.center,
-          style:
-              theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface
-                .withValues(alpha: 0.55),
+          textAlign:
+              TextAlign.center,
+          style: theme
+              .textTheme
+              .bodySmall
+              ?.copyWith(
+            color: theme
+                .colorScheme
+                .onSurface
+                .withValues(
+              alpha: 0.55,
+            ),
           ),
         ),
-        const SizedBox(height: 18),
+        const SizedBox(
+          height: 18,
+        ),
         GestureDetector(
-          onTap: _toggleListening,
-          child: AnimatedContainer(
-            duration: const Duration(
+          onTap:
+              _toggleListening,
+          child:
+              AnimatedContainer(
+            duration:
+                const Duration(
               milliseconds: 250,
             ),
             width: 68,
             height: 68,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
+            decoration:
+                BoxDecoration(
+              shape:
+                  BoxShape.circle,
               color: lavender,
               boxShadow: [
                 BoxShadow(
-                  color: lavender.withValues(
+                  color:
+                      lavender.withValues(
                     alpha:
-                        _isListening ? 0.35 : 0.18,
+                        _isListening
+                            ? 0.35
+                            : 0.18,
                   ),
                   blurRadius:
-                      _isListening ? 28 : 17,
+                      _isListening
+                          ? 28
+                          : 17,
                   spreadRadius:
-                      _isListening ? 3 : 0,
+                      _isListening
+                          ? 3
+                          : 0,
                 ),
               ],
             ),
@@ -940,7 +1229,8 @@ class _MeowPageState extends State<MeowPage> {
               _isListening
                   ? Icons.stop_rounded
                   : Icons.mic_rounded,
-              color: Colors.white,
+              color:
+                  Colors.white,
               size: 29,
             ),
           ),
@@ -954,76 +1244,113 @@ class _MeowPageState extends State<MeowPage> {
     MeowLocalizations lang,
     Color cardColor,
   ) {
-    final theme = Theme.of(context);
+    final theme =
+        Theme.of(context);
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(
+      padding:
+          const EdgeInsets.fromLTRB(
         18,
         17,
         18,
         17,
       ),
-      decoration: BoxDecoration(
+      decoration:
+          BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(23),
+        borderRadius:
+            BorderRadius.circular(
+          23,
+        ),
         border: Border.all(
-          color: theme.colorScheme.onSurface
-              .withValues(alpha: 0.065),
+          color: theme
+              .colorScheme
+              .onSurface
+              .withValues(
+            alpha: 0.065,
+          ),
         ),
       ),
       child: Column(
         crossAxisAlignment:
-            CrossAxisAlignment.start,
+            CrossAxisAlignment
+                .start,
         children: [
           Row(
             children: [
               const Icon(
-                Icons.record_voice_over_rounded,
+                Icons
+                    .record_voice_over_rounded,
                 color: lavender,
                 size: 21,
               ),
-              const SizedBox(width: 9),
+              const SizedBox(
+                width: 9,
+              ),
               Text(
                 lang.isPersian
                     ? 'تمرین سریع صحبت کردن'
                     : 'Quick speaking practice',
-                style:
-                    theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
+                style: theme
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(
+                  fontWeight:
+                      FontWeight.w800,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 13),
+          const SizedBox(
+            height: 13,
+          ),
           Text(
             lang.isPersian
                 ? 'این جمله را بگو:'
                 : 'Try saying:',
-            style:
-                theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface
-                  .withValues(alpha: 0.55),
+            style: theme
+                .textTheme
+                .bodySmall
+                ?.copyWith(
+              color: theme
+                  .colorScheme
+                  .onSurface
+                  .withValues(
+                alpha: 0.55,
+              ),
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(
+            height: 5,
+          ),
           Text(
             _practiceSentence,
-            style:
-                theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w800,
+            style: theme
+                .textTheme
+                .titleMedium
+                ?.copyWith(
+              fontWeight:
+                  FontWeight.w800,
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(
+            height: 14,
+          ),
           SizedBox(
-            width: double.infinity,
+            width:
+                double.infinity,
             height: 44,
-            child: OutlinedButton.icon(
-              onPressed: _toggleListening,
+            child:
+                OutlinedButton.icon(
+              onPressed:
+                  _toggleListening,
               icon: Icon(
                 _isListening
-                    ? Icons.stop_rounded
-                    : Icons.mic_none_rounded,
+                    ? Icons
+                        .stop_rounded
+                    : Icons
+                        .mic_none_rounded,
                 size: 20,
               ),
               label: Text(
@@ -1035,40 +1362,59 @@ class _MeowPageState extends State<MeowPage> {
                         ? 'تمرین این جمله'
                         : 'Practice this sentence'),
               ),
-              style:
-                  OutlinedButton.styleFrom(
-                foregroundColor: lavender,
-                side: BorderSide(
-                  color: lavender.withValues(
+              style: OutlinedButton
+                  .styleFrom(
+                foregroundColor:
+                    lavender,
+                side:
+                    BorderSide(
+                  color:
+                      lavender.withValues(
                     alpha: 0.60,
                   ),
                 ),
                 shape:
                     RoundedRectangleBorder(
                   borderRadius:
-                      BorderRadius.circular(17),
+                      BorderRadius.circular(
+                    17,
+                  ),
                 ),
               ),
             ),
           ),
-          if (_recognizedText.isNotEmpty) ...[
-            const SizedBox(height: 14),
+          if (_recognizedText
+              .isNotEmpty) ...[
+            const SizedBox(
+              height: 14,
+            ),
             Text(
               lang.isPersian
                   ? 'صدای شما:'
                   : 'You said:',
-              style:
-                  theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurface
-                    .withValues(alpha: 0.55),
+              style: theme
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(
+                color: theme
+                    .colorScheme
+                    .onSurface
+                    .withValues(
+                  alpha: 0.55,
+                ),
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(
+              height: 4,
+            ),
             Text(
               _recognizedText,
-              style:
-                  theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+              style: theme
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(
+                fontWeight:
+                    FontWeight.w600,
               ),
             ),
           ],
@@ -1082,55 +1428,81 @@ class _MeowPageState extends State<MeowPage> {
     Color cardColor,
     MeowLocalizations lang,
   ) {
-    final theme = Theme.of(context);
+    final theme =
+        Theme.of(context);
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
+      padding:
+          const EdgeInsets.all(14),
+      decoration:
+          BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius:
+            BorderRadius.circular(
+          22,
+        ),
         border: Border.all(
-          color: lavender.withValues(alpha: 0.18),
+          color:
+              lavender.withValues(
+            alpha: 0.18,
+          ),
         ),
       ),
       child: Column(
         crossAxisAlignment:
-            CrossAxisAlignment.start,
+            CrossAxisAlignment
+                .start,
         children: [
           Row(
             children: [
               const Icon(
-                Icons.assignment_turned_in_rounded,
+                Icons
+                    .assignment_turned_in_rounded,
                 color: lavender,
               ),
-              const SizedBox(width: 9),
+              const SizedBox(
+                width: 9,
+              ),
               Expanded(
                 child: Text(
                   lang.isPersian
                       ? 'تکلیف ثبت شد 📸'
                       : 'Homework submitted 📸',
-                  style:
-                      theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
+                  style: theme
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(
+                    fontWeight:
+                        FontWeight.w800,
                   ),
                 ),
               ),
               IconButton(
-                onPressed: _removeHomeworkImage,
+                onPressed:
+                    _removeHomeworkImage,
                 icon: const Icon(
-                  Icons.close_rounded,
+                  Icons
+                      .close_rounded,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(
+            height: 8,
+          ),
           ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius:
+                BorderRadius.circular(
+              16,
+            ),
             child: Image.file(
-              File(_homeworkImage!.path),
+              File(
+                _homeworkImage!.path,
+              ),
               height: 220,
-              width: double.infinity,
+              width:
+                  double.infinity,
               fit: BoxFit.cover,
               errorBuilder: (
                 context,
@@ -1139,11 +1511,15 @@ class _MeowPageState extends State<MeowPage> {
               ) {
                 return Container(
                   height: 180,
-                  alignment: Alignment.center,
-                  color: theme.colorScheme
+                  alignment:
+                      Alignment.center,
+                  color: theme
+                      .colorScheme
                       .surfaceContainerHighest,
-                  child: const Icon(
-                    Icons.image_rounded,
+                  child:
+                      const Icon(
+                    Icons
+                        .image_rounded,
                     size: 50,
                     color: lavender,
                   ),
@@ -1151,15 +1527,23 @@ class _MeowPageState extends State<MeowPage> {
               },
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(
+            height: 10,
+          ),
           Text(
             lang.isPersian
                 ? 'این عکس فعلاً فقط به‌عنوان ثبت انجام تکلیف استفاده می‌شود.'
                 : 'This photo is currently used only as a homework check-in.',
-            style:
-                theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface
-                  .withValues(alpha: 0.55),
+            style: theme
+                .textTheme
+                .bodySmall
+                ?.copyWith(
+              color: theme
+                  .colorScheme
+                  .onSurface
+                  .withValues(
+                alpha: 0.55,
+              ),
             ),
           ),
         ],
@@ -1171,21 +1555,27 @@ class _MeowPageState extends State<MeowPage> {
     BuildContext context,
     MeowLocalizations lang,
   ) {
-    final theme = Theme.of(context);
-    final colors = theme.colorScheme;
+    final theme =
+        Theme.of(context);
+    final colors =
+        theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(
+      padding:
+          const EdgeInsets.fromLTRB(
         15,
         9,
         15,
         12,
       ),
-      decoration: BoxDecoration(
+      decoration:
+          BoxDecoration(
         color: colors.surface,
         border: Border(
           top: BorderSide(
-            color: colors.onSurface.withValues(
+            color: colors
+                .onSurface
+                .withValues(
               alpha: 0.06,
             ),
           ),
@@ -1194,61 +1584,90 @@ class _MeowPageState extends State<MeowPage> {
       child: Row(
         children: [
           Material(
-            color: colors.surfaceContainerHighest
-                .withValues(alpha: 0.50),
-            shape: const CircleBorder(),
+            color: colors
+                .surfaceContainerHighest
+                .withValues(
+              alpha: 0.50,
+            ),
+            shape:
+                const CircleBorder(),
             child: InkWell(
-              onTap: _openHomeworkPicker,
-              customBorder: const CircleBorder(),
-              child: const SizedBox(
+              onTap:
+                  _openHomeworkPicker,
+              customBorder:
+                  const CircleBorder(),
+              child:
+                  const SizedBox(
                 width: 48,
                 height: 48,
                 child: Icon(
-                  Icons.camera_alt_rounded,
+                  Icons
+                      .camera_alt_rounded,
                   color: lavender,
                   size: 22,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(
+            width: 8,
+          ),
           Expanded(
             child: Container(
-              constraints: const BoxConstraints(
+              constraints:
+                  const BoxConstraints(
                 minHeight: 48,
                 maxHeight: 105,
               ),
-              decoration: BoxDecoration(
+              decoration:
+                  BoxDecoration(
                 color: colors
                     .surfaceContainerHighest
-                    .withValues(alpha: 0.42),
+                    .withValues(
+                  alpha: 0.42,
+                ),
                 borderRadius:
-                    BorderRadius.circular(25),
+                    BorderRadius.circular(
+                  25,
+                ),
                 border: Border.all(
-                  color: colors.onSurface.withValues(
+                  color: colors
+                      .onSurface
+                      .withValues(
                     alpha: 0.06,
                   ),
                 ),
               ),
               child: TextField(
-                controller: _controller,
+                controller:
+                    _controller,
                 minLines: 1,
                 maxLines: 4,
                 textInputAction:
                     TextInputAction.send,
-                onSubmitted: (_) => _sendText(),
-                decoration: InputDecoration(
-                  hintText: lang.isPersian
-                      ? 'با میو حرف بزن...'
-                      : 'Talk to Meow...',
-                  hintStyle:
-                      theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurface
-                        .withValues(alpha: 0.46),
+                onSubmitted:
+                    (_) => _sendText(),
+                decoration:
+                    InputDecoration(
+                  hintText:
+                      lang.isPersian
+                          ? 'با میو حرف بزن...'
+                          : 'Talk to Meow...',
+                  hintStyle: theme
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(
+                    color: colors
+                        .onSurface
+                        .withValues(
+                      alpha: 0.46,
+                    ),
                   ),
-                  border: InputBorder.none,
+                  border:
+                      InputBorder.none,
                   contentPadding:
-                      const EdgeInsets.symmetric(
+                      const EdgeInsets
+                          .symmetric(
                     horizontal: 18,
                     vertical: 13,
                   ),
@@ -1256,19 +1675,26 @@ class _MeowPageState extends State<MeowPage> {
               ),
             ),
           ),
-          const SizedBox(width: 9),
+          const SizedBox(
+            width: 9,
+          ),
           Material(
             color: lavender,
-            shape: const CircleBorder(),
+            shape:
+                const CircleBorder(),
             child: InkWell(
               onTap: _sendText,
-              customBorder: const CircleBorder(),
-              child: const SizedBox(
+              customBorder:
+                  const CircleBorder(),
+              child:
+                  const SizedBox(
                 width: 48,
                 height: 48,
                 child: Icon(
-                  Icons.arrow_upward_rounded,
-                  color: Colors.white,
+                  Icons
+                      .arrow_upward_rounded,
+                  color:
+                      Colors.white,
                   size: 23,
                 ),
               ),
