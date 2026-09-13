@@ -4,6 +4,7 @@ const A1Lesson a1Lesson08 = A1Lesson(
   id: 'a1_08',
   title: 'Shopping',
   topic: 'خرید کردن',
+
   words: [
     A1Word(
       english: 'shop',
@@ -216,6 +217,7 @@ const A1Lesson a1Lesson08 = A1Lesson(
       example: 'Is this size available?',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'I want to buy a shirt.',
@@ -319,7 +321,7 @@ const A1Lesson a1Lesson08 = A1Lesson(
     ),
     A1Sentence(
       english: 'These shoes are on sale.',
-      persian: 'این کفش‌ها تخفیف خورده‌اند.',
+      persian: 'این کفش‌ها حراج هستند.',
     ),
     A1Sentence(
       english: 'Is there a discount?',
@@ -358,6 +360,7 @@ const A1Lesson a1Lesson08 = A1Lesson(
       persian: 'یکی دیگر دارید؟',
     ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "buy" mean?',
@@ -365,19 +368,9 @@ const A1Lesson a1Lesson08 = A1Lesson(
       answer: 'خریدن',
     ),
     A1Question(
-      question: 'What does "sell" mean?',
-      options: ['فروختن', 'خریدن', 'پوشیدن', 'داشتن'],
-      answer: 'فروختن',
-    ),
-    A1Question(
       question: 'What does "price" mean?',
       options: ['قیمت', 'رنگ', 'سایز', 'پول'],
       answer: 'قیمت',
-    ),
-    A1Question(
-      question: 'What does "money" mean?',
-      options: ['پول', 'کیف', 'کارت', 'رسید'],
-      answer: 'پول',
     ),
     A1Question(
       question: 'What does "cheap" mean?',
@@ -395,24 +388,9 @@ const A1Lesson a1Lesson08 = A1Lesson(
       answer: 'سایز',
     ),
     A1Question(
-      question: 'What does "color" mean?',
-      options: ['رنگ', 'سایز', 'قیمت', 'پول'],
-      answer: 'رنگ',
-    ),
-    A1Question(
       question: 'What does "shoes" mean?',
       options: ['کفش', 'پیراهن', 'کیف', 'کلاه'],
       answer: 'کفش',
-    ),
-    A1Question(
-      question: 'What does "shirt" mean?',
-      options: ['پیراهن / تی‌شرت', 'شلوار', 'کفش', 'کیف'],
-      answer: 'پیراهن / تی‌شرت',
-    ),
-    A1Question(
-      question: 'What does "bag" mean?',
-      options: ['کیف', 'کلاه', 'کفش', 'لباس'],
-      answer: 'کیف',
     ),
     A1Question(
       question: 'What does "try on" mean?',
@@ -420,14 +398,9 @@ const A1Lesson a1Lesson08 = A1Lesson(
         'پوشیدن برای امتحان کردن',
         'خریدن',
         'فروختن',
-        'پرداخت کردن'
+        'پرداخت کردن',
       ],
       answer: 'پوشیدن برای امتحان کردن',
-    ),
-    A1Question(
-      question: 'What does "cash" mean?',
-      options: ['پول نقد', 'کارت', 'رسید', 'تخفیف'],
-      answer: 'پول نقد',
     ),
     A1Question(
       question: 'What does "receipt" mean?',
@@ -435,14 +408,14 @@ const A1Lesson a1Lesson08 = A1Lesson(
       answer: 'رسید',
     ),
     A1Question(
-      question: 'What does "sale" mean?',
-      options: ['حراج / تخفیف', 'قیمت', 'فروشگاه', 'مشتری'],
-      answer: 'حراج / تخفیف',
-    ),
-    A1Question(
       question: 'What does "discount" mean?',
       options: ['تخفیف', 'قیمت', 'پول نقد', 'سایز'],
       answer: 'تخفیف',
+    ),
+    A1Question(
+      question: 'What does "available" mean?',
+      options: ['موجود', 'گران', 'کوچک', 'فروخته‌شده'],
+      answer: 'موجود',
     ),
     A1Question(
       question: 'Complete: How much ___ this?',
@@ -460,11 +433,6 @@ const A1Lesson a1Lesson08 = A1Lesson(
       answer: 'buy',
     ),
     A1Question(
-      question: 'Complete: I need new ___.',
-      options: ['shoes', 'money', 'price', 'color'],
-      answer: 'shoes',
-    ),
-    A1Question(
       question: 'Which one is a color?',
       options: ['Blue', 'Medium', 'Cheap', 'Price'],
       answer: 'Blue',
@@ -480,19 +448,9 @@ const A1Lesson a1Lesson08 = A1Lesson(
         'How much is this?',
         'What color is this?',
         'What size is this?',
-        'Where is the shop?'
+        'Where is the shop?',
       ],
       answer: 'How much is this?',
-    ),
-    A1Question(
-      question: 'Which sentence asks about size?',
-      options: [
-        'What size do you need?',
-        'What color do you like?',
-        'How much is this?',
-        'Where can I pay?'
-      ],
-      answer: 'What size do you need?',
     ),
     A1Question(
       question: 'Which sentence asks to try something?',
@@ -500,29 +458,9 @@ const A1Lesson a1Lesson08 = A1Lesson(
         'Can I try it on?',
         'Can I buy it?',
         'Can I sell it?',
-        'Can I pay it?'
+        'Can I pay it?',
       ],
       answer: 'Can I try it on?',
-    ),
-    A1Question(
-      question: 'Which sentence means "این خیلی کوچک است"؟',
-      options: [
-        'This is too small.',
-        'This is too big.',
-        'This is very cheap.',
-        'This is very expensive.'
-      ],
-      answer: 'This is too small.',
-    ),
-    A1Question(
-      question: 'Which sentence means "این خیلی بزرگ است"؟',
-      options: [
-        'This is too big.',
-        'This is too small.',
-        'This is cheap.',
-        'This is red.'
-      ],
-      answer: 'This is too big.',
     ),
     A1Question(
       question: 'How can you ask to pay with a card?',
@@ -530,7 +468,7 @@ const A1Lesson a1Lesson08 = A1Lesson(
         'Can I pay by card?',
         'Can I buy card?',
         'Can I sell by card?',
-        'Can I have card money?'
+        'Can I have card money?',
       ],
       answer: 'Can I pay by card?',
     ),
@@ -540,54 +478,9 @@ const A1Lesson a1Lesson08 = A1Lesson(
         'Can I have the receipt?',
         'Can I have the price?',
         'Can I have the color?',
-        'Can I have the size?'
+        'Can I have the size?',
       ],
       answer: 'Can I have the receipt?',
-    ),
-    A1Question(
-      question: 'Which phrase means "تخفیفی وجود دارد؟"؟',
-      options: [
-        'Is there a discount?',
-        'Is this expensive?',
-        'Is this your bag?',
-        'Is this a shop?'
-      ],
-      answer: 'Is there a discount?',
-    ),
-    A1Question(
-      question: 'Which sentence means "این سایز موجود است؟"؟',
-      options: [
-        'Is this size available?',
-        'Is this color cheap?',
-        'Is this bag expensive?',
-        'Is this shop big?'
-      ],
-      answer: 'Is this size available?',
-    ),
-    A1Question(
-      question: 'What can a customer say when they want another item?',
-      options: [
-        'Do you have another one?',
-        'Do you sell another?',
-        'Do you price another?',
-        'Do you color another?'
-      ],
-      answer: 'Do you have another one?',
-    ),
-    A1Question(
-      question: 'Complete: I am looking ___ a black shirt.',
-      options: ['for', 'on', 'at', 'by'],
-      answer: 'for',
-    ),
-    A1Question(
-      question: 'Where do you try clothes on?',
-      options: [
-        'Changing room',
-        'Kitchen',
-        'Bedroom',
-        'Restaurant'
-      ],
-      answer: 'Changing room',
     ),
     A1Question(
       question: 'Which sentence is correct?',
@@ -595,24 +488,9 @@ const A1Lesson a1Lesson08 = A1Lesson(
         'I want to buy this.',
         'I want buy to this.',
         'I buy want this to.',
-        'Want I this buy.'
+        'Want I this buy.',
       ],
       answer: 'I want to buy this.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'This shirt is cheap.',
-        'This cheap is shirt.',
-        'This is shirt cheap.',
-        'Cheap this shirt is.'
-      ],
-      answer: 'This shirt is cheap.',
-    ),
-    A1Question(
-      question: 'What does "available" mean?',
-      options: ['موجود', 'گران', 'کوچک', 'فروخته‌شده'],
-      answer: 'موجود',
     ),
   ],
 
@@ -718,8 +596,33 @@ const A1Lesson a1Lesson08 = A1Lesson(
       ],
     ),
     A1SpeakingQuestion(
+      question: 'What do you say if the clothes are too small?',
+      persian: 'اگر لباس خیلی کوچک باشد چه می‌گویی؟',
+      acceptableAnswers: [
+        'this is too small',
+        'it is too small',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you say if the clothes are too big?',
+      persian: 'اگر لباس خیلی بزرگ باشد چه می‌گویی؟',
+      acceptableAnswers: [
+        'this is too big',
+        'it is too big',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Ask if there is a discount.',
+      persian: 'بپرس آیا تخفیفی وجود دارد.',
+      acceptableAnswers: [
+        'is there a discount',
+        'do you have a discount',
+      ],
+    ),
+    A1SpeakingQuestion(
       question: 'Imagine you are in a clothing store. Ask for a shirt, its price, and a different color.',
-      persian: 'فرض کن در فروشگاه لباس هستی. یک پیراهن بخواه، قیمتش را بپرس و یک رنگ دیگر درخواست کن.',
+      persian:
+          'فرض کن در فروشگاه لباس هستی. یک پیراهن بخواه، قیمتش را بپرس و یک رنگ دیگر درخواست کن.',
       acceptableAnswers: [
         'i want a shirt how much is it do you have it in blue',
         'i want a shirt how much is this do you have this in blue',
