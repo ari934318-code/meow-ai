@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'localization.dart';
+
 import 'pages/home_page.dart';
 import 'pages/learn_page.dart';
 import 'pages/lesson_list_page.dart';
@@ -32,6 +34,15 @@ class MeowApp extends StatelessWidget {
           title: 'Meow AI',
 
           locale: currentLocale,
+
+          supportedLocales: const [
+            Locale('en'),
+            Locale('fa'),
+          ],
+
+          localizationsDelegates: const [
+            MeowLocalizationsDelegate(),
+          ],
 
           theme: ThemeData(
             brightness: Brightness.light,
@@ -91,6 +102,27 @@ class MeowApp extends StatelessWidget {
   }
 }
 
+class MeowLocalizationsDelegate
+    extends LocalizationsDelegate<MeowLocalizations> {
+  const MeowLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) {
+    return locale.languageCode == 'en' ||
+        locale.languageCode == 'fa';
+  }
+
+  @override
+  Future<MeowLocalizations> load(Locale locale) async {
+    return MeowLocalizations(locale);
+  }
+
+  @override
+  bool shouldReload(MeowLocalizationsDelegate old) {
+    return false;
+  }
+}
+
 class ValueListenableBuilder2<A, B> extends StatelessWidget {
   const ValueListenableBuilder2({
     super.key,
@@ -101,6 +133,7 @@ class ValueListenableBuilder2<A, B> extends StatelessWidget {
 
   final ValueListenable<A> first;
   final ValueListenable<B> second;
+
   final Widget Function(
     BuildContext context,
     A firstValue,
