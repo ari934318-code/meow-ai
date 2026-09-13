@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../lesson_localization.dart';
 import '../localization.dart';
 import '../models/lesson.dart';
+import '../services/a1_progress_service.dart';
 
 class LessonPage extends StatefulWidget {
   final Lesson lesson;
@@ -40,7 +41,6 @@ class _LessonPageState extends State<LessonPage> {
   String recognizedText = '';
   String speechResultMessage = '';
 
-  // Stores answers for multiple-choice questions inside lesson sections.
   final Map<LessonQuestion, int> _sectionAnswers = {};
 
   List<LessonQuestion> get multipleChoiceQuestions {
@@ -349,7 +349,13 @@ class _LessonPageState extends State<LessonPage> {
                 vertical: 12,
               ),
             ),
-            onPressed: () {
+            onPressed: () async {
+              await A1ProgressService.completeLesson(
+                widget.lesson.id,
+              );
+
+              if (!mounted) return;
+
               Navigator.pop(context);
               Navigator.pop(context);
             },
@@ -1029,7 +1035,6 @@ class _LessonPageState extends State<LessonPage> {
               fontWeight: FontWeight.w700,
             ),
           ),
-
           if (question.promptPersian.isNotEmpty)
             Padding(
               padding:
@@ -1042,7 +1047,6 @@ class _LessonPageState extends State<LessonPage> {
                 ),
               ),
             ),
-
           if (question.sentence.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
@@ -1053,9 +1057,7 @@ class _LessonPageState extends State<LessonPage> {
               ),
             ),
           ],
-
           const SizedBox(height: 12),
-
           ...List.generate(
             question.options.length,
             (index) {
@@ -1176,7 +1178,6 @@ class _LessonPageState extends State<LessonPage> {
               );
             },
           ),
-
           if (hasAnswered) ...[
             const SizedBox(height: 4),
             Container(
