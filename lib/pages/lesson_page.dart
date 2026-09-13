@@ -40,6 +40,9 @@ class _LessonPageState extends State<LessonPage> {
   String recognizedText = '';
   String speechResultMessage = '';
 
+  // Stores answers for multiple-choice questions inside lesson sections.
+  final Map<LessonQuestion, int> _sectionAnswers = {};
+
   List<LessonQuestion> get multipleChoiceQuestions {
     final result = <LessonQuestion>[];
 
@@ -999,6 +1002,9 @@ class _LessonPageState extends State<LessonPage> {
     LessonQuestion question,
     MeowLocalizations lang,
   ) {
+    final selected = _sectionAnswers[question];
+    final hasAnswered = selected != null;
+
     return Container(
       margin:
           const EdgeInsets.only(bottom: 12),
@@ -1023,6 +1029,7 @@ class _LessonPageState extends State<LessonPage> {
               fontWeight: FontWeight.w700,
             ),
           ),
+
           if (question.promptPersian.isNotEmpty)
             Padding(
               padding:
@@ -1035,6 +1042,7 @@ class _LessonPageState extends State<LessonPage> {
                 ),
               ),
             ),
+
           if (question.sentence.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(
@@ -1045,38 +1053,169 @@ class _LessonPageState extends State<LessonPage> {
               ),
             ),
           ],
+
           const SizedBox(height: 12),
+
           ...List.generate(
             question.options.length,
             (index) {
-              final correct =
+              final isSelected = selected == index;
+              final isCorrect =
                   index == question.correctIndex;
+
+              Color backgroundColor;
+              Color borderColor;
+              Color textColor;
+
+              if (!hasAnswered) {
+                backgroundColor =
+                    Theme.of(context)
+                        .colorScheme
+                        .surface;
+                borderColor =
+                    Colors.grey.withOpacity(0.14);
+                textColor =
+                    Theme.of(context)
+                        .colorScheme
+                        .onSurface;
+              } else if (isCorrect) {
+                backgroundColor =
+                    Colors.green.withOpacity(0.10);
+                borderColor =
+                    Colors.green.withOpacity(0.35);
+                textColor =
+                    Colors.green.shade700;
+              } else if (isSelected) {
+                backgroundColor =
+                    Colors.redAccent
+                        .withOpacity(0.10);
+                borderColor =
+                    Colors.redAccent
+                        .withOpacity(0.35);
+                textColor = Colors.redAccent;
+              } else {
+                backgroundColor =
+                    Theme.of(context)
+                        .colorScheme
+                        .surface;
+                borderColor =
+                    Colors.grey.withOpacity(0.12);
+                textColor =
+                    Theme.of(context)
+                        .colorScheme
+                        .onSurface;
+              }
 
               return Container(
                 margin:
-                    const EdgeInsets.only(bottom: 7),
-                padding:
-                    const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: correct
-                      ? const Color(0xFF4CAF50)
-                          .withOpacity(0.08)
-                      : lavender.withOpacity(0.06),
+                    const EdgeInsets.only(bottom: 8),
+                child: InkWell(
                   borderRadius:
-                      BorderRadius.circular(13),
-                ),
-                child: Text(
-                  question.options[index],
-                  style: const TextStyle(
-                    fontSize: 14,
+                      BorderRadius.circular(14),
+                  onTap: hasAnswered
+                      ? null
+                      : () {
+                          setState(() {
+                            _sectionAnswers[
+                                question] = index;
+                          });
+                        },
+                  child: Container(
+                    width: double.infinity,
+                    padding:
+                        const EdgeInsets.symmetric(
+                      horizontal: 13,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius:
+                          BorderRadius.circular(14),
+                      border: Border.all(
+                        color: borderColor,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            question.options[index],
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight:
+                                  FontWeight.w600,
+                              color: textColor,
+                            ),
+                          ),
+                        ),
+                        if (hasAnswered && isCorrect)
+                          const Icon(
+                            Icons
+                                .check_circle_rounded,
+                            color: Colors.green,
+                            size: 20,
+                          )
+                        else if (hasAnswered &&
+                            isSelected)
+                          const Icon(
+                            Icons.cancel_rounded,
+                            color: Colors.redAccent,
+                            size: 20,
+                          )
+                        else
+                          const Icon(
+                            Icons
+                                .arrow_forward_ios_rounded,
+                            size: 14,
+                            color: Colors.grey,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               );
             },
           ),
+
+          if (hasAnswered) ...[
+            const SizedBox(height: 4),
+            Container(
+              width: double.infinity,
+              padding:
+                  const EdgeInsets.all(11),
+              decoration: BoxDecoration(
+                color:
+                    selected ==
+                            question.correctIndex
+                        ? Colors.green
+                            .withOpacity(0.08)
+                        : Colors.orange
+                            .withOpacity(0.08),
+                borderRadius:
+                    BorderRadius.circular(13),
+              ),
+              child: Text(
+                selected ==
+                        question.correctIndex
+                    ? (lang.isPersian
+                        ? 'درست گفتی! 🎉'
+                        : 'Correct! 🎉')
+                    : (lang.isPersian
+                        ? 'جواب درست: ${question.correctAnswer}'
+                        : 'Correct answer: ${question.correctAnswer}'),
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight:
+                      FontWeight.w700,
+                  color:
+                      selected ==
+                              question.correctIndex
+                          ? Colors.green.shade700
+                          : Colors.orange.shade700,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
