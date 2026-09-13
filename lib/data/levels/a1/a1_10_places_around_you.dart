@@ -636,4 +636,127 @@ const A1Lesson a1Lesson10 = A1Lesson(
       answer: 'left',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'Where are you now?',
+      persian: 'الان کجا هستی؟',
+      acceptableAnswers: [
+        'i am at home',
+        'i am at school',
+        'i am at work',
+        'i am at the park',
+        'i am at the store',
+        'i am at the cafe',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where do you live?',
+      persian: 'کجا زندگی می‌کنی؟',
+      acceptableAnswers: [
+        'i live in a city',
+        'i live in a town',
+        'i live in an apartment',
+        'i live in a house',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What places are near your home?',
+      persian: 'چه مکان‌هایی نزدیک خانه‌ات هستند؟',
+      acceptableAnswers: [
+        'the school is near my home',
+        'the park is near my home',
+        'the shop is near my home',
+        'the supermarket is near my home',
+        'the cafe is near my home',
+        'the bus stop is near my home',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where is the school?',
+      persian: 'مدرسه کجاست؟',
+      acceptableAnswers: [
+        'the school is near my home',
+        'the school is next to the park',
+        'the school is opposite the park',
+        'the school is over there',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where is the bank?',
+      persian: 'بانک کجاست؟',
+      acceptableAnswers: [
+        'the bank is next to the shop',
+        'the bank is next to the supermarket',
+        'the bank is on the right',
+        'the bank is over there',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where can you read books?',
+      persian: 'کجا می‌توانی کتاب بخوانی؟',
+      acceptableAnswers: [
+        'i can read books at the library',
+        'at the library',
+        'i read books at the library',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where can you eat?',
+      persian: 'کجا می‌توانی غذا بخوری؟',
+      acceptableAnswers: [
+        'i can eat at a restaurant',
+        'i can eat at the cafe',
+        'at a restaurant',
+        'at the cafe',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where can you take a bus?',
+      persian: 'کجا می‌توانی سوار اتوبوس شوی؟',
+      acceptableAnswers: [
+        'at the bus stop',
+        'i can take a bus at the bus stop',
+        'i take the bus at the bus stop',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Is the hospital near or far from your home?',
+      persian: 'بیمارستان نزدیک خانه‌ات است یا دور؟',
+      acceptableAnswers: [
+        'the hospital is near my home',
+        'the hospital is far from my home',
+        'it is near my home',
+        'it is far from my home',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is next to the shop?',
+      persian: 'چه چیزی کنار مغازه است؟',
+      acceptableAnswers: [
+        'the bank is next to the shop',
+        'the supermarket is next to the shop',
+        'the cafe is next to the shop',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Turn left at the street."',
+      persian: 'بگو: «در خیابان به چپ بپیچ.»',
+      acceptableAnswers: [
+        'turn left at the street',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Imagine someone asks you: "Where is the library?" Give them simple directions.',
+      persian: 'فرض کن کسی می‌پرسد: «کتابخانه کجاست؟» یک مسیر ساده به او بگو.',
+      acceptableAnswers: [
+        'the library is near the park',
+        'the library is next to the cafe',
+        'the library is on the left',
+        'the library is over there',
+        'go straight the library is on the left',
+        'turn left the library is on the right',
+      ],
+    ),
+  ],
 );
