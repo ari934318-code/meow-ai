@@ -127,7 +127,9 @@ class _SettingsPageState extends State<SettingsPage> {
             contentPadding: EdgeInsets.zero,
             secondary: const Icon(Icons.chat_bubble_outline),
             title: Text(
-              isPersian ? 'تاریخچه مکالمات' : 'Conversation History',
+              isPersian
+                  ? 'تاریخچه مکالمات'
+                  : 'Conversation History',
             ),
             value: conversationHistory,
             activeColor: lavender,
@@ -332,6 +334,20 @@ class _SettingsPageState extends State<SettingsPage> {
         setState(() {
           theme = value;
         });
+
+        switch (value) {
+          case 'Light':
+            appThemeMode.value = ThemeMode.light;
+            break;
+
+          case 'Dark':
+            appThemeMode.value = ThemeMode.dark;
+            break;
+
+          case 'System':
+            appThemeMode.value = ThemeMode.system;
+            break;
+        }
       },
     );
   }
