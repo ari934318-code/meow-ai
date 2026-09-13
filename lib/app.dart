@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'pages/home_page.dart';
+import 'pages/learn_page.dart';
+import 'pages/lesson_list_page.dart';
+import 'pages/lesson_page.dart';
+import 'pages/meow_page.dart';
+import 'pages/practice_page.dart';
+import 'pages/profile_page.dart';
+import 'pages/progress_page.dart';
+import 'pages/settings_page.dart';
+
 final ValueNotifier<ThemeMode> appThemeMode =
     ValueNotifier<ThemeMode>(ThemeMode.system);
 
@@ -15,7 +25,6 @@ class MeowApp extends StatelessWidget {
       builder: (context, currentTheme, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-
           title: 'Meow AI',
 
           theme: ThemeData(
@@ -47,17 +56,19 @@ class MeowApp extends StatelessWidget {
 
           themeMode: currentTheme,
 
-          home: const Scaffold(
-            body: Center(
-              child: Text(
-                'Meow AI',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+          initialRoute: '/home',
+
+          routes: {
+            '/home': (context) => const HomePage(),
+            '/learn': (context) => const LearnPage(),
+            '/a1-lessons': (context) => const LessonListPage(),
+            '/lesson': (context) => const LessonPage(),
+            '/practice': (context) => const PracticePage(),
+            '/meow': (context) => const MeowPage(),
+            '/profile': (context) => const ProfilePage(),
+            '/progress': (context) => const ProgressPage(),
+            '/settings': (context) => const SettingsPage(),
+          },
         );
       },
     );
