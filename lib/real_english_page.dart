@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'data/real_english_data.dart';
 
 class RealEnglishPage extends StatelessWidget {
@@ -28,9 +29,7 @@ class RealEnglishPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 24),
-
           for (final category in categories)
             Padding(
               padding: const EdgeInsets.only(bottom: 14),
@@ -225,7 +224,15 @@ class RealEnglishDetailPage extends StatelessWidget {
           const SizedBox(height: 28),
 
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () async {
+              final tts = FlutterTts();
+
+              await tts.setLanguage('en-US');
+              await tts.setSpeechRate(0.45);
+              await tts.setPitch(1.0);
+
+              await tts.speak(item.example);
+            },
             icon: const Icon(Icons.volume_up),
             label: const Text('Listen to Meow'),
           ),
@@ -242,3 +249,4 @@ class RealEnglishDetailPage extends StatelessWidget {
     );
   }
 }
+ 
