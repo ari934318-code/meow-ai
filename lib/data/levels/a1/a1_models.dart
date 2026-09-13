@@ -1,53 +1,60 @@
-class A1Lesson {
+class A1ExamQuestion {
   final String id;
-  final String title;
-  final String topic;
-  final List<A1Word> words;
-  final List<A1Sentence> sentences;
-  final List<A1Question> questions;
-
-  const A1Lesson({
-    required this.id,
-    required this.title,
-    required this.topic,
-    required this.words,
-    required this.sentences,
-    required this.questions,
-  });
-}
-
-class A1Word {
-  final String english;
-  final String persian;
-  final String pronunciation;
-  final String example;
-
-  const A1Word({
-    required this.english,
-    required this.persian,
-    required this.pronunciation,
-    required this.example,
-  });
-}
-
-class A1Sentence {
-  final String english;
-  final String persian;
-
-  const A1Sentence({
-    required this.english,
-    required this.persian,
-  });
-}
-
-class A1Question {
+  final String lessonId;
+  final String category;
   final String question;
   final List<String> options;
-  final String answer;
+  final String correctAnswer;
 
-  const A1Question({
+  const A1ExamQuestion({
+    required this.id,
+    required this.lessonId,
+    required this.category,
     required this.question,
     required this.options,
-    required this.answer,
+    required this.correctAnswer,
   });
+}
+
+class A1ExamAnswer {
+  final String questionId;
+  final String selectedAnswer;
+  final String correctAnswer;
+  final bool isCorrect;
+
+  const A1ExamAnswer({
+    required this.questionId,
+    required this.selectedAnswer,
+    required this.correctAnswer,
+    required this.isCorrect,
+  });
+}
+
+class A1ExamResult {
+  final int totalQuestions;
+  final int correctAnswers;
+  final int wrongAnswers;
+  final int score;
+  final List<A1ExamAnswer> answers;
+
+  const A1ExamResult({
+    required this.totalQuestions,
+    required this.correctAnswers,
+    required this.wrongAnswers,
+    required this.score,
+    required this.answers,
+  });
+
+  List<A1ExamAnswer> get wrongAnswerList {
+    return answers.where((answer) => !answer.isCorrect).toList();
+  }
+
+  double get accuracy {
+    if (totalQuestions == 0) return 0;
+    return correctAnswers / totalQuestions;
+  }
+
+  bool get passed {
+    return score >= 70;
+  }
 }
