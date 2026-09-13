@@ -4,6 +4,7 @@ const A1Lesson a1Lesson12 = A1Lesson(
   id: 'a1_12',
   title: 'Everyday Conversations',
   topic: 'مکالمات روزمره',
+
   words: [
     A1Word(
       english: 'hello',
@@ -61,9 +62,9 @@ const A1Lesson a1Lesson12 = A1Lesson(
     ),
     A1Word(
       english: 'welcome',
-      persian: 'خوش آمدید',
+      persian: 'خواهش می‌کنم / خوش آمدید',
       pronunciation: 'وِلکِم',
-      example: 'Welcome to my home.',
+      example: 'You are welcome.',
     ),
     A1Word(
       english: 'nice',
@@ -80,7 +81,7 @@ const A1Lesson a1Lesson12 = A1Lesson(
     A1Word(
       english: 'help',
       persian: 'کمک',
-      pronunciation: 'هِlp',
+      pronunciation: 'هِلپ',
       example: 'Can you help me?',
     ),
     A1Word(
@@ -126,7 +127,7 @@ const A1Lesson a1Lesson12 = A1Lesson(
       example: 'Can you speak English?',
     ),
     A1Word(
-      english: 'English',
+      english: 'english',
       persian: 'انگلیسی',
       pronunciation: 'اینگلیش',
       example: 'I speak English.',
@@ -157,7 +158,7 @@ const A1Lesson a1Lesson12 = A1Lesson(
     ),
     A1Word(
       english: 'sure',
-      persian: 'مطمئن',
+      persian: 'مطمئن / حتماً',
       pronunciation: 'شور',
       example: 'Sure, I can help.',
     ),
@@ -246,6 +247,7 @@ const A1Lesson a1Lesson12 = A1Lesson(
       example: 'Come with me.',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'Hello! How are you?',
@@ -408,6 +410,7 @@ const A1Lesson a1Lesson12 = A1Lesson(
       persian: 'لطفاً اینجا صبر کن.',
     ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "hello" mean?',
@@ -415,34 +418,14 @@ const A1Lesson a1Lesson12 = A1Lesson(
       answer: 'سلام',
     ),
     A1Question(
-      question: 'What does "goodbye" mean?',
-      options: ['خداحافظ', 'سلام', 'لطفاً', 'ممنون'],
-      answer: 'خداحافظ',
-    ),
-    A1Question(
       question: 'What does "please" mean?',
-      options: ['لطفاً', 'ممنون', 'ببخشید', 'خواهش می‌کنم'],
+      options: ['لطفاً', 'ممنون', 'خداحافظ', 'خواهش می‌کنم'],
       answer: 'لطفاً',
     ),
     A1Question(
-      question: 'What does "thanks" mean?',
-      options: ['ممنون', 'سلام', 'خداحافظ', 'کمک'],
-      answer: 'ممنون',
-    ),
-    A1Question(
-      question: 'What does "sorry" mean?',
-      options: ['متأسفم / ببخشید', 'ممنون', 'سلام', 'باشه'],
-      answer: 'متأسفم / ببخشید',
-    ),
-    A1Question(
       question: 'What does "excuse me" mean?',
-      options: ['ببخشید', 'خداحافظ', 'خواهش می‌کنم', 'سلام'],
+      options: ['ببخشید', 'ممنون', 'خداحافظ', 'سلام'],
       answer: 'ببخشید',
-    ),
-    A1Question(
-      question: 'What does "welcome" mean?',
-      options: ['خوش آمدید', 'خداحافظ', 'متأسفم', 'ممنون'],
-      answer: 'خوش آمدید',
     ),
     A1Question(
       question: 'What does "help" mean?',
@@ -453,11 +436,6 @@ const A1Lesson a1Lesson12 = A1Lesson(
       question: 'What does "question" mean?',
       options: ['سؤال', 'جواب', 'کمک', 'مشکل'],
       answer: 'سؤال',
-    ),
-    A1Question(
-      question: 'What does "answer" mean?',
-      options: ['جواب', 'سؤال', 'نام', 'سن'],
-      answer: 'جواب',
     ),
     A1Question(
       question: 'What does "understand" mean?',
@@ -475,11 +453,6 @@ const A1Lesson a1Lesson12 = A1Lesson(
       answer: 'آهسته',
     ),
     A1Question(
-      question: 'What does "again" mean?',
-      options: ['دوباره', 'امروز', 'فردا', 'الان'],
-      answer: 'دوباره',
-    ),
-    A1Question(
       question: 'What does "busy" mean?',
       options: ['مشغول', 'آزاد', 'خسته', 'خوشحال'],
       answer: 'مشغول',
@@ -490,22 +463,7 @@ const A1Lesson a1Lesson12 = A1Lesson(
       answer: 'آزاد / وقت داشتن',
     ),
     A1Question(
-      question: 'What does "later" mean?',
-      options: ['بعداً', 'الان', 'امروز', 'دیروز'],
-      answer: 'بعداً',
-    ),
-    A1Question(
-      question: 'What does "together" mean?',
-      options: ['با هم', 'تنها', 'بعداً', 'اینجا'],
-      answer: 'با هم',
-    ),
-    A1Question(
       question: 'Complete: What ___ your name?',
-      options: ['is', 'are', 'am', 'be'],
-      answer: 'is',
-    ),
-    A1Question(
-      question: 'Complete: My name ___ Anna.',
       options: ['is', 'are', 'am', 'be'],
       answer: 'is',
     ),
@@ -515,27 +473,17 @@ const A1Lesson a1Lesson12 = A1Lesson(
       answer: 'are',
     ),
     A1Question(
-      question: 'Complete: I ___ twenty years old.',
-      options: ['am', 'is', 'are', 'be'],
-      answer: 'am',
-    ),
-    A1Question(
-      question: 'Complete: Where ___ you from?',
-      options: ['are', 'is', 'am', 'be'],
-      answer: 'are',
-    ),
-    A1Question(
       question: 'Complete: I ___ from Iran.',
       options: ['am', 'is', 'are', 'be'],
       answer: 'am',
     ),
     A1Question(
-      question: 'Which sentence means "متوجه نمی‌شوم"؟',
+      question: 'Which sentence means "متوجه نمی‌شوم"?',
       options: [
         'I do not understand.',
         'I understand.',
         'I speak English.',
-        'I know the answer.'
+        'I know the answer.',
       ],
       answer: 'I do not understand.',
     ),
@@ -545,19 +493,9 @@ const A1Lesson a1Lesson12 = A1Lesson(
         'Can you repeat that?',
         'Can you help me?',
         'Where are you?',
-        'What is your name?'
+        'What is your name?',
       ],
       answer: 'Can you repeat that?',
-    ),
-    A1Question(
-      question: 'Which sentence asks someone to speak slowly?',
-      options: [
-        'Please speak slowly.',
-        'Please speak English.',
-        'Please wait here.',
-        'Please come with me.'
-      ],
-      answer: 'Please speak slowly.',
     ),
     A1Question(
       question: 'What can you say when you need help?',
@@ -565,7 +503,7 @@ const A1Lesson a1Lesson12 = A1Lesson(
         'Can you help me?',
         'Good night.',
         'See you later.',
-        'I am fine.'
+        'I am fine.',
       ],
       answer: 'Can you help me?',
     ),
@@ -575,29 +513,19 @@ const A1Lesson a1Lesson12 = A1Lesson(
         'Thank you very much.',
         'Goodbye.',
         'I am late.',
-        'Maybe tomorrow.'
+        'Maybe tomorrow.',
       ],
       answer: 'Thank you very much.',
     ),
     A1Question(
-      question: 'What can someone answer to "Thank you"?',
+      question: 'What can someone say after "Thank you"?',
       options: [
         'You are welcome.',
         'Good night.',
         'I am busy.',
-        'I do not understand.'
+        'I do not understand.',
       ],
       answer: 'You are welcome.',
-    ),
-    A1Question(
-      question: 'What can you say before asking a stranger a question?',
-      options: [
-        'Excuse me.',
-        'Goodbye.',
-        'Good night.',
-        'See you tomorrow.'
-      ],
-      answer: 'Excuse me.',
     ),
     A1Question(
       question: 'What can you say when you are late?',
@@ -605,54 +533,9 @@ const A1Lesson a1Lesson12 = A1Lesson(
         'Sorry, I am late.',
         'Thank you, I am early.',
         'I am free.',
-        'See you later.'
+        'See you later.',
       ],
       answer: 'Sorry, I am late.',
-    ),
-    A1Question(
-      question: 'What does "No problem" mean?',
-      options: ['اشکالی ندارد', 'مشکل دارم', 'کمک کن', 'نمی‌فهمم'],
-      answer: 'اشکالی ندارد',
-    ),
-    A1Question(
-      question: 'Complete: Are you ___ now?',
-      options: ['busy', 'name', 'question', 'answer'],
-      answer: 'busy',
-    ),
-    A1Question(
-      question: 'Complete: Are you ___ today?',
-      options: ['free', 'sorry', 'wrong', 'nice'],
-      answer: 'free',
-    ),
-    A1Question(
-      question: 'Which sentence means "بعداً می‌بینمت"؟',
-      options: [
-        'See you later.',
-        'See you yesterday.',
-        'See you now.',
-        'See you here.'
-      ],
-      answer: 'See you later.',
-    ),
-    A1Question(
-      question: 'Which sentence means "فردا می‌بینمت"؟',
-      options: [
-        'See you tomorrow.',
-        'See you later.',
-        'See you today.',
-        'See you now.'
-      ],
-      answer: 'See you tomorrow.',
-    ),
-    A1Question(
-      question: 'Which sentence is a polite request?',
-      options: [
-        'Please speak slowly.',
-        'I am busy.',
-        'I am from Iran.',
-        'My name is Anna.'
-      ],
-      answer: 'Please speak slowly.',
     ),
     A1Question(
       question: 'Which sentence is correct?',
@@ -660,19 +543,9 @@ const A1Lesson a1Lesson12 = A1Lesson(
         'Nice to meet you.',
         'Nice meet to you.',
         'Meet nice you to.',
-        'You nice to meet.'
+        'You nice to meet.',
       ],
       answer: 'Nice to meet you.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'Can you help me?',
-        'Can help you me?',
-        'You can me help?',
-        'Help can you me?'
-      ],
-      answer: 'Can you help me?',
     ),
   ],
 
@@ -701,25 +574,15 @@ const A1Lesson a1Lesson12 = A1Lesson(
       question: 'What is your name?',
       persian: 'اسمت چیست؟',
       acceptableAnswers: [
-        'my name is anna',
-        'my name is alex',
-        'my name is sara',
-        'my name is meow',
-        'i am anna',
-        'i am alex',
-        'i am sara',
+        'my name is',
+        'i am',
       ],
     ),
     A1SpeakingQuestion(
       question: 'How old are you?',
       persian: 'چند سالته؟',
       acceptableAnswers: [
-        'i am twenty years old',
-        'i am eighteen years old',
-        'i am nineteen years old',
-        'i am twenty one years old',
-        'i am twenty two years old',
-        'i am twenty three years old',
+        'i am years old',
       ],
     ),
     A1SpeakingQuestion(
@@ -776,7 +639,6 @@ const A1Lesson a1Lesson12 = A1Lesson(
       persian: 'وقتی کسی می‌گوید «ممنون»، چه می‌گویی؟',
       acceptableAnswers: [
         'you are welcome',
-        'welcome',
         'no problem',
       ],
     ),
@@ -788,15 +650,41 @@ const A1Lesson a1Lesson12 = A1Lesson(
       ],
     ),
     A1SpeakingQuestion(
-      question: 'Imagine you meet someone for the first time. Introduce yourself in English.',
-      persian: 'فرض کن برای اولین بار کسی را می‌بینی. خودت را به انگلیسی معرفی کن.',
+      question: 'Are you busy or free today?',
+      persian: 'امروز مشغولی یا وقت داری؟',
       acceptableAnswers: [
-        'hello my name is anna',
-        'hi my name is anna',
-        'hello i am anna',
-        'hi i am anna',
-        'hello my name is alex',
-        'hi my name is alex',
+        'i am busy today',
+        'i am free today',
+        'i am busy now',
+        'i am free now',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What can you say when you want someone to wait?',
+      persian: 'وقتی می‌خواهی کسی صبر کند چه می‌گویی؟',
+      acceptableAnswers: [
+        'please wait',
+        'please wait here',
+        'wait a minute',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What can you say when you want to say goodbye?',
+      persian: 'وقتی می‌خواهی خداحافظی کنی چه می‌گویی؟',
+      acceptableAnswers: [
+        'goodbye',
+        'bye',
+        'see you later',
+        'see you tomorrow',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Introduce yourself in English. Say your name, age, and where you are from.',
+      persian: 'خودت را به انگلیسی معرفی کن. اسمت، سنت و کشورت را بگو.',
+      acceptableAnswers: [
+        'hello my name is anna i am twenty years old i am from iran',
+        'hi my name is anna i am twenty years old i am from iran',
+        'hello i am anna i am twenty years old i am from iran',
       ],
     ),
   ],
