@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import '../memory/meow_learning/base_intents.dart';
+import '../memory/meow_learning/intent_detector.dart';
+
 enum MeowIntent {
   greeting,
   waterRequest,
@@ -51,6 +54,15 @@ class MeowResponse {
 class MeowBrain {
   static final Random _random = Random();
 
+  static final IntentDetector _intentDetector =
+      IntentDetector(
+    intents: BaseIntents.create(),
+  );
+
+  // ═══════════════════════════════
+  // NORMALIZATION
+  // ═══════════════════════════════
+
   static String _normalize(String text) {
     return text
         .trim()
@@ -60,18 +72,58 @@ class MeowBrain {
         .replaceAll('ك', 'ک')
         .replaceAll('ۀ', 'ه')
         .replaceAll('ة', 'ه')
-        .replaceAll(RegExp(r'[؟?!.,،؛:()\[\]{}"“”]'), ' ')
-        .replaceAll(RegExp(r'\s+'), ' ');
+        .replaceAll('‌', ' ')
+        .replaceAll('ـ', '')
+        .replaceAll('’', "'")
+        .replaceAll('‘', "'")
+        .replaceAll('“', '"')
+        .replaceAll('”', '"')
+        .replaceAll(
+          RegExp(
+            r'''[؟?!.,،؛:()\[\]{}""]''',
+          ),
+          ' ',
+        )
+        .replaceAll(
+          RegExp(r'\s+'),
+          ' ',
+        )
+        .trim();
   }
 
-  static bool _containsAny(String text, List<String> words) {
+  static bool _containsAny(
+    String text,
+    List<String> words,
+  ) {
     for (final word in words) {
-      if (text.contains(word)) {
+      if (text.contains(_normalize(word))) {
         return true;
       }
     }
+
     return false;
   }
+
+  static bool _hasAnyWord(
+    String text,
+    List<String> words,
+  ) {
+    final normalizedWords = text.split(' ');
+
+    for (final word in words) {
+      final normalized = _normalize(word);
+
+      if (normalizedWords.contains(normalized)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  // ═══════════════════════════════
+  // MAIN BRAIN
+  // ═══════════════════════════════
 
   static MeowResponse respond(String input) {
     final text = _normalize(input);
@@ -85,25 +137,51 @@ class MeowBrain {
       );
     }
 
-    // ─────────────────────────────
-    // GREETING
-    // ─────────────────────────────
+    // ═══════════════════════════════
+    // 1. PRONUNCIATION
+    // ═══════════════════════════════
+    //
+    // این بخش عمداً زود بررسی می‌شود.
+    //
+    // مثلاً:
+    // "I'd pronunciation"
+    // "تلفظ I'd"
+    // "I'd چطور خونده میشه"
+    //
+    // نباید صرفاً به خاطر وجود کلمه‌ی I'd
+    // وارد بخش ترجمه یا unknown شود.
 
-    if (_containsAny(text, [
-      'سلام',
-      'های',
-      'هلو',
-      'hello',
-      'hi',
-      'hey',
-      'good morning',
-      'good evening',
-    ])) {
+    if (_isPronunciationRequest(text)) {
+      return _pronunciationResponse(text);
+    }
+
+    // ═══════════════════════════════
+    // 2. MEANING
+    // ═══════════════════════════════
+
+    if (_isMeaningRequest(text)) {
+      return _meaningResponse(text);
+    }
+
+    // ═══════════════════════════════
+    // 3. TRANSLATION / HOW TO SAY
+    // ═══════════════════════════════
+
+    if (_isTranslationRequest(text)) {
+      return _translationResponse(text);
+    }
+
+    // ═══════════════════════════════
+    // 4. GREETING
+    // ═══════════════════════════════
+
+    if (_isGreeting(text)) {
       return const MeowResponse(
         intent: MeowIntent.greeting,
         mood: MeowMood.happy,
         english: 'Hi! Ready to practice some English? 🐱',
-        persian: 'سلام! آماده‌ای کمی انگلیسی تمرین کنیم؟ 🐱',
+        persian:
+            'سلام! آماده‌ای کمی انگلیسی تمرین کنیم؟ 🐱',
         examples: [
           'Hi!',
           'Hello!',
@@ -112,147 +190,11 @@ class MeowBrain {
       );
     }
 
-    // ─────────────────────────────
-    // WATER
-    // ─────────────────────────────
+    // ═══════════════════════════════
+    // 5. HOMEWORK
+    // ═══════════════════════════════
 
-    if (_containsAny(text, [
-      'آب میخوام',
-      'آب می‌خوام',
-      'اب میخوام',
-      'اب می‌خوام',
-      'آب لازم دارم',
-      'water',
-    ])) {
-      return const MeowResponse(
-        intent: MeowIntent.waterRequest,
-        mood: MeowMood.happy,
-        english: "I'd like some water, please.",
-        persian: 'می‌خوام کمی آب، لطفاً.',
-        pronunciation: 'آید لایک سام واتِر، پلیز',
-        examples: [
-          "I'd like some water, please.",
-          'Can I have some water, please?',
-          'Could I have some water?',
-        ],
-        note: 'برای درخواست مؤدبانه، "I’d like..." خیلی طبیعی و کاربردی است.',
-      );
-    }
-
-    // ─────────────────────────────
-    // DRINK
-    // ─────────────────────────────
-
-    if (_containsAny(text, [
-      'نوشیدنی میخوام',
-      'نوشیدنی می‌خوام',
-      'یه نوشیدنی میخوام',
-      'یک نوشیدنی میخوام',
-      'نوشیدنی',
-      'drink',
-    ])) {
-      return const MeowResponse(
-        intent: MeowIntent.drinkRequest,
-        mood: MeowMood.happy,
-        english: "I'd like a drink, please.",
-        persian: 'یک نوشیدنی می‌خواهم، لطفاً.',
-        pronunciation: 'آید لایک ا درینک، پلیز',
-        examples: [
-          "I'd like a drink, please.",
-          'Can I have a drink, please?',
-          'Could I get a drink?',
-        ],
-        note: 'در رستوران یا کافه، این جمله کاملاً طبیعی است.',
-      );
-    }
-
-    // ─────────────────────────────
-    // FOOD
-    // ─────────────────────────────
-
-    if (_containsAny(text, [
-      'غذا میخوام',
-      'غذا می‌خوام',
-      'یه غذا میخوام',
-      'یک غذا میخوام',
-      'food',
-      'hungry',
-      'گرسنه',
-    ])) {
-      return const MeowResponse(
-        intent: MeowIntent.foodRequest,
-        mood: MeowMood.happy,
-        english: "I'd like something to eat, please.",
-        persian: 'لطفاً یک چیزی برای خوردن می‌خواهم.',
-        pronunciation: 'آید لایک سامثینگ تو ایت، پلیز',
-        examples: [
-          "I'd like something to eat.",
-          'I’m hungry.',
-          'Can I get something to eat?',
-        ],
-        note: 'برای بیان گرسنگی، "I’m hungry" ساده‌تر است.',
-      );
-    }
-
-    // ─────────────────────────────
-    // BATHROOM
-    // ─────────────────────────────
-
-    if (_containsAny(text, [
-      'دستشویی',
-      'سرویس بهداشتی',
-      'حمام',
-      'bathroom',
-      'toilet',
-    ])) {
-      return const MeowResponse(
-        intent: MeowIntent.bathroomRequest,
-        mood: MeowMood.calm,
-        english: 'Excuse me, where is the bathroom?',
-        persian: 'ببخشید، دستشویی کجاست؟',
-        pronunciation: 'اِکسکیوز می، وِر ایز دِ بَث‌روم؟',
-        examples: [
-          'Where is the bathroom?',
-          'Excuse me, where is the restroom?',
-          'Is there a bathroom nearby?',
-        ],
-      );
-    }
-
-    // ─────────────────────────────
-    // HELP
-    // ─────────────────────────────
-
-    if (_containsAny(text, [
-      'کمک',
-      'کمکم کن',
-      'راهنمایی',
-      'help',
-      'i need help',
-    ])) {
-      return const MeowResponse(
-        intent: MeowIntent.helpRequest,
-        mood: MeowMood.calm,
-        english: 'How can I help you?',
-        persian: 'چطور می‌تونم کمکت کنم؟',
-        examples: [
-          'Can you help me?',
-          'I need some help.',
-          'Could you help me, please?',
-        ],
-      );
-    }
-
-    // ─────────────────────────────
-    // HOMEWORK
-    // ─────────────────────────────
-
-    if (_containsAny(text, [
-      'تکلیف',
-      'مشقم',
-      'مشق',
-      'homework',
-    ])) {
+    if (_isHomeworkRequest(text)) {
       if (_containsAny(text, [
         'speaking',
         'اسپیکینگ',
@@ -290,16 +232,11 @@ class MeowBrain {
       return _generalHomework();
     }
 
-    // ─────────────────────────────
-    // PRACTICE
-    // ─────────────────────────────
+    // ═══════════════════════════════
+    // 6. PRACTICE
+    // ═══════════════════════════════
 
-    if (_containsAny(text, [
-      'تمرین',
-      'تمرین بده',
-      'practice',
-      'تمرین انگلیسی',
-    ])) {
+    if (_isPracticeRequest(text)) {
       if (_containsAny(text, [
         'speaking',
         'اسپیکینگ',
@@ -312,11 +249,13 @@ class MeowBrain {
           english: 'Speaking Practice 🎤',
           persian:
               'این جمله را با صدای بلند بگو: "I’d like some water, please."',
-          pronunciation: 'آید لایک سام واتِر، پلیز',
+          pronunciation:
+              'آید لایک سام واتِر، پلیز',
           examples: [
             'I’d like some water, please.',
           ],
-          note: 'اول آرام بگو، بعد یک بار طبیعی‌تر تکرار کن.',
+          note:
+              'اول آرام بگو، بعد یک بار طبیعی‌تر تکرار کن.',
         );
       }
 
@@ -347,72 +286,170 @@ class MeowBrain {
         intent: MeowIntent.generalPractice,
         mood: MeowMood.cheering,
         english: 'Let’s practice! 🐱',
-        persian: 'بریم تمرین کنیم! 🐱',
+        persian:
+            'بریم تمرین کنیم! 🐱',
         examples: [
           'I am learning English.',
           'I like coffee.',
           'I want some water.',
         ],
-        note: 'می‌تونی از Meow بخوای speaking، vocabulary، writing یا translation تمرین بده.',
+        note:
+            'می‌تونی از Meow بخوای speaking، vocabulary، writing یا translation تمرین بده.',
       );
     }
 
-    // ─────────────────────────────
-    // PRONUNCIATION
-    // ─────────────────────────────
+    // ═══════════════════════════════
+    // 7. WATER / DRINK
+    // ═══════════════════════════════
 
-    if (_containsAny(text, [
-      'تلفظ',
-      'چطور تلفظ',
-      'چجوری تلفظ',
-      'pronunciation',
-      'pronounce',
-    ])) {
+    final detectedIntent =
+        _intentDetector.detect(text);
+
+    if (detectedIntent == 'drink_request') {
+      if (_looksLikeWaterRequest(text)) {
+        return _waterResponse();
+      }
+
+      return _drinkResponse();
+    }
+
+    // تشخیص مستقیم و طبیعی‌تر
+    if (_looksLikeWaterRequest(text)) {
+      return _waterResponse();
+    }
+
+    if (_looksLikeDrinkRequest(text)) {
+      return _drinkResponse();
+    }
+
+    // ═══════════════════════════════
+    // 8. FOOD
+    // ═══════════════════════════════
+
+    if (_looksLikeFoodRequest(text)) {
+      return _foodResponse();
+    }
+
+    // ═══════════════════════════════
+    // 9. BATHROOM
+    // ═══════════════════════════════
+
+    if (_looksLikeBathroomRequest(text)) {
       return const MeowResponse(
-        intent: MeowIntent.pronunciation,
+        intent: MeowIntent.bathroomRequest,
         mood: MeowMood.calm,
-        english: 'Tell me the word or sentence you want to pronounce.',
-        persian: 'کلمه یا جمله‌ای که می‌خوای تلفظش رو تمرین کنی بفرست.',
+        english:
+            'Excuse me, where is the bathroom?',
+        persian:
+            'ببخشید، دستشویی کجاست؟',
+        pronunciation:
+            'اِکسکیوز می، وِر ایز دِ بَث‌روم؟',
         examples: [
-          'How do I pronounce "water"?',
-          'How do I pronounce "comfortable"?',
-          'How do I say this sentence?',
+          'Where is the bathroom?',
+          'Excuse me, where is the restroom?',
+          'Is there a bathroom nearby?',
         ],
       );
     }
 
-    // ─────────────────────────────
-    // MEANING
-    // ─────────────────────────────
+    // ═══════════════════════════════
+    // 10. HELP
+    // ═══════════════════════════════
 
-    if (_containsAny(text, [
+    if (_looksLikeHelpRequest(text)) {
+      return const MeowResponse(
+        intent: MeowIntent.helpRequest,
+        mood: MeowMood.calm,
+        english: 'How can I help you?',
+        persian:
+            'چطور می‌تونم کمکت کنم؟',
+        examples: [
+          'Can you help me?',
+          'I need some help.',
+          'Could you help me, please?',
+        ],
+      );
+    }
+
+    // ═══════════════════════════════
+    // 11. UNKNOWN
+    // ═══════════════════════════════
+
+    return const MeowResponse(
+      intent: MeowIntent.unknown,
+      mood: MeowMood.surprised,
+      english:
+          "Hmm... I don't know that one yet. 😺",
+      persian:
+          'هوم... هنوز جواب دقیق این مورد رو توی مغزم ندارم 😺\n'
+          'می‌تونی ساده‌تر بپرسی یا بگی «چطور بگم...؟»',
+      examples: [
+        'چطور بگم آب می‌خوام؟',
+        'معنی این کلمه چیه؟',
+        'چطور تلفظش کنم؟',
+        'بهم تکلیف بده',
+      ],
+      note:
+          'این بخش بعداً می‌تونه به لایه‌ی AI متصل بشه.',
+    );
+  }
+
+  // ═══════════════════════════════
+  // INTENT HELPERS
+  // ═══════════════════════════════
+
+  static bool _isGreeting(String text) {
+    return _containsAny(text, [
+      'سلام',
+      'های',
+      'هلو',
+      'hello',
+      'hi',
+      'hey',
+      'good morning',
+      'good evening',
+      'good afternoon',
+    ]);
+  }
+
+  static bool _isPronunciationRequest(String text) {
+    return _containsAny(text, [
+      'تلفظ',
+      'تلفظش',
+      'تلفظ این',
+      'چطور تلفظ',
+      'چجوری تلفظ',
+      'چطوری تلفظ',
+      'چطور خونده میشه',
+      'چجوری خونده میشه',
+      'چطوری خونده میشه',
+      'pronunciation',
+      'pronounce',
+      'how do you pronounce',
+      'how is this pronounced',
+      'how do i pronounce',
+    ]);
+  }
+
+  static bool _isMeaningRequest(String text) {
+    return _containsAny(text, [
       'یعنی چی',
       'معنی',
       'معنیش',
+      'معنی این',
+      'این یعنی',
       'what does',
+      'what does this mean',
       'meaning',
       'means',
-    ])) {
-      return const MeowResponse(
-        intent: MeowIntent.meaning,
-        mood: MeowMood.calm,
-        english: 'Send me the word or sentence and I’ll explain it.',
-        persian: 'کلمه یا جمله رو بفرست تا معنی و کاربردش رو توضیح بدم.',
-        examples: [
-          'What does "awkward" mean?',
-          'What does this sentence mean?',
-          'What does "piece of cake" mean?',
-        ],
-      );
-    }
+    ]);
+  }
 
-    // ─────────────────────────────
-    // TRANSLATION / HOW TO SAY
-    // ─────────────────────────────
-
-    if (_containsAny(text, [
+  static bool _isTranslationRequest(String text) {
+    return _containsAny(text, [
       'چطور بگم',
       'چجوری بگم',
+      'چطوری بگم',
       'به انگلیسی چی میشه',
       'انگلیسیش چی میشه',
       'به انگلیسی',
@@ -420,28 +457,366 @@ class MeowBrain {
       'ترجمه',
       'how do i say',
       'how can i say',
+      'how to say',
       'translate',
-    ])) {
-      return _translationResponse(text);
+    ]);
+  }
+
+  static bool _isHomeworkRequest(String text) {
+    return _containsAny(text, [
+      'تکلیف',
+      'مشقم',
+      'مشق',
+      'homework',
+    ]);
+  }
+
+  static bool _isPracticeRequest(String text) {
+    return _containsAny(text, [
+      'تمرین',
+      'تمرین بده',
+      'تمرین کنیم',
+      'practice',
+      'practice english',
+      'تمرین انگلیسی',
+    ]);
+  }
+
+  // ═══════════════════════════════
+  // WATER
+  // ═══════════════════════════════
+
+  static bool _looksLikeWaterRequest(String text) {
+    final hasWater = _containsAny(text, [
+      'آب',
+      'اب',
+      'water',
+    ]);
+
+    final hasRequest = _containsAny(text, [
+      'میخوام',
+      'می‌خوام',
+      'می خواهم',
+      'میخواهم',
+      'می‌خواهم',
+      'می‌خوام',
+      'میخوام',
+      'میخاستم',
+      'می‌خواستم',
+      'لازم دارم',
+      'می‌تونم',
+      'میشه',
+      'میتونم',
+      'can i have',
+      'could i have',
+      'give me',
+      'get me',
+      'want',
+      'need',
+      'have',
+      'some',
+    ]);
+
+    final thirsty = _containsAny(text, [
+      'تشنه',
+      'تشنمه',
+      'خیلی تشنمه',
+      'i am thirsty',
+      "i'm thirsty",
+      'im thirsty',
+      'thirsty',
+    ]);
+
+    return (hasWater && hasRequest) || thirsty;
+  }
+
+  static MeowResponse _waterResponse() {
+    return const MeowResponse(
+      intent: MeowIntent.waterRequest,
+      mood: MeowMood.happy,
+      english:
+          "I'd like some water, please.",
+      persian:
+          'می‌خوام کمی آب، لطفاً.',
+      pronunciation:
+          'آید لایک سام واتِر، پلیز',
+      examples: [
+        "I'd like some water, please.",
+        'Can I have some water, please?',
+        'Could I have some water?',
+        'I need some water.',
+      ],
+      note:
+          'برای درخواست مؤدبانه، "I’d like..." خیلی طبیعی و کاربردی است.',
+    );
+  }
+
+  // ═══════════════════════════════
+  // DRINK
+  // ═══════════════════════════════
+
+  static bool _looksLikeDrinkRequest(String text) {
+    final hasDrink = _containsAny(text, [
+      'نوشیدنی',
+      'drink',
+      'something to drink',
+      'چیزی برای نوشیدن',
+      'یه چیزی برای نوشیدن',
+      'یک چیزی برای نوشیدن',
+    ]);
+
+    final request = _containsAny(text, [
+      'میخوام',
+      'می‌خوام',
+      'میخواهم',
+      'می‌خواهم',
+      'می‌خواستم',
+      'لازم دارم',
+      'want',
+      'need',
+      'can i have',
+      'could i get',
+      'give me',
+    ]);
+
+    return hasDrink && request;
+  }
+
+  static MeowResponse _drinkResponse() {
+    return const MeowResponse(
+      intent: MeowIntent.drinkRequest,
+      mood: MeowMood.happy,
+      english:
+          "I'd like a drink, please.",
+      persian:
+          'یک نوشیدنی می‌خواهم، لطفاً.',
+      pronunciation:
+          'آید لایک ا درینک، پلیز',
+      examples: [
+        "I'd like a drink, please.",
+        'Can I have a drink, please?',
+        'Could I get a drink?',
+        "I'd like something to drink.",
+      ],
+      note:
+          'در رستوران یا کافه، این جمله کاملاً طبیعی است.',
+    );
+  }
+
+  // ═══════════════════════════════
+  // FOOD
+  // ═══════════════════════════════
+
+  static bool _looksLikeFoodRequest(String text) {
+    final hungry = _containsAny(text, [
+      'گرسنه',
+      'گرسنه‌ام',
+      'گرسنمه',
+      'hungry',
+      "i'm hungry",
+      'im hungry',
+    ]);
+
+    final food = _containsAny(text, [
+      'غذا',
+      'food',
+      'something to eat',
+      'چیزی برای خوردن',
+      'یه چیزی برای خوردن',
+      'یک چیزی برای خوردن',
+    ]);
+
+    final request = _containsAny(text, [
+      'میخوام',
+      'می‌خوام',
+      'میخواهم',
+      'می‌خواهم',
+      'می‌خواستم',
+      'لازم دارم',
+      'want',
+      'need',
+      'can i have',
+      'could i get',
+      'get me',
+    ]);
+
+    return hungry || (food && request);
+  }
+
+  static MeowResponse _foodResponse() {
+    return const MeowResponse(
+      intent: MeowIntent.foodRequest,
+      mood: MeowMood.happy,
+      english:
+          "I'd like something to eat, please.",
+      persian:
+          'لطفاً یک چیزی برای خوردن می‌خواهم.',
+      pronunciation:
+          'آید لایک سامثینگ تو ایت، پلیز',
+      examples: [
+        "I'd like something to eat.",
+        "I'm hungry.",
+        'Can I get something to eat?',
+      ],
+      note:
+          'برای بیان گرسنگی، "I’m hungry" ساده‌تر است.',
+    );
+  }
+
+  // ═══════════════════════════════
+  // BATHROOM
+  // ═══════════════════════════════
+
+  static bool _looksLikeBathroomRequest(String text) {
+    return _containsAny(text, [
+      'دستشویی',
+      'سرویس بهداشتی',
+      'حمام',
+      'bathroom',
+      'restroom',
+      'toilet',
+    ]);
+  }
+
+  // ═══════════════════════════════
+  // HELP
+  // ═══════════════════════════════
+
+  static bool _looksLikeHelpRequest(String text) {
+    return _containsAny(text, [
+      'کمک',
+      'کمکم کن',
+      'راهنمایی',
+      'help',
+      'i need help',
+      'can you help',
+      'could you help',
+    ]);
+  }
+
+  // ═══════════════════════════════
+  // PRONUNCIATION RESPONSE
+  // ═══════════════════════════════
+
+  static MeowResponse _pronunciationResponse(
+    String text,
+  ) {
+    final target = _extractPronunciationTarget(text);
+
+    if (target == "i'd" ||
+        target == 'id' ||
+        target == 'i’d') {
+      return const MeowResponse(
+        intent: MeowIntent.pronunciation,
+        mood: MeowMood.happy,
+        english: "I'd",
+        persian:
+            'تلفظ "I’d" اینه:',
+        pronunciation:
+            'آید /aɪd/',
+        examples: [
+          "I'd like some water.",
+          "I'd love to go.",
+          "I'd rather stay home.",
+        ],
+        note:
+            'I’d کوتاه‌شده‌ی "I would" یا گاهی "I had" است. در جمله باید از روی context تشخیص داد کدام معنی را دارد.',
+      );
     }
 
-    // ─────────────────────────────
-    // UNKNOWN
-    // ─────────────────────────────
+    return const MeowResponse(
+      intent: MeowIntent.pronunciation,
+      mood: MeowMood.calm,
+      english:
+          'Tell me the word or sentence you want to pronounce.',
+      persian:
+          'کلمه یا جمله‌ای که می‌خوای تلفظش رو تمرین کنی بفرست.',
+      examples: [
+        'How do I pronounce "water"?',
+        'How do I pronounce "comfortable"?',
+        'How do I say this sentence?',
+      ],
+      note:
+          'مثلاً می‌تونی فقط بنویسی: "pronunciation of comfortable"',
+    );
+  }
+
+  static String _extractPronunciationTarget(
+    String text,
+  ) {
+    final normalized = _normalize(text);
+
+    if (normalized.contains("i'd") ||
+        normalized.contains('i’d')) {
+      return "i'd";
+    }
+
+    final quoted = RegExp(
+      r'''["']([^"']+)["']''',
+    ).firstMatch(normalized);
+
+    if (quoted != null) {
+      return quoted.group(1)?.trim() ?? '';
+    }
+
+    final patterns = [
+      'تلفظ ',
+      'pronunciation of ',
+      'pronounce ',
+    ];
+
+    for (final pattern in patterns) {
+      if (normalized.startsWith(pattern)) {
+        return normalized
+            .substring(pattern.length)
+            .trim();
+      }
+    }
+
+    return '';
+  }
+
+  // ═══════════════════════════════
+  // MEANING RESPONSE
+  // ═══════════════════════════════
+
+  static MeowResponse _meaningResponse(
+    String text,
+  ) {
+    final normalized = _normalize(text);
+
+    if (normalized.contains("i'd") ||
+        normalized.contains('i’d')) {
+      return const MeowResponse(
+        intent: MeowIntent.meaning,
+        mood: MeowMood.calm,
+        english: "I'd",
+        persian:
+            '"I’d" معمولاً کوتاه‌شده‌ی "I would" است و در بعضی جمله‌ها کوتاه‌شده‌ی "I had" هم می‌تواند باشد.',
+        pronunciation:
+            'آید /aɪd/',
+        examples: [
+          "I'd like some water.",
+          "I'd love to help.",
+          "I'd already finished.",
+        ],
+        note:
+            'در "I’d like..." یعنی "دوست دارم / مایلم".',
+      );
+    }
 
     return const MeowResponse(
-      intent: MeowIntent.unknown,
-      mood: MeowMood.surprised,
-      english: "Hmm... I don't know that one yet. 😺",
+      intent: MeowIntent.meaning,
+      mood: MeowMood.calm,
+      english:
+          'Send me the word or sentence and I’ll explain it.',
       persian:
-          'هوم... هنوز جواب دقیق این مورد رو توی مغزم ندارم 😺\nمی‌تونی ساده‌تر بپرسی یا بگی «چطور بگم...؟»',
+          'کلمه یا جمله رو بفرست تا معنی و کاربردش رو توضیح بدم.',
       examples: [
-        'چطور بگم آب می‌خوام؟',
-        'معنی این کلمه چیه؟',
-        'چطور تلفظش کنم؟',
-        'بهم تکلیف بده',
+        'What does "awkward" mean?',
+        'What does this sentence mean?',
+        'What does "piece of cake" mean?',
       ],
-      note: 'این بخش بعداً می‌تونه به لایه‌ی AI متصل بشه.',
     );
   }
 
@@ -449,7 +824,9 @@ class MeowBrain {
   // TRANSLATION
   // ═══════════════════════════════
 
-  static MeowResponse _translationResponse(String text) {
+  static MeowResponse _translationResponse(
+    String text,
+  ) {
     if (_containsAny(text, [
       'آب',
       'اب',
@@ -458,9 +835,12 @@ class MeowBrain {
       return const MeowResponse(
         intent: MeowIntent.translation,
         mood: MeowMood.happy,
-        english: "I'd like some water, please.",
-        persian: 'می‌خوام کمی آب، لطفاً.',
-        pronunciation: 'آید لایک سام واتِر، پلیز',
+        english:
+            "I'd like some water, please.",
+        persian:
+            'می‌خوام کمی آب، لطفاً.',
+        pronunciation:
+            'آید لایک سام واتِر، پلیز',
         examples: [
           "I'd like some water, please.",
           'Can I have some water?',
@@ -475,9 +855,12 @@ class MeowBrain {
       return const MeowResponse(
         intent: MeowIntent.translation,
         mood: MeowMood.happy,
-        english: "I'd like a drink, please.",
-        persian: 'یک نوشیدنی می‌خواهم، لطفاً.',
-        pronunciation: 'آید لایک ا درینک، پلیز',
+        english:
+            "I'd like a drink, please.",
+        persian:
+            'یک نوشیدنی می‌خواهم، لطفاً.',
+        pronunciation:
+            'آید لایک ا درینک، پلیز',
         examples: [
           "I'd like a drink, please.",
           'Can I have a drink?',
@@ -494,9 +877,12 @@ class MeowBrain {
       return const MeowResponse(
         intent: MeowIntent.translation,
         mood: MeowMood.happy,
-        english: "I'm hungry.",
-        persian: 'من گرسنه‌ام.',
-        pronunciation: 'آیم هانگری',
+        english:
+            "I'm hungry.",
+        persian:
+            'من گرسنه‌ام.',
+        pronunciation:
+            'آیم هانگری',
         examples: [
           "I'm hungry.",
           "I'd like something to eat.",
@@ -513,9 +899,12 @@ class MeowBrain {
       return const MeowResponse(
         intent: MeowIntent.translation,
         mood: MeowMood.calm,
-        english: "I didn't understand.",
-        persian: 'متوجه نشدم.',
-        pronunciation: 'آی دیدِنت آندِرستَند',
+        english:
+            "I didn't understand.",
+        persian:
+            'متوجه نشدم.',
+        pronunciation:
+            'آی دیدِنت آندِرستَند',
         examples: [
           "I didn't understand.",
           'Sorry, I didn’t understand.',
@@ -527,8 +916,10 @@ class MeowBrain {
     return const MeowResponse(
       intent: MeowIntent.translation,
       mood: MeowMood.calm,
-      english: 'Send me the Persian sentence you want to say in English.',
-      persian: 'جمله فارسی رو بفرست تا معادل انگلیسی مناسبش رو پیدا کنم.',
+      english:
+          'Send me the Persian sentence you want to say in English.',
+      persian:
+          'جمله فارسی رو بفرست تا معادل انگلیسی مناسبش رو پیدا کنم.',
       examples: [
         'چطور بگم آب می‌خوام؟',
         'چطور بگم متوجه نشدم؟',
@@ -542,11 +933,12 @@ class MeowBrain {
   // ═══════════════════════════════
 
   static MeowResponse _generalHomework() {
-    const homeworks = [
+    final homeworks = [
       const MeowResponse(
         intent: MeowIntent.homework,
         mood: MeowMood.cheering,
-        english: 'Homework: Write 3 sentences about yourself.',
+        english:
+            'Homework: Write 3 sentences about yourself.',
         persian:
             'تکلیف امروز 📝\n۳ جمله انگلیسی درباره خودت بنویس.',
         examples: [
@@ -554,12 +946,14 @@ class MeowBrain {
           'I like ...',
           'I am learning English.',
         ],
-        note: 'سعی کن جمله‌ها از چیزهایی باشن که واقعاً درباره خودت درست هستن.',
+        note:
+            'سعی کن جمله‌ها از چیزهایی باشن که واقعاً درباره خودت درست هستن.',
       ),
       const MeowResponse(
         intent: MeowIntent.homework,
         mood: MeowMood.cheering,
-        english: 'Homework: Translate 3 everyday sentences.',
+        english:
+            'Homework: Translate 3 everyday sentences.',
         persian:
             'تکلیف امروز 📚\nاین ۳ جمله رو به انگلیسی ترجمه کن.',
         examples: [
@@ -571,7 +965,8 @@ class MeowBrain {
       const MeowResponse(
         intent: MeowIntent.homework,
         mood: MeowMood.cheering,
-        english: 'Homework: Practice these words aloud.',
+        english:
+            'Homework: Practice these words aloud.',
         persian:
             'تکلیف امروز 🎤\nاین کلمات رو با صدای بلند تمرین کن.',
         examples: [
@@ -584,30 +979,40 @@ class MeowBrain {
       ),
     ];
 
-    return homeworks[_random.nextInt(homeworks.length)];
+    return homeworks[
+      _random.nextInt(homeworks.length)
+    ];
   }
 
-  static const MeowResponse _speakingHomeworkResponse = MeowResponse(
+  static const MeowResponse
+      _speakingHomeworkResponse =
+      MeowResponse(
     intent: MeowIntent.homework,
     mood: MeowMood.cheering,
-    english: 'Speaking Homework 🎤',
+    english:
+        'Speaking Homework 🎤',
     persian:
         'تکلیف Speaking:\nاین جمله را ۳ بار با صدای بلند بگو:',
     examples: [
       "I'd like some water, please.",
     ],
-    pronunciation: 'آید لایک سام واتِر، پلیز',
-    note: 'بار اول آرام، بار دوم طبیعی، بار سوم بدون نگاه کردن به متن.',
+    pronunciation:
+        'آید لایک سام واتِر، پلیز',
+    note:
+        'بار اول آرام، بار دوم طبیعی، بار سوم بدون نگاه کردن به متن.',
   );
 
   static MeowResponse _speakingHomework() {
     return _speakingHomeworkResponse;
   }
 
-  static const MeowResponse _vocabularyHomeworkResponse = MeowResponse(
+  static const MeowResponse
+      _vocabularyHomeworkResponse =
+      MeowResponse(
     intent: MeowIntent.homework,
     mood: MeowMood.cheering,
-    english: 'Vocabulary Homework 📚',
+    english:
+        'Vocabulary Homework 📚',
     persian:
         '۵ کلمه زیر را یاد بگیر و برای هرکدام یک جمله بساز:',
     examples: [
@@ -617,17 +1022,21 @@ class MeowBrain {
       'help',
       'understand',
     ],
-    note: 'فقط معنی کلمه را حفظ نکن. با جمله یادش بگیر.',
+    note:
+        'فقط معنی کلمه را حفظ نکن. با جمله یادش بگیر.',
   );
 
   static MeowResponse _vocabularyHomework() {
     return _vocabularyHomeworkResponse;
   }
 
-  static const MeowResponse _writingHomeworkResponse = MeowResponse(
+  static const MeowResponse
+      _writingHomeworkResponse =
+      MeowResponse(
     intent: MeowIntent.homework,
     mood: MeowMood.cheering,
-    english: 'Writing Homework 📝',
+    english:
+        'Writing Homework 📝',
     persian:
         '۵ جمله کوتاه درباره روزت به انگلیسی بنویس.',
     examples: [
@@ -637,18 +1046,23 @@ class MeowBrain {
       'I watched...',
       'I learned...',
     ],
-    note: 'جمله‌های واقعی درباره زندگی خودت بنویس.',
+    note:
+        'جمله‌های واقعی درباره زندگی خودت بنویس.',
   );
 
   static MeowResponse _writingHomework() {
     return _writingHomeworkResponse;
   }
 
-  static const MeowResponse _translationHomeworkResponse = MeowResponse(
+  static const MeowResponse
+      _translationHomeworkResponse =
+      MeowResponse(
     intent: MeowIntent.homework,
     mood: MeowMood.cheering,
-    english: 'Translation Homework 🔤',
-    persian: 'این جمله‌ها را به انگلیسی ترجمه کن:',
+    english:
+        'Translation Homework 🔤',
+    persian:
+        'این جمله‌ها را به انگلیسی ترجمه کن:',
     examples: [
       'من آب می‌خواهم.',
       'من گرسنه‌ام.',
@@ -664,11 +1078,15 @@ class MeowBrain {
   // PRACTICE
   // ═══════════════════════════════
 
-  static const MeowResponse _vocabularyPracticeResponse = MeowResponse(
+  static const MeowResponse
+      _vocabularyPracticeResponse =
+      MeowResponse(
     intent: MeowIntent.vocabularyPractice,
     mood: MeowMood.happy,
-    english: 'Vocabulary Practice 📚',
-    persian: 'معنی این کلمات رو بگو:',
+    english:
+        'Vocabulary Practice 📚',
+    persian:
+        'معنی این کلمات رو بگو:',
     examples: [
       'water',
       'drink',
@@ -682,26 +1100,35 @@ class MeowBrain {
     return _vocabularyPracticeResponse;
   }
 
-  static const MeowResponse _writingPracticeResponse = MeowResponse(
+  static const MeowResponse
+      _writingPracticeResponse =
+      MeowResponse(
     intent: MeowIntent.writingPractice,
     mood: MeowMood.happy,
-    english: 'Writing Practice 📝',
-    persian: 'با این کلمه یک جمله انگلیسی بساز:',
+    english:
+        'Writing Practice 📝',
+    persian:
+        'با این کلمه یک جمله انگلیسی بساز:',
     examples: [
       'water',
     ],
-    note: 'سعی کن جمله درباره یک موقعیت واقعی باشه.',
+    note:
+        'سعی کن جمله درباره یک موقعیت واقعی باشه.',
   );
 
   static MeowResponse _writingPractice() {
     return _writingPracticeResponse;
   }
 
-  static const MeowResponse _translationPracticeResponse = MeowResponse(
+  static const MeowResponse
+      _translationPracticeResponse =
+      MeowResponse(
     intent: MeowIntent.translation,
     mood: MeowMood.happy,
-    english: 'Translation Practice 🔤',
-    persian: 'این جمله را به انگلیسی ترجمه کن:',
+    english:
+        'Translation Practice 🔤',
+    persian:
+        'این جمله را به انگلیسی ترجمه کن:',
     examples: [
       'من یک نوشیدنی می‌خواهم.',
     ],
