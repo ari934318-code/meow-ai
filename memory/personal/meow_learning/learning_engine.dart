@@ -3,16 +3,23 @@ import 'learned_phrases.dart';
 import 'learned_intents.dart';
 import 'learned_vocabulary.dart';
 import 'privacy_filter.dart';
+import 'learning_validator.dart';
 
 /// موتور یادگیری Meow.
 ///
-/// وظیفه این کلاس:
-/// 1. دریافت جمله جدید
-/// 2. بررسی حریم خصوصی
-/// 3. پاک‌سازی اطلاعات شخصی
-/// 4. نرمال‌سازی جمله
-/// 5. بررسی دانش قبلی
-/// 6. ساخت یا افزایش Candidate
+/// جریان اصلی یادگیری:
+///
+/// User Input
+///     ↓
+/// Privacy Filter
+///     ↓
+/// Normalization
+///     ↓
+/// Candidate Memory
+///     ↓
+/// Learning Validator
+///     ↓
+/// Learned Phrase
 ///
 /// اطلاعات شخصی کاربران نباید وارد دانش عمومی Meow شود.
 class LearningEngine {
@@ -22,6 +29,7 @@ class LearningEngine {
   final List<LearnedVocabulary> learnedVocabulary;
 
   final PrivacyFilter privacyFilter;
+  final LearningValidator validator;
 
   LearningEngine({
     List<CandidateMemory>? candidates,
@@ -29,21 +37,23 @@ class LearningEngine {
     List<LearnedIntent>? learnedIntents,
     List<LearnedVocabulary>? learnedVocabulary,
     PrivacyFilter? privacyFilter,
+    LearningValidator? validator,
   })  : candidates = candidates ?? [],
         learnedPhrases = learnedPhrases ?? [],
         learnedIntents = learnedIntents ?? [],
         learnedVocabulary = learnedVocabulary ?? [],
-        privacyFilter = privacyFilter ?? const PrivacyFilter();
+        privacyFilter = privacyFilter ?? const PrivacyFilter(),
+        validator = validator ?? const LearningValidator();
 
-  /// دریافت یک جمله جدید از کاربر.
+  /// دریافت جمله جدید از کاربر.
   ///
-  /// قبل از اینکه جمله وارد سیستم یادگیری شود،
-  /// اطلاعات شخصی احتمالی از آن حذف می‌شود.
+  /// ابتدا اطلاعات شخصی حذف می‌شود.
+  /// سپس جمله به Candidate تبدیل می‌شود.
+  /// اگر Candidate به اندازه کافی تکرار شده باشد،
+  /// برای تبدیل شدن به دانش یادگرفته‌شده بررسی می‌شود.
   void observePhrase(String phrase) {
-    // اول جمله را برای یادگیری امن آماده می‌کنیم.
     final safePhrase = privacyFilter.prepareForLearning(phrase);
 
-    // اگر چیزی قابل یادگیری باقی نمانده باشد، متوقف می‌شویم.
     if (safePhrase == null) {
       return;
     }
@@ -54,8 +64,7 @@ class LearningEngine {
       return;
     }
 
-    // اگر Meow قبلاً این عبارت را یاد گرفته،
-    // دوباره Candidate نمی‌سازیم.
+    // اگر قبلاً یاد گرفته شده، دوباره ذخیره نمی‌کنیم.
     final alreadyLearned = learnedPhrases.any(
       (item) => _normalizePhrase(item.phrase) == normalizedPhrase,
     );
@@ -64,36 +73,87 @@ class LearningEngine {
       return;
     }
 
-    // اگر قبلاً Candidate مشابه وجود دارد،
-    // تعداد مشاهده آن را افزایش می‌دهیم.
+    // بررسی اینکه Candidate قبلاً وجود دارد یا نه.
     final candidateIndex = candidates.indexWhere(
       (item) => _normalizePhrase(item.phrase) == normalizedPhrase,
     );
 
     if (candidateIndex != -1) {
+      // Candidate قبلی دوباره دیده شده است.
       candidates[candidateIndex] =
           candidates[candidateIndex].incrementSeen();
+
+      // بعد از افزایش تعداد مشاهده،
+      // بررسی می‌کنیم که حالا قابل یادگیری هست یا نه.
+      _tryPromoteCandidate(candidateIndex);
 
       return;
     }
 
-    // اگر جمله کاملاً جدید است،
-    // آن را به عنوان Candidate ذخیره می‌کنیم.
-    candidates.add(
-      CandidateMemory(
-        phrase: normalizedPhrase,
-        possibleIntent: null,
-        seenCount: 1,
-        firstSeen: DateTime.now(),
-        lastSeen: DateTime.now(),
-      ),
+    // ساخت Candidate جدید.
+    final candidate = CandidateMemory(
+      phrase: normalizedPhrase,
+      possibleIntent: null,
+      seenCount: 1,
+      firstSeen: DateTime.now(),
+      lastSeen: DateTime.now(),
     );
+
+    candidates.add(candidate);
+
+    // Candidate جدید هنوز معمولاً معتبر نیست،
+    // ولی برای اطمینان آن را بررسی می‌کنیم.
+    _tryPromoteCandidate(candidates.length - 1);
+  }
+
+  /// بررسی Candidate و تبدیل آن به LearnedPhrase
+  /// در صورتی که شرایط لازم را داشته باشد.
+  void _tryPromoteCandidate(int candidateIndex) {
+    if (candidateIndex < 0 || candidateIndex >= candidates.length) {
+      return;
+    }
+
+    final candidate = candidates[candidateIndex];
+
+    // اگر Candidate هنوز اعتبار کافی ندارد،
+    // هیچ کاری انجام نمی‌دهیم.
+    if (!validator.isValid(candidate)) {
+      return;
+    }
+
+    final confidence = validator.calculateConfidence(candidate);
+
+    // در نسخه فعلی هنوز Intent را به صورت خودکار
+    // حدس نمی‌زنیم.
+    //
+    // Intent در مرحله بعدی توسط سیستم تشخیص Intent
+    // مشخص خواهد شد.
+    final learnedPhrase = LearnedPhrase(
+      phrase: candidate.phrase,
+      intent: candidate.possibleIntent ?? 'unknown',
+      confidence: confidence,
+      usageCount: candidate.seenCount,
+      learnedAt: DateTime.now(),
+    );
+
+    // جلوگیری از ثبت تکراری.
+    final alreadyExists = learnedPhrases.any(
+      (item) => _normalizePhrase(item.phrase) ==
+          _normalizePhrase(learnedPhrase.phrase),
+    );
+
+    if (alreadyExists) {
+      return;
+    }
+
+    learnedPhrases.add(learnedPhrase);
+
+    // بعد از تبدیل شدن به دانش دائمی،
+    // Candidate دیگر لازم نیست باقی بماند.
+    candidates.removeAt(candidateIndex);
   }
 
   /// نرمال‌سازی جمله.
-  ///
-  /// فاصله‌های اضافی حذف می‌شوند و حروف انگلیسی
-  /// به حالت کوچک تبدیل می‌شوند.
   String _normalizePhrase(String phrase) {
     return phrase
         .trim()
