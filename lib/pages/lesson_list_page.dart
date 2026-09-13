@@ -7,7 +7,7 @@ import '../services/a1_progress_service.dart';
 import '../services/lesson_service.dart';
 import 'lesson_page.dart';
 import 'a1_exam_page.dart';
-import 'a1_basics_exam_page.dart';
+import 'a1_basics_page.dart';
 
 class LessonListPage extends StatefulWidget {
   const LessonListPage({super.key});
@@ -71,12 +71,12 @@ class _LessonListPageState extends State<LessonListPage> {
     );
   }
 
-  Future<void> _openBasicsExam() async {
+  Future<void> _openBasics() async {
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) =>
-            const A1BasicsExamPage(),
+            const A1BasicsPage(),
       ),
     );
 
@@ -250,7 +250,7 @@ class _LessonListPageState extends State<LessonListPage> {
     return InkWell(
       borderRadius:
           BorderRadius.circular(24),
-      onTap: _openBasicsExam,
+      onTap: _openBasics,
       child: Container(
         padding:
             const EdgeInsets.all(20),
@@ -329,8 +329,8 @@ class _LessonListPageState extends State<LessonListPage> {
                             ? 'آماده‌ای! Basics رو با موفقیت گذروندی.'
                             : 'Completed! You passed the Basics Exam.'
                         : lang.isPersian
-                            ? 'اول پایه‌های انگلیسی رو یاد بگیر و بعد امتحان بده.'
-                            : 'Learn the foundations, then pass the Basics Exam.',
+                            ? 'اول پایه‌های انگلیسی رو یاد بگیر، بعد امتحان بده.'
+                            : 'Learn the foundations first, then take the Basics Exam.',
                     style:
                         const TextStyle(
                       fontSize: 13,
@@ -371,8 +371,8 @@ class _LessonListPageState extends State<LessonListPage> {
                               ? 'تکمیل شد ✓'
                               : 'COMPLETED ✓'
                           : lang.isPersian
-                              ? 'امتحان Basics'
-                              : 'Basics Exam',
+                              ? 'شروع یادگیری'
+                              : 'START LEARNING',
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight:
