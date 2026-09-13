@@ -4,11 +4,12 @@ const A1Lesson a1Lesson10 = A1Lesson(
   id: 'a1_10',
   title: 'Places Around You',
   topic: 'مکان‌های اطراف تو',
+
   words: [
     A1Word(
       english: 'place',
       persian: 'مکان',
-      pronunciation: 'پلیس',
+      pronunciation: 'پِلِیس',
       example: 'This is a nice place.',
     ),
     A1Word(
@@ -42,16 +43,10 @@ const A1Lesson a1Lesson10 = A1Lesson(
       example: 'I am at the store.',
     ),
     A1Word(
-      english: 'market',
-      persian: 'بازار',
-      pronunciation: 'مارکِت',
-      example: 'We buy food at the market.',
-    ),
-    A1Word(
       english: 'supermarket',
       persian: 'سوپرمارکت',
       pronunciation: 'سوپِرمـارکِت',
-      example: 'The supermarket is big.',
+      example: 'The supermarket is near my home.',
     ),
     A1Word(
       english: 'restaurant',
@@ -96,22 +91,10 @@ const A1Lesson a1Lesson10 = A1Lesson(
       example: 'The station is near my house.',
     ),
     A1Word(
-      english: 'bus',
-      persian: 'اتوبوس',
-      pronunciation: 'باس',
-      example: 'I take the bus to school.',
-    ),
-    A1Word(
       english: 'bus stop',
       persian: 'ایستگاه اتوبوس',
       pronunciation: 'باس اِستاپ',
       example: 'The bus stop is near here.',
-    ),
-    A1Word(
-      english: 'train station',
-      persian: 'ایستگاه قطار',
-      pronunciation: 'ترین اِستِیشِن',
-      example: 'The train station is far.',
     ),
     A1Word(
       english: 'street',
@@ -156,22 +139,22 @@ const A1Lesson a1Lesson10 = A1Lesson(
       example: 'I live in an apartment.',
     ),
     A1Word(
+      english: 'room',
+      persian: 'اتاق',
+      pronunciation: 'روم',
+      example: 'My room is small.',
+    ),
+    A1Word(
       english: 'bathroom',
       persian: 'حمام / سرویس بهداشتی',
       pronunciation: 'بَث‌روم',
-      example: 'The bathroom is upstairs.',
+      example: 'Where is the bathroom?',
     ),
     A1Word(
       english: 'kitchen',
       persian: 'آشپزخانه',
       pronunciation: 'کیچِن',
       example: 'My mother is in the kitchen.',
-    ),
-    A1Word(
-      english: 'room',
-      persian: 'اتاق',
-      pronunciation: 'روم',
-      example: 'My room is small.',
     ),
     A1Word(
       english: 'garden',
@@ -184,12 +167,6 @@ const A1Lesson a1Lesson10 = A1Lesson(
       persian: 'در',
       pronunciation: 'دور',
       example: 'Open the door.',
-    ),
-    A1Word(
-      english: 'entrance',
-      persian: 'ورودی',
-      pronunciation: 'اِنت‌رِنس',
-      example: 'The entrance is over there.',
     ),
     A1Word(
       english: 'near',
@@ -246,6 +223,7 @@ const A1Lesson a1Lesson10 = A1Lesson(
       example: 'The shop is over there.',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'Where are you?',
@@ -312,16 +290,12 @@ const A1Lesson a1Lesson10 = A1Lesson(
       persian: 'بچه‌ها در پارک هستند.',
     ),
     A1Sentence(
-      english: 'The bank is next to the supermarket.',
-      persian: 'بانک کنار سوپرمارکت است.',
-    ),
-    A1Sentence(
       english: 'The bus stop is near my house.',
       persian: 'ایستگاه اتوبوس نزدیک خانه من است.',
     ),
     A1Sentence(
-      english: 'The train station is far.',
-      persian: 'ایستگاه قطار دور است.',
+      english: 'The station is far from here.',
+      persian: 'ایستگاه از اینجا دور است.',
     ),
     A1Sentence(
       english: 'My house is on this street.',
@@ -348,20 +322,16 @@ const A1Lesson a1Lesson10 = A1Lesson(
       persian: 'ورودی آنجاست.',
     ),
     A1Sentence(
-      english: 'Turn left at the street.',
-      persian: 'در خیابان به چپ بپیچ.',
+      english: 'Turn left here.',
+      persian: 'اینجا به چپ بپیچ.',
     ),
     A1Sentence(
-      english: 'Turn right at the bank.',
-      persian: 'کنار بانک به راست بپیچ.',
+      english: 'Turn right here.',
+      persian: 'اینجا به راست بپیچ.',
     ),
     A1Sentence(
       english: 'Where is the bathroom?',
       persian: 'سرویس بهداشتی کجاست؟',
-    ),
-    A1Sentence(
-      english: 'The bathroom is upstairs.',
-      persian: 'سرویس بهداشتی طبقه بالاست.',
     ),
     A1Sentence(
       english: 'My mother is in the kitchen.',
@@ -385,7 +355,7 @@ const A1Lesson a1Lesson10 = A1Lesson(
     ),
     A1Sentence(
       english: 'Is there a supermarket near here?',
-      persian: 'آیا اینجا نزدیک سوپرمارکت هست؟',
+      persian: 'آیا اینجا سوپرمارکت نزدیک هست؟',
     ),
     A1Sentence(
       english: 'Yes, it is near the park.',
@@ -404,6 +374,7 @@ const A1Lesson a1Lesson10 = A1Lesson(
       persian: 'این یک کتابخانه است.',
     ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "place" mean?',
@@ -421,24 +392,9 @@ const A1Lesson a1Lesson10 = A1Lesson(
       answer: 'مغازه',
     ),
     A1Question(
-      question: 'What does "market" mean?',
-      options: ['بازار', 'رستوران', 'کافه', 'مدرسه'],
-      answer: 'بازار',
-    ),
-    A1Question(
       question: 'What does "restaurant" mean?',
       options: ['رستوران', 'کتابخانه', 'بانک', 'بیمارستان'],
       answer: 'رستوران',
-    ),
-    A1Question(
-      question: 'What does "park" mean?',
-      options: ['پارک', 'فروشگاه', 'خانه', 'خیابان'],
-      answer: 'پارک',
-    ),
-    A1Question(
-      question: 'What does "hospital" mean?',
-      options: ['بیمارستان', 'مدرسه', 'کافه', 'پارک'],
-      answer: 'بیمارستان',
     ),
     A1Question(
       question: 'What does "library" mean?',
@@ -446,9 +402,9 @@ const A1Lesson a1Lesson10 = A1Lesson(
       answer: 'کتابخانه',
     ),
     A1Question(
-      question: 'What does "station" mean?',
-      options: ['ایستگاه', 'رستوران', 'خانه', 'پارک'],
-      answer: 'ایستگاه',
+      question: 'What does "hospital" mean?',
+      options: ['بیمارستان', 'مدرسه', 'کافه', 'پارک'],
+      answer: 'بیمارستان',
     ),
     A1Question(
       question: 'What does "street" mean?',
@@ -456,14 +412,9 @@ const A1Lesson a1Lesson10 = A1Lesson(
       answer: 'خیابان',
     ),
     A1Question(
-      question: 'What does "building" mean?',
-      options: ['ساختمان', 'خیابان', 'خانه', 'پارک'],
-      answer: 'ساختمان',
-    ),
-    A1Question(
-      question: 'What does "garden" mean?',
-      options: ['باغ / باغچه', 'آشپزخانه', 'اتاق', 'در'],
-      answer: 'باغ / باغچه',
+      question: 'What does "apartment" mean?',
+      options: ['آپارتمان', 'باغ', 'ایستگاه', 'رستوران'],
+      answer: 'آپارتمان',
     ),
     A1Question(
       question: 'What does "near" mean?',
@@ -486,26 +437,6 @@ const A1Lesson a1Lesson10 = A1Lesson(
       answer: 'بین',
     ),
     A1Question(
-      question: 'What does "opposite" mean?',
-      options: ['روبروی', 'کنار', 'بین', 'دور'],
-      answer: 'روبروی',
-    ),
-    A1Question(
-      question: 'What does "left" mean?',
-      options: ['چپ', 'راست', 'بالا', 'پایین'],
-      answer: 'چپ',
-    ),
-    A1Question(
-      question: 'What does "right" mean?',
-      options: ['راست', 'چپ', 'بالا', 'پایین'],
-      answer: 'راست',
-    ),
-    A1Question(
-      question: 'Complete: Where ___ you?',
-      options: ['are', 'is', 'am', 'be'],
-      answer: 'are',
-    ),
-    A1Question(
       question: 'Complete: Where ___ the school?',
       options: ['is', 'are', 'am', 'be'],
       answer: 'is',
@@ -521,49 +452,29 @@ const A1Lesson a1Lesson10 = A1Lesson(
         'I am at home.',
         'I am at school.',
         'I am at work.',
-        'I am at the park.'
+        'I am at the park.',
       ],
       answer: 'I am at home.',
     ),
     A1Question(
-      question: 'Which sentence means "مغازه کنار بانک است"؟',
-      options: [
-        'The shop is next to the bank.',
-        'The shop is far from the bank.',
-        'The shop is in the bank.',
-        'The shop is behind the bank.'
-      ],
-      answer: 'The shop is next to the bank.',
-    ),
-    A1Question(
-      question: 'Which sentence means "مدرسه روبروی پارک است"؟',
-      options: [
-        'The school is opposite the park.',
-        'The school is next to the park.',
-        'The school is far from the park.',
-        'The school is in the park.'
-      ],
-      answer: 'The school is opposite the park.',
-    ),
-    A1Question(
       question: 'Where can you read books?',
-      options: ['At the library', 'At the bank', 'At the hospital', 'At the bus stop'],
+      options: [
+        'At the library',
+        'At the bank',
+        'At the hospital',
+        'At the bus stop',
+      ],
       answer: 'At the library',
     ),
     A1Question(
-      question: 'Where can you buy food?',
-      options: ['At the supermarket', 'At the hospital', 'At the library', 'At the station'],
-      answer: 'At the supermarket',
-    ),
-    A1Question(
       question: 'Where can you eat food?',
-      options: ['At a restaurant', 'At a bank', 'At a hospital', 'At a station'],
+      options: [
+        'At a restaurant',
+        'At a bank',
+        'At a hospital',
+        'At a station',
+      ],
       answer: 'At a restaurant',
-    ),
-    A1Question(
-      question: 'Where can you take a bus?',
-      options: ['At a bus stop', 'At a library', 'At a cafe', 'At a garden'],
-      answer: 'At a bus stop',
     ),
     A1Question(
       question: 'Complete: There ___ a park near my house.',
@@ -571,19 +482,14 @@ const A1Lesson a1Lesson10 = A1Lesson(
       answer: 'is',
     ),
     A1Question(
-      question: 'Complete: There ___ a cafe next to the library.',
-      options: ['is', 'are', 'am', 'be'],
-      answer: 'is',
-    ),
-    A1Question(
-      question: 'Which direction is "left"?',
-      options: ['چپ', 'راست', 'بالا', 'پایین'],
-      answer: 'چپ',
-    ),
-    A1Question(
-      question: 'Which direction is "right"?',
-      options: ['راست', 'چپ', 'بالا', 'پایین'],
-      answer: 'راست',
+      question: 'Which sentence asks for a location?',
+      options: [
+        'Where is the bank?',
+        'What is your name?',
+        'How old are you?',
+        'What time is it?',
+      ],
+      answer: 'Where is the bank?',
     ),
     A1Question(
       question: 'Which sentence is correct?',
@@ -591,49 +497,9 @@ const A1Lesson a1Lesson10 = A1Lesson(
         'The bank is next to the shop.',
         'The bank next to is shop.',
         'The bank is shop next.',
-        'Next bank the shop is.'
+        'Next bank the shop is.',
       ],
       answer: 'The bank is next to the shop.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'I go to school every day.',
-        'I go every school day.',
-        'I school go every day.',
-        'Every go I school day.'
-      ],
-      answer: 'I go to school every day.',
-    ),
-    A1Question(
-      question: 'Which sentence asks for a location?',
-      options: [
-        'Where is the bank?',
-        'What is your name?',
-        'How old are you?',
-        'What time is it?'
-      ],
-      answer: 'Where is the bank?',
-    ),
-    A1Question(
-      question: 'What does "here" mean?',
-      options: ['اینجا', 'آنجا', 'نزدیک', 'دور'],
-      answer: 'اینجا',
-    ),
-    A1Question(
-      question: 'What does "there" mean?',
-      options: ['آنجا', 'اینجا', 'کنار', 'بین'],
-      answer: 'آنجا',
-    ),
-    A1Question(
-      question: 'Complete: Turn ___ at the bank.',
-      options: ['right', 'far', 'near', 'between'],
-      answer: 'right',
-    ),
-    A1Question(
-      question: 'Complete: Turn ___ at the street.',
-      options: ['left', 'far', 'near', 'opposite'],
-      answer: 'left',
     ),
   ],
 
@@ -740,22 +606,49 @@ const A1Lesson a1Lesson10 = A1Lesson(
       ],
     ),
     A1SpeakingQuestion(
-      question: 'Say: "Turn left at the street."',
-      persian: 'بگو: «در خیابان به چپ بپیچ.»',
-      acceptableAnswers: [
-        'turn left at the street',
-      ],
-    ),
-    A1SpeakingQuestion(
-      question: 'Imagine someone asks you: "Where is the library?" Give them simple directions.',
-      persian: 'فرض کن کسی می‌پرسد: «کتابخانه کجاست؟» یک مسیر ساده به او بگو.',
+      question: 'Where is the library?',
+      persian: 'کتابخانه کجاست؟',
       acceptableAnswers: [
         'the library is near the park',
         'the library is next to the cafe',
         'the library is on the left',
         'the library is over there',
-        'go straight the library is on the left',
-        'turn left the library is on the right',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Give someone simple directions to the park.',
+      persian: 'یک مسیر ساده برای رسیدن به پارک بگو.',
+      acceptableAnswers: [
+        'turn left here',
+        'turn right here',
+        'the park is on the left',
+        'the park is on the right',
+        'the park is near the school',
+        'the park is opposite the school',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "The shop is next to the bank."',
+      persian: 'بگو: «مغازه کنار بانک است.»',
+      acceptableAnswers: [
+        'the shop is next to the bank',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Where is the bathroom?"',
+      persian: 'بگو: «سرویس بهداشتی کجاست؟»',
+      acceptableAnswers: [
+        'where is the bathroom',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Tell Meow about three places near your home.',
+      persian: 'درباره سه مکان نزدیک خانه‌ات به میو بگو.',
+      acceptableAnswers: [
+        'the school is near my home and the park is near my home',
+        'the shop is near my home and the cafe is near my home',
+        'the supermarket is near my home and the bank is near my home',
+        'the park is near my home and the bus stop is near my home',
       ],
     ),
   ],
