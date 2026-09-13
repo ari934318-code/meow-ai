@@ -26,6 +26,14 @@ class _SettingsPageState extends State<SettingsPage> {
   bool voiceData = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    appLanguage =
+        appLocale.value.languageCode == 'fa' ? 'فارسی' : 'English';
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -288,6 +296,12 @@ class _SettingsPageState extends State<SettingsPage> {
         setState(() {
           appLanguage = value;
         });
+
+        if (value == 'فارسی') {
+          appLocale.value = const Locale('fa');
+        } else {
+          appLocale.value = const Locale('en');
+        }
       },
     );
   }
