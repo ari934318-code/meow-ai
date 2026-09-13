@@ -227,25 +227,34 @@ class LessonService {
         ),
 
         LessonSection(
-          title: 'Common Mistakes',
-          type: 'mistakes',
-          explanation:
-              'These mistakes are common for beginners. Meow is watching. 👀',
-          items: [
-            LessonItem(
-              english: 'How are you? → I’m good.',
-              persian: 'حالت چطوره؟ → خوبم.',
-              example: 'How are you? — I’m good.',
-              examplePersian: 'حالت چطوره؟ — خوبم.',
-            ),
-            LessonItem(
-              english: 'Nice to meet you.',
-              persian: 'از آشنایی باهات خوشحالم.',
-              example: 'Nice to meet you.',
-              examplePersian: 'از آشنایی باهات خوشحالم.',
-            ),
-          ],
-        ),
+  title: 'Common Mistakes',
+  type: 'mistakes',
+  explanation:
+      'These mistakes are common for beginners. Meow is watching. 👀',
+  items: [
+    LessonItem(
+      english: 'How are you?',
+      persian: 'حالت چطوره؟',
+      questionPersian: 'حالت چطوره؟',
+      wrongAnswer: 'How are you to?',
+      correctAnswer: "I'm good, thanks. How about you?",
+    ),
+    LessonItem(
+      english: 'Nice to meet you.',
+      persian: 'از آشنایی باهات خوشحالم.',
+      questionPersian: 'کسی می‌گوید: «Nice to meet you.»',
+      wrongAnswer: 'Nice to meet you.',
+      correctAnswer: 'Nice to meet you too.',
+    ),
+    LessonItem(
+      english: "What's up?",
+      persian: 'چه خبر؟ / اوضاع چطوره؟',
+      questionPersian: 'کسی می‌گوید: «What’s up?»',
+      wrongAnswer: "I'm what's up.",
+      correctAnswer: "Not much. I'm good.",
+    ),
+  ],
+),
 
         LessonSection(
           title: 'Practice',
