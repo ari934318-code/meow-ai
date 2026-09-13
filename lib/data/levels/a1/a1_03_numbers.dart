@@ -1,161 +1,164 @@
+
 import 'a1_models.dart';
 
 const A1Lesson a1Lesson03 = A1Lesson(
   id: 'a1_03',
   title: 'Numbers',
   topic: 'اعداد و شمارش',
+
   words: [
     A1Word(
-      english: 'Zero',
+      english: 'zero',
       persian: 'صفر',
       pronunciation: 'زیرو',
       example: 'I have zero brothers.',
     ),
     A1Word(
-      english: 'One',
+      english: 'one',
       persian: 'یک',
       pronunciation: 'وان',
       example: 'I have one sister.',
     ),
     A1Word(
-      english: 'Two',
+      english: 'two',
       persian: 'دو',
       pronunciation: 'تو',
       example: 'I have two cats.',
     ),
     A1Word(
-      english: 'Three',
+      english: 'three',
       persian: 'سه',
       pronunciation: 'ثری',
       example: 'I have three books.',
     ),
     A1Word(
-      english: 'Four',
+      english: 'four',
       persian: 'چهار',
       pronunciation: 'فور',
       example: 'There are four chairs.',
     ),
     A1Word(
-      english: 'Five',
+      english: 'five',
       persian: 'پنج',
       pronunciation: 'فایو',
       example: 'I have five pencils.',
     ),
     A1Word(
-      english: 'Six',
+      english: 'six',
       persian: 'شش',
       pronunciation: 'سیکس',
       example: 'She has six apples.',
     ),
     A1Word(
-      english: 'Seven',
+      english: 'seven',
       persian: 'هفت',
       pronunciation: 'سِوِن',
       example: 'There are seven days in a week.',
     ),
     A1Word(
-      english: 'Eight',
+      english: 'eight',
       persian: 'هشت',
       pronunciation: 'اِیت',
       example: 'I have eight stickers.',
     ),
     A1Word(
-      english: 'Nine',
+      english: 'nine',
       persian: 'نه',
       pronunciation: 'ناین',
       example: 'He has nine pens.',
     ),
     A1Word(
-      english: 'Ten',
+      english: 'ten',
       persian: 'ده',
       pronunciation: 'تِن',
       example: 'I have ten fingers.',
     ),
     A1Word(
-      english: 'Eleven',
+      english: 'eleven',
       persian: 'یازده',
       pronunciation: 'اِلِوِن',
       example: 'There are eleven players.',
     ),
     A1Word(
-      english: 'Twelve',
+      english: 'twelve',
       persian: 'دوازده',
       pronunciation: 'تْوِلْو',
       example: 'There are twelve months in a year.',
     ),
     A1Word(
-      english: 'Thirteen',
+      english: 'thirteen',
       persian: 'سیزده',
       pronunciation: 'ثِرتین',
       example: 'She is thirteen years old.',
     ),
     A1Word(
-      english: 'Fourteen',
+      english: 'fourteen',
       persian: 'چهارده',
       pronunciation: 'فورتین',
       example: 'He is fourteen years old.',
     ),
     A1Word(
-      english: 'Fifteen',
+      english: 'fifteen',
       persian: 'پانزده',
       pronunciation: 'فیفتین',
       example: 'I have fifteen dollars.',
     ),
     A1Word(
-      english: 'Twenty',
+      english: 'twenty',
       persian: 'بیست',
       pronunciation: 'توِنتی',
       example: 'I am twenty years old.',
     ),
     A1Word(
-      english: 'Thirty',
+      english: 'thirty',
       persian: 'سی',
       pronunciation: 'ثِرتی',
       example: 'There are thirty students.',
     ),
     A1Word(
-      english: 'Forty',
+      english: 'forty',
       persian: 'چهل',
       pronunciation: 'فورتی',
       example: 'There are forty pages.',
     ),
     A1Word(
-      english: 'Fifty',
+      english: 'fifty',
       persian: 'پنجاه',
       pronunciation: 'فیفتی',
       example: 'The book has fifty pages.',
     ),
     A1Word(
-      english: 'Hundred',
+      english: 'hundred',
       persian: 'صد',
       pronunciation: 'هانْدْرِد',
       example: 'One hundred people are here.',
     ),
     A1Word(
-      english: 'Number',
+      english: 'number',
       persian: 'عدد / شماره',
       pronunciation: 'نامبِر',
       example: 'What is your phone number?',
     ),
     A1Word(
-      english: 'First',
+      english: 'first',
       persian: 'اول',
       pronunciation: 'فِرست',
       example: 'I am first.',
     ),
     A1Word(
-      english: 'Second',
+      english: 'second',
       persian: 'دوم',
       pronunciation: 'سِکِند',
       example: 'She is second.',
     ),
     A1Word(
-      english: 'More',
+      english: 'more',
       persian: 'بیشتر',
       pronunciation: 'مور',
       example: 'I want more.',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'What number is this?',
@@ -218,8 +221,8 @@ const A1Lesson a1Lesson03 = A1Lesson(
       persian: 'شماره تلفنت چیه؟',
     ),
     A1Sentence(
-      english: 'My phone number is 123.',
-      persian: 'شماره تلفن من ۱۲۳ است.',
+      english: 'My phone number is 1-2-3.',
+      persian: 'شماره تلفن من ۱-۲-۳ است.',
     ),
     A1Sentence(
       english: 'I have one sister.',
@@ -254,6 +257,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       persian: 'دو به علاوه سه می‌شود پنج.',
     ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "Zero" mean?',
@@ -265,56 +269,40 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'صفر',
     ),
+
     A1Question(
-      question: 'What does "Five" mean?',
+      question: 'What does "Fifteen" mean?',
       options: [
-        'چهار',
-        'پنج',
-        'شش',
-        'هفت',
+        'چهارده',
+        'پانزده',
+        'شانزده',
+        'پنجاه',
       ],
-      answer: 'پنج',
+      answer: 'پانزده',
     ),
-    A1Question(
-      question: 'What does "Ten" mean?',
-      options: [
-        'هشت',
-        'نه',
-        'ده',
-        'یازده',
-      ],
-      answer: 'ده',
-    ),
-    A1Question(
-      question: 'What does "Twelve" mean?',
-      options: [
-        'ده',
-        'یازده',
-        'دوازده',
-        'سیزده',
-      ],
-      answer: 'دوازده',
-    ),
+
     A1Question(
       question: 'What does "Twenty" mean?',
       options: [
-        'ده',
         'دوازده',
         'بیست',
         'سی',
+        'چهل',
       ],
       answer: 'بیست',
     ),
+
     A1Question(
       question: 'What does "Hundred" mean?',
       options: [
-        'ده',
         'پنجاه',
-        'صد',
         'هزار',
+        'صد',
+        'بیست',
       ],
       answer: 'صد',
     ),
+
     A1Question(
       question: 'Complete: One plus one is ___.',
       options: [
@@ -325,6 +313,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'two',
     ),
+
     A1Question(
       question: 'Complete: Two plus three is ___.',
       options: [
@@ -335,6 +324,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'five',
     ),
+
     A1Question(
       question: 'How many days are there in a week?',
       options: [
@@ -345,6 +335,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'Seven',
     ),
+
     A1Question(
       question: 'How many months are there in a year?',
       options: [
@@ -355,6 +346,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'Twelve',
     ),
+
     A1Question(
       question: 'How many fingers do you have?',
       options: [
@@ -365,6 +357,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'Ten',
     ),
+
     A1Question(
       question: 'Which number comes after five?',
       options: [
@@ -375,6 +368,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'Six',
     ),
+
     A1Question(
       question: 'Which number comes before ten?',
       options: [
@@ -385,6 +379,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'Nine',
     ),
+
     A1Question(
       question: 'Which number comes after twenty?',
       options: [
@@ -395,6 +390,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'Twenty-one',
     ),
+
     A1Question(
       question: 'Which number means "سی"?',
       options: [
@@ -405,6 +401,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'Thirty',
     ),
+
     A1Question(
       question: 'Which number means "چهل"?',
       options: [
@@ -415,6 +412,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'Forty',
     ),
+
     A1Question(
       question: 'What does "First" mean?',
       options: [
@@ -425,6 +423,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'اول',
     ),
+
     A1Question(
       question: 'What does "Second" mean?',
       options: [
@@ -435,6 +434,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'دوم',
     ),
+
     A1Question(
       question: 'Which sentence is correct?',
       options: [
@@ -445,6 +445,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'I have two cats.',
     ),
+
     A1Question(
       question: 'Which sentence is correct?',
       options: [
@@ -455,6 +456,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'She has six apples.',
     ),
+
     A1Question(
       question: 'Which sentence means "من بیست ساله هستم."?',
       options: [
@@ -465,6 +467,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
       ],
       answer: 'I am twenty years old.',
     ),
+
     A1Question(
       question: 'Which sentence means "شماره تلفنت چیه؟"?',
       options: [
@@ -474,36 +477,6 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'Where do you live?',
       ],
       answer: 'What is your phone number?',
-    ),
-    A1Question(
-      question: 'Which number is bigger?',
-      options: [
-        'Three',
-        'Five',
-        'Ten',
-        'Two',
-      ],
-      answer: 'Ten',
-    ),
-    A1Question(
-      question: 'Which number is smaller?',
-      options: [
-        'Ten',
-        'Eight',
-        'Five',
-        'One',
-      ],
-      answer: 'One',
-    ),
-    A1Question(
-      question: 'What comes after twelve?',
-      options: [
-        'Eleven',
-        'Thirteen',
-        'Fourteen',
-        'Twenty',
-      ],
-      answer: 'Thirteen',
     ),
   ],
 
@@ -515,6 +488,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'five',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'Count from one to five.',
       persian: 'از یک تا پنج بشمار.',
@@ -522,6 +496,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'one two three four five',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'Count from five to ten.',
       persian: 'از پنج تا ده بشمار.',
@@ -529,6 +504,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'five six seven eight nine ten',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'What number comes after five?',
       persian: 'بعد از پنج چه عددی می‌آید؟',
@@ -536,6 +512,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'six',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'What number comes before ten?',
       persian: 'قبل از ده چه عددی می‌آید؟',
@@ -543,6 +520,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'nine',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'How many fingers do you have?',
       persian: 'چند انگشت داری؟',
@@ -551,6 +529,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'i have ten fingers',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'How many days are there in a week?',
       persian: 'یک هفته چند روز دارد؟',
@@ -560,6 +539,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'there are seven days in a week',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'How many months are there in a year?',
       persian: 'یک سال چند ماه دارد؟',
@@ -569,6 +549,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'there are twelve months in a year',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'What number is "twenty"?',
       persian: 'عدد «بیست» چیست؟',
@@ -576,6 +557,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'twenty',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'Say the number "thirty".',
       persian: 'عدد «سی» را بگو.',
@@ -583,6 +565,7 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'thirty',
       ],
     ),
+
     A1SpeakingQuestion(
       question: 'Say the number "forty".',
       persian: 'عدد «چهل» را بگو.',
@@ -590,8 +573,9 @@ const A1Lesson a1Lesson03 = A1Lesson(
         'forty',
       ],
     ),
+
     A1SpeakingQuestion(
-      question: 'Say "One plus one is two."',
+      question: 'Say: "One plus one is two."',
       persian: 'بگو: «یک به علاوه یک می‌شود دو.»',
       acceptableAnswers: [
         'one plus one is two',
