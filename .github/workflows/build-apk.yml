@@ -15,6 +15,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -25,10 +31,30 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --debug
+        id: build_apk
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          flutter build apk --debug --verbose 2>&1 | tee build.log
+          exit ${PIPESTATUS[0]}
+
+      - name: Upload Build Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: meow-ai-build-log
+          path: build.log
+          if-no-files-found: warn
 
       - name: Upload APK
+        if: steps.build_apk.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: meow-ai-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
+
+      - name: Fail if APK build failed
+        if: steps.build_apk.outcome != 'success'
+        run: |
+          echo "APK build failed. Download the meow-ai-build-log artifact."
+          exit 1
