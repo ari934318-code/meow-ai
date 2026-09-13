@@ -620,4 +620,112 @@ const A1Lesson a1Lesson05 = A1Lesson(
       answer: 'آنجا',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'What is this? Say: "This is my phone."',
+      persian: 'این چیست؟ بگو: «این گوشی من است.»',
+      acceptableAnswers: [
+        'this is my phone',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you have? Say: "I have a pen."',
+      persian: 'چه چیزی داری؟ بگو: «من یک خودکار دارم.»',
+      acceptableAnswers: [
+        'i have a pen',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is on the table?',
+      persian: 'چه چیزی روی میز است؟',
+      acceptableAnswers: [
+        'the book is on the table',
+        'the pen is on the table',
+        'the bottle is on the table',
+        'the cup is on the table',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where is your phone?',
+      persian: 'گوشی‌ات کجاست؟',
+      acceptableAnswers: [
+        'my phone is here',
+        'my phone is there',
+        'it is here',
+        'it is there',
+        'my phone is in my bag',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where is the book?',
+      persian: 'کتاب کجاست؟',
+      acceptableAnswers: [
+        'the book is on the table',
+        'it is on the table',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What color is your bag?',
+      persian: 'کیفت چه رنگی است؟',
+      acceptableAnswers: [
+        'my bag is black',
+        'it is black',
+        'my bag is blue',
+        'it is blue',
+        'my bag is red',
+        'it is red',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is in your bag?',
+      persian: 'داخل کیفت چیست؟',
+      acceptableAnswers: [
+        'my phone is in my bag',
+        'my wallet is in my bag',
+        'i have a phone in my bag',
+        'i have a book in my bag',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where is the chair?',
+      persian: 'صندلی کجاست؟',
+      acceptableAnswers: [
+        'the chair is near the table',
+        'it is near the table',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Please close the door."',
+      persian: 'بگو: «لطفاً در را ببند.»',
+      acceptableAnswers: [
+        'please close the door',
+        'close the door please',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Open the window, please."',
+      persian: 'بگو: «لطفاً پنجره را باز کن.»',
+      acceptableAnswers: [
+        'open the window please',
+        'please open the window',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is in the box?',
+      persian: 'داخل جعبه چیست؟',
+      acceptableAnswers: [
+        'the phone is in the box',
+        'my phone is in the box',
+        'a phone is in the box',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "The water is cold."',
+      persian: 'بگو: «آب سرد است.»',
+      acceptableAnswers: [
+        'the water is cold',
+      ],
+    ),
+  ],
 );
