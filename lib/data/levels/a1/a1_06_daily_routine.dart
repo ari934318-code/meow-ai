@@ -500,4 +500,126 @@ const A1Lesson a1Lesson06 = A1Lesson(
       answer: 'Rest',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'What time do you wake up?',
+      persian: 'چه ساعتی بیدار می‌شوی؟',
+      acceptableAnswers: [
+        'i wake up at seven',
+        'i wake up at eight',
+        'i wake up at nine',
+        'i wake up at six',
+        'i wake up at ten',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you do after you wake up?',
+      persian: 'بعد از بیدار شدن چه کار می‌کنی؟',
+      acceptableAnswers: [
+        'i get up',
+        'i brush my teeth',
+        'i wash my face',
+        'i take a shower',
+        'i get dressed',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you do in the morning?',
+      persian: 'صبح‌ها چه کار می‌کنی؟',
+      acceptableAnswers: [
+        'i have breakfast',
+        'i go to school',
+        'i go to work',
+        'i study English',
+        'i take a shower',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What time do you have breakfast?',
+      persian: 'چه ساعتی صبحانه می‌خوری؟',
+      acceptableAnswers: [
+        'i have breakfast at seven',
+        'i have breakfast at eight',
+        'i have breakfast at nine',
+        'i have breakfast at seven thirty',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Do you go to school every day?',
+      persian: 'هر روز به مدرسه می‌روی؟',
+      acceptableAnswers: [
+        'yes i go to school every day',
+        'yes i do',
+        'no i do not',
+        'no i dont',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you do after school?',
+      persian: 'بعد از مدرسه چه کار می‌کنی؟',
+      acceptableAnswers: [
+        'i go home',
+        'i study English',
+        'i do my homework',
+        'i rest',
+        'i watch TV',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you do after work?',
+      persian: 'بعد از کار چه کار می‌کنی؟',
+      acceptableAnswers: [
+        'i go home',
+        'i come home',
+        'i rest',
+        'i have dinner',
+        'i watch TV',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you usually do before bed?',
+      persian: 'معمولاً قبل از خواب چه کار می‌کنی؟',
+      acceptableAnswers: [
+        'i read a book',
+        'i watch TV',
+        'i relax',
+        'i brush my teeth',
+        'i read a book before bed',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What time do you go to bed?',
+      persian: 'چه ساعتی می‌خوابی؟',
+      acceptableAnswers: [
+        'i go to bed at ten',
+        'i go to bed at eleven',
+        'i go to bed at twelve',
+        'i go to bed at ten thirty',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I study English every day."',
+      persian: 'بگو: «من هر روز انگلیسی می‌خوانم.»',
+      acceptableAnswers: [
+        'i study English every day',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I always brush my teeth."',
+      persian: 'بگو: «من همیشه دندان‌هایم را مسواک می‌زنم.»',
+      acceptableAnswers: [
+        'i always brush my teeth',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Describe your daily routine in three sentences.',
+      persian: 'برنامه روزانه‌ات را در سه جمله توضیح بده.',
+      acceptableAnswers: [
+        'i wake up early i have breakfast and i go to school',
+        'i wake up at seven i have breakfast and i go to school',
+        'i wake up i study English and i go to bed',
+      ],
+    ),
+  ],
 );
