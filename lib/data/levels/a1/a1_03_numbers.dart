@@ -1,4 +1,4 @@
-import 'a1_01_greetings.dart';
+import 'a1_models.dart';
 
 const A1Lesson a1Lesson03 = A1Lesson(
   id: 'a1_03',
