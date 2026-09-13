@@ -4,6 +4,7 @@ const A1Lesson a1Lesson09 = A1Lesson(
   id: 'a1_09',
   title: 'Time and Dates',
   topic: 'زمان و تاریخ',
+
   words: [
     A1Word(
       english: 'time',
@@ -102,115 +103,115 @@ const A1Lesson a1Lesson09 = A1Lesson(
       example: 'There are twelve months in a year.',
     ),
     A1Word(
-      english: 'Monday',
+      english: 'monday',
       persian: 'دوشنبه',
       pronunciation: 'ماندِی',
       example: 'Today is Monday.',
     ),
     A1Word(
-      english: 'Tuesday',
+      english: 'tuesday',
       persian: 'سه‌شنبه',
       pronunciation: 'تیوزدِی',
       example: 'I work on Tuesday.',
     ),
     A1Word(
-      english: 'Wednesday',
+      english: 'wednesday',
       persian: 'چهارشنبه',
       pronunciation: 'وِنزدِی',
       example: 'Wednesday is after Tuesday.',
     ),
     A1Word(
-      english: 'Thursday',
+      english: 'thursday',
       persian: 'پنج‌شنبه',
       pronunciation: 'ثِرزْدِی',
       example: 'I study on Thursday.',
     ),
     A1Word(
-      english: 'Friday',
+      english: 'friday',
       persian: 'جمعه',
       pronunciation: 'فرایدِی',
       example: 'Friday is my favorite day.',
     ),
     A1Word(
-      english: 'Saturday',
+      english: 'saturday',
       persian: 'شنبه',
       pronunciation: 'سَتِردِی',
       example: 'Saturday is the weekend.',
     ),
     A1Word(
-      english: 'Sunday',
+      english: 'sunday',
       persian: 'یکشنبه',
       pronunciation: 'ساندِی',
       example: 'Sunday comes after Saturday.',
     ),
     A1Word(
-      english: 'January',
+      english: 'january',
       persian: 'ژانویه',
       pronunciation: 'جَنیوِری',
       example: 'January is the first month.',
     ),
     A1Word(
-      english: 'February',
+      english: 'february',
       persian: 'فوریه',
       pronunciation: 'فِبریوِری',
       example: 'February is a short month.',
     ),
     A1Word(
-      english: 'March',
+      english: 'march',
       persian: 'مارس',
       pronunciation: 'مارچ',
       example: 'March comes after February.',
     ),
     A1Word(
-      english: 'April',
+      english: 'april',
       persian: 'آوریل',
       pronunciation: 'اِیپریل',
       example: 'April is in spring.',
     ),
     A1Word(
-      english: 'May',
+      english: 'may',
       persian: 'مه',
       pronunciation: 'مِی',
       example: 'May comes after April.',
     ),
     A1Word(
-      english: 'June',
+      english: 'june',
       persian: 'ژوئن',
       pronunciation: 'جون',
       example: 'June is a summer month.',
     ),
     A1Word(
-      english: 'July',
+      english: 'july',
       persian: 'ژوئیه',
       pronunciation: 'جولای',
       example: 'July is hot.',
     ),
     A1Word(
-      english: 'August',
+      english: 'august',
       persian: 'اوت',
       pronunciation: 'آگِست',
       example: 'August is a summer month.',
     ),
     A1Word(
-      english: 'September',
+      english: 'september',
       persian: 'سپتامبر',
       pronunciation: 'سِپتِمبِر',
       example: 'September comes after August.',
     ),
     A1Word(
-      english: 'October',
+      english: 'october',
       persian: 'اکتبر',
       pronunciation: 'آکتوبِر',
       example: 'October is in autumn.',
     ),
     A1Word(
-      english: 'November',
+      english: 'november',
       persian: 'نوامبر',
       pronunciation: 'نُوِمبِر',
       example: 'November comes after October.',
     ),
     A1Word(
-      english: 'December',
+      english: 'december',
       persian: 'دسامبر',
       pronunciation: 'دیسِمبِر',
       example: 'December is the last month.',
@@ -246,6 +247,7 @@ const A1Lesson a1Lesson09 = A1Lesson(
       example: 'I am late.',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'What time is it?',
@@ -274,6 +276,14 @@ const A1Lesson a1Lesson09 = A1Lesson(
     A1Sentence(
       english: 'It is five thirty.',
       persian: 'ساعت پنج و نیم است.',
+    ),
+    A1Sentence(
+      english: 'It is four fifteen.',
+      persian: 'ساعت چهار و پانزده دقیقه است.',
+    ),
+    A1Sentence(
+      english: 'It is four forty-five.',
+      persian: 'ساعت چهار و چهل و پنج دقیقه است.',
     ),
     A1Sentence(
       english: 'I wake up at seven.',
@@ -372,32 +382,20 @@ const A1Lesson a1Lesson09 = A1Lesson(
       persian: 'فردا می‌بینمت.',
     ),
     A1Sentence(
-      english: 'See you next week.',
-      persian: 'هفته بعد می‌بینمت.',
-    ),
-    A1Sentence(
       english: 'Wait a minute.',
       persian: 'یک دقیقه صبر کن.',
-    ),
-    A1Sentence(
-      english: 'Wait a second.',
-      persian: 'یک لحظه صبر کن.',
     ),
     A1Sentence(
       english: 'What time do you get up?',
       persian: 'چه ساعتی بیدار می‌شوی؟',
     ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "time" mean?',
       options: ['زمان / ساعت', 'روز', 'ماه', 'سال'],
       answer: 'زمان / ساعت',
-    ),
-    A1Question(
-      question: 'What does "clock" mean?',
-      options: ['ساعت', 'تقویم', 'روز', 'دقیقه'],
-      answer: 'ساعت',
     ),
     A1Question(
       question: 'What does "hour" mean?',
@@ -408,11 +406,6 @@ const A1Lesson a1Lesson09 = A1Lesson(
       question: 'What does "minute" mean?',
       options: ['دقیقه', 'ساعت', 'ثانیه', 'هفته'],
       answer: 'دقیقه',
-    ),
-    A1Question(
-      question: 'What does "second" mean?',
-      options: ['ثانیه', 'دقیقه', 'ساعت', 'ماه'],
-      answer: 'ثانیه',
     ),
     A1Question(
       question: 'What does "today" mean?',
@@ -445,11 +438,6 @@ const A1Lesson a1Lesson09 = A1Lesson(
       answer: 'Tuesday',
     ),
     A1Question(
-      question: 'Which day comes after Friday?',
-      options: ['Saturday', 'Sunday', 'Thursday', 'Monday'],
-      answer: 'Saturday',
-    ),
-    A1Question(
       question: 'Which day comes before Sunday?',
       options: ['Saturday', 'Friday', 'Monday', 'Tuesday'],
       answer: 'Saturday',
@@ -468,11 +456,6 @@ const A1Lesson a1Lesson09 = A1Lesson(
       question: 'What does "birthday" mean?',
       options: ['تولد', 'تعطیلات', 'آخر هفته', 'تاریخ'],
       answer: 'تولد',
-    ),
-    A1Question(
-      question: 'What does "weekend" mean?',
-      options: ['آخر هفته', 'روز کاری', 'ماه', 'سال'],
-      answer: 'آخر هفته',
     ),
     A1Question(
       question: 'What does "early" mean?',
@@ -495,11 +478,6 @@ const A1Lesson a1Lesson09 = A1Lesson(
       answer: 'is',
     ),
     A1Question(
-      question: 'Complete: Tomorrow ___ Tuesday.',
-      options: ['is', 'are', 'am', 'be'],
-      answer: 'is',
-    ),
-    A1Question(
       question: 'What does "half past three" mean?',
       options: ['۳:۳۰', '۳:۱۵', '۴:۳۰', '۲:۳۰'],
       answer: '۳:۳۰',
@@ -513,136 +491,6 @@ const A1Lesson a1Lesson09 = A1Lesson(
       question: 'What does "quarter to five" mean?',
       options: ['۴:۴۵', '۵:۱۵', '۵:۳۰', '۴:۱۵'],
       answer: '۴:۴۵',
-    ),
-    A1Question(
-      question: 'Which sentence asks about the current time?',
-      options: [
-        'What time is it?',
-        'What day is it?',
-        'What is your name?',
-        'Where are you?'
-      ],
-      answer: 'What time is it?',
-    ),
-    A1Question(
-      question: 'Which sentence asks about the day?',
-      options: [
-        'What day is it today?',
-        'What time is it?',
-        'What is the date?',
-        'What month is it?'
-      ],
-      answer: 'What day is it today?',
-    ),
-    A1Question(
-      question: 'Which sentence asks about the date?',
-      options: [
-        'What is the date today?',
-        'What time is it?',
-        'What day are you?',
-        'What is your name?'
-      ],
-      answer: 'What is the date today?',
-    ),
-    A1Question(
-      question: 'Which sentence means "من ساعت هفت بیدار می‌شوم"؟',
-      options: [
-        'I wake up at seven.',
-        'I sleep at seven.',
-        'I eat at seven.',
-        'I go home at seven.'
-      ],
-      answer: 'I wake up at seven.',
-    ),
-    A1Question(
-      question: 'Which sentence means "فردا می‌بینمت"؟',
-      options: [
-        'See you tomorrow.',
-        'See you yesterday.',
-        'See you today.',
-        'See you Monday.'
-      ],
-      answer: 'See you tomorrow.',
-    ),
-    A1Question(
-      question: 'Which sentence means "یک دقیقه صبر کن"؟',
-      options: [
-        'Wait a minute.',
-        'Wait a week.',
-        'Wait a year.',
-        'Wait a month.'
-      ],
-      answer: 'Wait a minute.',
-    ),
-    A1Question(
-      question: 'Complete: There are seven days in a ___.',
-      options: ['week', 'month', 'year', 'day'],
-      answer: 'week',
-    ),
-    A1Question(
-      question: 'Complete: There are twelve months in a ___.',
-      options: ['year', 'week', 'day', 'hour'],
-      answer: 'year',
-    ),
-    A1Question(
-      question: 'Which month comes after January?',
-      options: ['February', 'March', 'April', 'December'],
-      answer: 'February',
-    ),
-    A1Question(
-      question: 'Which month comes before December?',
-      options: ['November', 'October', 'January', 'September'],
-      answer: 'November',
-    ),
-    A1Question(
-      question: 'If today is Monday, what is tomorrow?',
-      options: ['Tuesday', 'Sunday', 'Friday', 'Saturday'],
-      answer: 'Tuesday',
-    ),
-    A1Question(
-      question: 'If today is Monday, what was yesterday?',
-      options: ['Sunday', 'Tuesday', 'Saturday', 'Friday'],
-      answer: 'Sunday',
-    ),
-    A1Question(
-      question: 'What time is 5:30?',
-      options: [
-        'Five thirty',
-        'Five fifteen',
-        'Six thirty',
-        'Four thirty'
-      ],
-      answer: 'Five thirty',
-    ),
-    A1Question(
-      question: 'What time is 8:30?',
-      options: [
-        'Eight thirty',
-        'Eight fifteen',
-        'Nine thirty',
-        'Seven thirty'
-      ],
-      answer: 'Eight thirty',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'I go to bed at eleven.',
-        'I go at eleven bed.',
-        'I bed go at eleven.',
-        'I go bed eleven.'
-      ],
-      answer: 'I go to bed at eleven.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
-      options: [
-        'My birthday is in May.',
-        'My birthday in May is.',
-        'My birthday May in is.',
-        'In my birthday May.'
-      ],
-      answer: 'My birthday is in May.',
     ),
   ],
 
@@ -680,10 +528,10 @@ const A1Lesson a1Lesson09 = A1Lesson(
       question: 'What time do you go to bed?',
       persian: 'چه ساعتی می‌خوابی؟',
       acceptableAnswers: [
+        'i go to bed at nine',
         'i go to bed at ten',
         'i go to bed at eleven',
         'i go to bed at twelve',
-        'i go to bed at nine',
       ],
     ),
     A1SpeakingQuestion(
@@ -789,8 +637,22 @@ const A1Lesson a1Lesson09 = A1Lesson(
       ],
     ),
     A1SpeakingQuestion(
-      question: 'Tell me your daily schedule using three times.',
-      persian: 'برنامه روزانه‌ات را با گفتن سه ساعت توضیح بده.',
+      question: 'Say: "I wake up early."',
+      persian: 'بگو: «من زود بیدار می‌شوم.»',
+      acceptableAnswers: [
+        'i wake up early',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "See you tomorrow."',
+      persian: 'بگو: «فردا می‌بینمت.»',
+      acceptableAnswers: [
+        'see you tomorrow',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Tell Meow three things you do during your day and say their times.',
+      persian: 'سه کاری که در طول روز انجام می‌دهی را همراه با ساعتشان بگو.',
       acceptableAnswers: [
         'i wake up at seven i have breakfast at eight and i go to bed at eleven',
         'i wake up at eight i have breakfast at nine and i go to bed at eleven',
