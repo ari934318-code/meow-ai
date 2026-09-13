@@ -298,6 +298,23 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
     final wrongAnswers = result.wrongAnswerList;
 
     final encodedWrongAnswers = wrongAnswers.map((answer) {
+      final question = a1BasicsExamQuestions.firstWhere(
+        (question) => question.id == answer.questionId,
+        orElse: () => A1BasicsExamQuestion(
+          id: answer.questionId,
+          lessonId: answer.lessonId,
+          topic: answer.topic,
+          category: answer.category,
+          question: answer.question,
+          options: const [],
+          correctAnswer: answer.correctAnswer,
+          explanation: answer.explanation,
+          persian: null,
+          isSpeaking: answer.isSpeaking,
+          acceptableAnswers: const [],
+        ),
+      );
+
       return {
         'questionId': answer.questionId,
         'lessonId': answer.lessonId,
@@ -309,6 +326,10 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
         'explanation': answer.explanation,
         'isCorrect': answer.isCorrect,
         'isSpeaking': answer.isSpeaking,
+
+        // Save the original question options
+        // so Practice can show the real choices again.
+        'options': question.options,
       };
     }).toList();
 
@@ -341,6 +362,11 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
       await prefs.setBool(
         'a1_basics_completed',
         true,
+      );
+    } else {
+      await prefs.setBool(
+        'a1_basics_completed',
+        false,
       );
     }
   }
@@ -426,7 +452,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment:
+                CrossAxisAlignment.stretch,
             children: [
               Row(
                 mainAxisAlignment:
@@ -442,7 +469,9 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                     question.category,
                     style: TextStyle(
                       color:
-                          Theme.of(context).colorScheme.primary,
+                          Theme.of(context)
+                              .colorScheme
+                              .primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -452,7 +481,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
               const SizedBox(height: 12),
 
               ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius:
+                    BorderRadius.circular(20),
                 child: LinearProgressIndicator(
                   value: progress,
                   minHeight: 8,
@@ -465,7 +495,9 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                 question.topic,
                 style: TextStyle(
                   color:
-                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context)
+                          .colorScheme
+                          .primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -501,7 +533,9 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                 alignment: Alignment.centerLeft,
                 child: IconButton(
                   onPressed: _speakQuestion,
-                  icon: const Icon(Icons.volume_up_rounded),
+                  icon: const Icon(
+                    Icons.volume_up_rounded,
+                  ),
                   tooltip: 'Listen',
                 ),
               ),
@@ -510,19 +544,25 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
 
               Expanded(
                 child: question.isSpeaking
-                    ? _buildSpeakingQuestion(question)
-                    : _buildMultipleChoiceQuestion(question),
+                    ? _buildSpeakingQuestion(
+                        question,
+                      )
+                    : _buildMultipleChoiceQuestion(
+                        question,
+                      ),
               ),
 
               const SizedBox(height: 12),
 
               if (_answerSubmitted)
                 Container(
-                  padding: const EdgeInsets.all(14),
+                  padding:
+                      const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: _questionColor(context)
                         .withOpacity(0.10),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius:
+                        BorderRadius.circular(16),
                   ),
                   child: Column(
                     crossAxisAlignment:
@@ -533,8 +573,10 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                             ? 'Correct! 🎉'
                             : 'Not quite.',
                         style: TextStyle(
-                          color: _questionColor(context),
-                          fontWeight: FontWeight.bold,
+                          color:
+                              _questionColor(context),
+                          fontWeight:
+                              FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
@@ -612,12 +654,15 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
           onTap: _answerSubmitted
               ? null
               : () => _selectAnswer(option),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius:
+              BorderRadius.circular(16),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding:
+                const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius:
+                  BorderRadius.circular(16),
               border: Border.all(
                 color: selected
                     ? Theme.of(context)
@@ -633,7 +678,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                 Expanded(
                   child: Text(
                     option,
-                    style: const TextStyle(
+                    style:
+                        const TextStyle(
                       fontSize: 16,
                     ),
                   ),
@@ -660,12 +706,15 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
     A1BasicsExamQuestion question,
   ) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment:
+          CrossAxisAlignment.stretch,
       children: [
         Container(
-          padding: const EdgeInsets.all(18),
+          padding:
+              const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius:
+                BorderRadius.circular(18),
             color: Theme.of(context)
                 .colorScheme
                 .primary
@@ -675,8 +724,11 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
             'Speak in English and answer using your voice.',
             style: TextStyle(
               color:
-                  Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.w600,
+                  Theme.of(context)
+                      .colorScheme
+                      .primary,
+              fontWeight:
+                  FontWeight.w600,
             ),
           ),
         ),
@@ -693,13 +745,18 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                   onTap: _isListening
                       ? _stopListening
                       : _startListening,
-                  child: AnimatedContainer(
+                  child:
+                      AnimatedContainer(
                     duration:
-                        const Duration(milliseconds: 200),
+                        const Duration(
+                      milliseconds: 200,
+                    ),
                     width: 90,
                     height: 90,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                    decoration:
+                        BoxDecoration(
+                      shape:
+                          BoxShape.circle,
                       color: _isListening
                           ? Colors.red
                           : Theme.of(context)
@@ -710,7 +767,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                       _isListening
                           ? Icons.stop_rounded
                           : Icons.mic_rounded,
-                      color: Colors.white,
+                      color:
+                          Colors.white,
                       size: 42,
                     ),
                   ),
@@ -722,8 +780,10 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                   _isListening
                       ? 'Listening...'
                       : 'Tap the microphone',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+                  style:
+                      const TextStyle(
+                    fontWeight:
+                        FontWeight.w600,
                   ),
                 ),
 
@@ -731,20 +791,30 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
 
                 if (_spokenAnswer.isNotEmpty)
                   Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
+                    width:
+                        double.infinity,
+                    padding:
+                        const EdgeInsets.all(
+                      16,
+                    ),
+                    decoration:
+                        BoxDecoration(
                       borderRadius:
-                          BorderRadius.circular(16),
+                          BorderRadius.circular(
+                        16,
+                      ),
                       border: Border.all(
                         color:
-                            Theme.of(context).dividerColor,
+                            Theme.of(context)
+                                .dividerColor,
                       ),
                     ),
                     child: Text(
                       _spokenAnswer,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      textAlign:
+                          TextAlign.center,
+                      style:
+                          const TextStyle(
                         fontSize: 18,
                       ),
                     ),
@@ -763,7 +833,9 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
     }
 
     if (_currentQuestion.isSpeaking) {
-      return _spokenAnswer.trim().isNotEmpty;
+      return _spokenAnswer
+          .trim()
+          .isNotEmpty;
     }
 
     return _selectedAnswer != null;
@@ -785,32 +857,44 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
 
   Widget _buildResultPage() {
     final correct =
-        _answers.where((answer) => answer.isCorrect).length;
+        _answers.where(
+      (answer) => answer.isCorrect,
+    ).length;
 
-    final wrong = _answers.length - correct;
+    final wrong =
+        _answers.length - correct;
 
     final score = _answers.isEmpty
         ? 0
-        : ((correct / _answers.length) * 100).round();
+        : ((correct / _answers.length) *
+                100)
+            .round();
 
     final passed = score >= 70;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Exam Result'),
+        title:
+            const Text('Exam Result'),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+        child:
+            SingleChildScrollView(
+          padding:
+              const EdgeInsets.all(20),
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 20,
+              ),
 
               Icon(
                 passed
-                    ? Icons.emoji_events_rounded
-                    : Icons.menu_book_rounded,
+                    ? Icons
+                        .emoji_events_rounded
+                    : Icons
+                        .menu_book_rounded,
                 size: 80,
                 color: passed
                     ? Colors.amber
@@ -819,32 +903,41 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                         .primary,
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 20,
+              ),
 
               Text(
                 passed
                     ? 'You passed! 🎉'
                     : 'Keep practicing!',
-                style: const TextStyle(
+                style:
+                    const TextStyle(
                   fontSize: 28,
-                  fontWeight: FontWeight.bold,
+                  fontWeight:
+                      FontWeight.bold,
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(
+                height: 12,
+              ),
 
               Text(
                 '$score%',
                 style: TextStyle(
                   fontSize: 52,
-                  fontWeight: FontWeight.bold,
+                  fontWeight:
+                      FontWeight.bold,
                   color: passed
                       ? Colors.green
                       : Colors.red,
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 20,
+              ),
 
               Row(
                 children: [
@@ -855,7 +948,9 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                       Colors.green,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(
+                    width: 12,
+                  ),
                   Expanded(
                     child: _resultCard(
                       'Wrong',
@@ -866,55 +961,89 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                 ],
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(
+                height: 28,
+              ),
 
               if (wrong > 0) ...[
                 const Align(
-                  alignment: Alignment.centerLeft,
+                  alignment:
+                      Alignment.centerLeft,
                   child: Text(
                     'Your mistakes',
-                    style: TextStyle(
+                    style:
+                        TextStyle(
                       fontSize: 21,
-                      fontWeight: FontWeight.bold,
+                      fontWeight:
+                          FontWeight.bold,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 12),
+                const SizedBox(
+                  height: 12,
+                ),
 
                 ..._answers
-                    .where((answer) => !answer.isCorrect)
-                    .map(_buildWrongAnswerCard),
+                    .where(
+                      (answer) =>
+                          !answer.isCorrect,
+                    )
+                    .map(
+                      _buildWrongAnswerCard,
+                    ),
               ],
 
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 20,
+              ),
 
               if (passed)
                 Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(18),
-                    color: Colors.green.withOpacity(0.10),
+                  width:
+                      double.infinity,
+                  padding:
+                      const EdgeInsets.all(
+                    16,
                   ),
-                  child: const Text(
+                  decoration:
+                      BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(
+                      18,
+                    ),
+                    color: Colors.green
+                        .withOpacity(
+                      0.10,
+                    ),
+                  ),
+                  child:
+                      const Text(
                     'Basics completed! Lesson 1 can now be unlocked.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                    textAlign:
+                        TextAlign.center,
+                    style:
+                        TextStyle(
+                      fontWeight:
+                          FontWeight.w600,
                     ),
                   ),
                 ),
 
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 20,
+              ),
 
               SizedBox(
-                width: double.infinity,
+                width:
+                    double.infinity,
                 height: 54,
-                child: ElevatedButton(
-                  onPressed: _restartExam,
-                  child: const Text(
+                child:
+                    ElevatedButton(
+                  onPressed:
+                      _restartExam,
+                  child:
+                      const Text(
                     'Take the Exam Again',
                   ),
                 ),
@@ -932,10 +1061,13 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
     Color color,
   ) {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding:
+          const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
-        color: color.withOpacity(0.10),
+        borderRadius:
+            BorderRadius.circular(18),
+        color:
+            color.withOpacity(0.10),
       ),
       child: Column(
         children: [
@@ -943,11 +1075,14 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
             value,
             style: TextStyle(
               fontSize: 28,
-              fontWeight: FontWeight.bold,
+              fontWeight:
+                  FontWeight.bold,
               color: color,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(
+            height: 4,
+          ),
           Text(title),
         ],
       ),
@@ -959,12 +1094,18 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
   ) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin:
+          const EdgeInsets.only(
+        bottom: 12,
+      ),
+      padding:
+          const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius:
+            BorderRadius.circular(18),
         border: Border.all(
-          color: Colors.red.withOpacity(0.25),
+          color: Colors.red
+              .withOpacity(0.25),
         ),
       ),
       child: Column(
@@ -974,33 +1115,45 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
           Text(
             answer.topic,
             style: TextStyle(
-              color:
-                  Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.bold,
+              color: Theme.of(context)
+                  .colorScheme
+                  .primary,
+              fontWeight:
+                  FontWeight.bold,
             ),
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(
+            height: 8,
+          ),
 
           Text(
             answer.question,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
+            style:
+                const TextStyle(
+              fontWeight:
+                  FontWeight.bold,
               fontSize: 16,
             ),
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(
+            height: 12,
+          ),
 
           Text(
             'Your answer:',
             style: TextStyle(
-              color: Colors.red.shade700,
-              fontWeight: FontWeight.w600,
+              color:
+                  Colors.red.shade700,
+              fontWeight:
+                  FontWeight.w600,
             ),
           ),
 
-          const SizedBox(height: 4),
+          const SizedBox(
+            height: 4,
+          ),
 
           Text(
             answer.userAnswer.isEmpty
@@ -1008,32 +1161,48 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                 : answer.userAnswer,
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(
+            height: 10,
+          ),
 
           Text(
             'Correct answer:',
             style: TextStyle(
-              color: Colors.green.shade700,
-              fontWeight: FontWeight.w600,
+              color:
+                  Colors.green.shade700,
+              fontWeight:
+                  FontWeight.w600,
             ),
           ),
 
-          const SizedBox(height: 4),
-
-          Text(answer.correctAnswer),
-
-          const SizedBox(height: 10),
+          const SizedBox(
+            height: 4,
+          ),
 
           Text(
+            answer.correctAnswer,
+          ),
+
+          const SizedBox(
+            height: 10,
+          ),
+
+          const Text(
             'Why?',
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
+            style:
+                TextStyle(
+              fontWeight:
+                  FontWeight.w600,
             ),
           ),
 
-          const SizedBox(height: 4),
+          const SizedBox(
+            height: 4,
+          ),
 
-          Text(answer.explanation),
+          Text(
+            answer.explanation,
+          ),
         ],
       ),
     );
