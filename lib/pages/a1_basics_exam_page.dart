@@ -297,45 +297,64 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
 
     final wrongAnswers = result.wrongAnswerList;
 
-    final encodedWrongAnswers = wrongAnswers.map((answer) {
-      final question = a1BasicsExamQuestions.firstWhere(
-        (question) => question.id == answer.questionId,
-        orElse: () => A1BasicsExamQuestion(
+    final encodedWrongAnswers =
+        wrongAnswers.map((answer) {
+      final question =
+          a1BasicsExamQuestions.firstWhere(
+        (question) =>
+            question.id == answer.questionId,
+        orElse: () =>
+            A1BasicsExamQuestion(
           id: answer.questionId,
           lessonId: answer.lessonId,
           topic: answer.topic,
           category: answer.category,
           question: answer.question,
           options: const [],
-          correctAnswer: answer.correctAnswer,
-          explanation: answer.explanation,
+          correctAnswer:
+              answer.correctAnswer,
+          explanation:
+              answer.explanation,
           persian: null,
-          isSpeaking: answer.isSpeaking,
-          acceptableAnswers: const [],
+          isSpeaking:
+              answer.isSpeaking,
+          acceptableAnswers:
+              const [],
         ),
       );
 
       return {
-        'questionId': answer.questionId,
-        'lessonId': answer.lessonId,
-        'category': answer.category,
-        'topic': answer.topic,
-        'question': answer.question,
-        'userAnswer': answer.userAnswer,
-        'correctAnswer': answer.correctAnswer,
-        'explanation': answer.explanation,
-        'isCorrect': answer.isCorrect,
-        'isSpeaking': answer.isSpeaking,
+        'questionId':
+            answer.questionId,
+        'lessonId':
+            answer.lessonId,
+        'category':
+            answer.category,
+        'topic':
+            answer.topic,
+        'question':
+            answer.question,
+        'userAnswer':
+            answer.userAnswer,
+        'correctAnswer':
+            answer.correctAnswer,
+        'explanation':
+            answer.explanation,
+        'isCorrect':
+            answer.isCorrect,
+        'isSpeaking':
+            answer.isSpeaking,
 
-        // Save the original question options
-        // so Practice can show the real choices again.
-        'options': question.options,
+        'options':
+            question.options,
       };
     }).toList();
 
     await prefs.setString(
       'a1_basics_wrong_answers',
-      jsonEncode(encodedWrongAnswers),
+      jsonEncode(
+        encodedWrongAnswers,
+      ),
     );
 
     await prefs.setInt(
@@ -358,26 +377,37 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
       result.passed,
     );
 
+    // If the user passes Basics at least once,
+    // it stays completed permanently.
+    //
+    // A later failed retake must NOT lock Lesson 1 again.
     if (result.passed) {
       await prefs.setBool(
         'a1_basics_completed',
         true,
       );
-    } else {
-      await prefs.setBool(
-        'a1_basics_completed',
-        false,
-      );
     }
   }
 
   Future<void> _restartExam() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs =
+        await SharedPreferences.getInstance();
 
-    await prefs.remove('a1_basics_wrong_answers');
-    await prefs.remove('a1_basics_exam_score');
-    await prefs.remove('a1_basics_exam_correct');
-    await prefs.remove('a1_basics_exam_wrong');
+    await prefs.remove(
+      'a1_basics_wrong_answers',
+    );
+
+    await prefs.remove(
+      'a1_basics_exam_score',
+    );
+
+    await prefs.remove(
+      'a1_basics_exam_correct',
+    );
+
+    await prefs.remove(
+      'a1_basics_exam_wrong',
+    );
 
     setState(() {
       _answers.clear();
@@ -391,23 +421,31 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
     _prepareExam();
   }
 
-  Color _questionColor(BuildContext context) {
-    final theme = Theme.of(context);
+  Color _questionColor(
+    BuildContext context,
+  ) {
+    final theme =
+        Theme.of(context);
 
     if (!_answerSubmitted) {
       return theme.colorScheme.primary;
     }
 
     if (_currentQuestion.isSpeaking) {
-      final correct = _checkSpeakingAnswer(
+      final correct =
+          _checkSpeakingAnswer(
         _currentQuestion,
         _spokenAnswer,
       );
 
-      return correct ? Colors.green : Colors.red;
+      return correct
+          ? Colors.green
+          : Colors.red;
     }
 
-    return _selectedAnswer == _currentQuestion.correctAnswer
+    return _selectedAnswer ==
+            _currentQuestion
+                .correctAnswer
         ? Colors.green
         : Colors.red;
   }
@@ -421,11 +459,14 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     if (_questions.isEmpty) {
       return const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child:
+              CircularProgressIndicator(),
         ),
       );
     }
@@ -438,112 +479,151 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
   }
 
   Widget _buildExamPage() {
-    final question = _currentQuestion;
+    final question =
+        _currentQuestion;
 
     final progress =
-        (_currentIndex + 1) / _questions.length;
+        (_currentIndex + 1) /
+            _questions.length;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basics Exam'),
+        title:
+            const Text('Basics Exam'),
         centerTitle: true,
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding:
+              const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment:
-                CrossAxisAlignment.stretch,
+                CrossAxisAlignment
+                    .stretch,
             children: [
               Row(
                 mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    MainAxisAlignment
+                        .spaceBetween,
                 children: [
                   Text(
                     'Question ${_currentIndex + 1} / ${_questions.length}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
+                    style:
+                        const TextStyle(
+                      fontWeight:
+                          FontWeight.w600,
                     ),
                   ),
                   Text(
                     question.category,
                     style: TextStyle(
                       color:
-                          Theme.of(context)
-                              .colorScheme
-                              .primary,
-                      fontWeight: FontWeight.w600,
+                          Theme.of(
+                        context,
+                      ).colorScheme.primary,
+                      fontWeight:
+                          FontWeight.w600,
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(
+                height: 12,
+              ),
 
               ClipRRect(
                 borderRadius:
-                    BorderRadius.circular(20),
-                child: LinearProgressIndicator(
+                    BorderRadius.circular(
+                  20,
+                ),
+                child:
+                    LinearProgressIndicator(
                   value: progress,
                   minHeight: 8,
                 ),
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(
+                height: 28,
+              ),
 
               Text(
                 question.topic,
                 style: TextStyle(
                   color:
-                      Theme.of(context)
-                          .colorScheme
-                          .primary,
-                  fontWeight: FontWeight.bold,
+                      Theme.of(
+                    context,
+                  ).colorScheme.primary,
+                  fontWeight:
+                      FontWeight.bold,
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(
+                height: 12,
+              ),
 
               Text(
                 question.question,
-                style: const TextStyle(
+                style:
+                    const TextStyle(
                   fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                  fontWeight:
+                      FontWeight.bold,
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(
+                height: 10,
+              ),
 
-              if (question.persian != null)
+              if (question.persian !=
+                  null)
                 Text(
                   question.persian!,
                   style: TextStyle(
                     fontSize: 15,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.color
-                        ?.withOpacity(0.7),
+                    color:
+                        Theme.of(
+                      context,
+                    )
+                            .textTheme
+                            .bodyMedium
+                            ?.color
+                            ?.withOpacity(
+                          0.7,
+                        ),
                   ),
                 ),
 
-              const SizedBox(height: 12),
+              const SizedBox(
+                height: 12,
+              ),
 
               Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  onPressed: _speakQuestion,
-                  icon: const Icon(
-                    Icons.volume_up_rounded,
+                alignment:
+                    Alignment.centerLeft,
+                child:
+                    IconButton(
+                  onPressed:
+                      _speakQuestion,
+                  icon:
+                      const Icon(
+                    Icons
+                        .volume_up_rounded,
                   ),
                   tooltip: 'Listen',
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(
+                height: 8,
+              ),
 
               Expanded(
-                child: question.isSpeaking
+                child: question
+                        .isSpeaking
                     ? _buildSpeakingQuestion(
                         question,
                       )
@@ -552,21 +632,33 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                       ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(
+                height: 12,
+              ),
 
               if (_answerSubmitted)
                 Container(
                   padding:
-                      const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: _questionColor(context)
-                        .withOpacity(0.10),
+                      const EdgeInsets
+                          .all(14),
+                  decoration:
+                      BoxDecoration(
+                    color:
+                        _questionColor(
+                      context,
+                    ).withOpacity(
+                      0.10,
+                    ),
                     borderRadius:
-                        BorderRadius.circular(16),
+                        BorderRadius
+                            .circular(
+                      16,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                        CrossAxisAlignment
+                            .start,
                     children: [
                       Text(
                         _isCurrentAnswerCorrect()
@@ -574,34 +666,46 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                             : 'Not quite.',
                         style: TextStyle(
                           color:
-                              _questionColor(context),
+                              _questionColor(
+                            context,
+                          ),
                           fontWeight:
-                              FontWeight.bold,
+                              FontWeight
+                                  .bold,
                           fontSize: 16,
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(
+                        height: 6,
+                      ),
                       Text(
                         'Correct answer: ${question.correctAnswer}',
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(
+                        height: 4,
+                      ),
                       Text(
-                        question.explanation,
+                        question
+                            .explanation,
                       ),
                     ],
                   ),
                 ),
 
-              const SizedBox(height: 12),
+              const SizedBox(
+                height: 12,
+              ),
 
               SizedBox(
                 height: 54,
-                child: ElevatedButton(
-                  onPressed: _canSubmit()
-                      ? (_answerSubmitted
-                          ? _nextQuestion
-                          : _submitAnswer)
-                      : null,
+                child:
+                    ElevatedButton(
+                  onPressed:
+                      _canSubmit()
+                          ? (_answerSubmitted
+                              ? _nextQuestion
+                              : _submitAnswer)
+                          : null,
                   child: Text(
                     _answerSubmitted
                         ? (_isLastQuestion
@@ -622,55 +726,82 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
     A1BasicsExamQuestion question,
   ) {
     return ListView.separated(
-      itemCount: question.options.length,
-      separatorBuilder: (_, __) =>
-          const SizedBox(height: 10),
-      itemBuilder: (context, index) {
-        final option = question.options[index];
+      itemCount:
+          question.options.length,
+      separatorBuilder:
+          (_, __) =>
+              const SizedBox(
+        height: 10,
+      ),
+      itemBuilder:
+          (context, index) {
+        final option =
+            question.options[index];
 
         final selected =
-            _selectedAnswer == option;
+            _selectedAnswer ==
+                option;
 
         final isCorrect =
             _answerSubmitted &&
-            option == question.correctAnswer;
+                option ==
+                    question
+                        .correctAnswer;
 
         final isWrong =
             _answerSubmitted &&
-            selected &&
-            option != question.correctAnswer;
+                selected &&
+                option !=
+                    question
+                        .correctAnswer;
 
         Color? backgroundColor;
 
         if (isCorrect) {
           backgroundColor =
-              Colors.green.withOpacity(0.15);
+              Colors.green
+                  .withOpacity(0.15);
         } else if (isWrong) {
           backgroundColor =
-              Colors.red.withOpacity(0.15);
+              Colors.red
+                  .withOpacity(0.15);
         }
 
         return InkWell(
-          onTap: _answerSubmitted
-              ? null
-              : () => _selectAnswer(option),
+          onTap:
+              _answerSubmitted
+                  ? null
+                  : () =>
+                      _selectAnswer(
+                        option,
+                      ),
           borderRadius:
-              BorderRadius.circular(16),
+              BorderRadius.circular(
+            16,
+          ),
           child: Container(
             padding:
-                const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: backgroundColor,
+                const EdgeInsets.all(
+              16,
+            ),
+            decoration:
+                BoxDecoration(
+              color:
+                  backgroundColor,
               borderRadius:
-                  BorderRadius.circular(16),
+                  BorderRadius.circular(
+                16,
+              ),
               border: Border.all(
                 color: selected
-                    ? Theme.of(context)
-                        .colorScheme
-                        .primary
-                    : Theme.of(context)
-                        .dividerColor,
-                width: selected ? 2 : 1,
+                    ? Theme.of(
+                        context,
+                      ).colorScheme.primary
+                    : Theme.of(
+                        context,
+                      ).dividerColor,
+                width:
+                    selected ? 2 : 1,
               ),
             ),
             child: Row(
@@ -686,13 +817,16 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                 ),
                 if (isCorrect)
                   const Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
+                    Icons
+                        .check_circle,
+                    color:
+                        Colors.green,
                   ),
                 if (isWrong)
                   const Icon(
                     Icons.cancel,
-                    color: Colors.red,
+                    color:
+                        Colors.red,
                   ),
               ],
             ),
@@ -707,14 +841,20 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
   ) {
     return Column(
       crossAxisAlignment:
-          CrossAxisAlignment.stretch,
+          CrossAxisAlignment
+              .stretch,
       children: [
         Container(
           padding:
-              const EdgeInsets.all(18),
-          decoration: BoxDecoration(
+              const EdgeInsets.all(
+            18,
+          ),
+          decoration:
+              BoxDecoration(
             borderRadius:
-                BorderRadius.circular(18),
+                BorderRadius.circular(
+              18,
+            ),
             color: Theme.of(context)
                 .colorScheme
                 .primary
@@ -733,18 +873,22 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
           ),
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(
+          height: 20,
+        ),
 
         Expanded(
           child: Center(
             child: Column(
               mainAxisAlignment:
-                  MainAxisAlignment.center,
+                  MainAxisAlignment
+                      .center,
               children: [
                 GestureDetector(
-                  onTap: _isListening
-                      ? _stopListening
-                      : _startListening,
+                  onTap:
+                      _isListening
+                          ? _stopListening
+                          : _startListening,
                   child:
                       AnimatedContainer(
                     duration:
@@ -759,14 +903,18 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                           BoxShape.circle,
                       color: _isListening
                           ? Colors.red
-                          : Theme.of(context)
+                          : Theme.of(
+                              context,
+                            )
                               .colorScheme
                               .primary,
                     ),
                     child: Icon(
                       _isListening
-                          ? Icons.stop_rounded
-                          : Icons.mic_rounded,
+                          ? Icons
+                              .stop_rounded
+                          : Icons
+                              .mic_rounded,
                       color:
                           Colors.white,
                       size: 42,
@@ -774,7 +922,9 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(
+                  height: 20,
+                ),
 
                 Text(
                   _isListening
@@ -787,26 +937,31 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(
+                  height: 20,
+                ),
 
-                if (_spokenAnswer.isNotEmpty)
+                if (_spokenAnswer
+                    .isNotEmpty)
                   Container(
                     width:
                         double.infinity,
                     padding:
-                        const EdgeInsets.all(
-                      16,
-                    ),
+                        const EdgeInsets
+                            .all(16),
                     decoration:
                         BoxDecoration(
                       borderRadius:
-                          BorderRadius.circular(
+                          BorderRadius
+                              .circular(
                         16,
                       ),
-                      border: Border.all(
+                      border:
+                          Border.all(
                         color:
-                            Theme.of(context)
-                                .dividerColor,
+                            Theme.of(
+                          context,
+                        ).dividerColor,
                       ),
                     ),
                     child: Text(
@@ -832,17 +987,20 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
       return true;
     }
 
-    if (_currentQuestion.isSpeaking) {
+    if (_currentQuestion
+        .isSpeaking) {
       return _spokenAnswer
           .trim()
           .isNotEmpty;
     }
 
-    return _selectedAnswer != null;
+    return _selectedAnswer !=
+        null;
   }
 
   bool _isCurrentAnswerCorrect() {
-    final question = _currentQuestion;
+    final question =
+        _currentQuestion;
 
     if (question.isSpeaking) {
       return _checkSpeakingAnswer(
@@ -858,7 +1016,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
   Widget _buildResultPage() {
     final correct =
         _answers.where(
-      (answer) => answer.isCorrect,
+      (answer) =>
+          answer.isCorrect,
     ).length;
 
     final wrong =
@@ -866,7 +1025,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
 
     final score = _answers.isEmpty
         ? 0
-        : ((correct / _answers.length) *
+        : ((correct /
+                    _answers.length) *
                 100)
             .round();
 
@@ -882,7 +1042,9 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
         child:
             SingleChildScrollView(
           padding:
-              const EdgeInsets.all(20),
+              const EdgeInsets.all(
+            20,
+          ),
           child: Column(
             children: [
               const SizedBox(
@@ -942,7 +1104,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
               Row(
                 children: [
                   Expanded(
-                    child: _resultCard(
+                    child:
+                        _resultCard(
                       'Correct',
                       '$correct',
                       Colors.green,
@@ -952,7 +1115,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                     width: 12,
                   ),
                   Expanded(
-                    child: _resultCard(
+                    child:
+                        _resultCard(
                       'Wrong',
                       '$wrong',
                       Colors.red,
@@ -1003,13 +1167,13 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
                   width:
                       double.infinity,
                   padding:
-                      const EdgeInsets.all(
-                    16,
-                  ),
+                      const EdgeInsets
+                          .all(16),
                   decoration:
                       BoxDecoration(
                     borderRadius:
-                        BorderRadius.circular(
+                        BorderRadius
+                            .circular(
                       18,
                     ),
                     color: Colors.green
@@ -1110,7 +1274,8 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
       ),
       child: Column(
         crossAxisAlignment:
-            CrossAxisAlignment.start,
+            CrossAxisAlignment
+                .start,
         children: [
           Text(
             answer.topic,
