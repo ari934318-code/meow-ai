@@ -152,7 +152,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
+          const Icon(
             Icons.chevron_right_rounded,
             color: Colors.grey,
           ),
@@ -395,7 +395,7 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Talk with Meow',
+                  'Live Meow',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
