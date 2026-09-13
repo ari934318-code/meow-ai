@@ -9,6 +9,7 @@ import '../lesson_localization.dart';
 import '../localization.dart';
 import '../models/lesson.dart';
 import '../services/a1_progress_service.dart';
+import '../services/progress_service.dart';
 
 class LessonPage extends StatefulWidget {
   final Lesson lesson;
