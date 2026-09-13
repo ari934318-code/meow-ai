@@ -4,6 +4,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
   id: 'a1_06',
   title: 'Daily Routine',
   topic: 'برنامه روزانه',
+
   words: [
     A1Word(
       english: 'wake up',
@@ -13,9 +14,9 @@ const A1Lesson a1Lesson06 = A1Lesson(
     ),
     A1Word(
       english: 'get up',
-      persian: 'از خواب بیدار شدن / از جا بلند شدن',
+      persian: 'از جا بلند شدن / از رختخواب بیرون آمدن',
       pronunciation: 'گِت آپ',
-      example: 'I get up early.',
+      example: 'I get up at seven thirty.',
     ),
     A1Word(
       english: 'brush',
@@ -63,7 +64,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
       english: 'go',
       persian: 'رفتن',
       pronunciation: 'گو',
-      example: 'I go to school.',
+      example: 'I go to school every day.',
     ),
     A1Word(
       english: 'school',
@@ -75,11 +76,11 @@ const A1Lesson a1Lesson06 = A1Lesson(
       english: 'work',
       persian: 'کار کردن / محل کار',
       pronunciation: 'وِرک',
-      example: 'I work from Monday to Friday.',
+      example: 'I go to work in the morning.',
     ),
     A1Word(
       english: 'study',
-      persian: 'درس خواندن',
+      persian: 'درس خواندن / مطالعه کردن',
       pronunciation: 'اِستادی',
       example: 'I study English every day.',
     ),
@@ -93,7 +94,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
       english: 'dinner',
       persian: 'شام',
       pronunciation: 'دینِر',
-      example: 'We have dinner at eight.',
+      example: 'I have dinner with my family.',
     ),
     A1Word(
       english: 'come home',
@@ -111,7 +112,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
       english: 'rest',
       persian: 'استراحت کردن',
       pronunciation: 'رِست',
-      example: 'I rest after lunch.',
+      example: 'I rest after work.',
     ),
     A1Word(
       english: 'watch',
@@ -129,7 +130,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
       english: 'sleep',
       persian: 'خوابیدن',
       pronunciation: 'اِسلیپ',
-      example: 'I sleep at eleven.',
+      example: 'I sleep for eight hours.',
     ),
     A1Word(
       english: 'bed',
@@ -177,7 +178,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
       english: 'never',
       persian: 'هرگز',
       pronunciation: 'نِوِر',
-      example: 'I never drink coffee at night.',
+      example: 'I never go to bed very late.',
     ),
     A1Word(
       english: 'routine',
@@ -186,6 +187,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
       example: 'This is my daily routine.',
     ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'I wake up at seven.',
@@ -193,7 +195,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
     ),
     A1Sentence(
       english: 'I get up at seven thirty.',
-      persian: 'من ساعت هفت و نیم از خواب بیدار می‌شوم.',
+      persian: 'من ساعت هفت و نیم از رختخواب بلند می‌شوم.',
     ),
     A1Sentence(
       english: 'I brush my teeth.',
@@ -234,6 +236,10 @@ const A1Lesson a1Lesson06 = A1Lesson(
     A1Sentence(
       english: 'I come home at five.',
       persian: 'من ساعت پنج به خانه می‌آیم.',
+    ),
+    A1Sentence(
+      english: 'I go home after work.',
+      persian: 'من بعد از کار به خانه می‌روم.',
     ),
     A1Sentence(
       english: 'I rest after work.',
@@ -285,19 +291,19 @@ const A1Lesson a1Lesson06 = A1Lesson(
     ),
     A1Sentence(
       english: 'What time do you go to bed?',
-      persian: 'چه ساعتی می‌خوابی؟',
+      persian: 'چه ساعتی به رختخواب می‌روی؟',
     ),
     A1Sentence(
       english: 'I wake up early on weekdays.',
-      persian: 'من در روزهای کاری زود بیدار می‌شوم.',
+      persian: 'من در روزهای هفته زود بیدار می‌شوم.',
     ),
     A1Sentence(
       english: 'I sleep late on weekends.',
       persian: 'من آخر هفته‌ها دیر می‌خوابم.',
     ),
     A1Sentence(
-      english: 'I have coffee in the morning.',
-      persian: 'من صبح قهوه می‌خورم.',
+      english: 'I drink coffee in the morning.',
+      persian: 'من صبح قهوه می‌نوشم.',
     ),
     A1Sentence(
       english: 'I do my homework after school.',
@@ -307,7 +313,12 @@ const A1Lesson a1Lesson06 = A1Lesson(
       english: 'I relax before I go to bed.',
       persian: 'قبل از خواب استراحت می‌کنم.',
     ),
+    A1Sentence(
+      english: 'I usually have dinner at eight.',
+      persian: 'من معمولاً ساعت هشت شام می‌خورم.',
+    ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "wake up" mean?',
@@ -315,9 +326,14 @@ const A1Lesson a1Lesson06 = A1Lesson(
       answer: 'بیدار شدن',
     ),
     A1Question(
-      question: 'What does "sleep" mean?',
-      options: ['خوابیدن', 'بیدار شدن', 'شستن', 'خواندن'],
-      answer: 'خوابیدن',
+      question: 'What does "get up" mean?',
+      options: [
+        'از رختخواب بلند شدن',
+        'خوابیدن',
+        'غذا خوردن',
+        'تماشا کردن',
+      ],
+      answer: 'از رختخواب بلند شدن',
     ),
     A1Question(
       question: 'Complete: I ___ my teeth every morning.',
@@ -330,28 +346,23 @@ const A1Lesson a1Lesson06 = A1Lesson(
       answer: 'have',
     ),
     A1Question(
-      question: 'What do you do after waking up?',
-      options: ['Get up', 'Goodbye', 'Dinner', 'Sleep'],
-      answer: 'Get up',
-    ),
-    A1Question(
       question: 'What does "take a shower" mean?',
       options: ['دوش گرفتن', 'خوابیدن', 'لباس خریدن', 'درس خواندن'],
       answer: 'دوش گرفتن',
     ),
     A1Question(
       question: 'Complete: I ___ to school every day.',
-      options: ['go', 'sleep', 'wash', 'eat'],
+      options: ['go', 'sleep', 'wash', 'read'],
       answer: 'go',
     ),
     A1Question(
       question: 'What is "lunch"?',
-      options: ['صبحانه', 'ناهار', 'شام', 'میان‌وعده'],
+      options: ['صبحانه', 'ناهار', 'شام', 'قهوه'],
       answer: 'ناهار',
     ),
     A1Question(
       question: 'What is "dinner"?',
-      options: ['صبحانه', 'ناهار', 'شام', 'قهوه'],
+      options: ['صبحانه', 'ناهار', 'شام', 'میان‌وعده'],
       answer: 'شام',
     ),
     A1Question(
@@ -375,19 +386,9 @@ const A1Lesson a1Lesson06 = A1Lesson(
       answer: 'معمولاً',
     ),
     A1Question(
-      question: 'What does "always" mean?',
-      options: ['همیشه', 'گاهی', 'هرگز', 'معمولاً'],
-      answer: 'همیشه',
-    ),
-    A1Question(
       question: 'What does "sometimes" mean?',
       options: ['گاهی اوقات', 'همیشه', 'هرگز', 'زود'],
       answer: 'گاهی اوقات',
-    ),
-    A1Question(
-      question: 'What does "never" mean?',
-      options: ['هرگز', 'همیشه', 'گاهی', 'معمولاً'],
-      answer: 'هرگز',
     ),
     A1Question(
       question: 'Choose the correct sentence:',
@@ -395,7 +396,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
         'I wake up at seven.',
         'I up wake at seven.',
         'I wake at seven up.',
-        'Wake I up seven.'
+        'Wake I up seven.',
       ],
       answer: 'I wake up at seven.',
     ),
@@ -405,59 +406,19 @@ const A1Lesson a1Lesson06 = A1Lesson(
         'I go to bed at eleven.',
         'I go bed to eleven.',
         'I bed go at eleven.',
-        'I at eleven go bed.'
+        'I at eleven go bed.',
       ],
       answer: 'I go to bed at eleven.',
     ),
     A1Question(
       question: 'What do you usually do before bed?',
       options: [
-        'Read a book',
-        'Go to school',
-        'Have breakfast',
-        'Wake up'
+        'Read a book.',
+        'Go to school.',
+        'Have breakfast.',
+        'Wake up.',
       ],
-      answer: 'Read a book',
-    ),
-    A1Question(
-      question: 'What do you do in the morning?',
-      options: [
-        'Have breakfast',
-        'Have dinner',
-        'Go to bed',
-        'Sleep all night'
-      ],
-      answer: 'Have breakfast',
-    ),
-    A1Question(
-      question: 'Complete: I ___ English every day.',
-      options: ['study', 'sleep', 'wash', 'watch'],
-      answer: 'study',
-    ),
-    A1Question(
-      question: 'Complete: I ___ TV at night.',
-      options: ['watch', 'brush', 'wake', 'study'],
-      answer: 'watch',
-    ),
-    A1Question(
-      question: 'What does "daily routine" mean?',
-      options: [
-        'برنامه روزانه',
-        'برنامه غذایی',
-        'برنامه مدرسه',
-        'تعطیلات'
-      ],
-      answer: 'برنامه روزانه',
-    ),
-    A1Question(
-      question: 'Which sentence means "من ساعت پنج به خانه می‌آیم"؟',
-      options: [
-        'I come home at five.',
-        'I go to school at five.',
-        'I sleep at five.',
-        'I have lunch at five.'
-      ],
-      answer: 'I come home at five.',
+      answer: 'Read a book.',
     ),
     A1Question(
       question: 'Which sentence means "من هر روز انگلیسی می‌خوانم"؟',
@@ -465,39 +426,39 @@ const A1Lesson a1Lesson06 = A1Lesson(
         'I study English every day.',
         'I watch English every day.',
         'I sleep English every day.',
-        'I go English every day.'
+        'I go English every day.',
       ],
       answer: 'I study English every day.',
     ),
     A1Question(
-      question: 'What time do you wake up?',
+      question: 'Which sentence means "من ساعت پنج به خانه می‌آیم"؟',
       options: [
-        'I wake up at seven.',
-        'I sleep at seven.',
-        'I dinner at seven.',
-        'I school at seven.'
+        'I come home at five.',
+        'I go to school at five.',
+        'I sleep at five.',
+        'I have lunch at five.',
       ],
-      answer: 'I wake up at seven.',
+      answer: 'I come home at five.',
     ),
     A1Question(
-      question: 'What time do you go to bed?',
+      question: 'Which sentence is correct?',
       options: [
-        'I go to bed at eleven.',
-        'I go school at eleven.',
-        'I wake breakfast at eleven.',
-        'I brush home at eleven.'
+        'I always brush my teeth.',
+        'I always brushes my teeth.',
+        'I brush always my teeth.',
+        'I always brushing my teeth.',
       ],
-      answer: 'I go to bed at eleven.',
+      answer: 'I always brush my teeth.',
     ),
     A1Question(
-      question: 'Which one means "لباس پوشیدن"؟',
-      options: ['Get dressed', 'Get home', 'Get up', 'Go to bed'],
-      answer: 'Get dressed',
-    ),
-    A1Question(
-      question: 'Which one means "استراحت کردن"؟',
-      options: ['Rest', 'Read', 'Rise', 'Run'],
-      answer: 'Rest',
+      question: 'What can you say to ask about someone’s wake-up time?',
+      options: [
+        'What time do you wake up?',
+        'What time you wake up?',
+        'When time do you sleep?',
+        'What do you wake time?',
+      ],
+      answer: 'What time do you wake up?',
     ),
   ],
 
@@ -506,10 +467,10 @@ const A1Lesson a1Lesson06 = A1Lesson(
       question: 'What time do you wake up?',
       persian: 'چه ساعتی بیدار می‌شوی؟',
       acceptableAnswers: [
+        'i wake up at six',
         'i wake up at seven',
         'i wake up at eight',
         'i wake up at nine',
-        'i wake up at six',
         'i wake up at ten',
       ],
     ),
@@ -542,17 +503,18 @@ const A1Lesson a1Lesson06 = A1Lesson(
         'i have breakfast at seven',
         'i have breakfast at eight',
         'i have breakfast at nine',
-        'i have breakfast at seven thirty',
+        'i have breakfast at ten',
       ],
     ),
     A1SpeakingQuestion(
       question: 'Do you go to school every day?',
       persian: 'هر روز به مدرسه می‌روی؟',
       acceptableAnswers: [
-        'yes i go to school every day',
         'yes i do',
         'no i do not',
         'no i dont',
+        'yes i go to school every day',
+        'no i dont go to school every day',
       ],
     ),
     A1SpeakingQuestion(
@@ -590,7 +552,7 @@ const A1Lesson a1Lesson06 = A1Lesson(
     ),
     A1SpeakingQuestion(
       question: 'What time do you go to bed?',
-      persian: 'چه ساعتی می‌خوابی؟',
+      persian: 'چه ساعتی به رختخواب می‌روی؟',
       acceptableAnswers: [
         'i go to bed at ten',
         'i go to bed at eleven',
@@ -613,12 +575,34 @@ const A1Lesson a1Lesson06 = A1Lesson(
       ],
     ),
     A1SpeakingQuestion(
-      question: 'Describe your daily routine in three sentences.',
-      persian: 'برنامه روزانه‌ات را در سه جمله توضیح بده.',
+      question: 'Say: "I usually wake up early."',
+      persian: 'بگو: «من معمولاً زود بیدار می‌شوم.»',
+      acceptableAnswers: [
+        'i usually wake up early',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I sometimes watch TV."',
+      persian: 'بگو: «من گاهی تلویزیون تماشا می‌کنم.»',
+      acceptableAnswers: [
+        'i sometimes watch TV',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I go to bed at eleven."',
+      persian: 'بگو: «من ساعت یازده به رختخواب می‌روم.»',
+      acceptableAnswers: [
+        'i go to bed at eleven',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Describe your daily routine in three short sentences.',
+      persian: 'برنامه روزانه‌ات را در سه جمله کوتاه توضیح بده.',
       acceptableAnswers: [
         'i wake up early i have breakfast and i go to school',
         'i wake up at seven i have breakfast and i go to school',
         'i wake up i study English and i go to bed',
+        'i wake up i have breakfast and i go to work',
       ],
     ),
   ],
