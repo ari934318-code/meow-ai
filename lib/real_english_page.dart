@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'data/real_english_data.dart';
 
 class RealEnglishPage extends StatelessWidget {
@@ -137,13 +138,129 @@ class RealEnglishListPage extends StatelessWidget {
   }
 }
 
-class RealEnglishDetailPage extends StatelessWidget {
+class RealEnglishDetailPage extends StatefulWidget {
   final RealEnglishItem item;
 
   const RealEnglishDetailPage({
     super.key,
     required this.item,
   });
+
+  @override
+  State<RealEnglishDetailPage> createState() =>
+      _RealEnglishDetailPageState();
+}
+
+class _RealEnglishDetailPageState extends State<RealEnglishDetailPage> {
+  final FlutterTts _tts = FlutterTts();
+  final SpeechToText _speech = SpeechToText();
+
+  bool _speechAvailable = false;
+  bool _isListening = false;
+  String _recognizedText = '';
+
+  RealEnglishItem get item => widget.item;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeSpeech();
+  }
+
+  Future<void> _initializeSpeech() async {
+    final available = await _speech.initialize(
+      onStatus: (status) {
+        if (!mounted) return;
+
+        setState(() {
+          _isListening = _speech.isListening;
+        });
+      },
+      onError: (error) {
+        if (!mounted) return;
+
+        setState(() {
+          _isListening = false;
+        });
+      },
+    );
+
+    if (!mounted) return;
+
+    setState(() {
+      _speechAvailable = available;
+    });
+  }
+
+  Future<void> _listenToMeow() async {
+    await _tts.setLanguage('en-US');
+    await _tts.setSpeechRate(0.45);
+    await _tts.setPitch(1.0);
+
+    await _tts.speak(item.example);
+  }
+
+  Future<void> _startListening() async {
+    if (!_speechAvailable) {
+      final available = await _speech.initialize();
+
+      if (!available) {
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Speech recognition is not available on this device.',
+            ),
+          ),
+        );
+
+        return;
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        _speechAvailable = true;
+      });
+    }
+
+    setState(() {
+      _recognizedText = '';
+      _isListening = true;
+    });
+
+    await _speech.listen(
+      onResult: (result) {
+        if (!mounted) return;
+
+        setState(() {
+          _recognizedText = result.recognizedWords;
+        });
+      },
+      localeId: 'en_US',
+      listenFor: const Duration(seconds: 15),
+      pauseFor: const Duration(seconds: 3),
+      partialResults: true,
+    );
+  }
+
+  Future<void> _stopListening() async {
+    await _speech.stop();
+
+    if (!mounted) return;
+
+    setState(() {
+      _isListening = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _speech.stop();
+    _tts.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,15 +341,7 @@ class RealEnglishDetailPage extends StatelessWidget {
           const SizedBox(height: 28),
 
           ElevatedButton.icon(
-            onPressed: () async {
-              final tts = FlutterTts();
-
-              await tts.setLanguage('en-US');
-              await tts.setSpeechRate(0.45);
-              await tts.setPitch(1.0);
-
-              await tts.speak(item.example);
-            },
+            onPressed: _listenToMeow,
             icon: const Icon(Icons.volume_up),
             label: const Text('Listen to Meow'),
           ),
@@ -240,13 +349,57 @@ class RealEnglishDetailPage extends StatelessWidget {
           const SizedBox(height: 12),
 
           OutlinedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.mic),
-            label: const Text('Record your pronunciation'),
+            onPressed: _speechAvailable
+                ? (_isListening ? _stopListening : _startListening)
+                : null,
+            icon: Icon(
+              _isListening ? Icons.stop : Icons.mic,
+            ),
+            label: Text(
+              _isListening
+                  ? 'Stop listening'
+                  : 'Speak your pronunciation',
+            ),
           ),
+
+          if (_isListening) ...[
+            const SizedBox(height: 12),
+            const Text(
+              '🎙️ Listening...',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+
+          if (_recognizedText.isNotEmpty) ...[
+            const SizedBox(height: 20),
+
+            const Text(
+              'You said:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  _recognizedText,
+                  style: const TextStyle(
+                    fontSize: 19,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
 }
- 
