@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import 'data/levels/a1/a1_data.dart';
 import 'localization.dart';
@@ -142,13 +143,119 @@ class A1LessonsPage extends StatelessWidget {
   }
 }
 
-class A1LessonDetailPage extends StatelessWidget {
+class A1LessonDetailPage extends StatefulWidget {
   final A1Lesson lesson;
 
   const A1LessonDetailPage({
     super.key,
     required this.lesson,
   });
+
+  @override
+  State<A1LessonDetailPage> createState() => _A1LessonDetailPageState();
+}
+
+class _A1LessonDetailPageState extends State<A1LessonDetailPage> {
+  final stt.SpeechToText _speech = stt.SpeechToText();
+
+  bool _speechAvailable = false;
+  bool _isListening = false;
+
+  String _recognizedText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeSpeech();
+  }
+
+  Future<void> _initializeSpeech() async {
+    final available = await _speech.initialize(
+      onStatus: (status) {
+        if (!mounted) return;
+
+        setState(() {
+          _isListening = status == 'listening';
+        });
+      },
+      onError: (error) {
+        if (!mounted) return;
+
+        setState(() {
+          _isListening = false;
+        });
+      },
+    );
+
+    if (!mounted) return;
+
+    setState(() {
+      _speechAvailable = available;
+    });
+  }
+
+  Future<void> _startListening({
+    required bool isPersian,
+  }) async {
+    if (!_speechAvailable) {
+      await _initializeSpeech();
+    }
+
+    if (!_speechAvailable) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(
+              isPersian
+                  ? 'میکروفون یا تشخیص صدا در دسترس نیست 🎤'
+                  : 'Speech recognition is not available 🎤',
+            ),
+          ),
+        );
+
+      return;
+    }
+
+    setState(() {
+      _recognizedText = '';
+      _isListening = true;
+    });
+
+    await _speech.listen(
+      onResult: (result) {
+        if (!mounted) return;
+
+        setState(() {
+          _recognizedText = result.recognizedWords;
+        });
+      },
+      listenFor: const Duration(seconds: 30),
+      pauseFor: const Duration(seconds: 4),
+      partialResults: true,
+      localeId: 'en_US',
+      cancelOnError: true,
+      listenMode: stt.ListenMode.dictation,
+    );
+  }
+
+  Future<void> _stopListening() async {
+    await _speech.stop();
+
+    if (!mounted) return;
+
+    setState(() {
+      _isListening = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _speech.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +266,7 @@ class A1LessonDetailPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          lesson.title,
+          widget.lesson.title,
           style: const TextStyle(
             fontWeight: FontWeight.w700,
           ),
@@ -170,7 +277,7 @@ class A1LessonDetailPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 110),
           children: [
             Text(
-              lesson.topic,
+              widget.lesson.topic,
               style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w700,
@@ -189,12 +296,11 @@ class A1LessonDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 28),
 
-            // Words
             _sectionTitle(
               lang.isPersian ? 'واژه‌ها' : 'Words',
             ),
             const SizedBox(height: 12),
-            ...lesson.words.map(
+            ...widget.lesson.words.map(
               (word) => _wordCard(
                 context,
                 word: word,
@@ -204,12 +310,11 @@ class A1LessonDetailPage extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Sentences
             _sectionTitle(
               lang.isPersian ? 'جمله‌ها' : 'Sentences',
             ),
             const SizedBox(height: 12),
-            ...lesson.sentences.map(
+            ...widget.lesson.sentences.map(
               (sentence) => _sentenceCard(
                 context,
                 sentence: sentence,
@@ -218,12 +323,11 @@ class A1LessonDetailPage extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Multiple choice
             _sectionTitle(
               lang.isPersian ? 'تمرین چهارگزینه‌ای' : 'Multiple Choice',
             ),
             const SizedBox(height: 12),
-            ...lesson.questions.asMap().entries.map(
+            ...widget.lesson.questions.asMap().entries.map(
               (entry) => _questionCard(
                 context,
                 question: entry.value,
@@ -234,7 +338,6 @@ class A1LessonDetailPage extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Speaking
             _sectionTitle(
               lang.isPersian ? '🎤 تمرین مکالمه' : '🎤 Speaking Practice',
             ),
@@ -253,7 +356,7 @@ class A1LessonDetailPage extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            ...lesson.speakingQuestions.asMap().entries.map(
+            ...widget.lesson.speakingQuestions.asMap().entries.map(
               (entry) => _speakingCard(
                 context,
                 question: entry.value,
@@ -511,28 +614,66 @@ class A1LessonDetailPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
+
+          if (_recognizedText.isNotEmpty) ...[
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(14),
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFB9A7E8).withOpacity(0.10),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Text(
+                _recognizedText,
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ],
+
           SizedBox(
             width: double.infinity,
             child: FilledButton.icon(
               onPressed: () {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        isPersian
-                            ? '🎤 اینجا باید جواب رو با صدای بلند بگی! میو گوش می‌ده 😼'
-                            : '🎤 Answer out loud! Meow is listening 😼',
-                      ),
-                    ),
+                if (_isListening) {
+                  _stopListening();
+                } else {
+                  _startListening(
+                    isPersian: isPersian,
                   );
+                }
               },
-              icon: const Icon(Icons.mic_rounded),
+              icon: Icon(
+                _isListening
+                    ? Icons.stop_rounded
+                    : Icons.mic_rounded,
+              ),
               label: Text(
-                isPersian ? 'پاسخ دادن با صدا' : 'Answer by speaking',
+                _isListening
+                    ? (isPersian ? 'توقف ضبط' : 'Stop listening')
+                    : (isPersian
+                        ? 'پاسخ دادن با صدا'
+                        : 'Answer by speaking'),
               ),
             ),
           ),
+
+          if (_isListening) ...[
+            const SizedBox(height: 10),
+            Text(
+              isPersian
+                  ? '🎤 میو داره گوش می‌ده...'
+                  : '🎤 Meow is listening...',
+              style: const TextStyle(
+                fontSize: 13,
+                color: Color(0xFF8C72D8),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ],
       ),
     );
