@@ -560,4 +560,117 @@ const A1Lesson a1Lesson04 = A1Lesson(
       answer: 'We eat together.',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'Do you have any brothers?',
+      persian: 'برادر داری؟',
+      acceptableAnswers: [
+        'yes i have one brother',
+        'yes i have two brothers',
+        'yes i have three brothers',
+        'no i do not have any brothers',
+        'no i dont have any brothers',
+        'no i have no brothers',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Do you have any sisters?',
+      persian: 'خواهر داری؟',
+      acceptableAnswers: [
+        'yes i have one sister',
+        'yes i have two sisters',
+        'yes i have three sisters',
+        'no i do not have any sisters',
+        'no i dont have any sisters',
+        'no i have no sisters',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Who is your mother?',
+      persian: 'مادرت کیه؟',
+      acceptableAnswers: [
+        'she is my mother',
+        'my mother is kind',
+        'this is my mother',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Who is your father?',
+      persian: 'پدرت کیه؟',
+      acceptableAnswers: [
+        'he is my father',
+        'my father is at work',
+        'this is my father',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Who is your grandmother?',
+      persian: 'مادربزرگت کیه؟',
+      acceptableAnswers: [
+        'she is my grandmother',
+        'my grandmother is sweet',
+        'this is my grandmother',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Who is your grandfather?',
+      persian: 'پدربزرگت کیه؟',
+      acceptableAnswers: [
+        'he is my grandfather',
+        'my grandfather is old',
+        'this is my grandfather',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Who is your brother?',
+      persian: 'برادرت کیه؟',
+      acceptableAnswers: [
+        'he is my brother',
+        'this is my brother',
+        'i have one brother',
+        'i have two brothers',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Who is your sister?',
+      persian: 'خواهرت کیه؟',
+      acceptableAnswers: [
+        'she is my sister',
+        'this is my sister',
+        'i have one sister',
+        'i have two sisters',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Do you love your family?',
+      persian: 'خانواده‌ات را دوست داری؟',
+      acceptableAnswers: [
+        'yes i love my family',
+        'yes i do',
+        'i love my family',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "I have one brother and one sister."',
+      persian: 'بگو: «من یک برادر و یک خواهر دارم.»',
+      acceptableAnswers: [
+        'i have one brother and one sister',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "My mother is kind."',
+      persian: 'بگو: «مادرم مهربان است.»',
+      acceptableAnswers: [
+        'my mother is kind',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "We eat together."',
+      persian: 'بگو: «ما با هم غذا می‌خوریم.»',
+      acceptableAnswers: [
+        'we eat together',
+      ],
+    ),
+  ],
 );
