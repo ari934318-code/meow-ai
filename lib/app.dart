@@ -18,7 +18,7 @@ final ValueNotifier<ThemeMode> appThemeMode =
     ValueNotifier<ThemeMode>(ThemeMode.system);
 
 final ValueNotifier<Locale> appLocale =
-    ValueNotifier<Locale>(const Locale('en'));
+    ValueNotifier<Locale>(const Locale('fa'));
 
 class MeowApp extends StatelessWidget {
   const MeowApp({super.key});
