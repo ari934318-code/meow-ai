@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../localization.dart';
 import '../models/lesson.dart';
-import '../services/lesson_service.dart';
 
 class LessonPage extends StatefulWidget {
-  const LessonPage({super.key});
+  final Lesson lesson;
+
+  const LessonPage({
+    super.key,
+    required this.lesson,
+  });
 
   @override
   State<LessonPage> createState() => _LessonPageState();
@@ -40,8 +44,6 @@ class _LessonPageState extends State<LessonPage> {
       'correct': 0,
     },
   ];
-
-  Lesson get lesson => LessonService.a1Lessons.first;
 
   void startPractice() {
     setState(() {
@@ -94,8 +96,8 @@ class _LessonPageState extends State<LessonPage> {
         ),
         content: Text(
           lang.isPersian
-              ? 'از ${questions.length} سؤال، $score تا رو درست جواب دادی.\n\n+${lesson.xp} XP ⭐'
-              : 'You got $score out of ${questions.length} correct.\n\n+${lesson.xp} XP ⭐',
+              ? 'از ${questions.length} سؤال، $score تا رو درست جواب دادی.\n\n+${widget.lesson.xp} XP ⭐'
+              : 'You got $score out of ${questions.length} correct.\n\n+${widget.lesson.xp} XP ⭐',
         ),
         actions: [
           FilledButton(
@@ -119,7 +121,7 @@ class _LessonPageState extends State<LessonPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${lesson.title} 📚',
+          '${widget.lesson.title} 📚',
         ),
       ),
       body: practiceStarted
@@ -136,7 +138,7 @@ class _LessonPageState extends State<LessonPage> {
       padding: const EdgeInsets.all(20),
       children: [
         Text(
-          lesson.title,
+          widget.lesson.title,
           style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -146,7 +148,7 @@ class _LessonPageState extends State<LessonPage> {
         const SizedBox(height: 8),
 
         Text(
-          lesson.description,
+          widget.lesson.description,
           style: TextStyle(
             fontSize: 16,
             color: Theme.of(context)
@@ -178,7 +180,7 @@ class _LessonPageState extends State<LessonPage> {
               ),
               const SizedBox(width: 8),
               Text(
-                '+${lesson.xp} XP',
+                '+${widget.lesson.xp} XP',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary,
@@ -190,7 +192,7 @@ class _LessonPageState extends State<LessonPage> {
 
         const SizedBox(height: 28),
 
-        ...lesson.sections.map(
+        ...widget.lesson.sections.map(
           (section) => _buildSection(
             context,
             section,
@@ -235,27 +237,34 @@ class _LessonPageState extends State<LessonPage> {
       case 'vocabulary':
         icon = Icons.menu_book_rounded;
         break;
+
       case 'phrases':
       case 'useful phrases':
         icon = Icons.chat_bubble_outline_rounded;
         break;
+
       case 'grammar':
         icon = Icons.school_rounded;
         break;
+
       case 'examples':
       case 'real-life examples':
         icon = Icons.public_rounded;
         break;
+
       case 'practice':
         icon = Icons.edit_rounded;
         break;
+
       case 'speaking':
       case 'mini conversation':
         icon = Icons.mic_rounded;
         break;
+
       case 'review':
         icon = Icons.refresh_rounded;
         break;
+
       default:
         icon = Icons.auto_stories_rounded;
     }
