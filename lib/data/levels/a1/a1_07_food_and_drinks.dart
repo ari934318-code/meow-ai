@@ -4,6 +4,7 @@ const A1Lesson a1Lesson07 = A1Lesson(
   id: 'a1_07',
   title: 'Food and Drinks',
   topic: 'غذا و نوشیدنی',
+
   words: [
     A1Word(
       english: 'food',
@@ -98,7 +99,7 @@ const A1Lesson a1Lesson07 = A1Lesson(
     A1Word(
       english: 'banana',
       persian: 'موز',
-      pronunciation: 'بَنَنَ',
+      pronunciation: 'بِنَنَ',
       example: 'He eats a banana.',
     ),
     A1Word(
@@ -209,13 +210,8 @@ const A1Lesson a1Lesson07 = A1Lesson(
       pronunciation: 'دینِر',
       example: 'Dinner is ready.',
     ),
-    A1Word(
-      english: 'hungry',
-      persian: 'گرسنه',
-      pronunciation: 'هانگری',
-      example: 'I am very hungry.',
-    ),
   ],
+
   sentences: [
     A1Sentence(
       english: 'I am hungry.',
@@ -357,7 +353,16 @@ const A1Lesson a1Lesson07 = A1Lesson(
       english: 'Dinner is ready.',
       persian: 'شام آماده است.',
     ),
+    A1Sentence(
+      english: 'Can I have some juice, please?',
+      persian: 'می‌توانم کمی آبمیوه داشته باشم، لطفاً؟',
+    ),
+    A1Sentence(
+      english: 'I like fruit and vegetables.',
+      persian: 'من میوه و سبزیجات دوست دارم.',
+    ),
   ],
+
   questions: [
     A1Question(
       question: 'What does "food" mean?',
@@ -370,19 +375,9 @@ const A1Lesson a1Lesson07 = A1Lesson(
       answer: 'آب',
     ),
     A1Question(
-      question: 'What does "milk" mean?',
-      options: ['شیر', 'آب', 'آبمیوه', 'چای'],
-      answer: 'شیر',
-    ),
-    A1Question(
       question: 'What does "bread" mean?',
       options: ['نان', 'برنج', 'گوشت', 'پنیر'],
       answer: 'نان',
-    ),
-    A1Question(
-      question: 'What does "rice" mean?',
-      options: ['برنج', 'نان', 'مرغ', 'سیب'],
-      answer: 'برنج',
     ),
     A1Question(
       question: 'What does "egg" mean?',
@@ -395,34 +390,14 @@ const A1Lesson a1Lesson07 = A1Lesson(
       answer: 'مرغ',
     ),
     A1Question(
-      question: 'What does "fish" mean?',
-      options: ['ماهی', 'مرغ', 'گوشت', 'تخم‌مرغ'],
-      answer: 'ماهی',
-    ),
-    A1Question(
       question: 'What does "apple" mean?',
       options: ['سیب', 'موز', 'پرتقال', 'گوجه'],
       answer: 'سیب',
     ),
     A1Question(
-      question: 'What does "banana" mean?',
-      options: ['موز', 'سیب', 'پرتقال', 'سیب‌زمینی'],
-      answer: 'موز',
-    ),
-    A1Question(
-      question: 'What does "fruit" mean?',
-      options: ['میوه', 'سبزیجات', 'غذا', 'نوشیدنی'],
-      answer: 'میوه',
-    ),
-    A1Question(
       question: 'What does "vegetable" mean?',
       options: ['سبزیجات', 'میوه', 'شیرینی', 'نوشیدنی'],
       answer: 'سبزیجات',
-    ),
-    A1Question(
-      question: 'What does "cake" mean?',
-      options: ['کیک', 'نان', 'سوپ', 'سالاد'],
-      answer: 'کیک',
     ),
     A1Question(
       question: 'What does "ice cream" mean?',
@@ -460,24 +435,14 @@ const A1Lesson a1Lesson07 = A1Lesson(
       answer: 'thirsty',
     ),
     A1Question(
-      question: 'Which one is a drink?',
-      options: ['Juice', 'Bread', 'Rice', 'Chicken'],
-      answer: 'Juice',
-    ),
-    A1Question(
       question: 'Which one is a fruit?',
       options: ['Apple', 'Potato', 'Rice', 'Chicken'],
       answer: 'Apple',
     ),
     A1Question(
-      question: 'Which one is a vegetable?',
-      options: ['Tomato', 'Banana', 'Apple', 'Orange'],
-      answer: 'Tomato',
-    ),
-    A1Question(
-      question: 'Which food is usually sweet?',
-      options: ['Cake', 'Rice', 'Fish', 'Bread'],
-      answer: 'Cake',
+      question: 'Which one is a drink?',
+      options: ['Juice', 'Bread', 'Rice', 'Chicken'],
+      answer: 'Juice',
     ),
     A1Question(
       question: 'Which sentence means "من گرسنه‌ام"؟',
@@ -485,19 +450,9 @@ const A1Lesson a1Lesson07 = A1Lesson(
         'I am hungry.',
         'I am thirsty.',
         'I am cold.',
-        'I am happy.'
+        'I am happy.',
       ],
       answer: 'I am hungry.',
-    ),
-    A1Question(
-      question: 'Which sentence means "من تشنه‌ام"؟',
-      options: [
-        'I am thirsty.',
-        'I am hungry.',
-        'I am tired.',
-        'I am hot.'
-      ],
-      answer: 'I am thirsty.',
     ),
     A1Question(
       question: 'What do you say when you want water?',
@@ -505,29 +460,9 @@ const A1Lesson a1Lesson07 = A1Lesson(
         'I want some water.',
         'I want some bread.',
         'I want some rice.',
-        'I want some chicken.'
+        'I want some chicken.',
       ],
       answer: 'I want some water.',
-    ),
-    A1Question(
-      question: 'Choose the correct sentence:',
-      options: [
-        'I like tea.',
-        'I tea like.',
-        'Tea I like.',
-        'Like I tea.'
-      ],
-      answer: 'I like tea.',
-    ),
-    A1Question(
-      question: 'Choose the correct sentence:',
-      options: [
-        'I eat an apple.',
-        'I an apple eat.',
-        'I apple an eat.',
-        'Eat I an apple.'
-      ],
-      answer: 'I eat an apple.',
     ),
     A1Question(
       question: 'What do you want to drink?',
@@ -535,62 +470,17 @@ const A1Lesson a1Lesson07 = A1Lesson(
         'I want some juice.',
         'I want some bread.',
         'I want some rice.',
-        'I want some cake.'
+        'I want some cake.',
       ],
       answer: 'I want some juice.',
     ),
     A1Question(
-      question: 'What do you want to eat?',
-      options: [
-        'I want a sandwich.',
-        'I want some water.',
-        'I want some tea.',
-        'I want some juice.'
-      ],
-      answer: 'I want a sandwich.',
-    ),
-    A1Question(
-      question: 'Which meal is usually in the morning?',
-      options: ['Breakfast', 'Lunch', 'Dinner', 'Snack'],
-      answer: 'Breakfast',
-    ),
-    A1Question(
-      question: 'Which meal is usually in the middle of the day?',
-      options: ['Lunch', 'Breakfast', 'Dinner', 'Dessert'],
-      answer: 'Lunch',
-    ),
-    A1Question(
-      question: 'Which meal is usually in the evening?',
-      options: ['Dinner', 'Breakfast', 'Lunch', 'Snack'],
-      answer: 'Dinner',
-    ),
-    A1Question(
-      question: 'Complete: The coffee is ___.',
-      options: ['hot', 'cold', 'sweet', 'hungry'],
-      answer: 'hot',
-    ),
-    A1Question(
-      question: 'Complete: The water is ___.',
-      options: ['cold', 'hungry', 'thirsty', 'sweet'],
-      answer: 'cold',
-    ),
-    A1Question(
-      question: 'What does "I would like some tea" mean?',
-      options: [
-        'کمی چای می‌خواهم.',
-        'چای دوست ندارم.',
-        'چای ندارم.',
-        'چای می‌فروشم.'
-      ],
-      answer: 'کمی چای می‌خواهم.',
-    ),
-    A1Question(
-      question: 'Which sentence is correct?',
+      question: 'Choose the correct sentence:',
       options: [
         'Can I have some water, please?',
         'Can I water some have?',
         'I can some water have please?',
-        'Have I water can?'
+        'Have I water can?',
       ],
       answer: 'Can I have some water, please?',
     ),
@@ -603,11 +493,12 @@ const A1Lesson a1Lesson07 = A1Lesson(
       acceptableAnswers: [
         'my favorite food is rice',
         'my favorite food is chicken',
-        'my favorite food is pizza',
         'my favorite food is bread',
+        'my favorite food is fish',
         'i like rice',
         'i like chicken',
-        'i like pizza',
+        'i like bread',
+        'i like fish',
       ],
     ),
     A1SpeakingQuestion(
@@ -714,13 +605,40 @@ const A1Lesson a1Lesson07 = A1Lesson(
       ],
     ),
     A1SpeakingQuestion(
+      question: 'Say: "I would like some tea."',
+      persian: 'بگو: «کمی چای می‌خواهم.»',
+      acceptableAnswers: [
+        'i would like some tea',
+        'i would like tea',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Say: "Can I have some water, please?"',
+      persian: 'بگو: «می‌توانم کمی آب داشته باشم، لطفاً؟»',
+      acceptableAnswers: [
+        'can i have some water please',
+        'can i have some water',
+      ],
+    ),
+    A1SpeakingQuestion(
       question: 'Say three foods you like.',
       persian: 'سه غذایی که دوست داری را بگو.',
       acceptableAnswers: [
         'i like rice chicken and bread',
         'i like chicken rice and bread',
-        'i like pizza chicken and rice',
         'i like bread rice and chicken',
+        'i like fish rice and chicken',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Tell Meow what you want for breakfast.',
+      persian: 'به میو بگو برای صبحانه چه می‌خواهی.',
+      acceptableAnswers: [
+        'i want bread for breakfast',
+        'i want an egg for breakfast',
+        'i want eggs for breakfast',
+        'i want an apple for breakfast',
+        'i want milk for breakfast',
       ],
     ),
   ],
