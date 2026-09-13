@@ -49,6 +49,7 @@ class LearnPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
+            // A1
             _levelCard(
               context,
               level: 'A1',
@@ -59,8 +60,10 @@ class LearnPage extends StatelessWidget {
               icon: Icons.eco_rounded,
               color: const Color(0xFF4CAF50),
               enabled: true,
+              buttonText: lang.isPersian ? 'شروع' : 'START',
             ),
 
+            // A2
             _levelCard(
               context,
               level: 'A2',
@@ -72,6 +75,7 @@ class LearnPage extends StatelessWidget {
               color: const Color(0xFFF2B94B),
             ),
 
+            // B1
             _levelCard(
               context,
               level: 'B1',
@@ -83,6 +87,7 @@ class LearnPage extends StatelessWidget {
               color: const Color(0xFF5C8DDE),
             ),
 
+            // B2
             _levelCard(
               context,
               level: 'B2',
@@ -96,6 +101,7 @@ class LearnPage extends StatelessWidget {
               color: const Color(0xFF8C72D8),
             ),
 
+            // C1
             _levelCard(
               context,
               level: 'C1',
@@ -107,6 +113,7 @@ class LearnPage extends StatelessWidget {
               color: const Color(0xFFE477A8),
             ),
 
+            // C2
             _levelCard(
               context,
               level: 'C2',
@@ -131,12 +138,15 @@ class LearnPage extends StatelessWidget {
     required IconData icon,
     required Color color,
     bool enabled = false,
+    String? buttonText,
   }) {
+    final isEnabled = enabled;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: InkWell(
         borderRadius: BorderRadius.circular(24),
-        onTap: enabled
+        onTap: isEnabled
             ? () {
                 Navigator.pushNamed(
                   context,
@@ -150,7 +160,7 @@ class LearnPage extends StatelessWidget {
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: color.withOpacity(0.14),
+              color: color.withAlpha(36),
             ),
           ),
           child: Row(
@@ -159,7 +169,7 @@ class LearnPage extends StatelessWidget {
                 width: 54,
                 height: 54,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.12),
+                  color: color.withAlpha(31),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -168,9 +178,7 @@ class LearnPage extends StatelessWidget {
                   size: 26,
                 ),
               ),
-
               const SizedBox(width: 14),
-
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,19 +194,18 @@ class LearnPage extends StatelessWidget {
                             ),
                           ),
                         ),
-
-                        if (enabled)
+                        if (isEnabled)
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 9,
                               vertical: 5,
                             ),
                             decoration: BoxDecoration(
-                              color: color.withOpacity(0.12),
+                              color: color.withAlpha(31),
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: Text(
-                              'START',
+                              buttonText ?? 'START',
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w800,
@@ -208,9 +215,7 @@ class LearnPage extends StatelessWidget {
                           ),
                       ],
                     ),
-
                     const SizedBox(height: 6),
-
                     Text(
                       description,
                       style: const TextStyle(
@@ -222,15 +227,13 @@ class LearnPage extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(width: 8),
-
               Icon(
-                enabled
+                isEnabled
                     ? Icons.arrow_forward_ios_rounded
                     : Icons.lock_outline_rounded,
                 size: 17,
-                color: enabled ? color : Colors.grey,
+                color: isEnabled ? color : Colors.grey,
               ),
             ],
           ),
