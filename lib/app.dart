@@ -13,6 +13,9 @@ import 'pages/settings_page.dart';
 final ValueNotifier<ThemeMode> appThemeMode =
     ValueNotifier<ThemeMode>(ThemeMode.system);
 
+final ValueNotifier<Locale> appLocale =
+    ValueNotifier<Locale>(const Locale('en'));
+
 class MeowApp extends StatelessWidget {
   const MeowApp({super.key});
 
@@ -20,12 +23,15 @@ class MeowApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: appThemeMode,
-      builder: (context, currentTheme, child) {
+    return ValueListenableBuilder2<ThemeMode, Locale>(
+      first: appThemeMode,
+      second: appLocale,
+      builder: (context, currentTheme, currentLocale, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Meow AI',
+
+          locale: currentLocale,
 
           theme: ThemeData(
             brightness: Brightness.light,
@@ -56,6 +62,16 @@ class MeowApp extends StatelessWidget {
 
           themeMode: currentTheme,
 
+          builder: (context, child) {
+            final isPersian = currentLocale.languageCode == 'fa';
+
+            return Directionality(
+              textDirection:
+                  isPersian ? TextDirection.rtl : TextDirection.ltr,
+              child: child ?? const SizedBox(),
+            );
+          },
+
           initialRoute: '/home',
 
           routes: {
@@ -68,6 +84,44 @@ class MeowApp extends StatelessWidget {
             '/profile': (context) => const ProfilePage(),
             '/progress': (context) => const ProgressPage(),
             '/settings': (context) => const SettingsPage(),
+          },
+        );
+      },
+    );
+  }
+}
+
+class ValueListenableBuilder2<A, B> extends StatelessWidget {
+  const ValueListenableBuilder2({
+    super.key,
+    required this.first,
+    required this.second,
+    required this.builder,
+  });
+
+  final ValueListenable<A> first;
+  final ValueListenable<B> second;
+  final Widget Function(
+    BuildContext context,
+    A firstValue,
+    B secondValue,
+    Widget? child,
+  ) builder;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<A>(
+      valueListenable: first,
+      builder: (context, firstValue, child) {
+        return ValueListenableBuilder<B>(
+          valueListenable: second,
+          builder: (context, secondValue, child) {
+            return builder(
+              context,
+              firstValue,
+              secondValue,
+              child,
+            );
           },
         );
       },
