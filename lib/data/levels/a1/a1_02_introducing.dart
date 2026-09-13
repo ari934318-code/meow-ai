@@ -474,4 +474,103 @@ const A1Lesson a1Lesson02 = A1Lesson(
       answer: 'I learn English.',
     ),
   ],
+
+  speakingQuestions: [
+    A1SpeakingQuestion(
+      question: 'What is your name?',
+      persian: 'اسمت چیه؟',
+      acceptableAnswers: [
+        'my name is sara',
+        'my name is ali',
+        'my name is anna',
+        'my name is',
+        'i am sara',
+        'i am ali',
+        'i am anna',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'How old are you?',
+      persian: 'چند سالته؟',
+      acceptableAnswers: [
+        'i am 18 years old',
+        'i am 19 years old',
+        'i am 20 years old',
+        'i am 21 years old',
+        'i am 22 years old',
+        'i am 23 years old',
+        'i am 24 years old',
+        'i am 25 years old',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where are you from?',
+      persian: 'اهل کجایی؟',
+      acceptableAnswers: [
+        'i am from iran',
+        'i am from japan',
+        'i am from china',
+        'i am from korea',
+        'i am from america',
+        'i am from the usa',
+        'i am from england',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Where do you live?',
+      persian: 'کجا زندگی می‌کنی؟',
+      acceptableAnswers: [
+        'i live in tokyo',
+        'i live in osaka',
+        'i live in kyoto',
+        'i live in tehran',
+        'i live in london',
+        'i live in new york',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What do you do?',
+      persian: 'چه کاره‌ای؟',
+      acceptableAnswers: [
+        'i am a student',
+        'i am a teacher',
+        'i am a doctor',
+        'i am a worker',
+        'i work at a school',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What is your hobby?',
+      persian: 'سرگرمی‌ات چیه؟',
+      acceptableAnswers: [
+        'my hobby is reading',
+        'my hobby is music',
+        'my hobby is drawing',
+        'my hobby is cooking',
+        'my hobby is gaming',
+        'i like reading',
+        'i like music',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'What language do you learn?',
+      persian: 'چه زبانی یاد می‌گیری؟',
+      acceptableAnswers: [
+        'i learn english',
+        'i am learning english',
+        'i learn english language',
+      ],
+    ),
+    A1SpeakingQuestion(
+      question: 'Introduce yourself in English.',
+      persian: 'خودت را به انگلیسی معرفی کن.',
+      acceptableAnswers: [
+        'my name is sara i am a student',
+        'my name is ali i am a student',
+        'my name is anna i am from iran',
+        'i am sara i am from iran',
+        'i am ali i live in tokyo',
+      ],
+    ),
+  ],
 );
