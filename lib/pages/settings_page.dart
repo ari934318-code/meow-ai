@@ -9,6 +9,9 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  static const Color lavender = Color(0xFFB9A7E8);
+
+  String appLanguage = 'English';
   String accent = 'American';
   String personality = 'Funny';
   String voice = 'Female';
@@ -22,72 +25,66 @@ class _SettingsPageState extends State<SettingsPage> {
   bool savedEnglish = true;
   bool voiceData = false;
 
-  static const Color lavender = Color(0xFFB9A7E8);
-
   @override
   Widget build(BuildContext context) {
-    final lang = MeowLocalizations.of(context);
-    final isPersian = lang.isPersian;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(lang.settings),
+        title: const Text(
+          'Settings ⚙️',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 30),
         children: [
-          _sectionTitle(isPersian ? 'عمومی' : 'General'),
+          _sectionTitle('General'),
 
-          _settingCard(
-            icon: Icons.language,
-            title: lang.appLanguage,
-            subtitle: isPersian ? 'فارسی' : 'English',
+          _settingTile(
+            icon: Icons.language_rounded,
+            title: 'App Language',
+            subtitle: appLanguage,
             onTap: _chooseLanguage,
           ),
 
-          _settingCard(
-            icon: Icons.public,
-            title: isPersian ? 'لهجه' : 'Accent',
+          _settingTile(
+            icon: Icons.record_voice_over_rounded,
+            title: 'Accent',
             subtitle: accent,
             onTap: _chooseAccent,
           ),
 
-          _settingCard(
-            icon: Icons.psychology,
-            title: isPersian ? 'شخصیت میو' : 'Meow Personality',
+          _settingTile(
+            icon: Icons.pets_rounded,
+            title: 'Meow Personality',
             subtitle: personality,
             onTap: _choosePersonality,
           ),
 
-          _settingCard(
-            icon: Icons.record_voice_over,
-            title: isPersian ? 'صدا' : 'Voice',
+          _settingTile(
+            icon: Icons.mic_rounded,
+            title: 'Voice',
             subtitle: voice,
             onTap: _chooseVoice,
           ),
 
-          _sectionTitle(isPersian ? 'یادگیری' : 'Learning'),
+          const SizedBox(height: 24),
 
-          _settingCard(
-            icon: Icons.flag,
-            title: isPersian ? 'هدف روزانه' : 'Daily Goal',
-            subtitle: '$dailyGoal ${isPersian ? 'دقیقه' : 'minutes'}',
+          _sectionTitle('Learning'),
+
+          _settingTile(
+            icon: Icons.flag_rounded,
+            title: 'Daily Goal',
+            subtitle: '$dailyGoal minutes',
             onTap: _chooseDailyGoal,
           ),
 
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            secondary: const Icon(Icons.notifications_outlined),
-            title: Text(
-              isPersian ? 'اعلان‌ها' : 'Notifications',
-            ),
-            subtitle: Text(
-              isPersian
-                  ? 'یادآوری برای تمرین روزانه'
-                  : 'Daily learning reminders',
-            ),
+          _switchTile(
+            icon: Icons.notifications_none_rounded,
+            title: 'Notifications',
+            subtitle: 'Daily learning reminders',
             value: notifications,
-            activeColor: lavender,
             onChanged: (value) {
               setState(() {
                 notifications = value;
@@ -95,23 +92,15 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
 
-          _sectionTitle(
-            isPersian ? 'حافظه و حریم خصوصی' : 'Memory & Privacy',
-          ),
+          const SizedBox(height: 24),
 
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            secondary: const Icon(Icons.memory),
-            title: Text(
-              isPersian ? 'حافظه یادگیری' : 'Learning Memory',
-            ),
-            subtitle: Text(
-              isPersian
-                  ? 'میو چیزهایی که درباره انگلیسی تو یاد می‌گیرد ذخیره می‌کند'
-                  : 'Meow remembers things about your English',
-            ),
+          _sectionTitle('Memory & Privacy'),
+
+          _switchTile(
+            icon: Icons.psychology_outlined,
+            title: 'Learning Memory',
+            subtitle: 'Let Meow remember your learning progress',
             value: learningMemory,
-            activeColor: lavender,
             onChanged: (value) {
               setState(() {
                 learningMemory = value;
@@ -119,16 +108,11 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
 
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            secondary: const Icon(Icons.chat_bubble_outline),
-            title: Text(
-              isPersian
-                  ? 'تاریخچه مکالمات'
-                  : 'Conversation History',
-            ),
+          _switchTile(
+            icon: Icons.history_rounded,
+            title: 'Conversation History',
+            subtitle: 'Keep your conversations with Meow',
             value: conversationHistory,
-            activeColor: lavender,
             onChanged: (value) {
               setState(() {
                 conversationHistory = value;
@@ -136,14 +120,11 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
 
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            secondary: const Icon(Icons.bookmark_outline),
-            title: Text(
-              isPersian ? 'انگلیسی‌های ذخیره‌شده' : 'Saved English',
-            ),
+          _switchTile(
+            icon: Icons.bookmark_outline_rounded,
+            title: 'Saved English',
+            subtitle: 'Save words and phrases you learn',
             value: savedEnglish,
-            activeColor: lavender,
             onChanged: (value) {
               setState(() {
                 savedEnglish = value;
@@ -151,19 +132,11 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
 
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            secondary: const Icon(Icons.mic_none),
-            title: Text(
-              isPersian ? 'داده‌های صوتی' : 'Voice Data',
-            ),
-            subtitle: Text(
-              isPersian
-                  ? 'ذخیره‌سازی صدای تمرین‌ها'
-                  : 'Store voice practice data',
-            ),
+          _switchTile(
+            icon: Icons.graphic_eq_rounded,
+            title: 'Voice Data',
+            subtitle: 'Allow voice data to be used for learning',
             value: voiceData,
-            activeColor: lavender,
             onChanged: (value) {
               setState(() {
                 voiceData = value;
@@ -171,24 +144,33 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
 
-          _sectionTitle(isPersian ? 'ظاهر' : 'Appearance'),
+          const SizedBox(height: 24),
 
-          _settingCard(
+          _sectionTitle('Appearance'),
+
+          _settingTile(
             icon: Icons.brightness_6_outlined,
-            title: isPersian ? 'تم' : 'Theme',
+            title: 'Theme',
             subtitle: theme,
             onTap: _chooseTheme,
           ),
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 24),
 
-          Text(
-            'Meow AI',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 13,
-            ),
+          _sectionTitle('About'),
+
+          _settingTile(
+            icon: Icons.info_outline_rounded,
+            title: 'About Meow AI',
+            subtitle: 'English learning with Meow',
+            onTap: () {
+              showAboutDialog(
+                context: context,
+                applicationName: 'Meow AI',
+                applicationVersion: '1.0.0',
+                applicationLegalese: 'Learn English with Meow 🐱',
+              );
+            },
           ),
         ],
       ),
@@ -197,54 +179,115 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _sectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 20,
-        bottom: 10,
-      ),
+      padding: const EdgeInsets.fromLTRB(4, 4, 4, 10),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.primary,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );
   }
 
-  Widget _settingCard({
+  Widget _settingTile({
     required IconData icon,
     required String title,
     required String subtitle,
     required VoidCallback onTap,
   }) {
     return Card(
+      elevation: 0,
+      margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
-        leading: Icon(icon),
-        title: Text(title),
-        subtitle: Text(subtitle),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 4,
+        ),
+        leading: Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: lavender.withOpacity(0.16),
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: Icon(
+            icon,
+            color: lavender,
+          ),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 3),
+          child: Text(subtitle),
+        ),
         trailing: const Icon(
-          Icons.arrow_forward_ios,
-          size: 16,
+          Icons.chevron_right_rounded,
         ),
         onTap: onTap,
       ),
     );
   }
 
-  void _chooseLanguage() {
-    final currentLanguage = appLocale.value.languageCode;
+  Widget _switchTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return Card(
+      elevation: 0,
+      margin: const EdgeInsets.only(bottom: 8),
+      child: SwitchListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 4,
+        ),
+        secondary: Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: lavender.withOpacity(0.16),
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: Icon(
+            icon,
+            color: lavender,
+          ),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 3),
+          child: Text(subtitle),
+        ),
+        value: value,
+        activeThumbColor: lavender,
+        onChanged: onChanged,
+      ),
+    );
+  }
 
+  void _chooseLanguage() {
     _showOptions(
       title: 'App Language',
-      options: const [
-        'English',
-        'فارسی',
-      ],
-      selected: currentLanguage == 'fa' ? 'فارسی' : 'English',
+      options: ['English', 'فارسی'],
+      current: appLanguage,
       onSelected: (value) {
-        appLocale.value = value == 'فارسی'
-            ? const Locale('fa')
-            : const Locale('en');
+        setState(() {
+          appLanguage = value;
+        });
       },
     );
   }
@@ -252,11 +295,8 @@ class _SettingsPageState extends State<SettingsPage> {
   void _chooseAccent() {
     _showOptions(
       title: 'Accent',
-      options: const [
-        'American',
-        'British',
-      ],
-      selected: accent,
+      options: ['American', 'British'],
+      current: accent,
       onSelected: (value) {
         setState(() {
           accent = value;
@@ -268,11 +308,8 @@ class _SettingsPageState extends State<SettingsPage> {
   void _choosePersonality() {
     _showOptions(
       title: 'Meow Personality',
-      options: const [
-        'Funny',
-        'Serious',
-      ],
-      selected: personality,
+      options: ['Funny', 'Serious'],
+      current: personality,
       onSelected: (value) {
         setState(() {
           personality = value;
@@ -284,11 +321,8 @@ class _SettingsPageState extends State<SettingsPage> {
   void _chooseVoice() {
     _showOptions(
       title: 'Voice',
-      options: const [
-        'Female',
-        'Male',
-      ],
-      selected: voice,
+      options: ['Female', 'Male'],
+      current: voice,
       onSelected: (value) {
         setState(() {
           voice = value;
@@ -300,16 +334,11 @@ class _SettingsPageState extends State<SettingsPage> {
   void _chooseDailyGoal() {
     _showOptions(
       title: 'Daily Goal',
-      options: const [
-        '10',
-        '20',
-        '30',
-        '45',
-      ],
-      selected: dailyGoal.toString(),
+      options: ['10', '20', '30', '45'],
+      current: dailyGoal.toString(),
       onSelected: (value) {
         setState(() {
-          dailyGoal = int.tryParse(value) ?? 20;
+          dailyGoal = int.parse(value);
         });
       },
     );
@@ -318,24 +347,20 @@ class _SettingsPageState extends State<SettingsPage> {
   void _chooseTheme() {
     _showOptions(
       title: 'Theme',
-      options: const [
-        'System',
-        'Light',
-        'Dark',
-      ],
-      selected: theme,
+      options: ['System', 'Light', 'Dark'],
+      current: theme,
       onSelected: (value) {
         setState(() {
           theme = value;
-
-          if (value == 'Light') {
-            appThemeMode.value = ThemeMode.light;
-          } else if (value == 'Dark') {
-            appThemeMode.value = ThemeMode.dark;
-          } else {
-            appThemeMode.value = ThemeMode.system;
-          }
         });
+
+        if (value == 'Light') {
+          appThemeMode.value = ThemeMode.light;
+        } else if (value == 'Dark') {
+          appThemeMode.value = ThemeMode.dark;
+        } else {
+          appThemeMode.value = ThemeMode.system;
+        }
       },
     );
   }
@@ -343,41 +368,52 @@ class _SettingsPageState extends State<SettingsPage> {
   void _showOptions({
     required String title,
     required List<String> options,
-    required String selected,
+    required String current,
     required ValueChanged<String> onSelected,
   }) {
     showModalBottomSheet(
       context: context,
-      builder: (sheetContext) {
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      showDragHandle: true,
+      builder: (context) {
         return SafeArea(
-          child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(20),
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 15),
+                const SizedBox(height: 12),
+                ...options.map(
+                  (option) {
+                    final selected = option == current;
 
-              ...options.map(
-                (option) => RadioListTile<String>(
-                  title: Text(option),
-                  value: option,
-                  groupValue: selected,
-                  activeColor: lavender,
-                  onChanged: (value) {
-                    if (value == null) return;
-
-                    onSelected(value);
-                    Navigator.pop(sheetContext);
+                    return ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      title: Text(option),
+                      trailing: selected
+                          ? const Icon(
+                              Icons.check_rounded,
+                              color: lavender,
+                            )
+                          : null,
+                      onTap: () {
+                        onSelected(option);
+                        Navigator.pop(context);
+                      },
+                    );
                   },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
