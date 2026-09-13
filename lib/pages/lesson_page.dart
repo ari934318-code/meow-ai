@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -81,7 +80,6 @@ class _LessonPageState extends State<LessonPage> {
   @override
   void dispose() {
     _tts.stop();
-    _tts.shutdown();
     _pageController.dispose();
     super.dispose();
   }
@@ -256,9 +254,7 @@ class _LessonPageState extends State<LessonPage> {
             letterSpacing: -0.8,
           ),
         ),
-
         const SizedBox(height: 6),
-
         Text(
           lessonDescription,
           style: const TextStyle(
@@ -267,16 +263,12 @@ class _LessonPageState extends State<LessonPage> {
             height: 1.4,
           ),
         ),
-
         const SizedBox(height: 20),
-
         _buildLessonInfoCard(
           context,
           lang,
         ),
-
         const SizedBox(height: 22),
-
         if (sections.isNotEmpty) ...[
           _buildSectionProgress(
             context,
@@ -284,9 +276,7 @@ class _LessonPageState extends State<LessonPage> {
             lessonLang,
             sections,
           ),
-
           const SizedBox(height: 12),
-
           SizedBox(
             height: 455,
             child: PageView.builder(
@@ -312,23 +302,18 @@ class _LessonPageState extends State<LessonPage> {
               },
             ),
           ),
-
           const SizedBox(height: 8),
-
           _buildSectionNavigation(
             context,
             lang,
             sections.length,
           ),
-
           const SizedBox(height: 20),
         ],
-
         _buildStartPracticeButton(
           context,
           lang,
         ),
-
         const SizedBox(height: 20),
       ],
     );
@@ -369,9 +354,7 @@ class _LessonPageState extends State<LessonPage> {
               size: 20,
             ),
           ),
-
           const SizedBox(width: 11),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,7 +381,6 @@ class _LessonPageState extends State<LessonPage> {
               ],
             ),
           ),
-
           Row(
             children: List.generate(
               sections.length,
@@ -467,9 +449,7 @@ class _LessonPageState extends State<LessonPage> {
             ),
           ),
         ),
-
         const SizedBox(width: 12),
-
         Expanded(
           child: FilledButton.icon(
             onPressed: isLast ? null : nextSection,
@@ -642,9 +622,7 @@ class _LessonPageState extends State<LessonPage> {
                   size: 25,
                 ),
               ),
-
               const SizedBox(width: 14),
-
               Expanded(
                 child: Text(
                   lessonLang.sectionTitle(section.title),
@@ -656,7 +634,6 @@ class _LessonPageState extends State<LessonPage> {
               ),
             ],
           ),
-
           if (section.explanation.isNotEmpty) ...[
             const SizedBox(height: 14),
             Text(
@@ -670,10 +647,8 @@ class _LessonPageState extends State<LessonPage> {
               ),
             ),
           ],
-
           if (section.items.isNotEmpty) ...[
             const SizedBox(height: 15),
-
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.zero,
@@ -700,30 +675,23 @@ class _LessonPageState extends State<LessonPage> {
       case 'numbers':
       case 'vocabulary review':
         return Icons.menu_book_rounded;
-
       case 'phrases':
       case 'useful phrases':
         return Icons.chat_bubble_outline_rounded;
-
       case 'grammar':
       case 'grammar review':
         return Icons.school_rounded;
-
       case 'examples':
       case 'real-life examples':
         return Icons.public_rounded;
-
       case 'practice':
       case 'final practice':
         return Icons.edit_rounded;
-
       case 'speaking':
       case 'mini conversation':
         return Icons.mic_rounded;
-
       case 'review':
         return Icons.refresh_rounded;
-
       default:
         return Icons.auto_stories_rounded;
     }
@@ -761,9 +729,7 @@ class _LessonPageState extends State<LessonPage> {
                   ),
                 ),
               ),
-
               const SizedBox(width: 8),
-
               Material(
                 color: lavender.withOpacity(0.12),
                 shape: const CircleBorder(),
@@ -781,9 +747,7 @@ class _LessonPageState extends State<LessonPage> {
               ),
             ],
           ),
-
           const SizedBox(height: 4),
-
           Text(
             item.persian,
             style: const TextStyle(
@@ -791,7 +755,6 @@ class _LessonPageState extends State<LessonPage> {
               color: Colors.grey,
             ),
           ),
-
           if (item.pronunciation.isNotEmpty) ...[
             const SizedBox(height: 9),
             Row(
@@ -813,7 +776,6 @@ class _LessonPageState extends State<LessonPage> {
               ],
             ),
           ],
-
           if (item.example.isNotEmpty) ...[
             const SizedBox(height: 9),
             Container(
@@ -911,9 +873,7 @@ class _LessonPageState extends State<LessonPage> {
             ],
           ),
         ),
-
         const SizedBox(height: 20),
-
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -932,9 +892,7 @@ class _LessonPageState extends State<LessonPage> {
             ),
           ),
         ),
-
         const SizedBox(height: 16),
-
         ...List.generate(
           answers.length,
           (index) {
@@ -988,10 +946,8 @@ class _LessonPageState extends State<LessonPage> {
             );
           },
         ),
-
         if (answered) ...[
           const SizedBox(height: 4),
-
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -1015,9 +971,7 @@ class _LessonPageState extends State<LessonPage> {
               textAlign: TextAlign.center,
             ),
           ),
-
           const SizedBox(height: 14),
-
           SizedBox(
             width: double.infinity,
             child: FilledButton(
