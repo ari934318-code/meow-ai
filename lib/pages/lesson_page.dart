@@ -39,9 +39,14 @@ class _LessonPageState extends State<LessonPage> {
   int currentSection = 0;
 
   bool speechAvailable = false;
-  bool isListening = false;
-  String recognizedText = '';
-  String speechResultMessage = '';
+
+  // فقط یک Speech-to-Text می‌تواند همزمان فعال باشد.
+  LessonQuestion? _activeSpeechQuestion;
+
+  // وضعیت Speaking هر سؤال جداگانه نگهداری می‌شود.
+  final Map<LessonQuestion, bool> _isListeningByQuestion = {};
+  final Map<LessonQuestion, String> _recognizedTextByQuestion = {};
+  final Map<LessonQuestion, String> _speechMessageByQuestion = {};
 
   final Map<LessonQuestion, int> _sectionAnswers = {};
 
@@ -52,7 +57,6 @@ class _LessonPageState extends State<LessonPage> {
   final Map<LessonQuestion, int> _shuffledCorrectIndex = {};
 
   // سؤال‌های Speaking که قبلاً با موفقیت پاسخ داده شده‌اند.
-  // این باعث می‌شود یک سؤال چند بار در آمار حساب نشود.
   final Set<LessonQuestion> _completedSpeakingQuestions = {};
 
   List<LessonQuestion> get multipleChoiceQuestions {
@@ -73,6 +77,7 @@ class _LessonPageState extends State<LessonPage> {
   @override
   void initState() {
     super.initState();
+
     _shuffleAllQuestionOptions();
     _setupTts();
     _setupSpeech();
@@ -140,18 +145,31 @@ class _LessonPageState extends State<LessonPage> {
           if (!mounted) return;
 
           if (status == 'done' || status == 'notListening') {
-            setState(() {
-              isListening = false;
-            });
+            final activeQuestion = _activeSpeechQuestion;
+
+            if (activeQuestion != null) {
+              setState(() {
+                _isListeningByQuestion[activeQuestion] = false;
+              });
+            }
+
+            _activeSpeechQuestion = null;
           }
         },
         onError: (error) {
           if (!mounted) return;
 
-          setState(() {
-            isListening = false;
-            speechResultMessage = 'Speech recognition error.';
-          });
+          final activeQuestion = _activeSpeechQuestion;
+
+          if (activeQuestion != null) {
+            setState(() {
+              _isListeningByQuestion[activeQuestion] = false;
+              _speechMessageByQuestion[activeQuestion] =
+                  'Speech recognition error.';
+            });
+          }
+
+          _activeSpeechQuestion = null;
         },
       );
 
@@ -189,19 +207,38 @@ class _LessonPageState extends State<LessonPage> {
       if (!mounted) return;
 
       setState(() {
-        speechResultMessage =
+        _speechMessageByQuestion[question] =
             'Speech recognition is not available on this device.';
       });
 
       return;
     }
 
+    // اگر سؤال دیگری در حال گوش دادن است، همان را متوقف می‌کنیم.
+    if (_activeSpeechQuestion != null &&
+        _activeSpeechQuestion != question) {
+      final previousQuestion = _activeSpeechQuestion;
+
+      await _speech.stop();
+
+      if (mounted && previousQuestion != null) {
+        setState(() {
+          _isListeningByQuestion[previousQuestion] = false;
+        });
+      }
+    }
+
+    // قبل از شروع ضبط، صدای TTS قطع می‌شود.
     await _tts.stop();
 
+    _activeSpeechQuestion = question;
+
+    if (!mounted) return;
+
     setState(() {
-      isListening = true;
-      recognizedText = '';
-      speechResultMessage = '';
+      _isListeningByQuestion[question] = true;
+      _recognizedTextByQuestion[question] = '';
+      _speechMessageByQuestion[question] = '';
     });
 
     await _speech.listen(
@@ -209,7 +246,8 @@ class _LessonPageState extends State<LessonPage> {
         if (!mounted) return;
 
         setState(() {
-          recognizedText = result.recognizedWords;
+          _recognizedTextByQuestion[question] =
+              result.recognizedWords;
         });
 
         if (result.finalResult) {
@@ -228,26 +266,33 @@ class _LessonPageState extends State<LessonPage> {
   Future<void> _stopListening(LessonQuestion question) async {
     await _speech.stop();
 
+    if (_activeSpeechQuestion == question) {
+      _activeSpeechQuestion = null;
+    }
+
     if (!mounted) return;
 
     setState(() {
-      isListening = false;
+      _isListeningByQuestion[question] = false;
     });
 
-    _checkSpeechAnswer(question);
+    await _checkSpeechAnswer(question);
   }
 
   Future<void> _checkSpeechAnswer(
     LessonQuestion question,
   ) async {
-    final spoken = _normalizeSpeech(recognizedText);
-    final target = _normalizeSpeech(question.correctAnswer);
+    final spoken =
+        _normalizeSpeech(_recognizedTextByQuestion[question] ?? '');
+
+    final target =
+        _normalizeSpeech(question.correctAnswer);
 
     if (spoken.isEmpty || target.isEmpty) {
       if (!mounted) return;
 
       setState(() {
-        speechResultMessage =
+        _speechMessageByQuestion[question] =
             'I could not understand your answer. Try again.';
       });
 
@@ -259,11 +304,15 @@ class _LessonPageState extends State<LessonPage> {
     if (similarity >= 0.78) {
       if (mounted) {
         setState(() {
-          speechResultMessage = 'Correct! 🎉';
+          _speechMessageByQuestion[question] =
+              'Correct! 🎉';
         });
       }
 
-      // این سؤال فقط یک بار در Speaking Sessions ثبت می‌شود.
+      // میو بعد از جواب درست با صدا می‌گوید Correct.
+      await _speak('Correct!');
+
+      // هر سؤال فقط یک بار در Speaking Sessions ثبت می‌شود.
       if (!_completedSpeakingQuestions.contains(question)) {
         _completedSpeakingQuestions.add(question);
 
@@ -273,7 +322,7 @@ class _LessonPageState extends State<LessonPage> {
       if (!mounted) return;
 
       setState(() {
-        speechResultMessage =
+        _speechMessageByQuestion[question] =
             'Not quite. Try again and listen carefully.';
       });
     }
@@ -319,7 +368,6 @@ class _LessonPageState extends State<LessonPage> {
       return;
     }
 
-    // هر بار شروع Practice ترتیب گزینه‌ها دوباره تصادفی می‌شود.
     for (final question in multipleChoiceQuestions) {
       _createShuffledOptions(question);
     }
@@ -336,8 +384,11 @@ class _LessonPageState extends State<LessonPage> {
   void selectAnswer(int index) {
     if (answered) return;
 
-    final question = multipleChoiceQuestions[currentQuestion];
-    final correctIndex = _correctIndexFor(question);
+    final question =
+        multipleChoiceQuestions[currentQuestion];
+
+    final correctIndex =
+        _correctIndexFor(question);
 
     setState(() {
       selectedAnswer = index;
@@ -425,10 +476,8 @@ class _LessonPageState extends State<LessonPage> {
               ),
             ),
             onPressed: () async {
-              // این Practice یک جلسه تمرین واقعی محسوب می‌شود.
               await ProgressService.addPracticeSession();
 
-              // تکمیل درس همچنان XP و completion را مدیریت می‌کند.
               await A1ProgressService.completeLesson(
                 widget.lesson.id,
               );
@@ -1306,6 +1355,15 @@ class _LessonPageState extends State<LessonPage> {
     MeowLocalizations lang, {
     required bool readAloud,
   }) {
+    final isListening =
+        _isListeningByQuestion[question] ?? false;
+
+    final recognizedText =
+        _recognizedTextByQuestion[question] ?? '';
+
+    final speechResultMessage =
+        _speechMessageByQuestion[question] ?? '';
+
     return Container(
       margin:
           const EdgeInsets.only(bottom: 12),
@@ -1394,14 +1452,13 @@ class _LessonPageState extends State<LessonPage> {
               const SizedBox(width: 10),
               Expanded(
                 child: FilledButton.icon(
-                  onPressed:
-                      isListening
-                          ? () => _stopListening(
-                                question,
-                              )
-                          : () => _startListening(
-                                question,
-                              ),
+                  onPressed: isListening
+                      ? () => _stopListening(
+                            question,
+                          )
+                      : () => _startListening(
+                            question,
+                          ),
                   icon: Icon(
                     isListening
                         ? Icons.stop_rounded
