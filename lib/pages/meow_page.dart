@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -11,29 +12,41 @@ class MeowPage extends StatefulWidget {
   State<MeowPage> createState() => _MeowPageState();
 }
 
+enum MeowMood {
+  calm,
+  happy,
+  surprised,
+  angry,
+  cheering,
+}
+
 class _MeowPageState extends State<MeowPage> {
   static const Color lavender = Color(0xFFB9A7E8);
 
   final TextEditingController _controller = TextEditingController();
 
   final stt.SpeechToText _speech = stt.SpeechToText();
+  final ImagePicker _imagePicker = ImagePicker();
 
   bool _speechEnabled = false;
   bool _isListening = false;
 
   String _recognizedText = '';
 
-  // جمله‌ای که فعلاً برای تمرین گفتاری استفاده می‌شود.
-  String _practiceSentence = 'I’d like a drink, please.';
+  String _practiceSentence = "I'd like a drink, please.";
+
+  MeowMood _mood = MeowMood.calm;
+
+  XFile? _homeworkImage;
 
   final List<Map<String, String>> messages = [
     {
       'sender': 'meow',
-      'text': 'Hi! I am Meow 🐱',
+      'text': 'Hi! I am Meow 😼',
     },
     {
       'sender': 'meow',
-      'text': 'Let’s practice English together!',
+      'text': "Let's practice English together!",
     },
   ];
 
@@ -41,6 +54,60 @@ class _MeowPageState extends State<MeowPage> {
   void initState() {
     super.initState();
     _initializeSpeech();
+  }
+
+  String get _moodAsset {
+    switch (_mood) {
+      case MeowMood.calm:
+        return 'assets/images/meow_calm.png';
+
+      case MeowMood.happy:
+        return 'assets/images/meow_happy.png';
+
+      case MeowMood.surprised:
+        return 'assets/images/meow_surprised.png';
+
+      case MeowMood.angry:
+        return 'assets/images/meow_angry.png';
+
+      case MeowMood.cheering:
+        return 'assets/images/meow_cheering.png';
+    }
+  }
+
+  String _statusText(MeowLocalizations lang) {
+    if (_isListening) {
+      return lang.isPersian
+          ? 'دارم گوش می‌دم...'
+          : 'Listening...';
+    }
+
+    switch (_mood) {
+      case MeowMood.calm:
+        return lang.isPersian
+            ? 'آماده‌ام باهات حرف بزنم'
+            : 'Ready to talk';
+
+      case MeowMood.happy:
+        return lang.isPersian
+            ? 'آفرین! 😺'
+            : 'Good job!';
+
+      case MeowMood.surprised:
+        return lang.isPersian
+            ? 'هوم... دوباره امتحان کن!'
+            : 'Hmm... try again!';
+
+      case MeowMood.angry:
+        return lang.isPersian
+            ? 'بجنب، می‌تونی! 😾'
+            : 'Come on, you can do it!';
+
+      case MeowMood.cheering:
+        return lang.isPersian
+            ? 'عالی بود! 😻'
+            : 'Excellent!';
+    }
   }
 
   Future<void> _initializeSpeech() async {
@@ -51,6 +118,7 @@ class _MeowPageState extends State<MeowPage> {
 
         setState(() {
           _isListening = false;
+          _mood = MeowMood.surprised;
         });
       },
     );
@@ -67,6 +135,10 @@ class _MeowPageState extends State<MeowPage> {
 
     setState(() {
       _isListening = status == 'listening';
+
+      if (_isListening) {
+        _mood = MeowMood.calm;
+      }
     });
   }
 
@@ -84,18 +156,16 @@ class _MeowPageState extends State<MeowPage> {
     }
 
     if (!_speechEnabled) {
-      if (!mounted) return;
-
       _showMessage(
         'Speech recognition is not available on this device.',
       );
-
       return;
     }
 
     setState(() {
       _recognizedText = '';
       _isListening = true;
+      _mood = MeowMood.calm;
     });
 
     await _speech.listen(
@@ -119,11 +189,24 @@ class _MeowPageState extends State<MeowPage> {
     _checkSpeakingResult();
   }
 
+  void _toggleListening() {
+    if (_isListening) {
+      _stopListening();
+    } else {
+      _startListening();
+    }
+  }
+
   void _checkSpeakingResult() {
     if (_recognizedText.trim().isEmpty) {
+      setState(() {
+        _mood = MeowMood.surprised;
+      });
+
       _showMessage(
         'I could not hear you. Try speaking again. 🎤',
       );
+
       return;
     }
 
@@ -154,13 +237,29 @@ class _MeowPageState extends State<MeowPage> {
     String resultMessage;
 
     if (score >= 90) {
-      resultMessage = 'Excellent! 😻 Your sentence was very close!';
+      resultMessage = 'Excellent! 😻 Your sentence was very close.';
+
+      setState(() {
+        _mood = MeowMood.cheering;
+      });
     } else if (score >= 70) {
       resultMessage = 'Good job! 😺 A little more practice!';
+
+      setState(() {
+        _mood = MeowMood.happy;
+      });
     } else if (score >= 40) {
       resultMessage = 'Keep practicing! 🐱 Try the sentence again.';
+
+      setState(() {
+        _mood = MeowMood.surprised;
+      });
     } else {
-      resultMessage = 'Let’s try again together. 💜';
+      resultMessage = "Let's try again together. 💜";
+
+      setState(() {
+        _mood = MeowMood.angry;
+      });
     }
 
     if (!mounted) return;
@@ -235,7 +334,7 @@ class _MeowPageState extends State<MeowPage> {
         .trim();
   }
 
-  void _sendMessage() {
+  void _sendText() {
     final text = _controller.text.trim();
 
     if (text.isEmpty) return;
@@ -250,9 +349,169 @@ class _MeowPageState extends State<MeowPage> {
         'sender': 'meow',
         'text': 'Nice! Let’s keep practicing 😺',
       });
+
+      _mood = MeowMood.happy;
     });
 
     _controller.clear();
+  }
+
+  Future<void> _openHomeworkPicker() async {
+    final lang = MeowLocalizations.of(context);
+
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        final theme = Theme.of(context);
+        final colors = theme.colorScheme;
+
+        return Container(
+          padding: const EdgeInsets.fromLTRB(
+            20,
+            18,
+            20,
+            28,
+          ),
+          decoration: BoxDecoration(
+            color: colors.surface,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(28),
+            ),
+          ),
+          child: SafeArea(
+            top: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 42,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: colors.onSurface.withValues(
+                      alpha: 0.15,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  lang.isPersian
+                      ? 'عکس تکلیف را اضافه کن'
+                      : 'Add homework photo',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: lavender,
+                    child: Icon(
+                      Icons.camera_alt_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+                  title: Text(
+                    lang.isPersian
+                        ? 'دوربین'
+                        : 'Camera',
+                  ),
+                  subtitle: Text(
+                    lang.isPersian
+                        ? 'یک عکس جدید بگیر'
+                        : 'Take a new photo',
+                  ),
+                  onTap: () {
+                    Navigator.pop(
+                      context,
+                      ImageSource.camera,
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const CircleAvatar(
+                    backgroundColor: lavender,
+                    child: Icon(
+                      Icons.photo_library_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+                  title: Text(
+                    lang.isPersian
+                        ? 'گالری'
+                        : 'Gallery',
+                  ),
+                  subtitle: Text(
+                    lang.isPersian
+                        ? 'یک عکس از گوشی انتخاب کن'
+                        : 'Choose a photo from your phone',
+                  ),
+                  onTap: () {
+                    Navigator.pop(
+                      context,
+                      ImageSource.gallery,
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (source == null) return;
+
+    await _pickHomeworkImage(source);
+  }
+
+  Future<void> _pickHomeworkImage(
+    ImageSource source,
+  ) async {
+    try {
+      final image = await _imagePicker.pickImage(
+        source: source,
+        imageQuality: 85,
+        maxWidth: 1600,
+      );
+
+      if (image == null) return;
+
+      if (!mounted) return;
+
+      setState(() {
+        _homeworkImage = image;
+        _mood = MeowMood.happy;
+      });
+
+      final lang = MeowLocalizations.of(context);
+
+      setState(() {
+        messages.add({
+          'sender': 'meow',
+          'text': lang.isPersian
+              ? 'عکس تکلیفت دریافت شد 📸😼'
+              : 'I received your homework photo 📸😼',
+        });
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        _mood = MeowMood.surprised;
+      });
+
+      _showMessage(
+        'Could not select the image.',
+      );
+    }
+  }
+
+  void _removeHomeworkImage() {
+    setState(() {
+      _homeworkImage = null;
+    });
   }
 
   void _showMessage(String text) {
@@ -269,53 +528,60 @@ class _MeowPageState extends State<MeowPage> {
   @override
   Widget build(BuildContext context) {
     final lang = MeowLocalizations.of(context);
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
+
+    final cardColor = isDark
+        ? Color.alphaBlend(
+            Colors.white.withValues(alpha: 0.045),
+            colors.surface,
+          )
+        : colors.surface;
 
     return Scaffold(
-      backgroundColor:
-          Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: colors.surface,
       appBar: AppBar(
+        backgroundColor: colors.surface,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+          ),
+          onPressed: () {
+            Navigator.of(context).maybePop();
+          },
+        ),
         title: Text(
           lang.meow,
-          style: const TextStyle(
+          style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w700,
-            letterSpacing: -0.3,
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: lavender.withOpacity(0.12),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.auto_awesome_rounded,
-                color: lavender,
-                size: 20,
-              ),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
+        top: false,
         child: Column(
           children: [
             Expanded(
               child: ListView(
+                physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(
                   20,
-                  8,
+                  12,
                   20,
-                  20,
+                  24,
                 ),
                 children: [
-                  _meowHeader(context, lang),
+                  _meowTopCard(
+                    context,
+                    cardColor,
+                    lang,
+                  ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   ...messages.map((message) {
                     final isUser =
@@ -325,55 +591,84 @@ class _MeowPageState extends State<MeowPage> {
                       context,
                       message['text']!,
                       isUser,
+                      cardColor,
                     );
                   }),
 
-                  const SizedBox(height: 20),
+                  if (_homeworkImage != null) ...[
+                    const SizedBox(height: 10),
+                    _homeworkPreview(
+                      context,
+                      cardColor,
+                      lang,
+                    ),
+                  ],
+
+                  const SizedBox(height: 28),
+
+                  _liveMeow(
+                    context,
+                    lang,
+                  ),
+
+                  const SizedBox(height: 30),
 
                   _speakingPracticeCard(
                     context,
                     lang,
+                    cardColor,
                   ),
                 ],
               ),
             ),
-            _inputArea(context, lang),
+
+            _messageInput(
+              context,
+              lang,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _meowHeader(
+  Widget _meowTopCard(
     BuildContext context,
+    Color cardColor,
     MeowLocalizations lang,
   ) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
     return Container(
-      padding: const EdgeInsets.all(20),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 17,
+        vertical: 15,
+      ),
       decoration: BoxDecoration(
-        color: lavender.withOpacity(0.10),
-        borderRadius: BorderRadius.circular(26),
+        color: cardColor,
+        borderRadius: BorderRadius.circular(23),
         border: Border.all(
-          color: lavender.withOpacity(0.14),
+          color: lavender.withValues(alpha: 0.13),
         ),
       ),
       child: Row(
         children: [
           Container(
-            width: 62,
-            height: 62,
+            width: 42,
+            height: 42,
             decoration: BoxDecoration(
-              color: lavender.withOpacity(0.16),
               shape: BoxShape.circle,
+              color: lavender.withValues(alpha: 0.11),
             ),
-            child: const Center(
-              child: Text(
-                '🐱',
-                style: TextStyle(fontSize: 31),
-              ),
+            child: const Icon(
+              Icons.auto_awesome_rounded,
+              color: lavender,
+              size: 21,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment:
@@ -381,25 +676,34 @@ class _MeowPageState extends State<MeowPage> {
               children: [
                 Text(
                   lang.isPersian
-                      ? 'میو اینجاست 😼'
-                      : 'Meow is here 😼',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                      ? 'میو آماده است'
+                      : 'Meow is ready',
+                  style:
+                      theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 3),
                 Text(
                   lang.isPersian
-                      ? 'با میو انگلیسی تمرین کن'
-                      : 'Practice English with Meow',
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey,
-                    height: 1.35,
+                      ? 'طبیعی انگلیسی تمرین کن'
+                      : 'Practice speaking naturally',
+                  style:
+                      theme.textTheme.bodySmall?.copyWith(
+                    color: colors.onSurface.withValues(
+                      alpha: 0.55,
+                    ),
                   ),
                 ),
               ],
+            ),
+          ),
+          Container(
+            width: 9,
+            height: 9,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.green,
             ),
           ),
         ],
@@ -411,64 +715,199 @@ class _MeowPageState extends State<MeowPage> {
     BuildContext context,
     String text,
     bool isUser,
+    Color cardColor,
   ) {
+    final theme = Theme.of(context);
+
     return Align(
       alignment:
           isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
+        constraints: const BoxConstraints(
+          maxWidth: 320,
+        ),
+        margin: const EdgeInsets.only(bottom: 9),
         padding: const EdgeInsets.symmetric(
           horizontal: 16,
-          vertical: 13,
-        ),
-        constraints: const BoxConstraints(
-          maxWidth: 310,
+          vertical: 11,
         ),
         decoration: BoxDecoration(
-          color: isUser
-              ? lavender
-              : Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(20),
-            topRight: const Radius.circular(20),
-            bottomLeft:
-                Radius.circular(isUser ? 20 : 6),
-            bottomRight:
-                Radius.circular(isUser ? 6 : 20),
-          ),
+          color: isUser ? lavender : cardColor,
+          borderRadius: BorderRadius.circular(18),
           border: isUser
               ? null
               : Border.all(
-                  color: Colors.grey.withOpacity(0.14),
+                  color: theme.colorScheme.onSurface
+                      .withValues(alpha: 0.065),
                 ),
         ),
         child: Text(
           text,
-          style: TextStyle(
-            fontSize: 15,
-            height: 1.4,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w500,
             color: isUser
                 ? Colors.white
-                : Theme.of(context)
-                    .colorScheme
-                    .onSurface,
+                : theme.colorScheme.onSurface,
           ),
         ),
       ),
     );
   }
 
-  Widget _speakingPracticeCard(
+  Widget _liveMeow(
     BuildContext context,
     MeowLocalizations lang,
   ) {
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        AnimatedScale(
+          scale: _isListening ? 1.06 : 1.0,
+          duration: const Duration(
+            milliseconds: 300,
+          ),
+          curve: Curves.easeOut,
+          child: AnimatedContainer(
+            duration: const Duration(
+              milliseconds: 300,
+            ),
+            width: 190,
+            height: 190,
+            padding: const EdgeInsets.all(13),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: lavender.withValues(
+                alpha: _isListening ? 0.14 : 0.075,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: lavender.withValues(
+                    alpha: _isListening ? 0.22 : 0.08,
+                  ),
+                  blurRadius:
+                      _isListening ? 38 : 22,
+                  spreadRadius:
+                      _isListening ? 5 : 0,
+                ),
+              ],
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                _moodAsset,
+                fit: BoxFit.cover,
+                errorBuilder: (
+                  context,
+                  error,
+                  stackTrace,
+                ) {
+                  return const Icon(
+                    Icons.pets_rounded,
+                    color: lavender,
+                    size: 72,
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 18),
+
+        AnimatedSwitcher(
+          duration: const Duration(
+            milliseconds: 220,
+          ),
+          child: Text(
+            _statusText(lang),
+            key: ValueKey(
+              _statusText(lang),
+            ),
+            style:
+                theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 5),
+
+        Text(
+          _isListening
+              ? (lang.isPersian
+                  ? 'واضح انگلیسی صحبت کن'
+                  : 'Speak clearly in English')
+              : (lang.isPersian
+                  ? 'برای صحبت روی میکروفون بزن'
+                  : 'Tap the microphone to talk'),
+          textAlign: TextAlign.center,
+          style:
+              theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onSurface
+                .withValues(alpha: 0.55),
+          ),
+        ),
+
+        const SizedBox(height: 18),
+
+        GestureDetector(
+          onTap: _toggleListening,
+          child: AnimatedContainer(
+            duration: const Duration(
+              milliseconds: 250,
+            ),
+            width: 68,
+            height: 68,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: lavender,
+              boxShadow: [
+                BoxShadow(
+                  color: lavender.withValues(
+                    alpha:
+                        _isListening ? 0.35 : 0.18,
+                  ),
+                  blurRadius:
+                      _isListening ? 28 : 17,
+                  spreadRadius:
+                      _isListening ? 3 : 0,
+                ),
+              ],
+            ),
+            child: Icon(
+              _isListening
+                  ? Icons.stop_rounded
+                  : Icons.mic_rounded,
+              color: Colors.white,
+              size: 29,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _speakingPracticeCard(
+    BuildContext context,
+    MeowLocalizations lang,
+    Color cardColor,
+  ) {
+    final theme = Theme.of(context);
+
     return Container(
-      padding: const EdgeInsets.all(18),
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(
+        18,
+        17,
+        18,
+        17,
+      ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        color: cardColor,
+        borderRadius: BorderRadius.circular(23),
         border: Border.all(
-          color: lavender.withOpacity(0.18),
+          color: theme.colorScheme.onSurface
+              .withValues(alpha: 0.065),
         ),
       ),
       child: Column(
@@ -480,69 +919,81 @@ class _MeowPageState extends State<MeowPage> {
               const Icon(
                 Icons.record_voice_over_rounded,
                 color: lavender,
+                size: 21,
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 9),
               Text(
                 lang.isPersian
-                    ? 'تمرین صحبت کردن'
-                    : 'Speaking Practice',
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
+                    ? 'تمرین سریع صحبت کردن'
+                    : 'Quick speaking practice',
+                style:
+                    theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 13),
 
           Text(
             lang.isPersian
-                ? 'این جمله را با صدای بلند بگو:'
-                : 'Say this sentence out loud:',
-            style: const TextStyle(
-              color: Colors.grey,
-              fontSize: 13,
+                ? 'این جمله را بگو:'
+                : 'Try saying:',
+            style:
+                theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface
+                  .withValues(alpha: 0.55),
             ),
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 5),
 
           Text(
             _practiceSentence,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              height: 1.4,
+            style:
+                theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w800,
             ),
           ),
 
-          const SizedBox(height: 18),
+          const SizedBox(height: 14),
 
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: _isListening
-                      ? _stopListening
-                      : _startListening,
-                  icon: Icon(
-                    _isListening
-                        ? Icons.stop_rounded
-                        : Icons.mic_rounded,
-                  ),
-                  label: Text(
-                    _isListening
-                        ? (lang.isPersian
-                            ? 'توقف'
-                            : 'Stop')
-                        : (lang.isPersian
-                            ? 'شروع تمرین'
-                            : 'Practice'),
+          SizedBox(
+            width: double.infinity,
+            height: 44,
+            child: OutlinedButton.icon(
+              onPressed: _toggleListening,
+              icon: Icon(
+                _isListening
+                    ? Icons.stop_rounded
+                    : Icons.mic_none_rounded,
+                size: 20,
+              ),
+              label: Text(
+                _isListening
+                    ? (lang.isPersian
+                        ? 'توقف'
+                        : 'Stop')
+                    : (lang.isPersian
+                        ? 'تمرین این جمله'
+                        : 'Practice this sentence'),
+              ),
+              style:
+                  OutlinedButton.styleFrom(
+                foregroundColor: lavender,
+                side: BorderSide(
+                  color: lavender.withValues(
+                    alpha: 0.60,
                   ),
                 ),
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(17),
+                ),
               ),
-            ],
+            ),
           ),
 
           if (_recognizedText.isNotEmpty) ...[
@@ -551,16 +1002,17 @@ class _MeowPageState extends State<MeowPage> {
               lang.isPersian
                   ? 'صدای شما:'
                   : 'You said:',
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
+              style:
+                  theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurface
+                    .withValues(alpha: 0.55),
               ),
             ),
             const SizedBox(height: 4),
             Text(
               _recognizedText,
-              style: const TextStyle(
-                fontSize: 15,
+              style:
+                  theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -570,76 +1022,186 @@ class _MeowPageState extends State<MeowPage> {
     );
   }
 
-  Widget _inputArea(
+  Widget _homeworkPreview(
+    BuildContext context,
+    Color cardColor,
+    MeowLocalizations lang,
+  ) {
+    final theme = Theme.of(context);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: lavender.withValues(alpha: 0.18),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.assignment_turned_in_rounded,
+                color: lavender,
+              ),
+              const SizedBox(width: 9),
+              Expanded(
+                child: Text(
+                  lang.isPersian
+                      ? 'تکلیف ثبت شد 📸'
+                      : 'Homework submitted 📸',
+                  style:
+                      theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: _removeHomeworkImage,
+                icon: const Icon(
+                  Icons.close_rounded,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 8),
+
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.network(
+              _homeworkImage!.path,
+              height: 220,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (
+                context,
+                error,
+                stackTrace,
+              ) {
+                return Container(
+                  height: 180,
+                  alignment: Alignment.center,
+                  color: theme.colorScheme
+                      .surfaceContainerHighest,
+                  child: const Icon(
+                    Icons.image_rounded,
+                    size: 50,
+                    color: lavender,
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Text(
+            lang.isPersian
+                ? 'این عکس فعلاً فقط به‌عنوان ثبت انجام تکلیف استفاده می‌شود.'
+                : 'This photo is currently used only as a homework check-in.',
+            style:
+                theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurface
+                  .withValues(alpha: 0.55),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _messageInput(
     BuildContext context,
     MeowLocalizations lang,
   ) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.fromLTRB(
-        16,
-        10,
-        16,
+        15,
+        9,
+        15,
         12,
       ),
       decoration: BoxDecoration(
-        color:
-            Theme.of(context).scaffoldBackgroundColor,
+        color: colors.surface,
         border: Border(
           top: BorderSide(
-            color: Colors.grey.withOpacity(0.10),
+            color: colors.onSurface.withValues(
+              alpha: 0.06,
+            ),
           ),
         ),
       ),
       child: Row(
         children: [
+          Material(
+            color: colors.surfaceContainerHighest
+                .withValues(alpha: 0.50),
+            shape: const CircleBorder(),
+            child: InkWell(
+              onTap: _openHomeworkPicker,
+              customBorder: const CircleBorder(),
+              child: const SizedBox(
+                width: 48,
+                height: 48,
+                child: Icon(
+                  Icons.camera_alt_rounded,
+                  color: lavender,
+                  size: 22,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(width: 8),
+
           Expanded(
-            child: TextField(
-              controller: _controller,
-              textInputAction: TextInputAction.send,
-              onSubmitted: (_) => _sendMessage(),
-              decoration: InputDecoration(
-                hintText: lang.isPersian
-                    ? 'با میو حرف بزن...'
-                    : 'Talk to Meow...',
-                hintStyle: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
-                ),
-                filled: true,
-                fillColor:
-                    Theme.of(context)
-                        .colorScheme
-                        .surface,
-                contentPadding:
-                    const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 14,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.circular(22),
-                  borderSide: BorderSide(
-                    color:
-                        Colors.grey.withOpacity(0.12),
+            child: Container(
+              constraints: const BoxConstraints(
+                minHeight: 48,
+                maxHeight: 105,
+              ),
+              decoration: BoxDecoration(
+                color: colors
+                    .surfaceContainerHighest
+                    .withValues(alpha: 0.42),
+                borderRadius:
+                    BorderRadius.circular(25),
+                border: Border.all(
+                  color: colors.onSurface.withValues(
+                    alpha: 0.06,
                   ),
                 ),
-                enabledBorder:
-                    OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.circular(22),
-                  borderSide: BorderSide(
-                    color:
-                        Colors.grey.withOpacity(0.12),
+              ),
+              child: TextField(
+                controller: _controller,
+                minLines: 1,
+                maxLines: 4,
+                textInputAction:
+                    TextInputAction.send,
+                onSubmitted: (_) => _sendText(),
+                decoration: InputDecoration(
+                  hintText: lang.isPersian
+                      ? 'با میو حرف بزن...'
+                      : 'Talk to Meow...',
+                  hintStyle:
+                      theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSurface
+                        .withValues(alpha: 0.46),
                   ),
-                ),
-                focusedBorder:
-                    OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.circular(22),
-                  borderSide: BorderSide(
-                    color:
-                        lavender.withOpacity(0.65),
-                    width: 1.4,
+                  border: InputBorder.none,
+                  contentPadding:
+                      const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 13,
                   ),
                 ),
               ),
@@ -648,20 +1210,20 @@ class _MeowPageState extends State<MeowPage> {
 
           const SizedBox(width: 9),
 
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: lavender,
-              borderRadius:
-                  BorderRadius.circular(18),
-            ),
-            child: IconButton(
-              onPressed: _sendMessage,
-              icon: const Icon(
-                Icons.send_rounded,
-                color: Colors.white,
-                size: 21,
+          Material(
+            color: lavender,
+            shape: const CircleBorder(),
+            child: InkWell(
+              onTap: _sendText,
+              customBorder: const CircleBorder(),
+              child: const SizedBox(
+                width: 48,
+                height: 48,
+                child: Icon(
+                  Icons.arrow_upward_rounded,
+                  color: Colors.white,
+                  size: 23,
+                ),
               ),
             ),
           ),
