@@ -17,6 +17,8 @@ class LessonPage extends StatefulWidget {
 }
 
 class _LessonPageState extends State<LessonPage> {
+  static const Color lavender = Color(0xFFB9A7E8);
+
   bool practiceStarted = false;
   int currentQuestion = 0;
   int score = 0;
@@ -90,18 +92,38 @@ class _LessonPageState extends State<LessonPage> {
       context: context,
       barrierDismissible: false,
       builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
         title: Text(
           lang.isPersian
               ? 'درس تموم شد! 🎉'
               : 'Lesson Complete! 🎉',
+          style: const TextStyle(
+            fontWeight: FontWeight.w700,
+          ),
         ),
         content: Text(
           lang.isPersian
               ? 'از ${questions.length} سؤال، $score تا رو درست جواب دادی.\n\n+${widget.lesson.xp} XP ⭐'
               : 'You got $score out of ${questions.length} correct.\n\n+${widget.lesson.xp} XP ⭐',
+          style: const TextStyle(
+            height: 1.5,
+          ),
         ),
         actions: [
           FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: lavender,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 12,
+              ),
+            ),
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(context);
@@ -129,9 +151,15 @@ class _LessonPageState extends State<LessonPage> {
     );
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        elevation: 0,
         title: Text(
-          '$lessonTitle 📚',
+          lessonTitle,
+          style: const TextStyle(
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
         ),
       ),
       body: practiceStarted
@@ -160,62 +188,36 @@ class _LessonPageState extends State<LessonPage> {
     );
 
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 110),
       children: [
         Text(
           lessonTitle,
           style: const TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
+            fontSize: 29,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.8,
           ),
         ),
 
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
 
         Text(
           lessonDescription,
-          style: TextStyle(
-            fontSize: 16,
-            color: Theme.of(context)
-                .colorScheme
-                .onSurface
-                .withValues(alpha: 0.7),
+          style: const TextStyle(
+            fontSize: 15,
+            color: Colors.grey,
+            height: 1.4,
           ),
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
 
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 10,
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context)
-                .colorScheme
-                .primary
-                .withValues(alpha: 0.10),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                Icons.star_rounded,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                '+${widget.lesson.xp} XP',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ],
-          ),
+        _buildLessonInfoCard(
+          context,
+          lang,
         ),
 
-        const SizedBox(height: 28),
+        const SizedBox(height: 20),
 
         ...widget.lesson.sections.map(
           (section) => _buildSection(
@@ -226,29 +228,116 @@ class _LessonPageState extends State<LessonPage> {
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 4),
 
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            onPressed: startPractice,
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Text(
-                lang.isPersian
-                    ? 'شروع تمرین 🐱'
-                    : 'Start Practice 🐱',
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+        _buildStartPracticeButton(
+          context,
+          lang,
         ),
 
-        const SizedBox(height: 30),
+        const SizedBox(height: 20),
       ],
+    );
+  }
+
+  Widget _buildLessonInfoCard(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: lavender.withOpacity(0.10),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: lavender.withOpacity(0.14),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              color: lavender.withOpacity(0.14),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.auto_stories_rounded,
+              color: lavender,
+              size: 27,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  lang.isPersian
+                      ? 'درس ${widget.lesson.id.replaceAll('a1_', '')}'
+                      : 'Lesson ${widget.lesson.id.replaceAll('a1_', '')}',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.star_rounded,
+                      size: 17,
+                      color: lavender,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '+${widget.lesson.xp} XP',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: lavender,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStartPracticeButton(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: lavender,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.symmetric(
+            vertical: 17,
+          ),
+        ),
+        onPressed: startPractice,
+        child: Text(
+          lang.isPersian
+              ? 'شروع تمرین 🐱'
+              : 'Start Practice 🐱',
+          style: const TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
     );
   }
 
@@ -258,64 +347,44 @@ class _LessonPageState extends State<LessonPage> {
     MeowLocalizations lang,
     LessonLocalization lessonLang,
   ) {
-    IconData icon;
+    final icon = _sectionIcon(section.type);
 
-    switch (section.type.toLowerCase()) {
-      case 'vocabulary':
-        icon = Icons.menu_book_rounded;
-        break;
-
-      case 'phrases':
-      case 'useful phrases':
-        icon = Icons.chat_bubble_outline_rounded;
-        break;
-
-      case 'grammar':
-        icon = Icons.school_rounded;
-        break;
-
-      case 'examples':
-      case 'real-life examples':
-        icon = Icons.public_rounded;
-        break;
-
-      case 'practice':
-        icon = Icons.edit_rounded;
-        break;
-
-      case 'speaking':
-      case 'mini conversation':
-        icon = Icons.mic_rounded;
-        break;
-
-      case 'review':
-        icon = Icons.refresh_rounded;
-        break;
-
-      default:
-        icon = Icons.auto_stories_rounded;
-    }
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 14),
-      child: Padding(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: Container(
         padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.14),
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  radius: 22,
-                  child: Icon(icon),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: lavender.withOpacity(0.13),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    icon,
+                    color: lavender,
+                    size: 25,
+                  ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 14),
                 Expanded(
                   child: Text(
                     lessonLang.sectionTitle(section.title),
                     style: const TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -329,8 +398,9 @@ class _LessonPageState extends State<LessonPage> {
                   section.explanation,
                 ),
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   height: 1.5,
+                  color: Colors.grey,
                 ),
               ),
             ],
@@ -342,6 +412,7 @@ class _LessonPageState extends State<LessonPage> {
                   context,
                   item,
                   lang,
+                  lessonLang,
                 ),
               ),
             ],
@@ -351,21 +422,57 @@ class _LessonPageState extends State<LessonPage> {
     );
   }
 
+  IconData _sectionIcon(String type) {
+    switch (type.toLowerCase()) {
+      case 'vocabulary':
+      case 'numbers':
+      case 'vocabulary review':
+        return Icons.menu_book_rounded;
+
+      case 'phrases':
+      case 'useful phrases':
+        return Icons.chat_bubble_outline_rounded;
+
+      case 'grammar':
+      case 'grammar review':
+        return Icons.school_rounded;
+
+      case 'examples':
+      case 'real-life examples':
+        return Icons.public_rounded;
+
+      case 'practice':
+      case 'final practice':
+        return Icons.edit_rounded;
+
+      case 'speaking':
+      case 'mini conversation':
+        return Icons.mic_rounded;
+
+      case 'review':
+        return Icons.refresh_rounded;
+
+      default:
+        return Icons.auto_stories_rounded;
+    }
+  }
+
   Widget _buildLessonItem(
     BuildContext context,
     LessonItem item,
     MeowLocalizations lang,
+    LessonLocalization lessonLang,
   ) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Theme.of(context)
-            .colorScheme
-            .surfaceContainerHighest
-            .withValues(alpha: 0.45),
-        borderRadius: BorderRadius.circular(14),
+        color: lavender.withOpacity(0.07),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: lavender.withOpacity(0.10),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -374,7 +481,7 @@ class _LessonPageState extends State<LessonPage> {
             item.english,
             style: const TextStyle(
               fontSize: 17,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
             ),
           ),
 
@@ -382,29 +489,28 @@ class _LessonPageState extends State<LessonPage> {
 
           Text(
             item.persian,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 14,
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withValues(alpha: 0.7),
+              color: Colors.grey,
             ),
           ),
 
           if (item.pronunciation.isNotEmpty) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 9),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.volume_up_outlined,
                   size: 17,
+                  color: lavender,
                 ),
-                const SizedBox(width: 5),
+                const SizedBox(width: 6),
                 Text(
                   item.pronunciation,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 13,
                     fontStyle: FontStyle.italic,
+                    color: Colors.grey,
                   ),
                 ),
               ],
@@ -412,29 +518,29 @@ class _LessonPageState extends State<LessonPage> {
           ],
 
           if (item.example.isNotEmpty) ...[
-            const SizedBox(height: 8),
-            Text(
-              lessonLangExample(
-                lang,
-                item.example,
+            const SizedBox(height: 9),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(11),
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .surface
+                    .withOpacity(0.75),
+                borderRadius: BorderRadius.circular(13),
               ),
-              style: const TextStyle(
-                fontSize: 14,
+              child: Text(
+                lessonLang.exampleLabel(item.example),
+                style: const TextStyle(
+                  fontSize: 13,
+                  height: 1.4,
+                ),
               ),
             ),
           ],
         ],
       ),
     );
-  }
-
-  String lessonLangExample(
-    MeowLocalizations lang,
-    String example,
-  ) {
-    return lang.isPersian
-        ? 'مثال: $example'
-        : 'Example: $example';
   }
 
   Widget _buildPractice(
@@ -445,37 +551,92 @@ class _LessonPageState extends State<LessonPage> {
     final answers = question['answers'] as List<String>;
     final correct = question['correct'] as int;
 
+    final progress =
+        (currentQuestion + 1) / questions.length;
+
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 110),
       children: [
-        LinearProgressIndicator(
-          value: (currentQuestion + 1) / questions.length,
-          minHeight: 7,
-          borderRadius: BorderRadius.circular(10),
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: lavender.withOpacity(0.10),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: lavender.withOpacity(0.14),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.psychology_rounded,
+                    color: lavender,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    lang.isPersian
+                        ? 'تمرین با میو'
+                        : 'Practice with Meow',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: LinearProgressIndicator(
+                  value: progress,
+                  minHeight: 7,
+                  backgroundColor:
+                      lavender.withOpacity(0.16),
+                  valueColor:
+                      const AlwaysStoppedAnimation<Color>(
+                    lavender,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 9),
+              Text(
+                lang.isPersian
+                    ? 'سؤال ${currentQuestion + 1} از ${questions.length}'
+                    : 'Question ${currentQuestion + 1} of ${questions.length}',
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ),
 
         const SizedBox(height: 20),
 
-        Text(
-          lang.isPersian
-              ? 'سؤال ${currentQuestion + 1} از ${questions.length}'
-              : 'Question ${currentQuestion + 1} of ${questions.length}',
-          style: const TextStyle(
-            fontSize: 15,
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.14),
+            ),
+          ),
+          child: Text(
+            question['question'] as String,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              height: 1.35,
+            ),
           ),
         ),
 
-        const SizedBox(height: 12),
-
-        Text(
-          question['question'] as String,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
 
         ...List.generate(
           answers.length,
@@ -483,77 +644,189 @@ class _LessonPageState extends State<LessonPage> {
             final isSelected = selectedAnswer == index;
             final isCorrect = index == correct;
 
-            return Card(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: ListTile(
-                contentPadding: const EdgeInsets.all(16),
-                title: Text(
-                  answers[index],
-                  style: const TextStyle(
-                    fontSize: 17,
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 11),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: () => selectAnswer(index),
+                child: Container(
+                  padding: const EdgeInsets.all(17),
+                  decoration: BoxDecoration(
+                    color: _answerBackground(
+                      context,
+                      index,
+                      isSelected,
+                      isCorrect,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: _answerBorder(
+                        index,
+                        isSelected,
+                        isCorrect,
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          answers[index],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      _answerIcon(
+                        index,
+                        isSelected,
+                        isCorrect,
+                      ),
+                    ],
                   ),
                 ),
-                trailing: answered
-                    ? Icon(
-                        isCorrect
-                            ? Icons.check_circle
-                            : isSelected
-                                ? Icons.cancel
-                                : Icons.circle_outlined,
-                      )
-                    : const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 18,
-                      ),
-                onTap: () => selectAnswer(index),
               ),
             );
           },
         ),
 
         if (answered) ...[
-          const SizedBox(height: 10),
+          const SizedBox(height: 4),
 
-          Text(
-            selectedAnswer == correct
-                ? (lang.isPersian
-                    ? 'درست گفتی! 🎉'
-                    : 'Correct! 🎉')
-                : (lang.isPersian
-                    ? 'تقریباً! دوباره تمرین کن 💪'
-                    : 'Not quite. Keep practicing! 💪'),
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: selectedAnswer == correct
+                  ? const Color(0xFF4CAF50).withOpacity(0.10)
+                  : const Color(0xFFFF9800).withOpacity(0.10),
+              borderRadius: BorderRadius.circular(20),
             ),
-            textAlign: TextAlign.center,
+            child: Text(
+              selectedAnswer == correct
+                  ? (lang.isPersian
+                      ? 'درست گفتی! 🎉'
+                      : 'Correct! 🎉')
+                  : (lang.isPersian
+                      ? 'تقریباً! دوباره تمرین کن 💪'
+                      : 'Not quite. Keep practicing! 💪'),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
 
           SizedBox(
             width: double.infinity,
             child: FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: lavender,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                ),
+              ),
               onPressed: nextQuestion,
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Text(
-                  currentQuestion == questions.length - 1
-                      ? (lang.isPersian
-                          ? 'پایان درس'
-                          : 'Finish Lesson')
-                      : (lang.isPersian
-                          ? 'سؤال بعدی →'
-                          : 'Next Question →'),
-                  style: const TextStyle(
-                    fontSize: 17,
-                  ),
+              child: Text(
+                currentQuestion == questions.length - 1
+                    ? (lang.isPersian
+                        ? 'پایان درس'
+                        : 'Finish Lesson')
+                    : (lang.isPersian
+                        ? 'سؤال بعدی →'
+                        : 'Next Question →'),
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
           ),
         ],
       ],
+    );
+  }
+
+  Color _answerBackground(
+    BuildContext context,
+    int index,
+    bool isSelected,
+    bool isCorrect,
+  ) {
+    if (!answered) {
+      return Theme.of(context).colorScheme.surface;
+    }
+
+    if (isCorrect) {
+      return const Color(0xFF4CAF50).withOpacity(0.10);
+    }
+
+    if (isSelected) {
+      return const Color(0xFFE57373).withOpacity(0.10);
+    }
+
+    return Theme.of(context).colorScheme.surface;
+  }
+
+  Color _answerBorder(
+    int index,
+    bool isSelected,
+    bool isCorrect,
+  ) {
+    if (!answered) {
+      return Colors.grey.withOpacity(0.14);
+    }
+
+    if (isCorrect) {
+      return const Color(0xFF4CAF50).withOpacity(0.30);
+    }
+
+    if (isSelected) {
+      return const Color(0xFFE57373).withOpacity(0.30);
+    }
+
+    return Colors.grey.withOpacity(0.12);
+  }
+
+  Widget _answerIcon(
+    int index,
+    bool isSelected,
+    bool isCorrect,
+  ) {
+    if (!answered) {
+      return const Icon(
+        Icons.arrow_forward_ios_rounded,
+        size: 17,
+        color: Colors.grey,
+      );
+    }
+
+    if (isCorrect) {
+      return const Icon(
+        Icons.check_circle_rounded,
+        color: Color(0xFF4CAF50),
+      );
+    }
+
+    if (isSelected) {
+      return const Icon(
+        Icons.cancel_rounded,
+        color: Color(0xFFE57373),
+      );
+    }
+
+    return const Icon(
+      Icons.circle_outlined,
+      color: Colors.grey,
     );
   }
 }
