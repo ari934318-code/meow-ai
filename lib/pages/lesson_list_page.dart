@@ -4,6 +4,7 @@ import '../lesson_localization.dart';
 import '../localization.dart';
 import '../services/lesson_service.dart';
 import 'lesson_page.dart';
+import 'a1_exam_page.dart';
 
 class LessonListPage extends StatelessWidget {
   const LessonListPage({super.key});
@@ -95,6 +96,10 @@ class LessonListPage extends StatelessWidget {
                 );
               },
             ),
+
+            const SizedBox(height: 8),
+
+            _finalExamCard(context, lang),
           ],
         ),
       ),
@@ -322,6 +327,89 @@ class LessonListPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _finalExamCard(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(24),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const A1ExamPage(),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: lavender.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: lavender.withOpacity(0.30),
+            width: 1.5,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 58,
+              height: 58,
+              decoration: BoxDecoration(
+                color: lavender.withOpacity(0.18),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.school_rounded,
+                color: lavender,
+                size: 29,
+              ),
+            ),
+
+            const SizedBox(width: 16),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    lang.isPersian
+                        ? 'امتحان نهایی A1 🎓'
+                        : 'A1 Final Exam 🎓',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  Text(
+                    lang.isPersian
+                        ? 'دانسته‌هات رو امتحان کن و نتیجه‌ات رو ببین'
+                        : 'Test your knowledge and see your result',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 18,
+              color: Colors.grey,
+            ),
+          ],
         ),
       ),
     );
