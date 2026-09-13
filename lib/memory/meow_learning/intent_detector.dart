@@ -1,16 +1,16 @@
 import 'learned_intents.dart';
+import 'base_intents.dart';
 
 /// مسئول تشخیص منظور یا Intent جمله.
 ///
-/// هدف این کلاس این است که جمله‌های متفاوتی که
-/// یک معنی یا منظور مشترک دارند، به یک Intent وصل شوند.
+/// IntentDetector تلاش می‌کند جمله‌های مختلفی که
+/// یک مفهوم مشترک دارند را به یک Intent وصل کند.
 ///
 /// مثال:
 ///
 /// "آب می‌خوام"
 /// "تشنمه"
 /// "یه چیزی برای نوشیدن می‌خوام"
-/// "میشه یه لیوان آب بدی؟"
 ///
 /// همگی می‌توانند به:
 ///
@@ -22,7 +22,7 @@ class IntentDetector {
 
   IntentDetector({
     List<LearnedIntent>? intents,
-  }) : intents = intents ?? [];
+  }) : intents = intents ?? BaseIntents.create();
 
   /// تلاش برای تشخیص Intent یک جمله.
   ///
@@ -34,7 +34,9 @@ class IntentDetector {
       return null;
     }
 
-    // ابتدا Intentهایی که قبلاً یاد گرفته شده‌اند بررسی می‌شوند.
+    LearnedIntent? bestIntent;
+    double bestScore = 0.0;
+
     for (final intent in intents) {
       for (final example in intent.examplePhrases) {
         final normalizedExample = _normalize(example);
@@ -43,34 +45,42 @@ class IntentDetector {
           continue;
         }
 
-        if (_isSimilar(normalizedPhrase, normalizedExample)) {
-          return intent.id;
+        final score = _similarity(
+          normalizedPhrase,
+          normalizedExample,
+        );
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestIntent = intent;
         }
       }
     }
 
-    // در این مرحله هنوز Intent جدیدی ساخته نمی‌شود.
-    // اگر هیچ مفهوم شناخته‌شده‌ای پیدا نشد،
-    // null برمی‌گردد تا LearningEngine آن را
-    // به عنوان یک الگوی ناشناخته مدیریت کند.
+    // برای جلوگیری از تشخیص‌های اشتباه،
+    // فقط وقتی Intent را قبول می‌کنیم که شباهت کافی باشد.
+    if (bestIntent != null && bestScore >= 0.6) {
+      return bestIntent.id;
+    }
+
     return null;
   }
 
-  /// بررسی شباهت ساده بین دو عبارت.
+  /// محاسبه میزان شباهت دو عبارت.
   ///
-  /// این نسخه اولیه است.
-  /// بعداً می‌توانیم تشخیص معنایی بسیار دقیق‌تری
-  /// به آن اضافه کنیم.
-  bool _isSimilar(String phrase, String example) {
+  /// این نسخه بر اساس کلمات مشترک کار می‌کند.
+  /// بعداً می‌توانیم آن را با تشخیص معنایی پیشرفته‌تر
+  /// جایگزین کنیم.
+  double _similarity(String phrase, String example) {
     if (phrase == example) {
-      return true;
+      return 1.0;
     }
 
     final phraseWords = phrase.split(' ');
     final exampleWords = example.split(' ');
 
     if (phraseWords.isEmpty || exampleWords.isEmpty) {
-      return false;
+      return 0.0;
     }
 
     int matchedWords = 0;
@@ -81,9 +91,20 @@ class IntentDetector {
       }
     }
 
-    final similarity = matchedWords / phraseWords.length;
+    if (matchedWords == 0) {
+      return 0.0;
+    }
 
-    return similarity >= 0.6;
+    final phraseScore =
+        matchedWords / phraseWords.length;
+
+    final exampleScore =
+        matchedWords / exampleWords.length;
+
+    // میانگین دو طرف باعث می‌شود
+    // جمله‌های خیلی کوتاه یا خیلی بلند
+    // امتیاز غیرمنطقی نگیرند.
+    return (phraseScore + exampleScore) / 2;
   }
 
   /// نرمال‌سازی متن برای مقایسه.
@@ -94,7 +115,7 @@ class IntentDetector {
         .toLowerCase();
   }
 
-  /// اضافه کردن یک Intent جدید.
+  /// اضافه کردن Intent جدید.
   void addIntent(LearnedIntent intent) {
     final existingIndex = intents.indexWhere(
       (item) => item.id == intent.id,
@@ -108,7 +129,7 @@ class IntentDetector {
     intents[existingIndex] = intent;
   }
 
-  /// پیدا کردن یک Intent با شناسه آن.
+  /// پیدا کردن Intent با شناسه.
   LearnedIntent? findIntent(String intentId) {
     for (final intent in intents) {
       if (intent.id == intentId) {
