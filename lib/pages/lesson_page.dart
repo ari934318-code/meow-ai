@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import '../lesson_localization.dart';
 import '../localization.dart';
@@ -19,11 +21,15 @@ class LessonPage extends StatefulWidget {
 class _LessonPageState extends State<LessonPage> {
   static const Color lavender = Color(0xFFB9A7E8);
 
+  final FlutterTts _tts = FlutterTts();
+  final PageController _pageController = PageController();
+
   bool practiceStarted = false;
   int currentQuestion = 0;
   int score = 0;
   bool answered = false;
   int? selectedAnswer;
+  int currentSection = 0;
 
   final List<Map<String, dynamic>> questions = const [
     {
@@ -47,6 +53,38 @@ class _LessonPageState extends State<LessonPage> {
       'correct': 0,
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _setupTts();
+  }
+
+  Future<void> _setupTts() async {
+    await _tts.setLanguage('en-US');
+    await _tts.setSpeechRate(0.45);
+    await _tts.setPitch(1.0);
+    await _tts.setVolume(1.0);
+  }
+
+  Future<void> _speak(String text) async {
+    if (text.trim().isEmpty) return;
+
+    await _tts.stop();
+    await _tts.setLanguage('en-US');
+    await _tts.setSpeechRate(0.45);
+    await _tts.setPitch(1.0);
+    await _tts.setVolume(1.0);
+    await _tts.speak(text);
+  }
+
+  @override
+  void dispose() {
+    _tts.stop();
+    _tts.shutdown();
+    _pageController.dispose();
+    super.dispose();
+  }
 
   void startPractice() {
     setState(() {
@@ -82,6 +120,24 @@ class _LessonPageState extends State<LessonPage> {
       });
     } else {
       _showResult();
+    }
+  }
+
+  void nextSection() {
+    if (currentSection < widget.lesson.sections.length - 1) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeOutCubic,
+      );
+    }
+  }
+
+  void previousSection() {
+    if (currentSection > 0) {
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeOutCubic,
+      );
     }
   }
 
@@ -187,6 +243,8 @@ class _LessonPageState extends State<LessonPage> {
       widget.lesson.description,
     );
 
+    final sections = widget.lesson.sections;
+
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 110),
       children: [
@@ -217,18 +275,54 @@ class _LessonPageState extends State<LessonPage> {
           lang,
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: 22),
 
-        ...widget.lesson.sections.map(
-          (section) => _buildSection(
+        if (sections.isNotEmpty) ...[
+          _buildSectionProgress(
             context,
-            section,
             lang,
             lessonLang,
+            sections,
           ),
-        ),
 
-        const SizedBox(height: 4),
+          const SizedBox(height: 12),
+
+          SizedBox(
+            height: 455,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: sections.length,
+              onPageChanged: (index) {
+                setState(() {
+                  currentSection = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 4,
+                  ),
+                  child: _buildSection(
+                    context,
+                    sections[index],
+                    lang,
+                    lessonLang,
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          _buildSectionNavigation(
+            context,
+            lang,
+            sections.length,
+          ),
+
+          const SizedBox(height: 20),
+        ],
 
         _buildStartPracticeButton(
           context,
@@ -236,6 +330,177 @@ class _LessonPageState extends State<LessonPage> {
         ),
 
         const SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildSectionProgress(
+    BuildContext context,
+    MeowLocalizations lang,
+    LessonLocalization lessonLang,
+    List<LessonSection> sections,
+  ) {
+    final section = sections[currentSection];
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 13,
+      ),
+      decoration: BoxDecoration(
+        color: lavender.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: lavender.withOpacity(0.12),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: lavender.withOpacity(0.14),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              _sectionIcon(section.type),
+              color: lavender,
+              size: 20,
+            ),
+          ),
+
+          const SizedBox(width: 11),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  lessonLang.sectionTitle(section.title),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  lang.isPersian
+                      ? 'بخش ${currentSection + 1} از ${sections.length}'
+                      : 'Section ${currentSection + 1} of ${sections.length}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Row(
+            children: List.generate(
+              sections.length,
+              (index) {
+                final active = index == currentSection;
+
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  margin: const EdgeInsets.only(left: 4),
+                  width: active ? 18 : 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: active
+                        ? lavender
+                        : lavender.withOpacity(0.20),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionNavigation(
+    BuildContext context,
+    MeowLocalizations lang,
+    int totalSections,
+  ) {
+    final isFirst = currentSection == 0;
+    final isLast = currentSection == totalSections - 1;
+
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton.icon(
+            onPressed: isFirst ? null : previousSection,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: lavender,
+              disabledForegroundColor:
+                  Colors.grey.withOpacity(0.35),
+              side: BorderSide(
+                color: isFirst
+                    ? Colors.grey.withOpacity(0.12)
+                    : lavender.withOpacity(0.30),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 14,
+              ),
+            ),
+            icon: Icon(
+              lang.isPersian
+                  ? Icons.arrow_forward_rounded
+                  : Icons.arrow_back_rounded,
+            ),
+            label: Text(
+              lang.isPersian ? 'قبلی' : 'Previous',
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+
+        const SizedBox(width: 12),
+
+        Expanded(
+          child: FilledButton.icon(
+            onPressed: isLast ? null : nextSection,
+            style: FilledButton.styleFrom(
+              backgroundColor: lavender,
+              foregroundColor: Colors.white,
+              disabledBackgroundColor:
+                  lavender.withOpacity(0.18),
+              disabledForegroundColor:
+                  Colors.white.withOpacity(0.65),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 14,
+              ),
+            ),
+            icon: Icon(
+              lang.isPersian
+                  ? Icons.arrow_back_rounded
+                  : Icons.arrow_forward_rounded,
+            ),
+            label: Text(
+              lang.isPersian ? 'بعدی' : 'Next',
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -349,75 +614,82 @@ class _LessonPageState extends State<LessonPage> {
   ) {
     final icon = _sectionIcon(section.type);
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
-      child: Container(
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.14),
+    return Container(
+      height: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.14),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: lavender.withOpacity(0.13),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  color: lavender,
+                  size: 25,
+                ),
+              ),
+
+              const SizedBox(width: 14),
+
+              Expanded(
+                child: Text(
+                  lessonLang.sectionTitle(section.title),
+                  style: const TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: lavender.withOpacity(0.13),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    icon,
-                    color: lavender,
-                    size: 25,
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Text(
-                    lessonLang.sectionTitle(section.title),
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ],
+
+          if (section.explanation.isNotEmpty) ...[
+            const SizedBox(height: 14),
+            Text(
+              lessonLang.sectionExplanation(
+                section.explanation,
+              ),
+              style: const TextStyle(
+                fontSize: 14,
+                height: 1.5,
+                color: Colors.grey,
+              ),
             ),
-
-            if (section.explanation.isNotEmpty) ...[
-              const SizedBox(height: 14),
-              Text(
-                lessonLang.sectionExplanation(
-                  section.explanation,
-                ),
-                style: const TextStyle(
-                  fontSize: 14,
-                  height: 1.5,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-
-            if (section.items.isNotEmpty) ...[
-              const SizedBox(height: 16),
-              ...section.items.map(
-                (item) => _buildLessonItem(
-                  context,
-                  item,
-                  lang,
-                  lessonLang,
-                ),
-              ),
-            ],
           ],
-        ),
+
+          if (section.items.isNotEmpty) ...[
+            const SizedBox(height: 15),
+
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: section.items.length,
+                itemBuilder: (context, index) {
+                  return _buildLessonItem(
+                    context,
+                    section.items[index],
+                    lang,
+                    lessonLang,
+                  );
+                },
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -477,12 +749,37 @@ class _LessonPageState extends State<LessonPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            item.english,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w700,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  item.english,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+
+              const SizedBox(width: 8),
+
+              Material(
+                color: lavender.withOpacity(0.12),
+                shape: const CircleBorder(),
+                child: IconButton(
+                  tooltip: lang.isPersian
+                      ? 'پخش تلفظ'
+                      : 'Play pronunciation',
+                  onPressed: () => _speak(item.english),
+                  icon: const Icon(
+                    Icons.volume_up_rounded,
+                    color: lavender,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ],
           ),
 
           const SizedBox(height: 4),
@@ -499,9 +796,9 @@ class _LessonPageState extends State<LessonPage> {
             const SizedBox(height: 9),
             Row(
               children: [
-                Icon(
-                  Icons.volume_up_outlined,
-                  size: 17,
+                const Icon(
+                  Icons.record_voice_over_rounded,
+                  size: 16,
                   color: lavender,
                 ),
                 const SizedBox(width: 6),
