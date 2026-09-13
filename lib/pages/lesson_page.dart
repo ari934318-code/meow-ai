@@ -51,6 +51,10 @@ class _LessonPageState extends State<LessonPage> {
   // محل جدید جواب درست بعد از تصادفی شدن گزینه‌ها
   final Map<LessonQuestion, int> _shuffledCorrectIndex = {};
 
+  // سؤال‌های Speaking که قبلاً با موفقیت پاسخ داده شده‌اند.
+  // این باعث می‌شود یک سؤال چند بار در آمار حساب نشود.
+  final Set<LessonQuestion> _completedSpeakingQuestions = {};
+
   List<LessonQuestion> get multipleChoiceQuestions {
     final result = <LessonQuestion>[];
 
@@ -233,25 +237,41 @@ class _LessonPageState extends State<LessonPage> {
     _checkSpeechAnswer(question);
   }
 
-  void _checkSpeechAnswer(LessonQuestion question) {
+  Future<void> _checkSpeechAnswer(
+    LessonQuestion question,
+  ) async {
     final spoken = _normalizeSpeech(recognizedText);
     final target = _normalizeSpeech(question.correctAnswer);
 
     if (spoken.isEmpty || target.isEmpty) {
+      if (!mounted) return;
+
       setState(() {
         speechResultMessage =
             'I could not understand your answer. Try again.';
       });
+
       return;
     }
 
     final similarity = _similarity(spoken, target);
 
     if (similarity >= 0.78) {
-      setState(() {
-        speechResultMessage = 'Correct! 🎉';
-      });
+      if (mounted) {
+        setState(() {
+          speechResultMessage = 'Correct! 🎉';
+        });
+      }
+
+      // این سؤال فقط یک بار در Speaking Sessions ثبت می‌شود.
+      if (!_completedSpeakingQuestions.contains(question)) {
+        _completedSpeakingQuestions.add(question);
+
+        await ProgressService.addSpeakingSession();
+      }
     } else {
+      if (!mounted) return;
+
       setState(() {
         speechResultMessage =
             'Not quite. Try again and listen carefully.';
@@ -405,6 +425,10 @@ class _LessonPageState extends State<LessonPage> {
               ),
             ),
             onPressed: () async {
+              // این Practice یک جلسه تمرین واقعی محسوب می‌شود.
+              await ProgressService.addPracticeSession();
+
+              // تکمیل درس همچنان XP و completion را مدیریت می‌کند.
               await A1ProgressService.completeLesson(
                 widget.lesson.id,
               );
