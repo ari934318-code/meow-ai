@@ -57,7 +57,9 @@ class ProfilePage extends StatelessWidget {
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/settings');
+              },
             ),
           ),
         ],
