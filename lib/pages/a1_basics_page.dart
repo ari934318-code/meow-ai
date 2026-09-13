@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/levels/a1/basics/a1_basics_data.dart';
 import '../data/levels/a1/basics/a1_basics_models.dart';
+import 'a1_basics_exam_page.dart';
+import 'a1_basics_lesson_page.dart';
 
 class A1BasicsPage extends StatefulWidget {
   const A1BasicsPage({super.key});
@@ -17,8 +19,11 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
   static const String _completedKey =
       'a1_basics_completed_lessons';
 
+  static const String _examCompletedKey =
+      'a1_basics_completed';
+
   Set<String> completedLessons = {};
-  bool basicsExamCompleted = false;
+  bool examCompleted = false;
   bool isLoading = true;
 
   @override
@@ -33,22 +38,16 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
     final completed =
         prefs.getStringList(_completedKey) ?? [];
 
-    final examCompleted =
-        prefs.getBool('a1_basics_completed') ?? false;
+    final exam =
+        prefs.getBool(_examCompletedKey) ?? false;
 
     if (!mounted) return;
 
     setState(() {
       completedLessons = completed.toSet();
-      basicsExamCompleted = examCompleted;
+      examCompleted = exam;
       isLoading = false;
     });
-  }
-
-  bool _isLessonCompleted(int index) {
-    return completedLessons.contains(
-      a1BasicsLessons[index].id,
-    );
   }
 
   bool _isLessonUnlocked(int index) {
@@ -56,30 +55,32 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
       return true;
     }
 
-    return _isLessonCompleted(index - 1);
+    return completedLessons.contains(
+      a1BasicsLessons[index - 1].id,
+    );
   }
 
   bool _areAllLessonsCompleted() {
     return a1BasicsLessons.every(
-      (lesson) => completedLessons.contains(lesson.id),
+      (lesson) => completedLessons.contains(
+        lesson.id,
+      ),
     );
   }
 
   Future<void> _openLesson(
     A1BasicLesson lesson,
-    int index,
   ) async {
-    if (!_isLessonUnlocked(index)) {
-      return;
-    }
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => A1BasicsLessonPage(
+          lesson: lesson,
+        ),
+      ),
+    );
 
-    /*
-     * صفحه‌ی آموزش واقعی Basics را در قدم بعدی
-     * به اینجا وصل می‌کنیم.
-     *
-     * فعلاً عمداً چیزی باز نمی‌کنیم تا جریان ناقص
-     * وارد برنامه نشود.
-     */
+    await _loadProgress();
   }
 
   Future<void> _openBasicsExam() async {
@@ -87,229 +88,14 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
       return;
     }
 
-    /*
-     * امتحان Basics در فایل فعلی پروژه وجود دارد.
-     * بعد از ساخت صفحه‌ی آموزش، اینجا به Exam وصل می‌شود.
-     */
-  }
-
-  Widget _buildLessonCard(
-    BuildContext context,
-    A1BasicLesson lesson,
-    int index,
-  ) {
-    final completed = _isLessonCompleted(index);
-    final unlocked = _isLessonUnlocked(index);
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: unlocked
-            ? () => _openLesson(lesson, index)
-            : null,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Theme.of(context)
-                .colorScheme
-                .surface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: completed
-                  ? lavender
-                  : Theme.of(context)
-                      .dividerColor
-                      .withOpacity(0.25),
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: completed
-                      ? lavender
-                      : unlocked
-                          ? lavender.withOpacity(0.18)
-                          : Theme.of(context)
-                              .dividerColor
-                              .withOpacity(0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  completed
-                      ? Icons.check_rounded
-                      : unlocked
-                          ? Icons.play_arrow_rounded
-                          : Icons.lock_rounded,
-                  color: completed
-                      ? Colors.white
-                      : unlocked
-                          ? lavender
-                          : Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.35),
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${index + 1}. ${lesson.title}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      lesson.titleFa,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.65),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (completed)
-                const Text(
-                  '✓',
-                  style: TextStyle(
-                    color: lavender,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              else if (!unlocked)
-                Icon(
-                  Icons.lock_outline_rounded,
-                  size: 20,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withOpacity(0.3),
-                ),
-            ],
-          ),
-        ),
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const A1BasicsExamPage(),
       ),
     );
-  }
 
-  Widget _buildExamCard(BuildContext context) {
-    final unlocked = _areAllLessonsCompleted();
-
-    return InkWell(
-      onTap: unlocked ? _openBasicsExam : null,
-      borderRadius: BorderRadius.circular(22),
-      child: Container(
-        margin: const EdgeInsets.only(top: 8),
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          gradient: unlocked
-              ? LinearGradient(
-                  colors: [
-                    lavender,
-                    lavender.withOpacity(0.65),
-                  ],
-                )
-              : null,
-          color: unlocked
-              ? null
-              : Theme.of(context)
-                  .colorScheme
-                  .surface,
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(
-            color: unlocked
-                ? Colors.transparent
-                : Theme.of(context)
-                    .dividerColor
-                    .withOpacity(0.25),
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(
-                color: unlocked
-                    ? Colors.white.withOpacity(0.2)
-                    : lavender.withOpacity(0.12),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                unlocked
-                    ? Icons.assignment_rounded
-                    : Icons.lock_rounded,
-                color: unlocked
-                    ? Colors.white
-                    : lavender,
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Basics Exam',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: unlocked
-                          ? Colors.white
-                          : Theme.of(context)
-                              .colorScheme
-                              .onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    unlocked
-                        ? 'همه‌ی درس‌ها را یاد گرفتی. وقت امتحانه! 🧠'
-                        : 'اول هر ۱۱ درس Basics را کامل کن.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: unlocked
-                          ? Colors.white.withOpacity(0.9)
-                          : Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.6),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              unlocked
-                  ? Icons.arrow_forward_ios_rounded
-                  : Icons.lock_outline_rounded,
-              size: 18,
-              color: unlocked
-                  ? Colors.white
-                  : Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withOpacity(0.3),
-            ),
-          ],
-        ),
-      ),
-    );
+    await _loadProgress();
   }
 
   @override
@@ -322,96 +108,397 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
       );
     }
 
-    final completedCount = completedLessons.length;
-    final totalCount = a1BasicsLessons.length;
+    final completedCount =
+        completedLessons.length;
+
+    final totalCount =
+        a1BasicsLessons.length;
+
+    final progress = totalCount == 0
+        ? 0.0
+        : completedCount / totalCount;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'A1 Basics 🧠',
+          'A1 Basics',
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w800,
           ),
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
+      body: RefreshIndicator(
+        onRefresh: _loadProgress,
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(
+            20,
+            12,
+            20,
+            100,
+          ),
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: lavender.withOpacity(0.14),
-                borderRadius: BorderRadius.circular(24),
+            _buildHeader(
+              completedCount,
+              totalCount,
+              progress,
+            ),
+            const SizedBox(height: 20),
+            _buildLessons(),
+            const SizedBox(height: 12),
+            _buildExamCard(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(
+    int completedCount,
+    int totalCount,
+    double progress,
+  ) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: lavender.withOpacity(0.11),
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: lavender.withOpacity(0.16),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'A1 Basics 🐱',
+            style: TextStyle(
+              fontSize: 27,
+              fontWeight: FontWeight.w900,
+              letterSpacing: -0.6,
+            ),
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Grammar foundations you need before your A1 lessons.',
+            style: TextStyle(
+              fontSize: 14,
+              height: 1.45,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 18),
+          Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Progress',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-              child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+              Text(
+                '$completedCount / $totalCount',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: lavender,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 9),
+          ClipRRect(
+            borderRadius:
+                BorderRadius.circular(20),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 9,
+              backgroundColor:
+                  lavender.withOpacity(0.12),
+              valueColor:
+                  const AlwaysStoppedAnimation(
+                lavender,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLessons() {
+    return Column(
+      children: List.generate(
+        a1BasicsLessons.length,
+        (index) {
+          final lesson =
+              a1BasicsLessons[index];
+
+          final unlocked =
+              _isLessonUnlocked(index);
+
+          final completed =
+              completedLessons.contains(
+            lesson.id,
+          );
+
+          return _buildLessonCard(
+            lesson: lesson,
+            index: index,
+            unlocked: unlocked,
+            completed: completed,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildLessonCard({
+    required A1BasicLesson lesson,
+    required int index,
+    required bool unlocked,
+    required bool completed,
+  }) {
+    return Container(
+      margin:
+          const EdgeInsets.only(bottom: 12),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius:
+              BorderRadius.circular(22),
+          onTap: unlocked
+              ? () => _openLesson(lesson)
+              : null,
+          child: AnimatedOpacity(
+            duration:
+                const Duration(milliseconds: 200),
+            opacity: unlocked ? 1.0 : 0.55,
+            child: Container(
+              padding:
+                  const EdgeInsets.all(17),
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .surface,
+                borderRadius:
+                    BorderRadius.circular(22),
+                border: Border.all(
+                  color: completed
+                      ? Colors.green
+                          .withOpacity(0.22)
+                      : lavender
+                          .withOpacity(0.12),
+                ),
+              ),
+              child: Row(
                 children: [
-                  const Text(
-                    'پایه‌های انگلیسی',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'اول این ۱۱ درس را یاد بگیر، '
-                    'بعد Basics Exam باز می‌شود.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.7),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: LinearProgressIndicator(
-                      value: totalCount == 0
-                          ? 0
-                          : completedCount / totalCount,
-                      minHeight: 9,
-                      backgroundColor:
-                          Theme.of(context)
-                              .dividerColor
-                              .withOpacity(0.15),
-                      valueColor:
-                          const AlwaysStoppedAnimation<Color>(
-                        lavender,
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: completed
+                          ? Colors.green
+                              .withOpacity(0.11)
+                          : lavender
+                              .withOpacity(0.12),
+                      borderRadius:
+                          BorderRadius.circular(
+                        16,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '$completedCount از $totalCount درس کامل شده',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withOpacity(0.6),
+                    child: Icon(
+                      completed
+                          ? Icons
+                              .check_circle_rounded
+                          : unlocked
+                              ? Icons
+                                  .menu_book_rounded
+                              : Icons
+                                  .lock_rounded,
+                      color: completed
+                          ? Colors.green
+                          : lavender,
                     ),
+                  ),
+                  const SizedBox(width: 13),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Basics ${index + 1}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight:
+                                FontWeight.w700,
+                            color: lavender,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        Text(
+                          lesson.title,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight:
+                                FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        Text(
+                          lesson.titleFa,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    completed
+                        ? Icons
+                            .check_circle_rounded
+                        : unlocked
+                            ? Icons
+                                .arrow_forward_ios_rounded
+                            : Icons
+                                .lock_outline_rounded,
+                    size: completed ? 23 : 18,
+                    color: completed
+                        ? Colors.green
+                        : Colors.grey,
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            ...List.generate(
-              a1BasicsLessons.length,
-              (index) => _buildLessonCard(
-                context,
-                a1BasicsLessons[index],
-                index,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExamCard() {
+    final unlocked =
+        _areAllLessonsCompleted();
+
+    return Container(
+      margin:
+          const EdgeInsets.only(top: 4),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius:
+              BorderRadius.circular(24),
+          onTap: unlocked
+              ? _openBasicsExam
+              : null,
+          child: AnimatedOpacity(
+            duration:
+                const Duration(milliseconds: 200),
+            opacity: unlocked ? 1.0 : 0.55,
+            child: Container(
+              padding:
+                  const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: unlocked
+                    ? lavender.withOpacity(0.11)
+                    : Colors.grey.withOpacity(0.06),
+                borderRadius:
+                    BorderRadius.circular(24),
+                border: Border.all(
+                  color: unlocked
+                      ? lavender
+                          .withOpacity(0.25)
+                      : Colors.grey
+                          .withOpacity(0.12),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      color: unlocked
+                          ? lavender
+                              .withOpacity(0.15)
+                          : Colors.grey
+                              .withOpacity(0.10),
+                      borderRadius:
+                          BorderRadius.circular(
+                        17,
+                      ),
+                    ),
+                    child: Icon(
+                      examCompleted
+                          ? Icons
+                              .check_circle_rounded
+                          : unlocked
+                              ? Icons
+                                  .quiz_rounded
+                              : Icons
+                                  .lock_rounded,
+                      color: examCompleted
+                          ? Colors.green
+                          : unlocked
+                              ? lavender
+                              : Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          examCompleted
+                              ? 'Basics Exam Completed 🎉'
+                              : 'Basics Exam',
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight:
+                                FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          unlocked
+                              ? 'Complete the Basics exam to unlock A1 Lesson 1.'
+                              : 'Complete all 11 Basics lessons first.',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            height: 1.4,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    examCompleted
+                        ? Icons
+                            .check_circle_rounded
+                        : unlocked
+                            ? Icons
+                                .arrow_forward_ios_rounded
+                            : Icons
+                                .lock_outline_rounded,
+                    color: examCompleted
+                        ? Colors.green
+                        : Colors.grey,
+                    size: examCompleted ? 23 : 18,
+                  ),
+                ],
               ),
             ),
-            _buildExamCard(context),
-            const SizedBox(height: 20),
-          ],
+          ),
         ),
       ),
     );
