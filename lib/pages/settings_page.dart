@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool savedEnglish = true;
   bool voiceData = false;
 
-  static const lavender = Color(0xFFB9A7E8);
+  static const Color lavender = Color(0xFFB9A7E8);
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          _sectionTitle(
-            isPersian ? 'عمومی' : 'General',
-          ),
+          _sectionTitle(isPersian ? 'عمومی' : 'General'),
 
           _settingCard(
             icon: Icons.language,
@@ -68,9 +66,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onTap: _chooseVoice,
           ),
 
-          _sectionTitle(
-            isPersian ? 'یادگیری' : 'Learning',
-          ),
+          _sectionTitle(isPersian ? 'یادگیری' : 'Learning'),
 
           _settingCard(
             icon: Icons.flag,
@@ -175,9 +171,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
 
-          _sectionTitle(
-            isPersian ? 'ظاهر' : 'Appearance',
-          ),
+          _sectionTitle(isPersian ? 'ظاهر' : 'Appearance'),
 
           _settingCard(
             icon: Icons.brightness_6_outlined,
@@ -238,7 +232,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _chooseLanguage() {
-    final current = appLocale.value.languageCode;
+    final currentLanguage = appLocale.value.languageCode;
 
     _showOptions(
       title: 'App Language',
@@ -246,7 +240,7 @@ class _SettingsPageState extends State<SettingsPage> {
         'English',
         'فارسی',
       ],
-      selected: current == 'fa' ? 'فارسی' : 'English',
+      selected: currentLanguage == 'fa' ? 'فارسی' : 'English',
       onSelected: (value) {
         appLocale.value = value == 'فارسی'
             ? const Locale('fa')
@@ -312,10 +306,10 @@ class _SettingsPageState extends State<SettingsPage> {
         '30',
         '45',
       ],
-      selected: '$dailyGoal',
+      selected: dailyGoal.toString(),
       onSelected: (value) {
         setState(() {
-          dailyGoal = int.parse(value);
+          dailyGoal = int.tryParse(value) ?? 20;
         });
       },
     );
@@ -333,21 +327,15 @@ class _SettingsPageState extends State<SettingsPage> {
       onSelected: (value) {
         setState(() {
           theme = value;
-        });
 
-        switch (value) {
-          case 'Light':
+          if (value == 'Light') {
             appThemeMode.value = ThemeMode.light;
-            break;
-
-          case 'Dark':
+          } else if (value == 'Dark') {
             appThemeMode.value = ThemeMode.dark;
-            break;
-
-          case 'System':
+          } else {
             appThemeMode.value = ThemeMode.system;
-            break;
-        }
+          }
+        });
       },
     );
   }
@@ -360,7 +348,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }) {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (sheetContext) {
         return SafeArea(
           child: ListView(
             shrinkWrap: true,
@@ -374,6 +362,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               const SizedBox(height: 15),
+
               ...options.map(
                 (option) => RadioListTile<String>(
                   title: Text(option),
@@ -384,7 +373,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     if (value == null) return;
 
                     onSelected(value);
-                    Navigator.pop(context);
+                    Navigator.pop(sheetContext);
                   },
                 ),
               ),
