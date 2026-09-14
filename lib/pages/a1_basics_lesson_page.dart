@@ -1613,9 +1613,12 @@ class _A1BasicsLessonPageState
                 A1BasicsUIConfig
                     .cardSpacing,
           ),
-          ...examples.map(
-            _buildExample,
-          ),
+          if (_isLessonOneCommonMistakes(sectionTitle))
+            _buildLessonOneHowAreYouMistake()
+          else
+            ...examples.map(
+              _buildExample,
+            ),
           SizedBox(
             height:
                 A1BasicsUIConfig
@@ -2776,6 +2779,154 @@ class _A1BasicsLessonPageState
   // =========================================================
   // EXAMPLES
   // =========================================================
+
+  bool _isLessonOneCommonMistakes(String title) {
+    if (widget.lesson.id != 'a1_01' &&
+        widget.lesson.id != 'lesson_1' &&
+        widget.lesson.id != '1') {
+      return false;
+    }
+
+    final normalized = _normalizeTitle(title);
+    return normalized.contains('commonmistakes') ||
+        normalized.contains('اشتباهات رایج');
+  }
+
+  Widget _buildLessonOneHowAreYouMistake() {
+    return Container(
+      margin: EdgeInsets.only(
+        bottom: A1BasicsUIConfig.cardSpacing,
+      ),
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: _outline,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildDialogueLabel(
+            _isPersian ? 'میو' : 'Meow',
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'How are you?',
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          if (_isPersian) ...[
+            const SizedBox(height: 6),
+            const Text('حالت چطوره؟'),
+          ],
+          const SizedBox(height: 16),
+          _buildDialogueLabel(
+            _isPersian ? 'دانش‌آموز' : 'Student',
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _isPersian
+                ? 'ممکن است زبان‌آموز این‌طور جواب بدهد:'
+                : 'A learner might reply like this:',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+          _buildMistakeLine(
+            "I'm fine, thanks. How are you?",
+            _isPersian
+                ? 'قابل فهم است، اما برای برگرداندن سؤال در گفت‌وگوی طبیعی، بهتر است بگوییم:'
+                : 'It is understandable, but a more natural way to return the question is:',
+            isMistake: true,
+          ),
+          const SizedBox(height: 12),
+          _buildDialogueLabel(
+            _isPersian ? 'جواب طبیعی' : 'Natural reply',
+          ),
+          const SizedBox(height: 6),
+          _buildMistakeLine(
+            'I'm fine, thanks. How about you?',
+            _isPersian
+                ? 'این عبارت طبیعی‌تر و رایج‌تر است.'
+                : 'This is the more natural and common choice here.',
+            isMistake: false,
+          ),
+          const SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: OutlinedButton.icon(
+              onPressed: () => _speak(
+                "I'm fine, thanks. How about you?",
+              ),
+              icon: const Icon(Icons.volume_up_outlined),
+              label: Text(
+                _isPersian ? 'گوش دادن به جواب درست' : 'Listen to the natural reply',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDialogueLabel(String label) {
+    return Text(
+      label,
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+
+  Widget _buildMistakeLine(
+    String english,
+    String explanation, {
+    required bool isMistake,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: isMistake
+            ? Theme.of(context).colorScheme.errorContainer.withAlpha(90)
+            : lavender.withAlpha(45),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                isMistake ? Icons.close_rounded : Icons.check_rounded,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  english,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            explanation,
+            style: const TextStyle(height: 1.4),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildExample(
     A1BasicExample example,
