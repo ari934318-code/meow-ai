@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../localization.dart';
 import '../services/a1_progress_service.dart';
@@ -14,9 +15,16 @@ class ProgressPage extends StatefulWidget {
 class _ProgressPageState extends State<ProgressPage> {
   static const Color lavender = Color(0xFFB9A7E8);
 
+  static const int a1TotalLessons = 12;
+  static const int a2TotalLessons = 16;
+
   bool _loading = true;
 
-  int _completedLessons = 0;
+  int _a1CompletedLessons = 0;
+  int _a2CompletedLessons = 0;
+
+  bool _a2ExamCompleted = false;
+
   int _totalXp = 0;
   int _practiceSessions = 0;
   int _speakingSessions = 0;
@@ -30,9 +38,37 @@ class _ProgressPageState extends State<ProgressPage> {
   }
 
   Future<void> _loadProgress() async {
-    final completed =
+    final prefs = await SharedPreferences.getInstance();
+
+    // -----------------------------
+    // A1
+    // -----------------------------
+    final a1Completed =
         await A1ProgressService.getCompletedLessons();
 
+    // -----------------------------
+    // A2
+    // -----------------------------
+    int a2Completed = 0;
+
+    for (int i = 0; i < a2TotalLessons; i++) {
+      final lessonId = i + 1;
+
+      final completed = prefs.getBool(
+        'a2_lesson_completed_$lessonId',
+      );
+
+      if (completed == true) {
+        a2Completed++;
+      }
+    }
+
+    final a2ExamCompleted =
+        prefs.getBool('a2_completed') ?? false;
+
+    // -----------------------------
+    // General progress
+    // -----------------------------
     final xp = await ProgressService.getTotalXp();
     final practice =
         await ProgressService.getPracticeSessions();
@@ -46,22 +82,72 @@ class _ProgressPageState extends State<ProgressPage> {
     if (!mounted) return;
 
     setState(() {
-      _completedLessons = completed.length;
+      _a1CompletedLessons = a1Completed.length;
+      _a2CompletedLessons = a2Completed;
+
+      _a2ExamCompleted = a2ExamCompleted;
+
       _totalXp = xp;
       _practiceSessions = practice;
       _speakingSessions = speaking;
       _studyDays = studyDays;
       _streak = streak;
+
       _loading = false;
     });
   }
 
   double get _a1Progress {
-    return (_completedLessons / 12).clamp(0.0, 1.0);
+    return (_a1CompletedLessons / a1TotalLessons)
+        .clamp(0.0, 1.0);
   }
 
   int get _a1Percent {
     return (_a1Progress * 100).round();
+  }
+
+  double get _a2Progress {
+    final completedParts =
+        _a2CompletedLessons +
+        (_a2ExamCompleted ? 1 : 0);
+
+    const totalParts = a2TotalLessons + 1;
+
+    return (completedParts / totalParts)
+        .clamp(0.0, 1.0);
+  }
+
+  int get _a2Percent {
+    return (_a2Progress * 100).round();
+  }
+
+  int get _totalCompletedLessons {
+    return _a1CompletedLessons +
+        _a2CompletedLessons;
+  }
+
+  String get _currentLevel {
+    if (_a2ExamCompleted) {
+      return 'B1';
+    }
+
+    if (_a1CompletedLessons >= a1TotalLessons) {
+      return 'A2';
+    }
+
+    return 'A1';
+  }
+
+  int get _currentLevelPercent {
+    if (_a2ExamCompleted) {
+      return 100;
+    }
+
+    if (_a1CompletedLessons >= a1TotalLessons) {
+      return _a2Percent;
+    }
+
+    return _a1Percent;
   }
 
   @override
@@ -153,10 +239,10 @@ class _ProgressPageState extends State<ProgressPage> {
                       title: lang.isPersian
                           ? 'درس‌ها'
                           : 'Lessons',
-                      value: '$_completedLessons',
+                      value: '$_totalCompletedLessons',
                       subtitle: lang.isPersian
-                          ? 'از ۱۲'
-                          : 'of 12',
+                          ? 'تکمیل‌شده'
+                          : 'completed',
                       color: lavender,
                     ),
                   ),
@@ -221,9 +307,7 @@ class _ProgressPageState extends State<ProgressPage> {
                     child: _smallStatCard(
                       context,
                       icon: Icons.mic_rounded,
-                      title: lang.isPersian
-                          ? 'Speaking'
-                          : 'Speaking',
+                      title: 'Speaking',
                       value: '$_speakingSessions',
                       subtitle: lang.isPersian
                           ? 'جلسه'
@@ -251,6 +335,34 @@ class _ProgressPageState extends State<ProgressPage> {
 
               const SizedBox(height: 20),
 
+              _levelProgressCard(
+                context,
+                lang,
+                level: 'A1',
+                completedLessons:
+                    _a1CompletedLessons,
+                totalLessons: a1TotalLessons,
+                percent: _a1Percent,
+                progress: _a1Progress,
+                examCompleted: false,
+              ),
+
+              const SizedBox(height: 14),
+
+              _levelProgressCard(
+                context,
+                lang,
+                level: 'A2',
+                completedLessons:
+                    _a2CompletedLessons,
+                totalLessons: a2TotalLessons,
+                percent: _a2Percent,
+                progress: _a2Progress,
+                examCompleted: _a2ExamCompleted,
+              ),
+
+              const SizedBox(height: 18),
+
               _examCard(context, lang),
 
               const SizedBox(height: 18),
@@ -270,7 +382,8 @@ class _ProgressPageState extends State<ProgressPage> {
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: lavender.withOpacity(0.13),
+                        color:
+                            lavender.withOpacity(0.13),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -288,23 +401,38 @@ class _ProgressPageState extends State<ProgressPage> {
                             CrossAxisAlignment.start,
                         children: [
                           Text(
-                            lang.isPersian
-                                ? 'ادامه بده! 🐱'
-                                : 'Keep going! 🐱',
+                            _a2ExamCompleted
+                                ? (lang.isPersian
+                                    ? 'A2 کامل شد! 🎉'
+                                    : 'A2 completed! 🎉')
+                                : _a1CompletedLessons >=
+                                          a1TotalLessons
+                                    ? (lang.isPersian
+                                        ? 'برو سراغ A2! 🐱'
+                                        : 'Time for A2! 🐱')
+                                    : (lang.isPersian
+                                        ? 'ادامه بده! 🐱'
+                                        : 'Keep going! 🐱'),
                             style: const TextStyle(
                               fontSize: 17,
-                              fontWeight: FontWeight.w700,
+                              fontWeight:
+                                  FontWeight.w700,
                             ),
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            _completedLessons == 0
+                            _a2ExamCompleted
                                 ? (lang.isPersian
-                                    ? 'اولین درست رو شروع کن و میو پیشرفتت رو ثبت می‌کنه.'
-                                    : 'Start your first lesson and Meow will track your progress.')
-                                : (lang.isPersian
-                                    ? '$_completedLessons درس رو کامل کردی. داری جلو می‌ری! 🔥'
-                                    : 'You completed $_completedLessons lessons. Keep going! 🔥'),
+                                    ? 'همه درس‌های A2 و امتحان نهایی را با موفقیت کامل کردی. 🔥'
+                                    : 'You completed all A2 lessons and passed the final exam. 🔥')
+                                : _a1CompletedLessons <
+                                          a1TotalLessons
+                                    ? (lang.isPersian
+                                        ? '$_a1CompletedLessons از $a1TotalLessons درس A1 را کامل کردی.'
+                                        : 'You completed $_a1CompletedLessons of $a1TotalLessons A1 lessons.')
+                                    : (lang.isPersian
+                                        ? '$_a2CompletedLessons از $a2TotalLessons درس A2 را کامل کردی.'
+                                        : 'You completed $_a2CompletedLessons of $a2TotalLessons A2 lessons.'),
                             style: const TextStyle(
                               fontSize: 13,
                               color: Colors.grey,
@@ -328,6 +456,9 @@ class _ProgressPageState extends State<ProgressPage> {
     BuildContext context,
     MeowLocalizations lang,
   ) {
+    final currentLevel = _currentLevel;
+    final percent = _currentLevelPercent;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -374,9 +505,9 @@ class _ProgressPageState extends State<ProgressPage> {
                       ),
                     ),
                     const SizedBox(height: 2),
-                    const Text(
-                      'A1',
-                      style: TextStyle(
+                    Text(
+                      currentLevel,
+                      style: const TextStyle(
                         fontSize: 27,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.5,
@@ -398,7 +529,7 @@ class _ProgressPageState extends State<ProgressPage> {
                       BorderRadius.circular(14),
                 ),
                 child: Text(
-                  '$_a1Percent%',
+                  '$percent%',
                   style: const TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
@@ -414,7 +545,7 @@ class _ProgressPageState extends State<ProgressPage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
-              value: _a1Progress,
+              value: percent / 100,
               minHeight: 9,
               backgroundColor:
                   lavender.withOpacity(0.16),
@@ -428,9 +559,13 @@ class _ProgressPageState extends State<ProgressPage> {
           const SizedBox(height: 10),
 
           Text(
-            lang.isPersian
-                ? '$_a1Percent٪ از سطح A1 تکمیل شده'
-                : '$_a1Percent% of A1 completed',
+            currentLevel == 'B1'
+                ? (lang.isPersian
+                    ? 'A2 را کامل کردی و آماده B1 هستی 🎯'
+                    : 'A2 completed. You are ready for B1 🎯')
+                : lang.isPersian
+                    ? '$percent٪ از سطح $currentLevel تکمیل شده'
+                    : '$percent% of $currentLevel completed',
             style: const TextStyle(
               fontSize: 13,
               color: Colors.grey,
@@ -441,10 +576,129 @@ class _ProgressPageState extends State<ProgressPage> {
     );
   }
 
+  Widget _levelProgressCard(
+    BuildContext context,
+    MeowLocalizations lang, {
+    required String level,
+    required int completedLessons,
+    required int totalLessons,
+    required int percent,
+    required double progress,
+    required bool examCompleted,
+  }) {
+    final isComplete = percent >= 100;
+
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: isComplete
+            ? Colors.green.withOpacity(0.07)
+            : Theme.of(context)
+                .colorScheme
+                .surfaceContainerHighest
+                .withOpacity(0.35),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: isComplete
+              ? Colors.green.withOpacity(0.18)
+              : Colors.grey.withOpacity(0.10),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                level,
+                style: const TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(width: 8),
+              if (isComplete)
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: Colors.green,
+                  size: 20,
+                ),
+              const Spacer(),
+              Text(
+                '$percent%',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: lavender,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              backgroundColor:
+                  lavender.withOpacity(0.12),
+              valueColor:
+                  const AlwaysStoppedAnimation<Color>(
+                lavender,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 9),
+
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  lang.isPersian
+                      ? '$completedLessons از $totalLessons درس'
+                      : '$completedLessons of $totalLessons lessons',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              if (level == 'A2')
+                Text(
+                  examCompleted
+                      ? (lang.isPersian
+                          ? 'امتحان ✓'
+                          : 'Exam ✓')
+                      : (lang.isPersian
+                          ? 'امتحان باقی مانده'
+                          : 'Exam remaining'),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: examCompleted
+                        ? Colors.green
+                        : Colors.grey,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _examCard(
     BuildContext context,
     MeowLocalizations lang,
   ) {
+    final a1Complete =
+        _a1CompletedLessons >= a1TotalLessons;
+
+    final a2Complete = _a2ExamCompleted;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -463,9 +717,13 @@ class _ProgressPageState extends State<ProgressPage> {
               color: lavender.withOpacity(0.13),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.assignment_rounded,
-              color: lavender,
+            child: Icon(
+              a2Complete
+                  ? Icons.emoji_events_rounded
+                  : Icons.assignment_rounded,
+              color: a2Complete
+                  ? Colors.green
+                  : lavender,
               size: 25,
             ),
           ),
@@ -479,8 +737,8 @@ class _ProgressPageState extends State<ProgressPage> {
               children: [
                 Text(
                   lang.isPersian
-                      ? 'امتحان A1'
-                      : 'A1 Exam',
+                      ? 'وضعیت سطح A2'
+                      : 'A2 Level Status',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -488,13 +746,17 @@ class _ProgressPageState extends State<ProgressPage> {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  _completedLessons == 12
+                  a2Complete
                       ? (lang.isPersian
-                          ? 'تمام درس‌ها کامل شده. امتحان آماده است! 🎯'
-                          : 'All lessons completed. The exam is ready! 🎯')
-                      : (lang.isPersian
-                          ? '$_completedLessons از ۱۲ درس کامل شده'
-                          : '$_completedLessons of 12 lessons completed'),
+                          ? 'A2 با موفقیت کامل شده و B1 باز است 🎯'
+                          : 'A2 completed successfully. B1 is unlocked 🎯')
+                      : a1Complete
+                          ? (lang.isPersian
+                              ? 'درس‌های A2 را کامل کن و بعد امتحان نهایی را بده.'
+                              : 'Complete the A2 lessons, then take the final exam.')
+                          : (lang.isPersian
+                              ? 'ابتدا باید سطح A1 را کامل کنی.'
+                              : 'Complete A1 first.'),
                   style: const TextStyle(
                     fontSize: 13,
                     color: Colors.grey,
@@ -505,12 +767,16 @@ class _ProgressPageState extends State<ProgressPage> {
           ),
 
           Icon(
-            _completedLessons == 12
+            a2Complete
                 ? Icons.check_circle_rounded
-                : Icons.lock_outline_rounded,
-            color: _completedLessons == 12
-                ? const Color(0xFF65A77A)
-                : Colors.grey,
+                : a1Complete
+                    ? Icons.school_rounded
+                    : Icons.lock_outline_rounded,
+            color: a2Complete
+                ? Colors.green
+                : a1Complete
+                    ? lavender
+                    : Colors.grey,
           ),
         ],
       ),
