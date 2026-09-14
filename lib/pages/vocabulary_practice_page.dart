@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'a1_vocabulary_practice_data.dart';
+import 'a2_vocabulary_practice_data.dart';
 import 'vocabulary_practice_models.dart';
 import 'vocabulary_practice_service.dart';
 
@@ -27,11 +28,16 @@ class _VocabularyPracticePageState
   bool _answered = false;
   String? _selectedAnswer;
 
+  List<VocabularyPracticeQuestion> _session = [];
+
   @override
   void initState() {
     super.initState();
 
-    _items = A1VocabularyPracticeData.all;
+    _items = [
+      ...A1VocabularyPracticeData.all,
+      ...A2VocabularyPracticeData.all,
+    ];
 
     _startSession();
   }
@@ -51,17 +57,14 @@ class _VocabularyPracticePageState
     }
 
     setState(() {
+      _session = session;
       _questionNumber = 0;
       _score = 0;
       _answered = false;
       _selectedAnswer = null;
       _question = session.first;
     });
-
-    _session = session;
   }
-
-  List<VocabularyPracticeQuestion> _session = [];
 
   void _selectAnswer(String answer) {
     if (_answered || _question == null) {
@@ -238,7 +241,7 @@ class _VocabularyPracticePageState
                     children: [
                       Text(
                         question.item.level,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: lavender,
                           fontWeight: FontWeight.bold,
                         ),
@@ -330,12 +333,14 @@ class _VocabularyPracticePageState
                               ),
                             ),
                           ),
+
                           if (_answered &&
                               option == question.correctAnswer)
                             const Icon(
                               Icons.check_circle,
                               color: Colors.green,
                             ),
+
                           if (_answered &&
                               option == _selectedAnswer &&
                               option != question.correctAnswer)
@@ -404,3 +409,7 @@ class _VocabularyPracticePageState
     );
   }
 }
+
+حالا A1 و A2 هر دو متصل‌اند و از بین واژگان هر دو سطح، برای هر جلسه ۱۰ سؤال تصادفی ساخته می‌شود. 🐱📚
+
+فعلاً هیچ فایل دیگری را تغییر نده. اول همین را جایگزین کن و ذخیره کن.
