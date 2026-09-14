@@ -174,7 +174,11 @@ class A2LessonsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    lesson.topic,
+                    _getLessonTopic(
+                      lang,
+                      lesson,
+                      lessonNumber,
+                    ),
                     style: const TextStyle(
                       fontSize: 13,
                       color: Colors.grey,
@@ -228,6 +232,42 @@ class A2LessonsPage extends StatelessWidget {
     }
 
     return lesson.title;
+  }
+
+  String _getLessonTopic(
+    MeowLocalizations lang,
+    A2Lesson lesson,
+    int lessonNumber,
+  ) {
+    if (!lang.isPersian) {
+      return lesson.topic;
+    }
+
+    const persianTopics = [
+      'صحبت درباره برنامه‌های روزانه، عادت‌ها و فعالیت‌های روزمره',
+      'یادگیری زبان انگلیسی برای خرید و موقعیت‌های فروشگاهی',
+      'صحبت درباره غذا، نوشیدنی و موقعیت‌های رستوران',
+      'صحبت درباره خانه و فعالیت‌های روزمره',
+      'صحبت درباره کار، شغل و محیط کاری',
+      'صحبت درباره اوقات فراغت، سرگرمی‌ها و فعالیت‌های آزاد',
+      'صحبت درباره سلامتی و مراقبت از خود',
+      'صحبت درباره سفر، مسیرها و وسایل حمل‌ونقل',
+      'صحبت درباره آب‌وهوا و شرایط جوی',
+      'صحبت درباره دوستان، روابط و تعاملات اجتماعی',
+      'صحبت درباره برنامه‌ریزی، قرارها و زمان‌بندی',
+      'صحبت درباره تجربه‌ها و اتفاقات گذشته',
+      'صحبت درباره زندگی شهری و موقعیت‌های روزمره در شهر',
+      'تمرین ارتباطات و گفت‌وگوهای روزمره',
+      'تمرین زبان انگلیسی در موقعیت‌های واقعی زندگی',
+      'مرور و جمع‌بندی مطالب سطح A2',
+    ];
+
+    if (lessonNumber >= 1 &&
+        lessonNumber <= persianTopics.length) {
+      return persianTopics[lessonNumber - 1];
+    }
+
+    return lesson.topic;
   }
 
   Widget _examCard(
@@ -1017,7 +1057,6 @@ class _A2LessonDetailPageState
               ],
             ),
           ),
-
           Expanded(
             child: ListView(
               padding:
