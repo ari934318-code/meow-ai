@@ -10,10 +10,65 @@ import 'a2_data.dart';
 import 'a2_models.dart';
 import 'a2_exam_page.dart';
 
-class A2LessonsPage extends StatelessWidget {
+class A2LessonsPage extends StatefulWidget {
   const A2LessonsPage({super.key});
 
+  @override
+  State<A2LessonsPage> createState() => _A2LessonsPageState();
+}
+
+class _A2LessonsPageState extends State<A2LessonsPage> {
   static const Color lavender = Color(0xFFB9A7E8);
+
+  final Set<String> _completedLessons = {};
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCompletedLessons();
+  }
+
+  Future<void> _loadCompletedLessons() async {
+    final prefs = await SharedPreferences.getInstance();
+    final completed = <String>{};
+
+    for (final lesson in a2Lessons) {
+      if (prefs.getBool(
+            'a2_lesson_completed_${lesson.id}',
+          ) ==
+          true) {
+        completed.add(lesson.id);
+      }
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _completedLessons
+        ..clear()
+        ..addAll(completed);
+      _loading = false;
+    });
+  }
+
+  bool _isLessonUnlocked(int index) {
+    if (index == 0) {
+      return true;
+    }
+
+    return _completedLessons.contains(
+      a2Lessons[index - 1].id,
+    );
+  }
+
+  bool get _examUnlocked {
+    return a2Lessons.every(
+      (lesson) => _completedLessons.contains(
+        lesson.id,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,60 +88,66 @@ class A2LessonsPage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(
-            20,
-            8,
-            20,
-            110,
-          ),
-          children: [
-            Text(
-              lang.isPersian
-                  ? 'درس‌های A2'
-                  : 'A2 Lessons',
-              style: const TextStyle(
-                fontSize: 29,
-                fontWeight: FontWeight.w700,
-                letterSpacing: -0.8,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              lang.isPersian
-                  ? 'انگلیسی روزمره را مرحله‌به‌مرحله یاد بگیر.'
-                  : 'Learn practical English step by step.',
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 22),
-            ...List.generate(
-              a2Lessons.length,
-              (index) {
-                final lesson = a2Lessons[index];
-
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 14,
+        child: _loading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: lavender,
+                ),
+              )
+            : ListView(
+                padding: const EdgeInsets.fromLTRB(
+                  20,
+                  8,
+                  20,
+                  110,
+                ),
+                children: [
+                  Text(
+                    lang.isPersian
+                        ? 'درس‌های A2'
+                        : 'A2 Lessons',
+                    style: const TextStyle(
+                      fontSize: 29,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.8,
+                    ),
                   ),
-                  child: _lessonCard(
+                  const SizedBox(height: 6),
+                  Text(
+                    lang.isPersian
+                        ? 'انگلیسی روزمره را مرحله‌به‌مرحله یاد بگیر.'
+                        : 'Learn practical English step by step.',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 22),
+                  ...List.generate(
+                    a2Lessons.length,
+                    (index) {
+                      final lesson = a2Lessons[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 14,
+                        ),
+                        child: _lessonCard(
+                          context,
+                          lang,
+                          lesson,
+                          index,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 4),
+                  _examCard(
                     context,
                     lang,
-                    lesson,
-                    index,
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 4),
-            _examCard(
-              context,
-              lang,
-            ),
-          ],
-        ),
+                ],
+              ),
       ),
     );
   }
@@ -98,98 +159,125 @@ class A2LessonsPage extends StatelessWidget {
     int index,
   ) {
     final lessonNumber = index + 1;
+    final unlocked = _isLessonUnlocked(index);
+    final completed =
+        _completedLessons.contains(lesson.id);
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(24),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => A2LessonDetailPage(
-              lesson: lesson,
+    return Opacity(
+      opacity: unlocked ? 1.0 : 0.52,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
+        onTap: unlocked
+            ? () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        A2LessonDetailPage(
+                      lesson: lesson,
+                    ),
+                  ),
+                ).then((_) {
+                  _loadCompletedLessons();
+                });
+              }
+            : null,
+        child: Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Theme.of(context)
+                .colorScheme
+                .surface,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: Colors.grey.withOpacity(0.14),
             ),
           ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: Theme.of(context)
-              .colorScheme
-              .surface,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.14),
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 54,
-              height: 54,
-              decoration: BoxDecoration(
-                color: lavender.withOpacity(0.14),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Text(
-                  '$lessonNumber',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: lavender,
-                  ),
+          child: Row(
+            children: [
+              Container(
+                width: 54,
+                height: 54,
+                decoration: BoxDecoration(
+                  color: completed
+                      ? Colors.green.withOpacity(0.12)
+                      : lavender.withOpacity(0.14),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: completed
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: Colors.green,
+                          size: 25,
+                        )
+                      : Text(
+                          '$lessonNumber',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: lavender,
+                          ),
+                        ),
                 ),
               ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    lang.isPersian
-                        ? 'درس $lessonNumber'
-                        : 'Lesson $lessonNumber',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey,
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lang.isPersian
+                          ? 'درس $lessonNumber'
+                          : 'Lesson $lessonNumber',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _getLessonTitle(
-                      lang,
-                      lesson,
-                      lessonNumber,
+                    const SizedBox(height: 4),
+                    Text(
+                      _getLessonTitle(
+                        lang,
+                        lesson,
+                        lessonNumber,
+                      ),
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
+                    const SizedBox(height: 5),
+                    Text(
+                      _getLessonTopic(
+                        lang,
+                        lesson,
+                        lessonNumber,
+                      ),
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    _getLessonTopic(
-                      lang,
-                      lesson,
-                      lessonNumber,
-                    ),
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
-            const Icon(
-              Icons.chevron_right_rounded,
-              color: Colors.grey,
-            ),
-          ],
+              const SizedBox(width: 8),
+              Icon(
+                completed
+                    ? Icons.check_circle_rounded
+                    : unlocked
+                        ? Icons.chevron_right_rounded
+                        : Icons.lock_rounded,
+                color: completed
+                    ? Colors.green
+                    : unlocked
+                        ? Colors.grey
+                        : Colors.grey,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -271,72 +359,84 @@ class A2LessonsPage extends StatelessWidget {
     BuildContext context,
     MeowLocalizations lang,
   ) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(24),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const A2ExamPage(),
-          ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: lavender.withOpacity(0.10),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: lavender.withOpacity(0.20),
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(
-                color: lavender.withOpacity(0.15),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.workspace_premium_rounded,
-                color: lavender,
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    lang.isPersian
-                        ? 'امتحان نهایی A2'
-                        : 'A2 Final Exam',
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                    ),
+    final unlocked = _examUnlocked;
+
+    return Opacity(
+      opacity: unlocked ? 1.0 : 0.52,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
+        onTap: unlocked
+            ? () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const A2ExamPage(),
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    lang.isPersian
-                        ? '۶۰ سؤال • حداقل نمره قبولی ۷۰٪'
-                        : '60 questions • 70% passing score',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
+                );
+              }
+            : null,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: lavender.withOpacity(0.10),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: lavender.withOpacity(0.20),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: lavender.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  unlocked
+                      ? Icons.workspace_premium_rounded
+                      : Icons.lock_rounded,
+                  color: lavender,
+                ),
               ),
-            ),
-            const Icon(
-              Icons.chevron_right_rounded,
-              color: Colors.grey,
-            ),
-          ],
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lang.isPersian
+                          ? 'امتحان نهایی A2'
+                          : 'A2 Final Exam',
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      lang.isPersian
+                          ? '۶۰ سؤال • حداقل نمره قبولی ۷۰٪'
+                          : '60 questions • 70% passing score',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                unlocked
+                    ? Icons.chevron_right_rounded
+                    : Icons.lock_rounded,
+                color: Colors.grey,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -363,7 +463,8 @@ class _A2LessonDetailPageState
   static const int totalStages = 13;
 
   final FlutterTts _tts = FlutterTts();
-  final stt.SpeechToText _speech = stt.SpeechToText();
+  final stt.SpeechToText _speech =
+      stt.SpeechToText();
 
   int _currentStage = 0;
 
@@ -565,8 +666,7 @@ class _A2LessonDetailPageState
 
             if (index != null &&
                 answer != null) {
-              _questionAnswers[index] =
-                  answer;
+              _questionAnswers[index] = answer;
             }
           });
         }
@@ -588,8 +688,7 @@ class _A2LessonDetailPageState
 
             if (index != null &&
                 answer != null) {
-              _fillBlankAnswers[index] =
-                  answer;
+              _fillBlankAnswers[index] = answer;
             }
           });
         }
@@ -627,11 +726,9 @@ class _A2LessonDetailPageState
 
             if (index != null) {
               if (value == true) {
-                _speakingResults[index] =
-                    true;
+                _speakingResults[index] = true;
               } else if (value == false) {
-                _speakingResults[index] =
-                    false;
+                _speakingResults[index] = false;
               }
             }
           });
@@ -678,7 +775,7 @@ class _A2LessonDetailPageState
                 (item) => item.toString(),
               ).toList();
             }
-          });
+          }
         }
       }
 
@@ -787,8 +884,7 @@ class _A2LessonDetailPageState
           if (mounted) {
             setState(() {
               _isListening = false;
-              _listeningQuestionIndex =
-                  null;
+              _listeningQuestionIndex = null;
             });
           }
         }
@@ -860,8 +956,7 @@ class _A2LessonDetailPageState
             result.recognizedWords.trim();
 
         setState(() {
-          _recognizedTexts[questionIndex] =
-              text;
+          _recognizedTexts[questionIndex] = text;
         });
 
         if (result.finalResult) {
@@ -964,50 +1059,70 @@ class _A2LessonDetailPageState
     final total =
         widget.lesson.questions.length;
 
-    return total == 0 ||
-        _questionAnswers.length >= total;
+    if (total == 0) return true;
+
+    return Iterable<int>.generate(total)
+        .every(_questionAnswers.containsKey);
   }
 
   bool _allFillBlanksAnswered() {
     final total =
         widget.lesson.fillBlanks.length;
 
-    return total == 0 ||
-        _fillBlankAnswers.length >= total;
+    if (total == 0) return true;
+
+    return Iterable<int>.generate(total)
+        .every(_fillBlankAnswers.containsKey);
   }
 
   bool _allSpeakingAttempted() {
     final total =
         widget.lesson.speakingQuestions.length;
 
-    return total == 0 ||
-        _speakingResults.length >= total;
+    if (total == 0) return true;
+
+    return Iterable<int>.generate(total)
+        .every(_speakingResults.containsKey);
   }
 
   bool _allOrderingCompleted() {
     final total =
         widget.lesson.sentenceOrdering.length;
 
-    return total == 0 ||
-        _completedOrderingItems.length >=
-            total;
+    if (total == 0) return true;
+
+    return Iterable<int>.generate(total)
+        .every(_completedOrderingItems.contains);
   }
 
   bool _allBuildingCompleted() {
     final total =
         widget.lesson.sentenceBuilding.length;
 
-    return total == 0 ||
-        _completedBuildingItems.length >=
-            total;
+    if (total == 0) return true;
+
+    return Iterable<int>.generate(total)
+        .every(_completedBuildingItems.contains);
   }
 
   bool _allMatchingCompleted() {
     final total =
         widget.lesson.matching.length;
 
-    return total == 0 ||
-        _matchedItems.length >= total;
+    if (total == 0) return true;
+
+    return Iterable<int>.generate(total)
+        .every(_matchedItems.contains);
+  }
+
+  bool _allListeningCompleted() {
+    final total =
+        widget.lesson.sentences.length;
+
+    if (total == 0) return true;
+
+    return Iterable<int>.generate(total)
+        .every(_listenedItems.contains);
   }
 
   bool _isPassiveStage(int stage) {
@@ -1041,23 +1156,14 @@ class _A2LessonDetailPageState
     }
 
     if (_currentStage == 9) {
-      final total =
-          widget.lesson.sentences.length;
-
-      if (total == 0) {
-        return true;
-      }
-
-      return _listenedItems.length >= total;
+      return _allListeningCompleted();
     }
 
     if (_currentStage == 10) {
       return _allSpeakingAttempted();
     }
 
-    if (_completedStages.contains(
-      _currentStage,
-    )) {
+    if (_completedStages.contains(_currentStage)) {
       return true;
     }
 
@@ -1676,42 +1782,104 @@ class _A2LessonDetailPageState
                     ),
                   ),
                   const SizedBox(height: 10),
+
                   Text(
                     grammar.explanation,
                   ),
-                  const SizedBox(height: 14),
-                  ...grammar.examples.map(
-                    (example) => Padding(
-                      padding:
-                          const EdgeInsets.only(
-                        bottom: 8,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              example,
-                              style:
-                                  const TextStyle(
-                                fontStyle:
-                                    FontStyle.italic,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons
-                                  .volume_up_rounded,
-                              size: 20,
-                            ),
-                            onPressed: () =>
-                                _speak(
-                              example,
-                            ),
-                          ),
-                        ],
+
+                  if (lang.isPersian) ...[
+                    const SizedBox(height: 5),
+                    Text(
+                      grammar.explanationTranslation,
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.color
+                            ?.withOpacity(0.72),
                       ),
                     ),
+                  ],
+
+                  const SizedBox(height: 14),
+
+                  ...grammar.examples
+                      .asMap()
+                      .entries
+                      .map(
+                    (entry) {
+                      final index = entry.key;
+                      final example = entry.value;
+
+                      final translation =
+                          index <
+                                  grammar
+                                      .exampleTranslations
+                                      .length
+                              ? grammar
+                                  .exampleTranslations[index]
+                              : null;
+
+                      return Padding(
+                        padding:
+                            const EdgeInsets.only(
+                          bottom: 10,
+                        ),
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment
+                                  .start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    example,
+                                    style:
+                                        const TextStyle(
+                                      fontStyle:
+                                          FontStyle
+                                              .italic,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon:
+                                      const Icon(
+                                    Icons
+                                        .volume_up_rounded,
+                                    size: 20,
+                                  ),
+                                  onPressed: () =>
+                                      _speak(
+                                    example,
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            if (lang.isPersian &&
+                                translation != null) ...[
+                              const SizedBox(height: 2),
+                              Text(
+                                translation,
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  )
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color
+                                      ?.withOpacity(
+                                        0.72,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -2599,6 +2767,11 @@ class _A2LessonDetailPageState
     final total =
         widget.lesson.sentences.length;
 
+    final completedCount =
+        Iterable<int>.generate(total)
+            .where(_listenedItems.contains)
+            .length;
+
     return Column(
       crossAxisAlignment:
           CrossAxisAlignment.start,
@@ -2606,7 +2779,7 @@ class _A2LessonDetailPageState
         _progressCard(
           context,
           lang,
-          _listenedItems.length,
+          completedCount,
           total,
           lang.isPersian
               ? 'برای عبور از این مرحله باید به همه جمله‌ها گوش بدهی.'
@@ -2692,8 +2865,8 @@ class _A2LessonDetailPageState
           Center(
             child: Text(
               lang.isPersian
-                  ? '${_listenedItems.length} از $total جمله شنیده شد'
-                  : '${_listenedItems.length} of $total sentences listened',
+                  ? '$completedCount از $total جمله شنیده شد'
+                  : '$completedCount of $total sentences listened',
               style:
                   const TextStyle(
                 color: Colors.grey,
@@ -2712,12 +2885,17 @@ class _A2LessonDetailPageState
     final total =
         widget.lesson.speakingQuestions.length;
 
+    final completedCount =
+        Iterable<int>.generate(total)
+            .where(_speakingResults.containsKey)
+            .length;
+
     return Column(
       children: [
         _progressCard(
           context,
           lang,
-          _speakingResults.length,
+          completedCount,
           total,
           lang.isPersian
               ? 'همه سؤال‌ها را حداقل یک بار امتحان کن.'
@@ -2970,6 +3148,11 @@ class _A2LessonDetailPageState
     int total,
     String instruction,
   ) {
+    final safeCompleted =
+        total == 0
+            ? 0
+            : completed.clamp(0, total);
+
     return _card(
       child: Column(
         crossAxisAlignment:
@@ -2996,7 +3179,7 @@ class _A2LessonDetailPageState
                       LinearProgressIndicator(
                     value: total == 0
                         ? 1
-                        : completed / total,
+                        : safeCompleted / total,
                     minHeight: 7,
                     backgroundColor:
                         Colors.grey
@@ -3011,7 +3194,7 @@ class _A2LessonDetailPageState
               ),
               const SizedBox(width: 12),
               Text(
-                '$completed/$total',
+                '$safeCompleted/$total',
                 style:
                     const TextStyle(
                   color: Colors.grey,
