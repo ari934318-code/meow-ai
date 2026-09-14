@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/levels/a1/basics/a1_basics_models.dart';
 import '../data/levels/a1/basics/a1_basics_ui_config.dart';
+import '../localization.dart';
 
 class A1BasicsLessonPage extends StatefulWidget {
   final A1BasicLesson lesson;
@@ -18,10 +19,14 @@ class A1BasicsLessonPage extends StatefulWidget {
   });
 
   @override
-  State<A1BasicsLessonPage> createState() => _A1BasicsLessonPageState();
+  State<A1BasicsLessonPage> createState() =>
+      _A1BasicsLessonPageState();
 }
 
-class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
+class _A1BasicsLessonPageState
+    extends State<A1BasicsLessonPage> {
+  static const Color lavender = Color(0xFFB9A7E8);
+
   static const String _completedLessonsKey =
       'a1_basics_completed_lessons';
 
@@ -41,14 +46,24 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   bool _speechAvailable = false;
   bool _isListening = false;
 
-  // true = آموزش
-  // false = تمرین
   bool _learningMode = true;
 
   int? _currentSpeakingIndex;
   String _recognizedText = '';
 
   int _currentStage = 0;
+
+  bool get _isPersian =>
+      MeowLocalizations.of(context).isPersian;
+
+  Color get _surface =>
+      Theme.of(context).colorScheme.surface;
+
+  Color get _outline =>
+      Theme.of(context)
+          .colorScheme
+          .outline
+          .withAlpha(36);
 
   @override
   void initState() {
@@ -103,8 +118,11 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
           _stage('Stage 7', 'مرحله ۷', [19, 20, 21, 22]),
           _stage('Stage 8', 'مرحله ۸',
               [23, 24, 25, 26, 27]),
-          _stage('Stage 9', 'مرحله ۹',
-              List.generate(11, (i) => i + 28)),
+          _stage(
+            'Stage 9',
+            'مرحله ۹',
+            List.generate(11, (i) => i + 28),
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -122,8 +140,11 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
               [19, 20, 21, 22, 23]),
           _stage('Stage 7', 'مرحله ۷',
               [24, 25, 26, 27]),
-          _stage('Stage 8', 'مرحله ۸',
-              List.generate(10, (i) => i + 28)),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(10, (i) => i + 28),
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -143,8 +164,11 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
               [18, 19, 20, 21, 22, 23]),
           _stage('Stage 7', 'مرحله ۷',
               [24, 25, 26, 27]),
-          _stage('Stage 8', 'مرحله ۸',
-              List.generate(11, (i) => i + 28)),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(11, (i) => i + 28),
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -162,8 +186,11 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
               [18, 19, 20, 21, 22, 23]),
           _stage('Stage 7', 'مرحله ۷',
               [24, 25, 26, 27, 28]),
-          _stage('Stage 8', 'مرحله ۸',
-              List.generate(10, (i) => i + 29)),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(10, (i) => i + 29),
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -196,17 +223,32 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       case 'lesson_7':
       case '7':
         return [
-          _stage('Stage 1', 'مرحله ۱',
-              List.generate(6, (i) => i)),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(6, (i) => i),
+          ),
           _stage('Stage 2', 'مرحله ۲', [6, 7]),
-          _stage('Stage 3', 'مرحله ۳',
-              List.generate(6, (i) => i + 8)),
-          _stage('Stage 4', 'مرحله ۴',
-              List.generate(9, (i) => i + 14)),
-          _stage('Stage 5', 'مرحله ۵',
-              List.generate(6, (i) => i + 23)),
-          _stage('Stage 6', 'مرحله ۶',
-              List.generate(5, (i) => i + 29)),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            List.generate(6, (i) => i + 8),
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(9, (i) => i + 14),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(6, (i) => i + 23),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(5, (i) => i + 29),
+          ),
           _stage('Stage 7', 'مرحله ۷', [34, 35, 36]),
           _stage('Stage 8', 'مرحله ۸', [37, 38, 39]),
           _speakingStage('Speaking', 'تمرین مکالمه'),
@@ -216,20 +258,38 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       case 'lesson_8':
       case '8':
         return [
-          _stage('Stage 1', 'مرحله ۱',
-              List.generate(6, (i) => i)),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(6, (i) => i),
+          ),
           _stage('Stage 2', 'مرحله ۲', [6, 7]),
           _stage('Stage 3', 'مرحله ۳', [8, 9]),
-          _stage('Stage 4', 'مرحله ۴',
-              List.generate(9, (i) => i + 10)),
-          _stage('Stage 5', 'مرحله ۵',
-              List.generate(6, (i) => i + 19)),
-          _stage('Stage 6', 'مرحله ۶',
-              List.generate(5, (i) => i + 25)),
-          _stage('Stage 7', 'مرحله ۷',
-              [30, 31, 32, 33]),
-          _stage('Stage 8', 'مرحله ۸',
-              List.generate(6, (i) => i + 34)),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(9, (i) => i + 10),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(6, (i) => i + 19),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(5, (i) => i + 25),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [30, 31, 32, 33],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(6, (i) => i + 34),
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -238,18 +298,36 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       case '9':
         return [
           _stage('Stage 1', 'مرحله ۱', [0, 5, 10]),
-          _stage('Stage 2', 'مرحله ۲',
-              [1, 2, 6, 7, 11]),
-          _stage('Stage 3', 'مرحله ۳',
-              [3, 4, 8, 9, 12, 13]),
-          _stage('Stage 4', 'مرحله ۴',
-              List.generate(5, (i) => i + 14)),
-          _stage('Stage 5', 'مرحله ۵',
-              List.generate(5, (i) => i + 19)),
-          _stage('Stage 6', 'مرحله ۶',
-              List.generate(6, (i) => i + 24)),
-          _stage('Stage 7', 'مرحله ۷',
-              List.generate(10, (i) => i + 30)),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 2, 6, 7, 11],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [3, 4, 8, 9, 12, 13],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(5, (i) => i + 14),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(5, (i) => i + 19),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(6, (i) => i + 24),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(10, (i) => i + 30),
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -262,14 +340,26 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
           _stage('Stage 3', 'مرحله ۳',
               [4, 5, 13, 14, 18]),
           _stage('Stage 4', 'مرحله ۴', [6, 15]),
-          _stage('Stage 5', 'مرحله ۵',
-              [9, 10, 16, 17, 19, 20, 21, 22, 23, 24]),
-          _stage('Stage 6', 'مرحله ۶',
-              List.generate(5, (i) => i + 25)),
-          _stage('Stage 7', 'مرحله ۷',
-              List.generate(5, (i) => i + 30)),
-          _stage('Stage 8', 'مرحله ۸',
-              List.generate(5, (i) => i + 35)),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [9, 10, 16, 17, 19, 20, 21, 22, 23, 24],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(5, (i) => i + 25),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(5, (i) => i + 30),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(5, (i) => i + 35),
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -277,23 +367,51 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       case 'lesson_11':
       case '11':
         return [
-          _stage('Stage 1', 'مرحله ۱', [0, 3, 5, 7, 10]),
-          _stage('Stage 2', 'مرحله ۲',
-              [1, 2, 4, 6, 8, 9, 11]),
-          _stage('Stage 3', 'مرحله ۳',
-              [12, 13, 14, 15]),
-          _stage('Stage 4', 'مرحله ۴',
-              [16, 17, 18, 19]),
-          _stage('Stage 5', 'مرحله ۵',
-              [20, 21, 22, 23]),
-          _stage('Stage 6', 'مرحله ۶',
-              [24, 25, 26, 27, 33, 34, 35, 36, 37]),
-          _stage('Stage 7', 'مرحله ۷',
-              [28, 29, 30, 31, 32]),
-          _stage('Stage 8', 'مرحله ۸',
-              [38, 39, 40, 41, 42]),
-          _stage('Stage 9', 'مرحله ۹',
-              [43, 44, 45, 46]),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 3, 5, 7, 10],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 2, 4, 6, 8, 9, 11],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [12, 13, 14, 15],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [16, 17, 18, 19],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [24, 25, 26, 27, 33, 34, 35, 36, 37],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [28, 29, 30, 31, 32],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            [38, 39, 40, 41, 42],
+          ),
+          _stage(
+            'Stage 9',
+            'مرحله ۹',
+            [43, 44, 45, 46],
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -314,6 +432,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       title: title,
       titleFa: titleFa,
       description:
+          'Learn this part and then complete its exercises.',
+      descriptionFa:
           'این بخش را یاد بگیر و بعد تمرین‌های آن را انجام بده.',
       questionIndices: questions,
     );
@@ -327,6 +447,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       title: title,
       titleFa: titleFa,
       description:
+          'Answer the questions using your voice.',
+      descriptionFa:
           'با صدای خودت به سؤال‌ها پاسخ بده.',
       speakingIndices: List.generate(
         widget.lesson.speakingQuestions.length,
@@ -363,6 +485,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
           title: 'Stage ${i + 1}',
           titleFa: 'مرحله ${i + 1}',
           description:
+              'Learn this part and complete the exercises.',
+          descriptionFa:
               'مفهوم این بخش را یاد بگیر و سپس تمرین‌ها را انجام بده.',
           questionIndices: List.generate(
             end - start,
@@ -378,6 +502,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
           title: 'Speaking',
           titleFa: 'تمرین مکالمه',
           description:
+              'Answer the questions using your voice.',
+          descriptionFa:
               'با صدای خودت به سؤال‌ها پاسخ بده.',
           speakingIndices: List.generate(
             totalSpeaking,
@@ -416,7 +542,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       }
     }
 
-    if (_currentStage < widget.lesson.sections.length) {
+    if (_currentStage <
+        widget.lesson.sections.length) {
       return widget.lesson.sections[_currentStage];
     }
 
@@ -426,7 +553,10 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   String _normalizeTitle(String value) {
     return value
         .toLowerCase()
-        .replaceAll(RegExp(r'[^a-zA-Z0-9آ-ی]'), '');
+        .replaceAll(
+          RegExp(r'[^a-zA-Z0-9آ-ی]'),
+          '',
+        );
   }
 
   // =========================================================
@@ -456,7 +586,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   Future<void> _initSpeech() async {
     _speechAvailable = await _speech.initialize(
       onStatus: (status) {
-        if (status == 'done' || status == 'notListening') {
+        if (status == 'done' ||
+            status == 'notListening') {
           if (mounted) {
             setState(() {
               _isListening = false;
@@ -551,7 +682,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
 
     double bestSimilarity = 0;
 
-    for (final answer in speaking.acceptableAnswers) {
+    for (final answer
+        in speaking.acceptableAnswers) {
       final similarity = _similarity(
         text,
         _normalize(answer),
@@ -561,9 +693,11 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
           max(bestSimilarity, similarity);
     }
 
-    final correct = bestSimilarity >= 0.78;
+    final correct =
+        bestSimilarity >= 0.78;
 
-    if (A1BasicsUIConfig.speakingAttemptCountsAsComplete) {
+    if (A1BasicsUIConfig
+        .speakingAttemptCountsAsComplete) {
       _completedSpeaking.add(index);
     } else if (correct) {
       _completedSpeaking.add(index);
@@ -586,14 +720,19 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     bool correct,
     String suggestedAnswer,
   ) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context)
+        .hideCurrentSnackBar();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           correct
-              ? 'درست گفتی 😼✨'
-              : 'تقریباً! جمله پیشنهادی: $suggestedAnswer',
+              ? (_isPersian
+                  ? 'درست گفتی 😼✨'
+                  : 'Correct! 😼✨')
+              : (_isPersian
+                  ? 'تقریباً! جمله پیشنهادی: $suggestedAnswer'
+                  : 'Almost! Suggested answer: $suggestedAnswer'),
         ),
         behavior: SnackBarBehavior.floating,
       ),
@@ -603,8 +742,14 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   String _normalize(String value) {
     return value
         .toLowerCase()
-        .replaceAll(RegExp(r'[^\w\s]'), '')
-        .replaceAll(RegExp(r'\s+'), ' ')
+        .replaceAll(
+          RegExp(r'[^\w\s]'),
+          '',
+        )
+        .replaceAll(
+          RegExp(r'\s+'),
+          ' ',
+        )
         .trim();
   }
 
@@ -617,28 +762,40 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       return 1;
     }
 
-    final distance = _levenshtein(a, b);
-    final maxLength = max(a.length, b.length);
+    final distance =
+        _levenshtein(a, b);
+
+    final maxLength =
+        max(a.length, b.length);
 
     return 1 - (distance / maxLength);
   }
 
   int _levenshtein(String a, String b) {
-    final previous = List<int>.generate(
+    final previous =
+        List<int>.generate(
       b.length + 1,
       (i) => i,
     );
 
-    for (int i = 1; i <= a.length; i++) {
-      final current = List<int>.filled(
+    for (int i = 1;
+        i <= a.length;
+        i++) {
+      final current =
+          List<int>.filled(
         b.length + 1,
         0,
       );
 
       current[0] = i;
 
-      for (int j = 1; j <= b.length; j++) {
-        final cost = a[i - 1] == b[j - 1] ? 0 : 1;
+      for (int j = 1;
+          j <= b.length;
+          j++) {
+        final cost =
+            a[i - 1] == b[j - 1]
+                ? 0
+                : 1;
 
         current[j] = min(
           min(
@@ -649,7 +806,9 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
         );
       }
 
-      for (int j = 0; j <= b.length; j++) {
+      for (int j = 0;
+          j <= b.length;
+          j++) {
         previous[j] = current[j];
       }
     }
@@ -682,17 +841,22 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     }
 
     setState(() {
-      _currentStage = savedStage.clamp(
-        0,
-        _stages.length - 1,
-      );
+      _currentStage = savedStage
+          .clamp(
+            0,
+            _stages.length - 1,
+          )
+          .toInt();
 
       _learningMode =
-          A1BasicsUIConfig.teachBeforePractice;
+          A1BasicsUIConfig
+              .teachBeforePractice;
     });
   }
 
-  Future<void> _saveStage(int stage) async {
+  Future<void> _saveStage(
+    int stage,
+  ) async {
     if (!A1BasicsUIConfig.saveProgress) {
       return;
     }
@@ -711,81 +875,133 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   // =========================================================
 
   Widget _buildLearningContent() {
-    final section = _getCurrentSection();
+    final section =
+        _getCurrentSection();
 
     final examples =
-        section != null && section.examples.isNotEmpty
+        section != null &&
+                section.examples.isNotEmpty
             ? section.examples
-            : widget.lesson.examples.take(5).toList();
+            : widget.lesson.examples
+                .take(5)
+                .toList();
+
+    final sectionTitle =
+        section == null
+            ? (_isPersian
+                ? _stages[_currentStage]
+                    .titleFa
+                : _stages[_currentStage]
+                    .title)
+            : (_isPersian
+                ? section.titleFa
+                : section.title);
+
+    final sectionDescription =
+        section?.explanation ??
+            (_isPersian
+                ? _stages[_currentStage]
+                    .descriptionFa
+                : _stages[_currentStage]
+                    .description);
 
     return Column(
       crossAxisAlignment:
           CrossAxisAlignment.stretch,
       children: [
         _buildSectionTitle(
-          section?.titleFa ??
-              _stages[_currentStage].titleFa,
-          section?.explanation ??
-              _stages[_currentStage].description,
+          sectionTitle,
+          sectionDescription,
         ),
         SizedBox(
-          height: A1BasicsUIConfig.sectionSpacing,
+          height:
+              A1BasicsUIConfig.sectionSpacing,
         ),
-        if (A1BasicsUIConfig.showExamplesBeforeQuestions &&
+        if (A1BasicsUIConfig
+                .showExamplesBeforeQuestions &&
             examples.isNotEmpty) ...[
           Text(
-            'مثال‌ها',
+            _isPersian
+                ? 'مثال‌ها'
+                : 'Examples',
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
                 ?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight:
+                      FontWeight.bold,
                 ),
           ),
           SizedBox(
-            height: A1BasicsUIConfig.cardSpacing,
+            height:
+                A1BasicsUIConfig.cardSpacing,
           ),
           ...examples.map(
             _buildExample,
           ),
           SizedBox(
-            height: A1BasicsUIConfig.sectionSpacing,
+            height:
+                A1BasicsUIConfig
+                    .sectionSpacing,
           ),
         ],
-        if (A1BasicsUIConfig.showFeedbackAfterAnswer)
-          Card(
-            margin: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                A1BasicsUIConfig.cardRadius,
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(
-                A1BasicsUIConfig.pagePadding,
-              ),
-              child: const Text(
-                'اول مفهوم را یاد بگیر و مثال‌ها را ببین. '
-                'بعد وارد تمرین می‌شویم. '
-                'اینجا قرار نیست با یک جواب غلط از زندگی اخراجت کنیم 😼',
-              ),
-            ),
-          ),
+        if (A1BasicsUIConfig
+            .showFeedbackAfterAnswer)
+          _buildInfoCard(),
         SizedBox(
-          height: A1BasicsUIConfig.sectionSpacing,
+          height:
+              A1BasicsUIConfig
+                  .sectionSpacing,
         ),
         FilledButton(
           onPressed: _startPractice,
           style: FilledButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                A1BasicsUIConfig.buttonRadius,
+            backgroundColor: lavender,
+            foregroundColor: Colors.black87,
+            shape:
+                RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(
+                A1BasicsUIConfig
+                    .buttonRadius,
               ),
             ),
           ),
-          child: const Text('شروع تمرین'),
+          child: Text(
+            _isPersian
+                ? 'شروع تمرین'
+                : 'Start Practice',
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildInfoCard() {
+    return Container(
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: _outline,
+        ),
+      ),
+      child: Text(
+        _isPersian
+            ? 'اول مفهوم را یاد بگیر و مثال‌ها را ببین. '
+                'بعد وارد تمرین می‌شویم. '
+                'اینجا قرار نیست با یک جواب غلط از زندگی اخراجت کنیم 😼'
+            : 'Learn the concept and review the examples first. '
+                'Then move on to practice. '
+                'One wrong answer will not end civilization. 😼',
+        style: const TextStyle(
+          height: 1.5,
+        ),
+      ),
     );
   }
 
@@ -799,27 +1015,43 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     String title,
     String description,
   ) {
-    return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context)
-              .textTheme
-              .headlineSmall
-              ?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: _outline,
         ),
-        const SizedBox(height: 8),
-        Text(
-          description,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge,
-        ),
-      ],
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(
+                  fontWeight:
+                      FontWeight.w800,
+                  letterSpacing: -0.4,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            description,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(
+                  height: 1.45,
+                ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -830,10 +1062,13 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   Widget _buildQuestion(
     int index,
   ) {
-    final question = _questions[index];
+    final question =
+        _questions[index];
 
     final answered =
-        _answeredQuestions.contains(index);
+        _answeredQuestions.contains(
+      index,
+    );
 
     final selected =
         _selectedAnswers[index];
@@ -841,189 +1076,234 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     final isCorrect =
         selected == question.answer;
 
-    return Card(
+    return Container(
       margin: EdgeInsets.only(
-        bottom: A1BasicsUIConfig.cardSpacing,
+        bottom:
+            A1BasicsUIConfig.cardSpacing,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          A1BasicsUIConfig.cardRadius,
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: answered
+              ? (isCorrect
+                  ? Colors.green
+                      .withAlpha(55)
+                  : Colors.red
+                      .withAlpha(45))
+              : _outline,
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(
-          A1BasicsUIConfig.pagePadding,
-        ),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    question.question,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
-                if (A1BasicsUIConfig.enableTextToSpeech)
-                  IconButton(
-                    tooltip: 'Listen',
-                    onPressed: () =>
-                        _speak(question.question),
-                    icon: const Icon(
-                      Icons.volume_up_rounded,
-                    ),
-                  ),
-              ],
-            ),
-            SizedBox(
-              height: A1BasicsUIConfig.cardSpacing,
-            ),
-            ...question.options.map(
-              (option) {
-                final selectedThis =
-                    selected == option;
-
-                final correctOption =
-                    option == question.answer;
-
-                final showCorrect =
-                    answered &&
-                    A1BasicsUIConfig
-                        .showCorrectAnswerAfterMistake &&
-                    correctOption;
-
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom:
-                        A1BasicsUIConfig.cardSpacing,
-                  ),
-                  child: OutlinedButton(
-                    onPressed:
-                        answered && isCorrect
-                            ? null
-                            : () => _answerQuestion(
-                                  index,
-                                  option,
-                                ),
-                    style: OutlinedButton.styleFrom(
-                      alignment:
-                          AlignmentDirectional.centerStart,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
-                      side: BorderSide(
-                        color: showCorrect
-                            ? Colors.green
-                            : selectedThis
-                                ? Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .outline,
-                      ),
-                      shape:
-                          RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(
-                          A1BasicsUIConfig
-                              .buttonRadius,
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(option),
-                        ),
-                        if (showCorrect)
-                          const Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                          )
-                        else if (selectedThis)
-                          Icon(
-                            isCorrect
-                                ? Icons
-                                    .check_circle
-                                : Icons.cancel,
-                            color: isCorrect
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-            if (answered &&
-                A1BasicsUIConfig.showFeedbackAfterAnswer)
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 4,
-                ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
                 child: Text(
-                  isCorrect
-                      ? 'درست! 😼✨'
-                      : 'جواب صحیح: ${question.answer}',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: isCorrect
-                        ? Colors.green
-                        : Colors.red,
-                  ),
-                ),
-              ),
-            if (answered &&
-                A1BasicsUIConfig.showQuestionExplanation &&
-                question.explanation != null &&
-                question.explanation!
-                    .trim()
-                    .isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 12,
-                ),
-                child: Text(
-                  question.explanation!,
+                  question.question,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyMedium,
+                      .titleMedium
+                      ?.copyWith(
+                        fontWeight:
+                            FontWeight.w700,
+                      ),
                 ),
               ),
-            if (answered &&
-                !isCorrect &&
-                A1BasicsUIConfig.allowRetry)
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 8,
-                ),
-                child: TextButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      _selectedAnswers.remove(index);
-                      _answeredQuestions.remove(index);
-                    });
-                  },
+              if (A1BasicsUIConfig
+                  .enableTextToSpeech)
+                IconButton(
+                  tooltip: _isPersian
+                      ? 'تلفظ'
+                      : 'Listen',
+                  onPressed: () =>
+                      _speak(
+                    question.question,
+                  ),
                   icon: const Icon(
-                    Icons.refresh_rounded,
-                  ),
-                  label: const Text(
-                    'دوباره امتحان کن',
+                    Icons
+                        .volume_up_rounded,
                   ),
                 ),
+            ],
+          ),
+          SizedBox(
+            height:
+                A1BasicsUIConfig
+                    .cardSpacing,
+          ),
+          ...question.options.map(
+            (option) {
+              final selectedThis =
+                  selected == option;
+
+              final correctOption =
+                  option ==
+                      question.answer;
+
+              final showCorrect =
+                  answered &&
+                      A1BasicsUIConfig
+                          .showCorrectAnswerAfterMistake &&
+                      correctOption;
+
+              return Padding(
+                padding:
+                    EdgeInsets.only(
+                  bottom:
+                      A1BasicsUIConfig
+                          .cardSpacing,
+                ),
+                child: OutlinedButton(
+                  onPressed:
+                      answered &&
+                              isCorrect
+                          ? null
+                          : () =>
+                              _answerQuestion(
+                            index,
+                            option,
+                          ),
+                  style:
+                      OutlinedButton.styleFrom(
+                    alignment:
+                        AlignmentDirectional
+                            .centerStart,
+                    padding:
+                        const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    side: BorderSide(
+                      color: showCorrect
+                          ? Colors.green
+                          : selectedThis
+                              ? lavender
+                              : Theme.of(
+                                  context,
+                                )
+                                  .colorScheme
+                                  .outline,
+                    ),
+                    shape:
+                        RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(
+                        16,
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          option,
+                        ),
+                      ),
+                      if (showCorrect)
+                        const Icon(
+                          Icons
+                              .check_circle,
+                          color:
+                              Colors.green,
+                        )
+                      else if (selectedThis)
+                        Icon(
+                          isCorrect
+                              ? Icons
+                                  .check_circle
+                              : Icons.cancel,
+                          color: isCorrect
+                              ? Colors.green
+                              : Colors.red,
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          if (answered &&
+              A1BasicsUIConfig
+                  .showFeedbackAfterAnswer)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 4,
               ),
-          ],
-        ),
+              child: Text(
+                isCorrect
+                    ? (_isPersian
+                        ? 'درست! 😼✨'
+                        : 'Correct! 😼✨')
+                    : (_isPersian
+                        ? 'جواب صحیح: ${question.answer}'
+                        : 'Correct answer: ${question.answer}'),
+                style: TextStyle(
+                  fontWeight:
+                      FontWeight.bold,
+                  color: isCorrect
+                      ? Colors.green
+                      : Colors.red,
+                ),
+              ),
+            ),
+          if (answered &&
+              A1BasicsUIConfig
+                  .showQuestionExplanation &&
+              question.explanation != null &&
+              question.explanation!
+                  .trim()
+                  .isNotEmpty)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 12,
+              ),
+              child: Text(
+                question.explanation!,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(
+                      height: 1.45,
+                    ),
+              ),
+            ),
+          if (answered &&
+              !isCorrect &&
+              A1BasicsUIConfig.allowRetry)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 8,
+              ),
+              child: TextButton.icon(
+                onPressed: () {
+                  setState(() {
+                    _selectedAnswers
+                        .remove(index);
+                    _answeredQuestions
+                        .remove(index);
+                  });
+                },
+                icon: const Icon(
+                  Icons.refresh_rounded,
+                ),
+                label: Text(
+                  _isPersian
+                      ? 'دوباره امتحان کن'
+                      : 'Try Again',
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -1032,33 +1312,37 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     int index,
     String answer,
   ) {
-    final question = _questions[index];
+    final question =
+        _questions[index];
 
     final correct =
         answer == question.answer;
 
     setState(() {
-      _selectedAnswers[index] = answer;
+      _selectedAnswers[index] =
+          answer;
 
-      if (correct ||
-          !A1BasicsUIConfig.allowRetry) {
-        _answeredQuestions.add(index);
-      } else {
-        _answeredQuestions.add(index);
-      }
+      _answeredQuestions.add(
+        index,
+      );
     });
 
     if (!correct &&
-        A1BasicsUIConfig.showCorrectAnswerAfterMistake) {
+        A1BasicsUIConfig
+            .showCorrectAnswerAfterMistake) {
       ScaffoldMessenger.of(context)
           .hideCurrentSnackBar();
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
         SnackBar(
           content: Text(
-            'جواب صحیح: ${question.answer}',
+            _isPersian
+                ? 'جواب صحیح: ${question.answer}'
+                : 'Correct answer: ${question.answer}',
           ),
-          behavior: SnackBarBehavior.floating,
+          behavior:
+              SnackBarBehavior.floating,
         ),
       );
     }
@@ -1072,122 +1356,171 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     int index,
   ) {
     final speaking =
-        widget.lesson.speakingQuestions[index];
+        widget.lesson
+            .speakingQuestions[index];
 
     final completed =
-        _completedSpeaking.contains(index);
+        _completedSpeaking.contains(
+      index,
+    );
 
     final result =
         _speakingResults[index];
 
     final active =
         _isListening &&
-        _currentSpeakingIndex == index;
+            _currentSpeakingIndex ==
+                index;
 
-    return Card(
+    return Container(
       margin: EdgeInsets.only(
-        bottom: A1BasicsUIConfig.cardSpacing,
+        bottom:
+            A1BasicsUIConfig.cardSpacing,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          A1BasicsUIConfig.cardRadius,
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: completed
+              ? Colors.green
+                  .withAlpha(55)
+              : _outline,
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(
-          A1BasicsUIConfig.pagePadding,
-        ),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              speaking.question,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              speaking.persian,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium,
-            ),
-            if (A1BasicsUIConfig.showRecognizedText &&
-                _recognizedText.isNotEmpty &&
-                _currentSpeakingIndex == index)
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 12,
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            speaking.question,
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(
+                  fontWeight:
+                      FontWeight.w700,
                 ),
-                child: Text(
-                  'شنیده شد: $_recognizedText',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+          ),
+          if (_isPersian &&
+              speaking.persian
+                  .trim()
+                  .isNotEmpty)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 8,
+              ),
+              child: Text(
+                speaking.persian,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium,
+              ),
+            ),
+          if (A1BasicsUIConfig
+                  .showRecognizedText &&
+              _recognizedText
+                  .isNotEmpty &&
+              _currentSpeakingIndex ==
+                  index)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 12,
+              ),
+              child: Text(
+                _isPersian
+                    ? 'شنیده شد: $_recognizedText'
+                    : 'Recognized: $_recognizedText',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(
+                      fontWeight:
+                          FontWeight.bold,
+                    ),
+              ),
+            ),
+          if (A1BasicsUIConfig
+                  .showSpeakingResult &&
+              completed &&
+              result != null)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 12,
+              ),
+              child: Text(
+                result
+                    ? (_isPersian
+                        ? 'تلفظت قابل قبول بود 😼✨'
+                        : 'Your pronunciation was acceptable 😼✨')
+                    : (_isPersian
+                        ? 'تلاش ثبت شد. جواب پیشنهادی: '
+                            '${speaking.acceptableAnswers.first}'
+                        : 'Attempt recorded. Suggested answer: '
+                            '${speaking.acceptableAnswers.first}'),
+                style: TextStyle(
+                  fontWeight:
+                      FontWeight.bold,
+                  color: result
+                      ? Colors.green
+                      : Colors.orange,
                 ),
               ),
-            if (A1BasicsUIConfig.showSpeakingResult &&
+            ),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed:
                 completed &&
-                result != null)
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 12,
-                ),
-                child: Text(
-                  result
-                      ? 'تلفظت قابل قبول بود 😼✨'
-                      : 'تلاش ثبت شد. جواب پیشنهادی: '
-                          '${speaking.acceptableAnswers.first}',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: result
-                        ? Colors.green
-                        : Colors.orange,
-                  ),
-                ),
-              ),
-            const SizedBox(height: 16),
-            FilledButton.icon(
-              onPressed:
-                  completed &&
-                          !A1BasicsUIConfig
-                              .allowSpeakingRetry
-                      ? null
-                      : active
-                          ? _stopListening
-                          : () => _startListening(index),
-              icon: Icon(
-                active
-                    ? Icons.stop_rounded
-                    : Icons.mic_rounded,
-              ),
-              label: Text(
-                active
-                    ? 'توقف'
-                    : completed
-                        ? 'دوباره بگو'
-                        : 'پاسخ بده',
-              ),
-              style: FilledButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(
-                    A1BasicsUIConfig
-                        .buttonRadius,
-                  ),
+                        !A1BasicsUIConfig
+                            .allowSpeakingRetry
+                    ? null
+                    : active
+                        ? _stopListening
+                        : () =>
+                            _startListening(
+                              index,
+                            ),
+            icon: Icon(
+              active
+                  ? Icons.stop_rounded
+                  : Icons.mic_rounded,
+            ),
+            label: Text(
+              active
+                  ? (_isPersian
+                      ? 'توقف'
+                      : 'Stop')
+                  : completed
+                      ? (_isPersian
+                          ? 'دوباره بگو'
+                          : 'Try Again')
+                      : (_isPersian
+                          ? 'پاسخ بده'
+                          : 'Answer'),
+            ),
+            style:
+                FilledButton.styleFrom(
+              backgroundColor:
+                  lavender,
+              foregroundColor:
+                  Colors.black87,
+              shape:
+                  RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  A1BasicsUIConfig
+                      .buttonRadius,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -1199,84 +1532,112 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   Widget _buildExample(
     A1BasicExample example,
   ) {
-    final key = _exampleKey(example);
+    final key =
+        _exampleKey(example);
 
     final listened =
         _listenedExamples.contains(key);
 
-    return Card(
+    return Container(
       margin: EdgeInsets.only(
-        bottom: A1BasicsUIConfig.cardSpacing,
+        bottom:
+            A1BasicsUIConfig.cardSpacing,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          A1BasicsUIConfig.cardRadius,
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: _outline,
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(
-          A1BasicsUIConfig.pagePadding,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    example.english,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(example.persian),
-                  if (example.pronunciation != null)
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(
-                        top: 6,
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Text(
+                  example.english,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(
+                        fontWeight:
+                            FontWeight.w700,
                       ),
-                      child: Text(
-                        example.pronunciation!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall,
-                      ),
+                ),
+                if (_isPersian &&
+                    example.persian
+                        .trim()
+                        .isNotEmpty)
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(
+                      top: 6,
                     ),
-                ],
+                    child: Text(
+                      example.persian,
+                    ),
+                  ),
+                if (example.pronunciation !=
+                    null)
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(
+                      top: 6,
+                    ),
+                    child: Text(
+                      example.pronunciation!,
+                      style: Theme.of(
+                        context,
+                      )
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(
+                            color: Colors.grey,
+                          ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          if (A1BasicsUIConfig
+                  .showPronunciationButton &&
+              A1BasicsUIConfig
+                  .enableTextToSpeech)
+            IconButton(
+              tooltip: _isPersian
+                  ? 'تلفظ'
+                  : 'Listen',
+              onPressed: () async {
+                await _speak(
+                  example.english,
+                );
+
+                if (mounted) {
+                  setState(() {
+                    _listenedExamples
+                        .add(key);
+                  });
+                }
+              },
+              icon: Icon(
+                listened
+                    ? Icons
+                        .check_circle_rounded
+                    : Icons
+                        .volume_up_rounded,
+                color: listened
+                    ? Colors.green
+                    : lavender,
               ),
             ),
-            if (A1BasicsUIConfig
-                    .showPronunciationButton &&
-                A1BasicsUIConfig
-                    .enableTextToSpeech)
-              IconButton(
-                tooltip: 'Listen',
-                onPressed: () async {
-                  await _speak(example.english);
-
-                  if (mounted) {
-                    setState(() {
-                      _listenedExamples.add(key);
-                    });
-                  }
-                },
-                icon: Icon(
-                  listened
-                      ? Icons.check_circle
-                      : Icons.volume_up_rounded,
-                  color: listened
-                      ? Colors.green
-                      : null,
-                ),
-              ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -1296,18 +1657,21 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   // =========================================================
 
   bool _isCurrentStageComplete() {
-    final stage = _stages[_currentStage];
+    final stage =
+        _stages[_currentStage];
 
     final questionsComplete =
         stage.questionIndices.every(
       (index) =>
-          _answeredQuestions.contains(index),
+          _answeredQuestions
+              .contains(index),
     );
 
     final speakingComplete =
         stage.speakingIndices.every(
       (index) =>
-          _completedSpeaking.contains(index),
+          _completedSpeaking
+              .contains(index),
     );
 
     return questionsComplete &&
@@ -1315,47 +1679,61 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   }
 
   Future<void> _finishCurrentStage() async {
-    if (A1BasicsUIConfig.requireStageCompletion &&
+    if (A1BasicsUIConfig
+            .requireStageCompletion &&
         !_isCurrentStageComplete()) {
       ScaffoldMessenger.of(context)
           .hideCurrentSnackBar();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
           content: Text(
-            'اول تمرین‌های این مرحله را کامل کن 😼',
+            _isPersian
+                ? 'اول تمرین‌های این مرحله را کامل کن 😼'
+                : 'Complete the exercises in this stage first 😼',
           ),
-          behavior: SnackBarBehavior.floating,
+          behavior:
+              SnackBarBehavior.floating,
         ),
       );
 
       return;
     }
 
-    if (_currentStage < _stages.length - 1) {
+    if (_currentStage <
+        _stages.length - 1) {
       final nextStage =
           _currentStage + 1;
 
       setState(() {
-        _currentStage = nextStage;
+        _currentStage =
+            nextStage;
         _learningMode =
-            A1BasicsUIConfig.teachBeforePractice;
-        _currentSpeakingIndex = null;
+            A1BasicsUIConfig
+                .teachBeforePractice;
+        _currentSpeakingIndex =
+            null;
         _recognizedText = '';
         _isListening = false;
       });
 
-      await _saveStage(nextStage);
+      await _saveStage(
+        nextStage,
+      );
 
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
-              'مرحله بعدی باز شد 😼✨',
+              _isPersian
+                  ? 'مرحله بعدی باز شد 😼✨'
+                  : 'Next stage unlocked 😼✨',
             ),
             behavior:
-                SnackBarBehavior.floating,
+                SnackBarBehavior
+                    .floating,
           ),
         );
       }
@@ -1367,7 +1745,8 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   Future<void> _completeLesson() async {
     if (A1BasicsUIConfig.saveProgress) {
       final prefs =
-          await SharedPreferences.getInstance();
+          await SharedPreferences
+              .getInstance();
 
       final completed =
           prefs.getStringList(
@@ -1375,8 +1754,12 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
               ) ??
               [];
 
-      if (!completed.contains(widget.lesson.id)) {
-        completed.add(widget.lesson.id);
+      if (!completed.contains(
+        widget.lesson.id,
+      )) {
+        completed.add(
+          widget.lesson.id,
+        );
       }
 
       await prefs.setStringList(
@@ -1394,19 +1777,49 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: const Text(
-            'درس کامل شد 🎉',
+          shape:
+              RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(24),
           ),
-          content: const Text(
-            'این درس را با موفقیت تمام کردی. '
-            'یک قدم دیگر به انگلیسی بهتر نزدیک شدی 😼💜',
+          title: Text(
+            _isPersian
+                ? 'درس کامل شد 🎉'
+                : 'Lesson Completed 🎉',
+          ),
+          content: Text(
+            _isPersian
+                ? 'این درس را با موفقیت تمام کردی. '
+                    'یک قدم دیگر به انگلیسی بهتر نزدیک شدی 😼💜'
+                : 'You completed this lesson successfully. '
+                    'One more step toward better English 😼💜',
           ),
           actions: [
             FilledButton(
+              style:
+                  FilledButton.styleFrom(
+                backgroundColor:
+                    lavender,
+                foregroundColor:
+                    Colors.black87,
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                    14,
+                  ),
+                ),
+              ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(
+                  context,
+                ).pop();
               },
-              child: const Text('باشه'),
+              child: Text(
+                _isPersian
+                    ? 'باشه'
+                    : 'Done',
+              ),
             ),
           ],
         );
@@ -1428,64 +1841,68 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
     }
 
     final progress =
-        (_currentStage + 1) / _stages.length;
+        (_currentStage + 1) /
+            _stages.length;
 
-    return Card(
+    return Container(
       margin: EdgeInsets.only(
         bottom:
-            A1BasicsUIConfig.sectionSpacing,
+            A1BasicsUIConfig
+                .sectionSpacing,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          A1BasicsUIConfig.cardRadius,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: _outline,
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(
-          A1BasicsUIConfig.pagePadding,
-        ),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'مرحله ${_currentStage + 1} '
-                    'از ${_stages.length}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  _isPersian
+                      ? 'مرحله ${_currentStage + 1} از ${_stages.length}'
+                      : 'Stage ${_currentStage + 1} of ${_stages.length}',
+                  style: const TextStyle(
+                    fontWeight:
+                        FontWeight.w700,
                   ),
                 ),
-                Text(
-                  '${(progress * 100).round()}%',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(
-                        fontWeight:
-                            FontWeight.bold,
-                      ),
+              ),
+              Text(
+                '${(progress * 100).round()}%',
+                style: const TextStyle(
+                  fontWeight:
+                      FontWeight.w800,
+                  color: lavender,
                 ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            ClipRRect(
-              borderRadius:
-                  BorderRadius.circular(20),
-              child: LinearProgressIndicator(
-                value: progress,
-                minHeight: 8,
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ClipRRect(
+            borderRadius:
+                BorderRadius.circular(20),
+            child:
+                LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              backgroundColor:
+                  lavender.withAlpha(31),
+              valueColor:
+                  const AlwaysStoppedAnimation(
+                lavender,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -1496,9 +1913,11 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
 
   Widget _buildCurrentStage() {
     if (_stages.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'این درس هنوز محتوایی ندارد.',
+          _isPersian
+              ? 'این درس هنوز محتوایی ندارد.'
+              : 'This lesson has no content yet.',
         ),
       );
     }
@@ -1510,19 +1929,53 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
       crossAxisAlignment:
           CrossAxisAlignment.stretch,
       children: [
-        Text(
-          stage.titleFa,
-          style: Theme.of(context)
-              .textTheme
-              .headlineSmall
-              ?.copyWith(
-                fontWeight: FontWeight.bold,
+        Container(
+          padding:
+              const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: _surface,
+            borderRadius:
+                BorderRadius.circular(24),
+            border: Border.all(
+              color: _outline,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
+              Text(
+                _isPersian
+                    ? stage.titleFa
+                    : stage.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(
+                      fontWeight:
+                          FontWeight.w800,
+                      letterSpacing: -0.4,
+                    ),
               ),
+              const SizedBox(height: 6),
+              Text(
+                _isPersian
+                    ? stage.descriptionFa
+                    : stage.description,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(
+                      height: 1.45,
+                    ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 6),
-        Text(stage.description),
         SizedBox(
-          height: A1BasicsUIConfig.sectionSpacing,
+          height:
+              A1BasicsUIConfig
+                  .sectionSpacing,
         ),
         if (_learningMode)
           _buildLearningContent()
@@ -1535,12 +1988,22 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
           ),
           SizedBox(
             height:
-                A1BasicsUIConfig.sectionSpacing,
+                A1BasicsUIConfig
+                    .sectionSpacing,
           ),
           FilledButton(
             onPressed:
                 _finishCurrentStage,
-            style: FilledButton.styleFrom(
+            style:
+                FilledButton.styleFrom(
+              backgroundColor:
+                  lavender,
+              foregroundColor:
+                  Colors.black87,
+              padding:
+                  const EdgeInsets.symmetric(
+                vertical: 14,
+              ),
               shape:
                   RoundedRectangleBorder(
                 borderRadius:
@@ -1553,8 +2016,12 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
             child: Text(
               _currentStage ==
                       _stages.length - 1
-                  ? 'پایان درس'
-                  : 'تکمیل مرحله',
+                  ? (_isPersian
+                      ? 'پایان درس'
+                      : 'Finish Lesson')
+                  : (_isPersian
+                      ? 'تکمیل مرحله'
+                      : 'Complete Stage'),
             ),
           ),
         ],
@@ -1568,42 +2035,88 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
 
   @override
   Widget build(BuildContext context) {
+    final lessonTitle =
+        _isPersian
+            ? widget.lesson.titleFa
+            : widget.lesson.title;
+
     return Scaffold(
+      backgroundColor:
+          Theme.of(context)
+              .scaffoldBackgroundColor,
       appBar: AppBar(
+        elevation: 0,
         title: Text(
-          widget.lesson.titleFa,
+          lessonTitle,
+          style: const TextStyle(
+            fontWeight:
+                FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(
-            A1BasicsUIConfig.pagePadding,
+          padding:
+              const EdgeInsets.fromLTRB(
+            20,
+            8,
+            20,
+            110,
           ),
           child: Column(
             crossAxisAlignment:
                 CrossAxisAlignment.stretch,
             children: [
-              Text(
-                widget.lesson.title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(
-                      fontWeight:
-                          FontWeight.bold,
+              Container(
+                padding:
+                    const EdgeInsets.all(20),
+                decoration:
+                    BoxDecoration(
+                  color: _surface,
+                  borderRadius:
+                      BorderRadius.circular(
+                    24,
+                  ),
+                  border: Border.all(
+                    color: _outline,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lessonTitle,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight:
+                            FontWeight.w800,
+                        letterSpacing: -0.5,
+                      ),
                     ),
+                    if (widget.lesson.topic
+                        .trim()
+                        .isNotEmpty)
+                      Padding(
+                        padding:
+                            const EdgeInsets
+                                .only(
+                          top: 6,
+                        ),
+                        child: Text(
+                          widget.lesson.topic,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            height: 1.4,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 6),
-              Text(
-                widget.lesson.topic,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge,
-              ),
-              SizedBox(
-                height:
-                    A1BasicsUIConfig.sectionSpacing,
-              ),
+              const SizedBox(height: 16),
               _buildProgressHeader(),
               _buildCurrentStage(),
             ],
@@ -1628,7 +2141,10 @@ class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
 class _A1Stage {
   final String title;
   final String titleFa;
+
   final String description;
+  final String descriptionFa;
+
   final List<int> questionIndices;
   final List<int> speakingIndices;
 
@@ -1636,6 +2152,7 @@ class _A1Stage {
     required this.title,
     required this.titleFa,
     required this.description,
+    required this.descriptionFa,
     this.questionIndices = const [],
     this.speakingIndices = const [],
   });
