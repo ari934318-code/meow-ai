@@ -20,7 +20,7 @@ class A2LessonsPage extends StatefulWidget {
 class _A2LessonsPageState extends State<A2LessonsPage> {
   static const Color lavender = Color(0xFFB9A7E8);
 
-  final Set<String> _completedLessons = {};
+  final Set<int> _completedLessons = {};
   bool _loading = true;
 
   @override
@@ -31,14 +31,16 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
 
   Future<void> _loadCompletedLessons() async {
     final prefs = await SharedPreferences.getInstance();
-    final completed = <String>{};
 
-    for (final lesson in a2Lessons) {
-      if (prefs.getBool(
-            'a2_lesson_completed_${lesson.id}',
-          ) ==
-          true) {
-        completed.add(lesson.id);
+    final completed = <int>{};
+
+    for (int i = 0; i < a2Lessons.length; i++) {
+      final done = prefs.getBool(
+        'a2_lesson_completed_${a2Lessons[i].id}',
+      );
+
+      if (done == true) {
+        completed.add(i);
       }
     }
 
@@ -53,101 +55,59 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
   }
 
   bool _isLessonUnlocked(int index) {
-    if (index == 0) {
-      return true;
-    }
-
-    return _completedLessons.contains(
-      a2Lessons[index - 1].id,
-    );
+    if (index == 0) return true;
+    return _completedLessons.contains(index - 1);
   }
 
-  bool get _examUnlocked {
-    return a2Lessons.every(
-      (lesson) => _completedLessons.contains(
-        lesson.id,
-      ),
-    );
-  }
+  bool get _examUnlocked =>
+      _completedLessons.length >= a2Lessons.length;
 
   @override
   Widget build(BuildContext context) {
     final lang = MeowLocalizations.of(context);
 
+    if (_loading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
-      backgroundColor:
-          Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
         title: Text(
           lang.isPersian ? 'سطح A2' : 'A2 Level',
-          style: const TextStyle(
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.3,
-          ),
         ),
       ),
-      body: SafeArea(
-        child: _loading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: lavender,
-                ),
-              )
-            : ListView(
-                padding: const EdgeInsets.fromLTRB(
-                  20,
-                  8,
-                  20,
-                  110,
-                ),
-                children: [
-                  Text(
-                    lang.isPersian
-                        ? 'درس‌های A2'
-                        : 'A2 Lessons',
-                    style: const TextStyle(
-                      fontSize: 29,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.8,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    lang.isPersian
-                        ? 'انگلیسی روزمره را مرحله‌به‌مرحله یاد بگیر.'
-                        : 'Learn practical English step by step.',
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 22),
-                  ...List.generate(
-                    a2Lessons.length,
-                    (index) {
-                      final lesson = a2Lessons[index];
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(
+          20,
+          12,
+          20,
+          30,
+        ),
+        children: [
+          ...a2Lessons.asMap().entries.map(
+            (entry) {
+              final index = entry.key;
+              final lesson = entry.value;
 
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 14,
-                        ),
-                        child: _lessonCard(
-                          context,
-                          lang,
-                          lesson,
-                          index,
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 4),
-                  _examCard(
-                    context,
-                    lang,
-                  ),
-                ],
-              ),
+              return _lessonCard(
+                context,
+                lang,
+                lesson,
+                index,
+              );
+            },
+          ),
+          const SizedBox(height: 8),
+          _examCard(
+            context,
+            lang,
+          ),
+        ],
       ),
     );
   }
@@ -158,66 +118,62 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
     A2Lesson lesson,
     int index,
   ) {
-    final lessonNumber = index + 1;
     final unlocked = _isLessonUnlocked(index);
-    final completed =
-        _completedLessons.contains(lesson.id);
+    final completed = _completedLessons.contains(index);
 
-    return Opacity(
-      opacity: unlocked ? 1.0 : 0.52,
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: Colors.grey.withOpacity(0.12),
+        ),
+      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         onTap: unlocked
-            ? () {
-                Navigator.push(
+            ? () async {
+                final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => A2LessonDetailPage(
                       lesson: lesson,
                     ),
                   ),
-                ).then((_) {
-                  _loadCompletedLessons();
-                });
+                );
+
+                if (result == true) {
+                  await _loadCompletedLessons();
+                }
               }
             : null,
-        child: Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            color: Theme.of(context)
-                .colorScheme
-                .surface,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: Colors.grey.withOpacity(0.14),
-            ),
-          ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               Container(
-                width: 54,
-                height: 54,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
+                  shape: BoxShape.circle,
                   color: completed
                       ? Colors.green.withOpacity(0.12)
-                      : lavender.withOpacity(0.14),
-                  shape: BoxShape.circle,
+                      : unlocked
+                          ? lavender.withOpacity(0.14)
+                          : Colors.grey.withOpacity(0.10),
                 ),
-                child: Center(
-                  child: completed
-                      ? const Icon(
-                          Icons.check_rounded,
-                          color: Colors.green,
-                          size: 25,
-                        )
-                      : Text(
-                          '$lessonNumber',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            color: lavender,
-                          ),
-                        ),
+                child: Icon(
+                  completed
+                      ? Icons.check_rounded
+                      : unlocked
+                          ? Icons.play_arrow_rounded
+                          : Icons.lock_outline_rounded,
+                  color: completed
+                      ? Colors.green
+                      : unlocked
+                          ? lavender
+                          : Colors.grey,
                 ),
               ),
               const SizedBox(width: 14),
@@ -228,19 +184,20 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                   children: [
                     Text(
                       lang.isPersian
-                          ? 'درس $lessonNumber'
-                          : 'Lesson $lessonNumber',
+                          ? 'درس ${index + 1}'
+                          : 'Lesson ${index + 1}',
                       style: const TextStyle(
                         fontSize: 13,
                         color: Colors.grey,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       _getLessonTitle(
                         lang,
                         lesson,
-                        lessonNumber,
+                        index,
                       ),
                       style: const TextStyle(
                         fontSize: 17,
@@ -252,7 +209,7 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                       _getLessonTopic(
                         lang,
                         lesson,
-                        lessonNumber,
+                        index,
                       ),
                       style: const TextStyle(
                         fontSize: 13,
@@ -264,14 +221,10 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
               ),
               const SizedBox(width: 8),
               Icon(
-                completed
-                    ? Icons.check_circle_rounded
-                    : unlocked
-                        ? Icons.chevron_right_rounded
-                        : Icons.lock_rounded,
-                color: completed
-                    ? Colors.green
-                    : Colors.grey,
+                Icons.chevron_right_rounded,
+                color: unlocked
+                    ? Colors.grey
+                    : Colors.grey.withOpacity(0.35),
               ),
             ],
           ),
@@ -283,12 +236,8 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
   String _getLessonTitle(
     MeowLocalizations lang,
     A2Lesson lesson,
-    int lessonNumber,
+    int index,
   ) {
-    if (!lang.isPersian) {
-      return lesson.title;
-    }
-
     const persianTitles = [
       'برنامه‌های روزانه',
       'خرید و فروشگاه',
@@ -308,9 +257,10 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
       'مرور A2',
     ];
 
-    if (lessonNumber >= 1 &&
-        lessonNumber <= persianTitles.length) {
-      return persianTitles[lessonNumber - 1];
+    if (lang.isPersian &&
+        index >= 0 &&
+        index < persianTitles.length) {
+      return persianTitles[index];
     }
 
     return lesson.title;
@@ -319,12 +269,8 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
   String _getLessonTopic(
     MeowLocalizations lang,
     A2Lesson lesson,
-    int lessonNumber,
+    int index,
   ) {
-    if (!lang.isPersian) {
-      return lesson.topic;
-    }
-
     const persianTopics = [
       'صحبت درباره برنامه‌های روزانه، عادت‌ها و فعالیت‌های روزمره',
       'یادگیری زبان انگلیسی برای خرید و موقعیت‌های فروشگاهی',
@@ -344,9 +290,10 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
       'مرور و جمع‌بندی مطالب سطح A2',
     ];
 
-    if (lessonNumber >= 1 &&
-        lessonNumber <= persianTopics.length) {
-      return persianTopics[lessonNumber - 1];
+    if (lang.isPersian &&
+        index >= 0 &&
+        index < persianTopics.length) {
+      return persianTopics[index];
     }
 
     return lesson.topic;
@@ -358,13 +305,20 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
   ) {
     final unlocked = _examUnlocked;
 
-    return Opacity(
-      opacity: unlocked ? 1.0 : 0.52,
+    return Card(
+      margin: const EdgeInsets.only(top: 4),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          color: lavender.withOpacity(0.35),
+        ),
+      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         onTap: unlocked
-            ? () {
-                Navigator.push(
+            ? () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => const A2ExamPage(),
@@ -372,29 +326,27 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                 );
               }
             : null,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: lavender.withOpacity(0.10),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: lavender.withOpacity(0.20),
-            ),
-          ),
+        child: Padding(
+          padding: const EdgeInsets.all(18),
           child: Row(
             children: [
               Container(
                 width: 52,
                 height: 52,
                 decoration: BoxDecoration(
-                  color: lavender.withOpacity(0.15),
-                  shape: BoxShape.circle,
+                  borderRadius:
+                      BorderRadius.circular(16),
+                  color: unlocked
+                      ? lavender.withOpacity(0.14)
+                      : Colors.grey.withOpacity(0.10),
                 ),
                 child: Icon(
                   unlocked
-                      ? Icons.workspace_premium_rounded
-                      : Icons.lock_rounded,
-                  color: lavender,
+                      ? Icons.school_rounded
+                      : Icons.lock_outline_rounded,
+                  color: unlocked
+                      ? lavender
+                      : Colors.grey,
                 ),
               ),
               const SizedBox(width: 14),
@@ -408,7 +360,7 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                           ? 'امتحان نهایی A2'
                           : 'A2 Final Exam',
                       style: const TextStyle(
-                        fontSize: 17,
+                        fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -418,7 +370,6 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                           ? '۶۰ سؤال • حداقل نمره قبولی ۷۰٪'
                           : '60 questions • 70% passing score',
                       style: const TextStyle(
-                        fontSize: 13,
                         color: Colors.grey,
                       ),
                     ),
@@ -426,10 +377,10 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                 ),
               ),
               Icon(
-                unlocked
-                    ? Icons.chevron_right_rounded
-                    : Icons.lock_rounded,
-                color: Colors.grey,
+                Icons.chevron_right_rounded,
+                color: unlocked
+                    ? Colors.grey
+                    : Colors.grey.withOpacity(0.35),
               ),
             ],
           ),
@@ -604,9 +555,8 @@ class _A2LessonDetailPageState
         ..addAll(
           completed
               .map(
-                (value) => int.tryParse(
-                  value.toString(),
-                ),
+                (value) =>
+                    int.tryParse(value),
               )
               .whereType<int>(),
         );
@@ -616,21 +566,186 @@ class _A2LessonDetailPageState
         ..addAll(
           listened
               .map(
-                (value) => int.tryParse(
-                  value.toString(),
-                ),
+                (value) =>
+                    int.tryParse(value),
               )
               .whereType<int>(),
         );
+
+      if (questionsJson != null) {
+        try {
+          final data =
+              jsonDecode(questionsJson);
+
+          if (data is Map) {
+            _questionAnswers.clear();
+
+            data.forEach((key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              final answer =
+                  int.tryParse(
+                value.toString(),
+              );
+
+              if (index != null &&
+                  answer != null) {
+                _questionAnswers[index] =
+                    answer;
+              }
+            });
+          }
+        } catch (_) {}
+      }
+
+      if (fillBlanksJson != null) {
+        try {
+          final data =
+              jsonDecode(fillBlanksJson);
+
+          if (data is Map) {
+            _fillBlankAnswers.clear();
+
+            data.forEach((key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              final answer =
+                  int.tryParse(
+                value.toString(),
+              );
+
+              if (index != null &&
+                  answer != null) {
+                _fillBlankAnswers[index] =
+                    answer;
+              }
+            });
+          }
+        } catch (_) {}
+      }
+
+      if (recognizedJson != null) {
+        try {
+          final data =
+              jsonDecode(recognizedJson);
+
+          if (data is Map) {
+            _recognizedTexts.clear();
+
+            data.forEach((key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              if (index != null) {
+                _recognizedTexts[index] =
+                    value.toString();
+              }
+            });
+          }
+        } catch (_) {}
+      }
+
+      if (speakingJson != null) {
+        try {
+          final data =
+              jsonDecode(speakingJson);
+
+          if (data is Map) {
+            _speakingResults.clear();
+
+            data.forEach((key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              if (index != null) {
+                if (value == true) {
+                  _speakingResults[index] =
+                      true;
+                } else if (value == false) {
+                  _speakingResults[index] =
+                      false;
+                }
+              }
+            });
+          }
+        } catch (_) {}
+      }
+
+      if (orderingJson != null) {
+        try {
+          final data =
+              jsonDecode(orderingJson);
+
+          if (data is Map) {
+            _orderingSelections.clear();
+
+            data.forEach((key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              if (index != null &&
+                  value is List) {
+                _orderingSelections[index] =
+                    value
+                        .map(
+                          (item) =>
+                              item.toString(),
+                        )
+                        .toList();
+              }
+            });
+          }
+        } catch (_) {}
+      }
+
+      if (buildingJson != null) {
+        try {
+          final data =
+              jsonDecode(buildingJson);
+
+          if (data is Map) {
+            _buildingSelections.clear();
+
+            data.forEach((key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              if (index != null &&
+                  value is List) {
+                _buildingSelections[index] =
+                    value
+                        .map(
+                          (item) =>
+                              item.toString(),
+                        )
+                        .toList();
+              }
+            });
+          }
+        } catch (_) {}
+      }
 
       _completedOrderingItems
         ..clear()
         ..addAll(
           orderingCompleted
               .map(
-                (value) => int.tryParse(
-                  value.toString(),
-                ),
+                (value) =>
+                    int.tryParse(value),
               )
               .whereType<int>(),
         );
@@ -640,162 +755,32 @@ class _A2LessonDetailPageState
         ..addAll(
           buildingCompleted
               .map(
-                (value) => int.tryParse(
-                  value.toString(),
-                ),
+                (value) =>
+                    int.tryParse(value),
               )
               .whereType<int>(),
         );
 
-      if (questionsJson != null) {
-        final data = jsonDecode(questionsJson);
-
-        if (data is Map) {
-          _questionAnswers.clear();
-
-          data.forEach((key, value) {
-            final index =
-                int.tryParse(key.toString());
-
-            final answer =
-                int.tryParse(value.toString());
-
-            if (index != null &&
-                answer != null) {
-              _questionAnswers[index] = answer;
-            }
-          });
-        }
-      }
-
-      if (fillBlanksJson != null) {
-        final data =
-            jsonDecode(fillBlanksJson);
-
-        if (data is Map) {
-          _fillBlankAnswers.clear();
-
-          data.forEach((key, value) {
-            final index =
-                int.tryParse(key.toString());
-
-            final answer =
-                int.tryParse(value.toString());
-
-            if (index != null &&
-                answer != null) {
-              _fillBlankAnswers[index] = answer;
-            }
-          });
-        }
-      }
-
-      if (recognizedJson != null) {
-        final data =
-            jsonDecode(recognizedJson);
-
-        if (data is Map) {
-          _recognizedTexts.clear();
-
-          data.forEach((key, value) {
-            final index =
-                int.tryParse(key.toString());
-
-            if (index != null) {
-              _recognizedTexts[index] =
-                  value.toString();
-            }
-          });
-        }
-      }
-
-      if (speakingJson != null) {
-        final data =
-            jsonDecode(speakingJson);
-
-        if (data is Map) {
-          _speakingResults.clear();
-
-          data.forEach((key, value) {
-            final index =
-                int.tryParse(key.toString());
-
-            if (index != null) {
-              if (value == true) {
-                _speakingResults[index] = true;
-              } else if (value == false) {
-                _speakingResults[index] = false;
-              }
-            }
-          });
-        }
-      }
-
-      if (orderingJson != null) {
-        final data =
-            jsonDecode(orderingJson);
-
-        if (data is Map) {
-          _orderingSelections.clear();
-
-          data.forEach((key, value) {
-            final index =
-                int.tryParse(key.toString());
-
-            if (index != null &&
-                value is List) {
-              _orderingSelections[index] =
-                  value
-                      .map(
-                        (item) => item.toString(),
-                      )
-                      .toList();
-            }
-          });
-        }
-      }
-
-      if (buildingJson != null) {
-        final data =
-            jsonDecode(buildingJson);
-
-        if (data is Map) {
-          _buildingSelections.clear();
-
-          data.forEach((key, value) {
-            final index =
-                int.tryParse(key.toString());
-
-            if (index != null &&
-                value is List) {
-              _buildingSelections[index] =
-                  value
-                      .map(
-                        (item) => item.toString(),
-                      )
-                      .toList();
-            }
-          });
-        }
-      }
-
       if (matchingJson != null) {
-        final data =
-            jsonDecode(matchingJson);
+        try {
+          final data =
+              jsonDecode(matchingJson);
 
-        if (data is List) {
-          _matchedItems
-            ..clear()
-            ..addAll(
-              data
-                  .map(
-                    (value) => int.tryParse(
-                      value.toString(),
-                    ),
-                  )
-                  .whereType<int>(),
-            );
-        }
+          if (data is List) {
+            _matchedItems
+              ..clear()
+              ..addAll(
+                data
+                    .map(
+                      (value) =>
+                          int.tryParse(
+                        value.toString(),
+                      ),
+                    )
+                    .whereType<int>(),
+              );
+          }
+        } catch (_) {}
       }
     });
   }
@@ -812,14 +797,14 @@ class _A2LessonDetailPageState
     await prefs.setStringList(
       _completedKey,
       _completedStages
-          .map((e) => e.toString())
+          .map((value) => value.toString())
           .toList(),
     );
 
     await prefs.setStringList(
       _listenedKey,
       _listenedItems
-          .map((e) => e.toString())
+          .map((value) => value.toString())
           .toList(),
     );
 
@@ -856,61 +841,69 @@ class _A2LessonDetailPageState
     await prefs.setStringList(
       _orderingCompletedKey,
       _completedOrderingItems
-          .map((e) => e.toString())
+          .map((value) => value.toString())
           .toList(),
     );
 
     await prefs.setStringList(
       _buildingCompletedKey,
       _completedBuildingItems
-          .map((e) => e.toString())
+          .map((value) => value.toString())
           .toList(),
     );
 
     await prefs.setString(
       _matchingKey,
-      jsonEncode(
-        _matchedItems.toList(),
-      ),
+      jsonEncode(_matchedItems.toList()),
     );
   }
 
   Future<void> _initializeSpeech() async {
-    final available =
-        await _speech.initialize(
-      onStatus: (status) {
-        if (status == 'done' ||
-            status == 'notListening') {
+    try {
+      final available =
+          await _speech.initialize(
+        onStatus: (status) {
+          if (status == 'done' ||
+              status == 'notListening') {
+            if (mounted) {
+              setState(() {
+                _isListening = false;
+                _listeningQuestionIndex =
+                    null;
+              });
+            }
+          }
+        },
+        onError: (error) {
           if (mounted) {
             setState(() {
               _isListening = false;
-              _listeningQuestionIndex = null;
+              _listeningQuestionIndex =
+                  null;
             });
-          }
-        }
-      },
-      onError: (error) {
-        if (mounted) {
-          setState(() {
-            _isListening = false;
-            _listeningQuestionIndex = null;
-          });
 
-          ScaffoldMessenger.of(context)
-              .showSnackBar(
-            SnackBar(
-              content: Text(
-                'مشکل در تشخیص صدا: ${error.errorMsg}',
+            ScaffoldMessenger.of(context)
+                .showSnackBar(
+              SnackBar(
+                content: Text(
+                  'خطا در تشخیص صدا: ${error.errorMsg}',
+                ),
               ),
-            ),
-          );
-        }
-      },
-    );
+            );
+          }
+        },
+      );
 
-    if (mounted) {
+      if (!mounted) return;
+
       setState(() {
         _speechAvailable = available;
+      });
+    } catch (_) {
+      if (!mounted) return;
+
+      setState(() {
+        _speechAvailable = false;
       });
     }
   }
@@ -923,40 +916,46 @@ class _A2LessonDetailPageState
     }
 
     if (!_speechAvailable) {
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(
-          const SnackBar(
-            content: Text(
-              'تشخیص صدا روی این دستگاه در دسترس نیست.',
-            ),
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        const SnackBar(
+          content: Text(
+            'تشخیص صدا در این دستگاه در دسترس نیست.',
           ),
-        );
-      }
+        ),
+      );
+
       return;
     }
 
     if (_isListening) {
       await _stopListening();
+      return;
     }
+
+    if (!mounted) return;
 
     setState(() {
       _isListening = true;
       _listeningQuestionIndex =
           questionIndex;
       _recognizedTexts[questionIndex] = '';
-      _speakingResults[questionIndex] = null;
+      _speakingResults[questionIndex] =
+          null;
     });
 
     await _speech.listen(
       onResult: (result) {
+        final text =
+            result.recognizedWords;
+
         if (!mounted) return;
 
-        final text =
-            result.recognizedWords.trim();
-
         setState(() {
-          _recognizedTexts[questionIndex] = text;
+          _recognizedTexts[questionIndex] =
+              text;
         });
 
         if (result.finalResult) {
@@ -1092,7 +1091,9 @@ class _A2LessonDetailPageState
     if (total == 0) return true;
 
     return Iterable<int>.generate(total)
-        .every(_completedOrderingItems.contains);
+        .every(
+          _completedOrderingItems.contains,
+        );
   }
 
   bool _allBuildingCompleted() {
@@ -1102,7 +1103,9 @@ class _A2LessonDetailPageState
     if (total == 0) return true;
 
     return Iterable<int>.generate(total)
-        .every(_completedBuildingItems.contains);
+        .every(
+          _completedBuildingItems.contains,
+        );
   }
 
   bool _allMatchingCompleted() {
@@ -1163,7 +1166,9 @@ class _A2LessonDetailPageState
       return _allSpeakingAttempted();
     }
 
-    if (_completedStages.contains(_currentStage)) {
+    if (_completedStages.contains(
+      _currentStage,
+    )) {
       return true;
     }
 
@@ -1179,7 +1184,8 @@ class _A2LessonDetailPageState
 
     _completedStages.add(_currentStage);
 
-    if (_currentStage < totalStages - 1) {
+    if (_currentStage <
+        totalStages - 1) {
       setState(() {
         _currentStage++;
       });
@@ -1980,15 +1986,22 @@ class _A2LessonDetailPageState
                               backgroundColor:
                                   background,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _questionAnswers[
-                                        index] =
-                                    optionIndex;
-                              });
 
-                              _saveProgress();
-                            },
+                            // مهم:
+                            // اولین پاسخ نهایی است و
+                            // بعد از انتخاب، گزینه‌ها قفل می‌شوند.
+                            onPressed: selected != null
+                                ? null
+                                : () {
+                                    setState(() {
+                                      _questionAnswers[
+                                              index] =
+                                          optionIndex;
+                                    });
+
+                                    _saveProgress();
+                                  },
+
                             child: Align(
                               alignment:
                                   Alignment
@@ -2116,15 +2129,21 @@ class _A2LessonDetailPageState
                                           ))
                                     : null,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _fillBlankAnswers[
-                                      index] =
-                                  optionIndex;
-                            });
 
-                            _saveProgress();
-                          },
+                          // مهم:
+                          // اولین انتخاب نهایی است.
+                          onPressed: selected != null
+                              ? null
+                              : () {
+                                  setState(() {
+                                    _fillBlankAnswers[
+                                            index] =
+                                        optionIndex;
+                                  });
+
+                                  _saveProgress();
+                                },
+
                           child:
                               Text(option),
                         );
@@ -2455,8 +2474,7 @@ class _A2LessonDetailPageState
                           decoration:
                               BoxDecoration(
                             borderRadius:
-                                BorderRadius
-                                    .circular(
+                                BorderRadius.circular(
                               14,
                             ),
                             color: matched
@@ -2468,8 +2486,7 @@ class _A2LessonDetailPageState
                             border: Border.all(
                               color: matched
                                   ? Colors.green
-                                  : Colors
-                                      .grey
+                                  : Colors.grey
                                       .withOpacity(
                                       0.16,
                                     ),
