@@ -134,6 +134,14 @@ class _A2ExamPageState extends State<A2ExamPage> {
 
     final prefs = await SharedPreferences.getInstance();
 
+    // Once A2 is passed, it stays completed permanently.
+    // Retaking the exam cannot lock A2 again.
+    final previousCompleted =
+        prefs.getBool('a2_completed') ?? false;
+
+    final permanentlyCompleted =
+        previousCompleted || passed;
+
     await prefs.setBool(
       'a2_exam_completed',
       passed,
@@ -141,7 +149,7 @@ class _A2ExamPageState extends State<A2ExamPage> {
 
     await prefs.setBool(
       'a2_completed',
-      passed,
+      permanentlyCompleted,
     );
 
     await prefs.setDouble(
@@ -750,9 +758,9 @@ class A2MistakesPage extends StatelessWidget {
 
                         const SizedBox(height: 14),
 
-                        Text(
+                        const Text(
                           'Why?',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w800,
                           ),
                         ),
