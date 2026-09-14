@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../localization.dart';
+import '../data/levels/a2/a2_lesson_page.dart';
 
 class LearnPage extends StatelessWidget {
   const LearnPage({super.key});
@@ -61,6 +62,12 @@ class LearnPage extends StatelessWidget {
               color: const Color(0xFF4CAF50),
               enabled: true,
               buttonText: lang.isPersian ? 'شروع' : 'START',
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/a1-lessons',
+                );
+              },
             ),
 
             // A2
@@ -73,6 +80,16 @@ class LearnPage extends StatelessWidget {
                   : 'Everyday conversations and useful phrases',
               icon: Icons.directions_walk_rounded,
               color: const Color(0xFFF2B94B),
+              enabled: true,
+              buttonText: lang.isPersian ? 'شروع' : 'START',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const A2LessonsPage(),
+                  ),
+                );
+              },
             ),
 
             // B1
@@ -139,6 +156,7 @@ class LearnPage extends StatelessWidget {
     required Color color,
     bool enabled = false,
     String? buttonText,
+    VoidCallback? onTap,
   }) {
     final isEnabled = enabled;
 
@@ -146,14 +164,7 @@ class LearnPage extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 14),
       child: InkWell(
         borderRadius: BorderRadius.circular(24),
-        onTap: isEnabled
-            ? () {
-                Navigator.pushNamed(
-                  context,
-                  '/a1-lessons',
-                );
-              }
-            : null,
+        onTap: isEnabled ? onTap : null,
         child: Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
