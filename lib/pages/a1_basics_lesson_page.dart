@@ -1757,7 +1757,11 @@ class _A1BasicsLessonPageState
         _selectedAnswers[index];
 
     final isCorrect =
-        selected == question.answer;
+        selected != null &&
+        _isAnswerCorrect(
+          question,
+          selected,
+        );
 
     return Container(
       margin: EdgeInsets.only(
@@ -1828,8 +1832,10 @@ class _A1BasicsLessonPageState
                   selected == option;
 
               final correctOption =
-                  option ==
-                      question.answer;
+                  _isAnswerCorrect(
+                question,
+                option,
+              );
 
               final showCorrect =
                   answered &&
@@ -1986,7 +1992,10 @@ class _A1BasicsLessonPageState
         _questions[index];
 
     final correct =
-        answer == question.answer;
+        _isAnswerCorrect(
+      question,
+      answer,
+    );
 
     setState(() {
       _selectedAnswers[index] =
