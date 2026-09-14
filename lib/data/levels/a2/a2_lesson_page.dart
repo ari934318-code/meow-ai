@@ -2656,4 +2656,397 @@ class _A2LessonDetailPageState
                       sentence.english,
                       style:
                           const TextStyle(
-                        font
+                        fontWeight:
+                            FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      listened
+                          ? Icons.replay_rounded
+                          : Icons
+                              .play_arrow_rounded,
+                    ),
+                    onPressed: () async {
+                      await _speak(
+                        sentence.english,
+                      );
+
+                      if (!mounted) return;
+
+                      setState(() {
+                        _listenedItems.add(index);
+                      });
+
+                      await _saveProgress();
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        if (total > 0) ...[
+          const SizedBox(height: 8),
+          Center(
+            child: Text(
+              lang.isPersian
+                  ? '${_listenedItems.length} از $total جمله شنیده شد'
+                  : '${_listenedItems.length} of $total sentences listened',
+              style:
+                  const TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildSpeaking(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    final total =
+        widget.lesson.speakingQuestions.length;
+
+    return Column(
+      children: [
+        _progressCard(
+          context,
+          lang,
+          _speakingResults.length,
+          total,
+          lang.isPersian
+              ? 'همه سؤال‌ها را حداقل یک بار امتحان کن.'
+              : 'Try every speaking question at least once.',
+        ),
+        const SizedBox(height: 8),
+        ...widget.lesson.speakingQuestions
+            .asMap()
+            .entries
+            .map(
+          (entry) {
+            final index = entry.key;
+            final question = entry.value;
+
+            final recognized =
+                _recognizedTexts[index] ??
+                    '';
+
+            final result =
+                _speakingResults[index];
+
+            final listening =
+                _isListening &&
+                    _listeningQuestionIndex ==
+                        index;
+
+            return _card(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    question.question,
+                    style:
+                        const TextStyle(
+                      fontSize: 17,
+                      fontWeight:
+                          FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 7),
+                  Text(
+                    question.pronunciation,
+                    style:
+                        const TextStyle(
+                      color: lavender,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child:
+                        ElevatedButton.icon(
+                      onPressed: listening
+                          ? _stopListening
+                          : () =>
+                              _startListening(
+                                index,
+                              ),
+                      icon: Icon(
+                        listening
+                            ? Icons.stop_rounded
+                            : Icons.mic_rounded,
+                      ),
+                      label: Text(
+                        listening
+                            ? (lang.isPersian
+                                ? 'توقف'
+                                : 'Stop')
+                            : (lang.isPersian
+                                ? 'صحبت کن'
+                                : 'Speak'),
+                      ),
+                      style:
+                          ElevatedButton.styleFrom(
+                        backgroundColor:
+                            lavender,
+                        foregroundColor:
+                            Colors.white,
+                      ),
+                    ),
+                  ),
+                  if (listening) ...[
+                    const SizedBox(height: 10),
+                    Center(
+                      child: Text(
+                        lang.isPersian
+                            ? '🎤 میو داره گوش می‌ده... 😼'
+                            : '🎤 Meow is listening... 😼',
+                        style:
+                            const TextStyle(
+                          color: lavender,
+                          fontWeight:
+                              FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (recognized.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      padding:
+                          const EdgeInsets.all(
+                        12,
+                      ),
+                      decoration:
+                          BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(
+                          14,
+                        ),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerHighest,
+                      ),
+                      child: Text(
+                        lang.isPersian
+                            ? 'میو شنید:\n$recognized'
+                            : 'Meow heard:\n$recognized',
+                      ),
+                    ),
+                  ],
+                  if (result != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      result
+                          ? (lang.isPersian
+                              ? '✅ خوب بود! 😼💜'
+                              : '✅ Good job! 😼💜')
+                          : (lang.isPersian
+                              ? '❌ هنوز دقیق نیست، ولی تلاش ثبت شد.'
+                              : '❌ Not quite, but the attempt is recorded.'),
+                      style:
+                          TextStyle(
+                        fontWeight:
+                            FontWeight.bold,
+                        color: result
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildChallenge(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    return Column(
+      children: widget.lesson.challenges
+          .map(
+            (challenge) => _card(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    challenge.title,
+                    style:
+                        const TextStyle(
+                      fontSize: 19,
+                      fontWeight:
+                          FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    challenge.instruction,
+                  ),
+                  const SizedBox(height: 12),
+                  ...challenge.tasks.map(
+                    (task) => Padding(
+                      padding:
+                          const EdgeInsets.only(
+                        bottom: 8,
+                      ),
+                      child: Row(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          const Text('• '),
+                          Expanded(
+                            child: Text(task),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _buildReview(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    return Column(
+      children: widget.lesson.reviews
+          .map(
+            (review) => _card(
+              child: ExpansionTile(
+                tilePadding:
+                    EdgeInsets.zero,
+                title: Text(
+                  review.title,
+                  style:
+                      const TextStyle(
+                    fontWeight:
+                        FontWeight.w700,
+                  ),
+                ),
+                children: review.points
+                    .map(
+                      (point) => ListTile(
+                        contentPadding:
+                            EdgeInsets.zero,
+                        leading:
+                            const Icon(
+                          Icons
+                              .check_circle_outline_rounded,
+                          color: lavender,
+                        ),
+                        title:
+                            Text(point),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _progressCard(
+    BuildContext context,
+    MeowLocalizations lang,
+    int completed,
+    int total,
+    String instruction,
+  ) {
+    return _card(
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+        children: [
+          Text(
+            instruction,
+            style:
+                const TextStyle(
+              fontWeight:
+                  FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(
+                    20,
+                  ),
+                  child:
+                      LinearProgressIndicator(
+                    value: total == 0
+                        ? 1
+                        : completed / total,
+                    minHeight: 7,
+                    backgroundColor:
+                        Colors.grey
+                            .withOpacity(0.12),
+                    valueColor:
+                        const AlwaysStoppedAnimation<
+                            Color>(
+                      lavender,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                '$completed/$total',
+                style:
+                    const TextStyle(
+                  color: Colors.grey,
+                  fontWeight:
+                      FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _card({
+    required Widget child,
+  }) {
+    return Card(
+      margin:
+          const EdgeInsets.only(bottom: 12),
+      elevation: 0,
+      shape:
+          RoundedRectangleBorder(
+        borderRadius:
+            BorderRadius.circular(20),
+        side: BorderSide(
+          color: Colors.grey
+              .withOpacity(0.12),
+        ),
+      ),
+      child: Padding(
+        padding:
+            const EdgeInsets.all(16),
+        child: child,
+      ),
+    );
+  }
+}
