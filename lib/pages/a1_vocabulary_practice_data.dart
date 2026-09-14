@@ -1,23 +1,11 @@
-import 'a1_models.dart';
+import 'a1_lessons.dart';
 import 'vocabulary_practice_models.dart';
 
-// ------------------------------------------------------------
-// A1 Vocabulary Practice Data
-// ------------------------------------------------------------
-//
-// این فایل Vocabularyهای واقعی درس‌های A1 را به سیستم مشترک
-// Vocabulary Practice وصل می‌کند.
-//
-// بعداً A2 و B1 و ... دقیقاً با همین ساختار اضافه می‌شوند.
-// ------------------------------------------------------------
-
 class A1VocabularyPracticeData {
-  static List<VocabularyPracticeItem> fromLessons(
-    List<A1Lesson> lessons,
-  ) {
+  static List<VocabularyPracticeItem> get all {
     final result = <VocabularyPracticeItem>[];
 
-    for (final lesson in lessons) {
+    for (final lesson in a1Lessons) {
       for (var index = 0; index < lesson.words.length; index++) {
         final word = lesson.words[index];
 
