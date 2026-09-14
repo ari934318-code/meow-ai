@@ -908,7 +908,7 @@ class _A1BasicsLessonPageState
           }
         }
       },
-      onError: () {
+      onError: (error) {
         if (mounted) {
           setState(() {
             _isListening = false;
@@ -1207,10 +1207,10 @@ class _A1BasicsLessonPageState
         await SharedPreferences.getInstance();
 
     final oldStage =
-        prefs.getInt(_stageKey) ?? 0;
+        prefs.getInt(stageKey) ?? 0;
 
     final raw =
-        prefs.getString(_progressKey);
+        prefs.getString(progressKey);
 
     if (raw == null || raw.isEmpty) {
       if (!mounted) {
