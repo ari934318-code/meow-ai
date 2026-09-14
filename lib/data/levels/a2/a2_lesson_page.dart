@@ -62,7 +62,6 @@ class A2LessonsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 22),
-
             ...List.generate(
               a2Lessons.length,
               (index) {
@@ -81,9 +80,7 @@ class A2LessonsPage extends StatelessWidget {
                 );
               },
             ),
-
             const SizedBox(height: 4),
-
             _examCard(
               context,
               lang,
@@ -521,7 +518,7 @@ class _A2LessonDetailPageState
               _fillBlankAnswers[index] =
                   answer;
             }
-          }
+          });
         }
       }
 
@@ -777,7 +774,6 @@ class _A2LessonDetailPageState
         _listeningQuestionIndex = null;
       });
 
-      _completedStages.add(10);
       _saveProgress();
     }
   }
@@ -809,6 +805,8 @@ class _A2LessonDetailPageState
   }
 
   bool _canGoNext() {
+    // Listening
+    // باید به تمام جمله‌ها گوش داده شود.
     if (_currentStage == 9) {
       final total =
           widget.lesson.sentences.length;
@@ -820,26 +818,56 @@ class _A2LessonDetailPageState
       return _listenedItems.length >= total;
     }
 
-    if (_completedStages.contains(
-      _currentStage,
-    )) {
-      return true;
+    // Multiple Choice
+    // باید به تمام سؤال‌ها پاسخ داده شود.
+    if (_currentStage == 3) {
+      final total =
+          widget.lesson.questions.length;
+
+      if (total == 0) {
+        return true;
+      }
+
+      return _questionAnswers.length >= total;
     }
 
+    // Fill in the Blank
+    // باید تمام سؤال‌ها پاسخ داده شوند.
+    if (_currentStage == 4) {
+      final total =
+          widget.lesson.fillBlanks.length;
+
+      if (total == 0) {
+        return true;
+      }
+
+      return _fillBlankAnswers.length >= total;
+    }
+
+    // Speaking
+    // باید برای تمام سؤال‌ها
+    // حداقل یک تلاش ثبت شده باشد.
+    if (_currentStage == 10) {
+      final total =
+          widget.lesson.speakingQuestions.length;
+
+      if (total == 0) {
+        return true;
+      }
+
+      return _speakingResults.length >= total;
+    }
+
+    // مراحل آموزشی بدون پاسخ اجباری
     if (_isPassiveStage(_currentStage)) {
       return true;
     }
 
-    if (_currentStage == 3) {
-      return _questionAnswers.isNotEmpty;
-    }
-
-    if (_currentStage == 4) {
-      return _fillBlankAnswers.isNotEmpty;
-    }
-
-    if (_currentStage == 10) {
-      return _speakingResults.isNotEmpty;
+    // اگر مرحله قبلاً کامل شده باشد.
+    if (_completedStages.contains(
+      _currentStage,
+    )) {
+      return true;
     }
 
     return false;
@@ -871,9 +899,12 @@ class _A2LessonDetailPageState
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
-              '🎉 این درس را کامل کردی! 😼💜',
+              MeowLocalizations.of(context)
+                      .isPersian
+                  ? '🎉 این درس را کامل کردی! 😼💜'
+                  : '🎉 You completed this lesson! 😼💜',
             ),
           ),
         );
@@ -920,7 +951,7 @@ class _A2LessonDetailPageState
       'وصل کردن',
       'جمله را بساز',
       'مکالمه واقعی',
-      'Listening',
+      'شنیداری',
       'تمرین مکالمه',
       'چالش میو',
       'مرور',
@@ -938,8 +969,8 @@ class _A2LessonDetailPageState
       'Learn the important words for this lesson.',
       'Practice useful everyday sentences.',
       'Learn the grammar you need for this topic.',
-      'Choose the best answer.',
-      'Choose the correct word for each sentence.',
+      'Choose the best answer for every question.',
+      'Choose the correct word for every sentence.',
       'Look at the words and learn the correct order.',
       'Connect the related items.',
       'Study how the sentence is built.',
@@ -954,14 +985,14 @@ class _A2LessonDetailPageState
       'کلمات مهم این درس را یاد بگیر.',
       'جمله‌های کاربردی روزمره را تمرین کن.',
       'گرامر موردنیاز این موضوع را یاد بگیر.',
-      'بهترین پاسخ را انتخاب کن.',
-      'کلمه درست را برای هر جمله انتخاب کن.',
+      'برای همه سؤال‌ها بهترین پاسخ را انتخاب کن.',
+      'برای همه جمله‌ها کلمه درست را انتخاب کن.',
       'ترتیب درست کلمات را یاد بگیر.',
       'موارد مرتبط را به هم وصل کن.',
       'ساختار جمله را بررسی کن.',
       'یک مکالمه واقعی را بخوان و تمرین کن.',
       'به همه جمله‌ها گوش بده.',
-      'صحبت کن و تلفظت را تمرین کن.',
+      'به همه سؤال‌ها پاسخ گفتاری بده و تلفظت را تمرین کن.',
       'چالش میو را انجام بده.',
       'چیزهایی را که یاد گرفتی مرور کن.',
     ];
@@ -1482,33 +1513,222 @@ class _A2LessonDetailPageState
     BuildContext context,
     MeowLocalizations lang,
   ) {
-    return Column(
-      children: widget.lesson.questions
-          .asMap()
-          .entries
-          .map(
-            (entry) {
-              final index = entry.key;
-              final question = entry.value;
-              final selected =
-                  _questionAnswers[index];
+    final total =
+        widget.lesson.questions.length;
 
-              return _card(
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
+    return Column(
+      children: [
+        if (total > 0)
+          Padding(
+            padding:
+                const EdgeInsets.only(
+              bottom: 10,
+            ),
+            child: Align(
+              alignment:
+                  Alignment.centerLeft,
+              child: Text(
+                lang.isPersian
+                    ? '${_questionAnswers.length} از $total سؤال پاسخ داده شده'
+                    : '${_questionAnswers.length} of $total questions answered',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontWeight:
+                      FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ...widget.lesson.questions
+            .asMap()
+            .entries
+            .map(
+          (entry) {
+            final index = entry.key;
+            final question = entry.value;
+            final selected =
+                _questionAnswers[index];
+
+            return _card(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${index + 1}. ${question.question}',
+                    style:
+                        const TextStyle(
+                      fontSize: 16,
+                      fontWeight:
+                          FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ...question.options
+                      .asMap()
+                      .entries
+                      .map(
+                    (optionEntry) {
+                      final optionIndex =
+                          optionEntry.key;
+                      final option =
+                          optionEntry.value;
+
+                      final isSelected =
+                          selected ==
+                              optionIndex;
+
+                      final isCorrect =
+                          optionIndex ==
+                              question
+                                  .correctIndex;
+
+                      Color? background;
+
+                      if (isSelected) {
+                        background =
+                            isCorrect
+                                ? Colors.green
+                                    .withOpacity(
+                                    0.12,
+                                  )
+                                : Colors.red
+                                    .withOpacity(
+                                    0.12,
+                                  );
+                      }
+
+                      return Padding(
+                        padding:
+                            const EdgeInsets.only(
+                          bottom: 8,
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child:
+                              OutlinedButton(
+                            style:
+                                OutlinedButton
+                                    .styleFrom(
+                              backgroundColor:
+                                  background,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _questionAnswers[
+                                        index] =
+                                    optionIndex;
+                              });
+
+                              _saveProgress();
+                            },
+                            child: Align(
+                              alignment:
+                                  Alignment
+                                      .centerLeft,
+                              child:
+                                  Text(option),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  if (selected != null) ...[
+                    const SizedBox(height: 8),
                     Text(
-                      '${index + 1}. ${question.question}',
-                      style:
-                          const TextStyle(
-                        fontSize: 16,
+                      selected ==
+                              question
+                                  .correctIndex
+                          ? (lang.isPersian
+                              ? '✅ درست! 😼💜'
+                              : '✅ Correct! 😼💜')
+                          : (lang.isPersian
+                              ? '❌ این جواب درست نیست.'
+                              : '❌ Not quite right.'),
+                      style: TextStyle(
                         fontWeight:
-                            FontWeight.w700,
+                            FontWeight.bold,
+                        color: selected ==
+                                question
+                                    .correctIndex
+                            ? Colors.green
+                            : Colors.red,
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    ...question.options
+                    const SizedBox(height: 6),
+                    Text(
+                      question.explanation,
+                    ),
+                  ],
+                ],
+              ),
+            );
+          },
+        ).toList(),
+      ],
+    );
+  }
+
+  Widget _buildFillBlanks(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    final total =
+        widget.lesson.fillBlanks.length;
+
+    return Column(
+      children: [
+        if (total > 0)
+          Padding(
+            padding:
+                const EdgeInsets.only(
+              bottom: 10,
+            ),
+            child: Align(
+              alignment:
+                  Alignment.centerLeft,
+              child: Text(
+                lang.isPersian
+                    ? '${_fillBlankAnswers.length} از $total سؤال پاسخ داده شده'
+                    : '${_fillBlankAnswers.length} of $total questions answered',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontWeight:
+                      FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ...widget.lesson.fillBlanks
+            .asMap()
+            .entries
+            .map(
+          (entry) {
+            final index = entry.key;
+            final item = entry.value;
+
+            final selected =
+                _fillBlankAnswers[index];
+
+            return _card(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${index + 1}. ${item.sentence}',
+                    style:
+                        const TextStyle(
+                      fontWeight:
+                          FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: item.options
                         .asMap()
                         .entries
                         .map(
@@ -1518,194 +1738,49 @@ class _A2LessonDetailPageState
                         final option =
                             optionEntry.value;
 
-                        final isSelected =
-                            selected ==
-                                optionIndex;
+                        return OutlinedButton(
+                          onPressed: () {
+                            setState(() {
+                              _fillBlankAnswers[
+                                      index] =
+                                  optionIndex;
+                            });
 
-                        final isCorrect =
-                            optionIndex ==
-                                question
-                                    .correctIndex;
-
-                        Color? background;
-
-                        if (isSelected) {
-                          background =
-                              isCorrect
-                                  ? Colors.green
-                                      .withOpacity(
-                                      0.12,
-                                    )
-                                  : Colors.red
-                                      .withOpacity(
-                                      0.12,
-                                    );
-                        }
-
-                        return Padding(
-                          padding:
-                              const EdgeInsets.only(
-                            bottom: 8,
-                          ),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child:
-                                OutlinedButton(
-                              style:
-                                  OutlinedButton
-                                      .styleFrom(
-                                backgroundColor:
-                                    background,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _questionAnswers[
-                                          index] =
-                                      optionIndex;
-
-                                  _completedStages
-                                      .add(3);
-                                });
-
-                                _saveProgress();
-                              },
-                              child: Align(
-                                alignment:
-                                    Alignment
-                                        .centerLeft,
-                                child:
-                                    Text(option),
-                              ),
-                            ),
-                          ),
+                            _saveProgress();
+                          },
+                          child:
+                              Text(option),
                         );
                       },
-                    ),
-                    if (selected != null) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        selected ==
-                                question
-                                    .correctIndex
-                            ? (lang.isPersian
-                                ? '✅ درست! 😼💜'
-                                : '✅ Correct! 😼💜')
-                            : (lang.isPersian
-                                ? '❌ این جواب درست نیست.'
-                                : '❌ Not quite right.'),
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
-                          color: selected ==
-                                  question
-                                      .correctIndex
-                              ? Colors.green
-                              : Colors.red,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        question.explanation,
-                      ),
-                    ],
-                  ],
-                ),
-              );
-            },
-          )
-          .toList(),
-    );
-  }
-
-  Widget _buildFillBlanks(
-    BuildContext context,
-    MeowLocalizations lang,
-  ) {
-    return Column(
-      children: widget.lesson.fillBlanks
-          .asMap()
-          .entries
-          .map(
-            (entry) {
-              final index = entry.key;
-              final item = entry.value;
-
-              final selected =
-                  _fillBlankAnswers[index];
-
-              return _card(
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
+                    ).toList(),
+                  ),
+                  if (selected != null) ...[
+                    const SizedBox(height: 10),
                     Text(
-                      '${index + 1}. ${item.sentence}',
-                      style:
-                          const TextStyle(
+                      selected ==
+                              item.correctIndex
+                          ? (lang.isPersian
+                              ? '✅ درست!'
+                              : '✅ Correct!')
+                          : (lang.isPersian
+                              ? '❌ جواب درست نیست.'
+                              : '❌ Not correct.'),
+                      style: TextStyle(
                         fontWeight:
-                            FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: item.options
-                          .asMap()
-                          .entries
-                          .map(
-                        (optionEntry) {
-                          final optionIndex =
-                              optionEntry.key;
-                          final option =
-                              optionEntry.value;
-
-                          return OutlinedButton(
-                            onPressed: () {
-                              setState(() {
-                                _fillBlankAnswers[
-                                        index] =
-                                    optionIndex;
-
-                                _completedStages
-                                    .add(4);
-                              });
-
-                              _saveProgress();
-                            },
-                            child:
-                                Text(option),
-                          );
-                        },
-                      ).toList(),
-                    ),
-                    if (selected != null) ...[
-                      const SizedBox(height: 10),
-                      Text(
-                        selected ==
+                            FontWeight.bold,
+                        color: selected ==
                                 item.correctIndex
-                            ? (lang.isPersian
-                                ? '✅ درست!'
-                                : '✅ Correct!')
-                            : (lang.isPersian
-                                ? '❌ جواب درست نیست.'
-                                : '❌ Not correct.'),
-                        style: TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
-                          color: selected ==
-                                  item.correctIndex
-                              ? Colors.green
-                              : Colors.red,
-                        ),
+                            ? Colors.green
+                            : Colors.red,
                       ),
-                    ],
+                    ),
                   ],
-                ),
-              );
-            },
-          )
-          .toList(),
+                ],
+              ),
+            );
+          },
+        ).toList(),
+      ],
     );
   }
 
@@ -2095,149 +2170,174 @@ class _A2LessonDetailPageState
     BuildContext context,
     MeowLocalizations lang,
   ) {
+    final total =
+        widget.lesson.speakingQuestions.length;
+
     return Column(
-      children: widget.lesson.speakingQuestions
-          .asMap()
-          .entries
-          .map(
-            (entry) {
-              final index = entry.key;
-              final question = entry.value;
+      children: [
+        if (total > 0)
+          Padding(
+            padding:
+                const EdgeInsets.only(
+              bottom: 10,
+            ),
+            child: Align(
+              alignment:
+                  Alignment.centerLeft,
+              child: Text(
+                lang.isPersian
+                    ? '${_speakingResults.length} از $total سؤال انجام شده'
+                    : '${_speakingResults.length} of $total speaking questions completed',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontWeight:
+                      FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ...widget.lesson.speakingQuestions
+            .asMap()
+            .entries
+            .map(
+          (entry) {
+            final index = entry.key;
+            final question = entry.value;
 
-              final recognized =
-                  _recognizedTexts[index] ??
-                      '';
+            final recognized =
+                _recognizedTexts[index] ??
+                    '';
 
-              final result =
-                  _speakingResults[index];
+            final result =
+                _speakingResults[index];
 
-              final listening =
-                  _isListening &&
-                      _listeningQuestionIndex ==
-                          index;
+            final listening =
+                _isListening &&
+                    _listeningQuestionIndex ==
+                        index;
 
-              return _card(
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      question.question,
-                      style:
-                          const TextStyle(
-                        fontSize: 17,
-                        fontWeight:
-                            FontWeight.w700,
-                      ),
+            return _card(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    question.question,
+                    style:
+                        const TextStyle(
+                      fontSize: 17,
+                      fontWeight:
+                          FontWeight.w700,
                     ),
-                    const SizedBox(height: 7),
-                    Text(
-                      question.pronunciation,
-                      style:
-                          const TextStyle(
-                        color: lavender,
-                      ),
+                  ),
+                  const SizedBox(height: 7),
+                  Text(
+                    question.pronunciation,
+                    style:
+                        const TextStyle(
+                      color: lavender,
                     ),
-                    const SizedBox(height: 16),
-                    Center(
-                      child:
-                          ElevatedButton.icon(
-                        onPressed: listening
-                            ? _stopListening
-                            : () =>
-                                _startListening(
-                                  index,
-                                ),
-                        icon: Icon(
-                          listening
-                              ? Icons.stop_rounded
-                              : Icons.mic_rounded,
-                        ),
-                        label: Text(
-                          listening
-                              ? (lang.isPersian
-                                  ? 'توقف'
-                                  : 'Stop')
-                              : (lang.isPersian
-                                  ? 'صحبت کن'
-                                  : 'Speak'),
-                        ),
-                        style:
-                            ElevatedButton.styleFrom(
-                          backgroundColor:
-                              lavender,
-                          foregroundColor:
-                              Colors.white,
-                        ),
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child:
+                        ElevatedButton.icon(
+                      onPressed: listening
+                          ? _stopListening
+                          : () =>
+                              _startListening(
+                                index,
+                              ),
+                      icon: Icon(
+                        listening
+                            ? Icons.stop_rounded
+                            : Icons.mic_rounded,
                       ),
-                    ),
-                    if (listening) ...[
-                      const SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          lang.isPersian
-                              ? '🎤 میو داره گوش می‌ده... 😼'
-                              : '🎤 Meow is listening... 😼',
-                          style:
-                              const TextStyle(
-                            color: lavender,
-                            fontWeight:
-                                FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                    if (recognized.isNotEmpty) ...[
-                      const SizedBox(height: 12),
-                      Container(
-                        width: double.infinity,
-                        padding:
-                            const EdgeInsets.all(
-                          12,
-                        ),
-                        decoration:
-                            BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(
-                            14,
-                          ),
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surfaceContainerHighest,
-                        ),
-                        child: Text(
-                          lang.isPersian
-                              ? 'میو شنید:\n$recognized'
-                              : 'Meow heard:\n$recognized',
-                        ),
-                      ),
-                    ],
-                    if (result != null) ...[
-                      const SizedBox(height: 12),
-                      Text(
-                        result
+                      label: Text(
+                        listening
                             ? (lang.isPersian
-                                ? '✅ خوب بود! 😼💜'
-                                : '✅ Good job! 😼💜')
+                                ? 'توقف'
+                                : 'Stop')
                             : (lang.isPersian
-                                ? '❌ هنوز دقیق نیست، ولی مرحله ثبت شد.'
-                                : '❌ Not quite, but the attempt is recorded.'),
+                                ? 'صحبت کن'
+                                : 'Speak'),
+                      ),
+                      style:
+                          ElevatedButton.styleFrom(
+                        backgroundColor:
+                            lavender,
+                        foregroundColor:
+                            Colors.white,
+                      ),
+                    ),
+                  ),
+                  if (listening) ...[
+                    const SizedBox(height: 10),
+                    Center(
+                      child: Text(
+                        lang.isPersian
+                            ? '🎤 میو داره گوش می‌ده... 😼'
+                            : '🎤 Meow is listening... 😼',
                         style:
-                            TextStyle(
+                            const TextStyle(
+                          color: lavender,
                           fontWeight:
                               FontWeight.bold,
-                          color: result
-                              ? Colors.green
-                              : Colors.red,
                         ),
                       ),
-                    ],
+                    ),
                   ],
-                ),
-              );
-            },
-          )
-          .toList(),
+                  if (recognized.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      padding:
+                          const EdgeInsets.all(
+                        12,
+                      ),
+                      decoration:
+                          BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(
+                          14,
+                        ),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerHighest,
+                      ),
+                      child: Text(
+                        lang.isPersian
+                            ? 'میو شنید:\n$recognized'
+                            : 'Meow heard:\n$recognized',
+                      ),
+                    ),
+                  ],
+                  if (result != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      result
+                          ? (lang.isPersian
+                              ? '✅ خوب بود! 😼💜'
+                              : '✅ Good job! 😼💜')
+                          : (lang.isPersian
+                              ? '❌ هنوز دقیق نیست، ولی تلاش ثبت شد.'
+                              : '❌ Not quite, but the attempt is recorded.'),
+                      style:
+                          TextStyle(
+                        fontWeight:
+                            FontWeight.bold,
+                        color: result
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            );
+          },
+        ).toList(),
+      ],
     );
   }
 
