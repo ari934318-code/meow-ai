@@ -50,6 +50,35 @@ class _A1BasicsLessonPageState
   late List<A1BasicQuestion> _questions;
   late final List<_A1Stage> _stages;
 
+  // Display options are reordered so the correct answer is not
+  // always the first choice. The pattern is deterministic per question.
+  final Map<int, List<String>> _displayOptions = {};
+
+  List<String> _optionsFor(int index, A1BasicQuestion question) {
+    return _displayOptions.putIfAbsent(index, () {
+      final options = List<String>.from(question.options);
+      if (options.length <= 1) {
+        return options;
+      }
+
+      final answerIndex = options.indexWhere(
+        (option) => _normalize(option) == _normalize(question.answer),
+      );
+
+      if (answerIndex < 0) {
+        return options;
+      }
+
+      final correct = options.removeAt(answerIndex);
+
+      // Rotate the correct answer through positions 0, 1, 2, 3...
+      // so a learner cannot simply guess the first option.
+      final targetIndex = index % (options.length + 1);
+      options.insert(targetIndex, correct);
+      return options;
+    });
+  }
+
   bool _speechAvailable = false;
   bool _isListening = false;
 
@@ -908,7 +937,7 @@ class _A1BasicsLessonPageState
           }
         }
       },
-      onError: (error) {
+      onError: () {
         if (mounted) {
           setState(() {
             _isListening = false;
@@ -1207,10 +1236,10 @@ class _A1BasicsLessonPageState
         await SharedPreferences.getInstance();
 
     final oldStage =
-        prefs.getInt(stageKey) ?? 0;
+        prefs.getInt(_stageKey) ?? 0;
 
     final raw =
-        prefs.getString(progressKey);
+        prefs.getString(_progressKey);
 
     if (raw == null || raw.isEmpty) {
       if (!mounted) {
@@ -1826,7 +1855,7 @@ class _A1BasicsLessonPageState
                 A1BasicsUIConfig
                     .cardSpacing,
           ),
-          ...question.options.map(
+          ..._optionsFor(index, question).map(
             (option) {
               final selectedThis =
                   selected == option;
