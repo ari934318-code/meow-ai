@@ -377,9 +377,18 @@ class _A2LessonDetailPageState
 
   final Set<int> _listenedItems = {};
 
+  final Map<int, List<String>> _orderingSelections = {};
+  final Map<int, List<String>> _buildingSelections = {};
+
+  final Set<int> _completedOrderingItems = {};
+  final Set<int> _completedBuildingItems = {};
+  final Set<int> _matchedItems = {};
+
   bool _speechAvailable = false;
   bool _isListening = false;
   int? _listeningQuestionIndex;
+
+  int? _selectedMatchingLeft;
 
   String get _progressPrefix =>
       'a2_lesson_progress_${widget.lesson.id}';
@@ -405,6 +414,21 @@ class _A2LessonDetailPageState
   String get _speakingKey =>
       '${_progressPrefix}_speaking';
 
+  String get _orderingKey =>
+      '${_progressPrefix}_ordering';
+
+  String get _buildingKey =>
+      '${_progressPrefix}_building';
+
+  String get _orderingCompletedKey =>
+      '${_progressPrefix}_ordering_completed';
+
+  String get _buildingCompletedKey =>
+      '${_progressPrefix}_building_completed';
+
+  String get _matchingKey =>
+      '${_progressPrefix}_matching';
+
   @override
   void initState() {
     super.initState();
@@ -422,14 +446,13 @@ class _A2LessonDetailPageState
 
   Future<void> _speak(String text) async {
     await _tts.stop();
-
     await _tts.awaitSpeakCompletion(true);
-
     await _tts.speak(text);
   }
 
   Future<void> _loadProgress() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs =
+        await SharedPreferences.getInstance();
 
     final savedStage =
         prefs.getInt(_stageKey) ?? 0;
@@ -451,6 +474,27 @@ class _A2LessonDetailPageState
 
     final speakingJson =
         prefs.getString(_speakingKey);
+
+    final orderingJson =
+        prefs.getString(_orderingKey);
+
+    final buildingJson =
+        prefs.getString(_buildingKey);
+
+    final orderingCompleted =
+        prefs.getStringList(
+              _orderingCompletedKey,
+            ) ??
+            [];
+
+    final buildingCompleted =
+        prefs.getStringList(
+              _buildingCompletedKey,
+            ) ??
+            [];
+
+    final matchingJson =
+        prefs.getString(_matchingKey);
 
     if (!mounted) return;
 
@@ -474,17 +518,31 @@ class _A2LessonDetailPageState
               .whereType<int>(),
         );
 
+      _completedOrderingItems
+        ..clear()
+        ..addAll(
+          orderingCompleted
+              .map(int.tryParse)
+              .whereType<int>(),
+        );
+
+      _completedBuildingItems
+        ..clear()
+        ..addAll(
+          buildingCompleted
+              .map(int.tryParse)
+              .whereType<int>(),
+        );
+
       if (questionsJson != null) {
-        final data =
-            jsonDecode(questionsJson);
+        final data = jsonDecode(questionsJson);
 
         if (data is Map) {
           _questionAnswers.clear();
 
           data.forEach((key, value) {
-            final index = int.tryParse(
-              key.toString(),
-            );
+            final index =
+                int.tryParse(key.toString());
 
             final answer =
                 int.tryParse(value.toString());
@@ -506,9 +564,8 @@ class _A2LessonDetailPageState
           _fillBlankAnswers.clear();
 
           data.forEach((key, value) {
-            final index = int.tryParse(
-              key.toString(),
-            );
+            final index =
+                int.tryParse(key.toString());
 
             final answer =
                 int.tryParse(value.toString());
@@ -530,9 +587,8 @@ class _A2LessonDetailPageState
           _recognizedTexts.clear();
 
           data.forEach((key, value) {
-            final index = int.tryParse(
-              key.toString(),
-            );
+            final index =
+                int.tryParse(key.toString());
 
             if (index != null) {
               _recognizedTexts[index] =
@@ -550,9 +606,8 @@ class _A2LessonDetailPageState
           _speakingResults.clear();
 
           data.forEach((key, value) {
-            final index = int.tryParse(
-              key.toString(),
-            );
+            final index =
+                int.tryParse(key.toString());
 
             if (index != null) {
               if (value == true) {
@@ -566,11 +621,71 @@ class _A2LessonDetailPageState
           });
         }
       }
+
+      if (orderingJson != null) {
+        final data =
+            jsonDecode(orderingJson);
+
+        if (data is Map) {
+          _orderingSelections.clear();
+
+          data.forEach((key, value) {
+            final index =
+                int.tryParse(key.toString());
+
+            if (index != null &&
+                value is List) {
+              _orderingSelections[index] =
+                  value.map(
+                (item) => item.toString(),
+              ).toList();
+            }
+          });
+        }
+      }
+
+      if (buildingJson != null) {
+        final data =
+            jsonDecode(buildingJson);
+
+        if (data is Map) {
+          _buildingSelections.clear();
+
+          data.forEach((key, value) {
+            final index =
+                int.tryParse(key.toString());
+
+            if (index != null &&
+                value is List) {
+              _buildingSelections[index] =
+                  value.map(
+                (item) => item.toString(),
+              ).toList();
+            }
+          });
+        }
+      }
+
+      if (matchingJson != null) {
+        final data =
+            jsonDecode(matchingJson);
+
+        if (data is List) {
+          _matchedItems
+            ..clear()
+            ..addAll(
+              data
+                  .map(int.tryParse)
+                  .whereType<int>(),
+            );
+        }
+      }
     });
   }
 
   Future<void> _saveProgress() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs =
+        await SharedPreferences.getInstance();
 
     await prefs.setInt(
       _stageKey,
@@ -610,17 +725,50 @@ class _A2LessonDetailPageState
       _speakingKey,
       jsonEncode(_speakingResults),
     );
+
+    await prefs.setString(
+      _orderingKey,
+      jsonEncode(_orderingSelections),
+    );
+
+    await prefs.setString(
+      _buildingKey,
+      jsonEncode(_buildingSelections),
+    );
+
+    await prefs.setStringList(
+      _orderingCompletedKey,
+      _completedOrderingItems
+          .map((e) => e.toString())
+          .toList(),
+    );
+
+    await prefs.setStringList(
+      _buildingCompletedKey,
+      _completedBuildingItems
+          .map((e) => e.toString())
+          .toList(),
+    );
+
+    await prefs.setString(
+      _matchingKey,
+      jsonEncode(
+        _matchedItems.toList(),
+      ),
+    );
   }
 
   Future<void> _initializeSpeech() async {
-    final available = await _speech.initialize(
+    final available =
+        await _speech.initialize(
       onStatus: (status) {
         if (status == 'done' ||
             status == 'notListening') {
           if (mounted) {
             setState(() {
               _isListening = false;
-              _listeningQuestionIndex = null;
+              _listeningQuestionIndex =
+                  null;
             });
           }
         }
@@ -792,21 +940,89 @@ class _A2LessonDetailPageState
         .trim();
   }
 
+  bool _allQuestionsAnswered() {
+    final total =
+        widget.lesson.questions.length;
+
+    return total == 0 ||
+        _questionAnswers.length >= total;
+  }
+
+  bool _allFillBlanksAnswered() {
+    final total =
+        widget.lesson.fillBlanks.length;
+
+    return total == 0 ||
+        _fillBlankAnswers.length >= total;
+  }
+
+  bool _allSpeakingAttempted() {
+    final total =
+        widget.lesson.speakingQuestions.length;
+
+    return total == 0 ||
+        _speakingResults.length >= total;
+  }
+
+  bool _allOrderingCompleted() {
+    final total =
+        widget.lesson.sentenceOrdering.length;
+
+    return total == 0 ||
+        _completedOrderingItems.length >=
+            total;
+  }
+
+  bool _allBuildingCompleted() {
+    final total =
+        widget.lesson.sentenceBuilding.length;
+
+    return total == 0 ||
+        _completedBuildingItems.length >=
+            total;
+  }
+
+  bool _allMatchingCompleted() {
+    final total =
+        widget.lesson.matching.length;
+
+    return total == 0 ||
+        _matchedItems.length >= total;
+  }
+
   bool _isPassiveStage(int stage) {
     return stage == 0 ||
         stage == 1 ||
         stage == 2 ||
-        stage == 5 ||
-        stage == 6 ||
-        stage == 7 ||
         stage == 8 ||
         stage == 11 ||
         stage == 12;
   }
 
   bool _canGoNext() {
-    // Listening
-    // باید به تمام جمله‌ها گوش داده شود.
+    // هر مرحله‌ای که چند سؤال/تمرین دارد
+    // باید تمام آیتم‌های خودش کامل شوند.
+
+    if (_currentStage == 3) {
+      return _allQuestionsAnswered();
+    }
+
+    if (_currentStage == 4) {
+      return _allFillBlanksAnswered();
+    }
+
+    if (_currentStage == 5) {
+      return _allOrderingCompleted();
+    }
+
+    if (_currentStage == 6) {
+      return _allMatchingCompleted();
+    }
+
+    if (_currentStage == 7) {
+      return _allBuildingCompleted();
+    }
+
     if (_currentStage == 9) {
       final total =
           widget.lesson.sentences.length;
@@ -818,55 +1034,17 @@ class _A2LessonDetailPageState
       return _listenedItems.length >= total;
     }
 
-    // Multiple Choice
-    // باید به تمام سؤال‌ها پاسخ داده شود.
-    if (_currentStage == 3) {
-      final total =
-          widget.lesson.questions.length;
-
-      if (total == 0) {
-        return true;
-      }
-
-      return _questionAnswers.length >= total;
-    }
-
-    // Fill in the Blank
-    // باید تمام سؤال‌ها پاسخ داده شوند.
-    if (_currentStage == 4) {
-      final total =
-          widget.lesson.fillBlanks.length;
-
-      if (total == 0) {
-        return true;
-      }
-
-      return _fillBlankAnswers.length >= total;
-    }
-
-    // Speaking
-    // باید برای تمام سؤال‌ها
-    // حداقل یک تلاش ثبت شده باشد.
     if (_currentStage == 10) {
-      final total =
-          widget.lesson.speakingQuestions.length;
-
-      if (total == 0) {
-        return true;
-      }
-
-      return _speakingResults.length >= total;
+      return _allSpeakingAttempted();
     }
 
-    // مراحل آموزشی بدون پاسخ اجباری
-    if (_isPassiveStage(_currentStage)) {
-      return true;
-    }
-
-    // اگر مرحله قبلاً کامل شده باشد.
     if (_completedStages.contains(
       _currentStage,
     )) {
+      return true;
+    }
+
+    if (_isPassiveStage(_currentStage)) {
       return true;
     }
 
@@ -899,12 +1077,9 @@ class _A2LessonDetailPageState
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text(
-              MeowLocalizations.of(context)
-                      .isPersian
-                  ? '🎉 این درس را کامل کردی! 😼💜'
-                  : '🎉 You completed this lesson! 😼💜',
+              '🎉 این درس را کامل کردی! 😼💜',
             ),
           ),
         );
@@ -951,7 +1126,7 @@ class _A2LessonDetailPageState
       'وصل کردن',
       'جمله را بساز',
       'مکالمه واقعی',
-      'شنیداری',
+      'گوش دادن',
       'تمرین مکالمه',
       'چالش میو',
       'مرور',
@@ -969,14 +1144,14 @@ class _A2LessonDetailPageState
       'Learn the important words for this lesson.',
       'Practice useful everyday sentences.',
       'Learn the grammar you need for this topic.',
-      'Choose the best answer for every question.',
-      'Choose the correct word for every sentence.',
-      'Look at the words and learn the correct order.',
-      'Connect the related items.',
-      'Study how the sentence is built.',
+      'Answer all questions before continuing.',
+      'Complete all of the sentences.',
+      'Build every sentence in the correct order.',
+      'Match every item correctly.',
+      'Build every sentence by selecting the words.',
       'Read and practice a realistic conversation.',
       'Listen to all the sentences.',
-      'Speak and practice your pronunciation.',
+      'Try every speaking question.',
       'Complete Meow’s challenge.',
       'Review what you learned.',
     ];
@@ -985,14 +1160,14 @@ class _A2LessonDetailPageState
       'کلمات مهم این درس را یاد بگیر.',
       'جمله‌های کاربردی روزمره را تمرین کن.',
       'گرامر موردنیاز این موضوع را یاد بگیر.',
-      'برای همه سؤال‌ها بهترین پاسخ را انتخاب کن.',
-      'برای همه جمله‌ها کلمه درست را انتخاب کن.',
-      'ترتیب درست کلمات را یاد بگیر.',
-      'موارد مرتبط را به هم وصل کن.',
-      'ساختار جمله را بررسی کن.',
+      'قبل از ادامه، به همه سؤال‌ها پاسخ بده.',
+      'همه جمله‌ها را کامل کن.',
+      'همه جمله‌ها را با ترتیب درست بساز.',
+      'همه موارد را به‌درستی به هم وصل کن.',
+      'همه جمله‌ها را با انتخاب کلمات بساز.',
       'یک مکالمه واقعی را بخوان و تمرین کن.',
       'به همه جمله‌ها گوش بده.',
-      'به همه سؤال‌ها پاسخ گفتاری بده و تلفظت را تمرین کن.',
+      'همه سؤال‌های گفتاری را امتحان کن.',
       'چالش میو را انجام بده.',
       'چیزهایی را که یاد گرفتی مرور کن.',
     ];
@@ -1518,27 +1693,16 @@ class _A2LessonDetailPageState
 
     return Column(
       children: [
-        if (total > 0)
-          Padding(
-            padding:
-                const EdgeInsets.only(
-              bottom: 10,
-            ),
-            child: Align(
-              alignment:
-                  Alignment.centerLeft,
-              child: Text(
-                lang.isPersian
-                    ? '${_questionAnswers.length} از $total سؤال پاسخ داده شده'
-                    : '${_questionAnswers.length} of $total questions answered',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontWeight:
-                      FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
+        _progressCard(
+          context,
+          lang,
+          _questionAnswers.length,
+          total,
+          lang.isPersian
+              ? 'همه سؤال‌ها را پاسخ بده.'
+              : 'Answer every question before continuing.',
+        ),
+        const SizedBox(height: 8),
         ...widget.lesson.questions
             .asMap()
             .entries
@@ -1580,8 +1744,7 @@ class _A2LessonDetailPageState
 
                       final isCorrect =
                           optionIndex ==
-                              question
-                                  .correctIndex;
+                              question.correctIndex;
 
                       Color? background;
 
@@ -1604,7 +1767,8 @@ class _A2LessonDetailPageState
                           bottom: 8,
                         ),
                         child: SizedBox(
-                          width: double.infinity,
+                          width:
+                              double.infinity,
                           child:
                               OutlinedButton(
                             style:
@@ -1638,8 +1802,7 @@ class _A2LessonDetailPageState
                     const SizedBox(height: 8),
                     Text(
                       selected ==
-                              question
-                                  .correctIndex
+                              question.correctIndex
                           ? (lang.isPersian
                               ? '✅ درست! 😼💜'
                               : '✅ Correct! 😼💜')
@@ -1650,8 +1813,7 @@ class _A2LessonDetailPageState
                         fontWeight:
                             FontWeight.bold,
                         color: selected ==
-                                question
-                                    .correctIndex
+                                question.correctIndex
                             ? Colors.green
                             : Colors.red,
                       ),
@@ -1665,7 +1827,7 @@ class _A2LessonDetailPageState
               ),
             );
           },
-        ).toList(),
+        ),
       ],
     );
   }
@@ -1679,27 +1841,16 @@ class _A2LessonDetailPageState
 
     return Column(
       children: [
-        if (total > 0)
-          Padding(
-            padding:
-                const EdgeInsets.only(
-              bottom: 10,
-            ),
-            child: Align(
-              alignment:
-                  Alignment.centerLeft,
-              child: Text(
-                lang.isPersian
-                    ? '${_fillBlankAnswers.length} از $total سؤال پاسخ داده شده'
-                    : '${_fillBlankAnswers.length} of $total questions answered',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontWeight:
-                      FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
+        _progressCard(
+          context,
+          lang,
+          _fillBlankAnswers.length,
+          total,
+          lang.isPersian
+              ? 'همه جای خالی‌ها را کامل کن.'
+              : 'Complete every sentence before continuing.',
+        ),
+        const SizedBox(height: 8),
         ...widget.lesson.fillBlanks
             .asMap()
             .entries
@@ -1738,7 +1889,30 @@ class _A2LessonDetailPageState
                         final option =
                             optionEntry.value;
 
+                        final isSelected =
+                            selected ==
+                                optionIndex;
+
                         return OutlinedButton(
+                          style:
+                              OutlinedButton
+                                  .styleFrom(
+                            backgroundColor:
+                                isSelected
+                                    ? (optionIndex ==
+                                            item.correctIndex
+                                        ? Colors
+                                            .green
+                                            .withOpacity(
+                                            0.12,
+                                          )
+                                        : Colors
+                                            .red
+                                            .withOpacity(
+                                            0.12,
+                                          ))
+                                    : null,
+                          ),
                           onPressed: () {
                             setState(() {
                               _fillBlankAnswers[
@@ -1779,7 +1953,7 @@ class _A2LessonDetailPageState
               ),
             );
           },
-        ).toList(),
+        ),
       ],
     );
   }
@@ -1788,60 +1962,132 @@ class _A2LessonDetailPageState
     BuildContext context,
     MeowLocalizations lang,
   ) {
+    final total =
+        widget.lesson.sentenceOrdering.length;
+
     return Column(
-      children: widget.lesson.sentenceOrdering
-          .map(
-            (item) => _card(
+      children: [
+        _progressCard(
+          context,
+          lang,
+          _completedOrderingItems.length,
+          total,
+          lang.isPersian
+              ? 'با لمس کلمات، همه جمله‌ها را درست بساز.'
+              : 'Tap the words to build every sentence correctly.',
+        ),
+        const SizedBox(height: 8),
+        ...widget.lesson.sentenceOrdering
+            .asMap()
+            .entries
+            .map(
+          (entry) {
+            final index = entry.key;
+            final item = entry.value;
+
+            final selected =
+                _orderingSelections[index] ??
+                    [];
+
+            final completed =
+                _completedOrderingItems
+                    .contains(index);
+
+            return _card(
               child: Column(
                 crossAxisAlignment:
                     CrossAxisAlignment.start,
                 children: [
                   Text(
-                    lang.isPersian
-                        ? 'کلمات را به ترتیب درست بچین:'
-                        : 'Put the words in the correct order:',
+                    '${index + 1}. ${lang.isPersian ? 'جمله را بساز:' : 'Build the sentence:'}',
                     style:
                         const TextStyle(
                       fontWeight:
                           FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
+                  if (selected.isNotEmpty)
+                    Wrap(
+                      spacing: 7,
+                      runSpacing: 7,
+                      children:
+                          selected.map(
+                        (word) => InputChip(
+                          label: Text(word),
+                          onDeleted: () {
+                            setState(() {
+                              selected.remove(word);
+
+                              _completedOrderingItems
+                                  .remove(index);
+                            });
+
+                            _saveProgress();
+                          },
+                        ),
+                      ).toList(),
+                    ),
+                  if (selected.isNotEmpty)
+                    const SizedBox(height: 10),
                   Wrap(
                     spacing: 7,
                     runSpacing: 7,
-                    children: item.shuffledWords
-                        .map(
-                          (word) => Chip(
-                            label: Text(word),
-                          ),
-                        )
-                        .toList(),
+                    children:
+                        item.shuffledWords.map(
+                      (word) {
+                        final used =
+                            selected.contains(word);
+
+                        return FilterChip(
+                          label: Text(word),
+                          selected: used,
+                          onSelected: used
+                              ? null
+                              : (_) {
+                                  setState(() {
+                                    final list =
+                                        _orderingSelections[
+                                                index] ??=
+                                            [];
+
+                                    list.add(word);
+
+                                    if (_normalizeText(
+                                          list.join(' '),
+                                        ) ==
+                                        _normalizeText(
+                                          item.sentence,
+                                        )) {
+                                      _completedOrderingItems
+                                          .add(index);
+                                    }
+                                  });
+
+                                  _saveProgress();
+                                },
+                        );
+                      },
+                    ).toList(),
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    lang.isPersian
-                        ? 'جمله صحیح: ${item.sentence}'
-                        : 'Correct sentence: ${item.sentence}',
-                    style:
-                        const TextStyle(
-                      color: lavender,
-                      fontWeight:
-                          FontWeight.w700,
+                  if (completed)
+                    Text(
+                      lang.isPersian
+                          ? '✅ جمله درست ساخته شد!'
+                          : '✅ Sentence completed!',
+                      style: const TextStyle(
+                        color: Colors.green,
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.volume_up_rounded,
-                    ),
-                    onPressed: () =>
-                        _speak(item.sentence),
-                  ),
                 ],
               ),
-            ),
-          )
-          .toList(),
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -1849,43 +2095,201 @@ class _A2LessonDetailPageState
     BuildContext context,
     MeowLocalizations lang,
   ) {
-    return _card(
-      child: Column(
-        children: widget.lesson.matching
-            .map(
-              (item) => Padding(
-                padding:
-                    const EdgeInsets.only(
-                  bottom: 14,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        item.left,
-                        style:
-                            const TextStyle(
-                          fontWeight:
-                              FontWeight.w700,
+    final total =
+        widget.lesson.matching.length;
+
+    return Column(
+      children: [
+        _progressCard(
+          context,
+          lang,
+          _matchedItems.length,
+          total,
+          lang.isPersian
+              ? 'یک مورد را از سمت چپ و ترجمه مرتبط را انتخاب کن.'
+              : 'Select an item on the left, then its matching translation.',
+        ),
+        const SizedBox(height: 8),
+        _card(
+          child: Column(
+            children: widget.lesson.matching
+                .asMap()
+                .entries
+                .map(
+              (entry) {
+                final index = entry.key;
+                final item = entry.value;
+
+                final matched =
+                    _matchedItems.contains(index);
+
+                final selected =
+                    _selectedMatchingLeft ==
+                        index;
+
+                return Padding(
+                  padding:
+                      const EdgeInsets.only(
+                    bottom: 12,
+                  ),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        borderRadius:
+                            BorderRadius.circular(
+                          14,
+                        ),
+                        onTap: matched
+                            ? null
+                            : () {
+                                setState(() {
+                                  _selectedMatchingLeft =
+                                      index;
+                                });
+                              },
+                        child: Container(
+                          width: double.infinity,
+                          padding:
+                              const EdgeInsets.all(
+                            13,
+                          ),
+                          decoration:
+                              BoxDecoration(
+                            borderRadius:
+                                BorderRadius
+                                    .circular(
+                              14,
+                            ),
+                            color: matched
+                                ? Colors.green
+                                    .withOpacity(
+                                    0.10,
+                                  )
+                                : selected
+                                    ? lavender
+                                        .withOpacity(
+                                        0.18,
+                                      )
+                                    : null,
+                            border: Border.all(
+                              color: matched
+                                  ? Colors.green
+                                  : selected
+                                      ? lavender
+                                      : Colors
+                                          .grey
+                                          .withOpacity(
+                                          0.16,
+                                        ),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  item.left,
+                                  style:
+                                      const TextStyle(
+                                    fontWeight:
+                                        FontWeight
+                                            .w700,
+                                  ),
+                                ),
+                              ),
+                              Icon(
+                                matched
+                                    ? Icons
+                                        .check_circle_rounded
+                                    : Icons
+                                        .arrow_forward_rounded,
+                                color: matched
+                                    ? Colors.green
+                                    : Colors.grey,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 18,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        item.right,
+                      const SizedBox(height: 7),
+                      InkWell(
+                        borderRadius:
+                            BorderRadius.circular(
+                          14,
+                        ),
+                        onTap: matched
+                            ? null
+                            : () {
+                                if (_selectedMatchingLeft ==
+                                    index) {
+                                  setState(() {
+                                    _matchedItems
+                                        .add(index);
+                                    _selectedMatchingLeft =
+                                        null;
+                                  });
+
+                                  _saveProgress();
+                                } else {
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        lang.isPersian
+                                            ? 'اول مورد انگلیسی مرتبط را انتخاب کن.'
+                                            : 'Select the matching English item first.',
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                        child: Container(
+                          width: double.infinity,
+                          padding:
+                              const EdgeInsets.all(
+                            13,
+                          ),
+                          decoration:
+                              BoxDecoration(
+                            borderRadius:
+                                BorderRadius
+                                    .circular(
+                              14,
+                            ),
+                            color: matched
+                                ? Colors.green
+                                    .withOpacity(
+                                    0.10,
+                                  )
+                                : null,
+                            border: Border.all(
+                              color: matched
+                                  ? Colors.green
+                                  : Colors
+                                      .grey
+                                      .withOpacity(
+                                      0.16,
+                                    ),
+                            ),
+                          ),
+                          child: Text(
+                            item.right,
+                            style:
+                                const TextStyle(
+                              fontWeight:
+                                  FontWeight.w600,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-            .toList(),
-      ),
+                    ],
+                  ),
+                );
+              },
+            ).toList(),
+          ),
+        ),
+      ],
     );
   }
 
@@ -1893,10 +2297,38 @@ class _A2LessonDetailPageState
     BuildContext context,
     MeowLocalizations lang,
   ) {
+    final total =
+        widget.lesson.sentenceBuilding.length;
+
     return Column(
-      children: widget.lesson.sentenceBuilding
-          .map(
-            (item) => _card(
+      children: [
+        _progressCard(
+          context,
+          lang,
+          _completedBuildingItems.length,
+          total,
+          lang.isPersian
+              ? 'با لمس کلمات، همه جمله‌ها را بساز.'
+              : 'Tap the words to build every sentence.',
+        ),
+        const SizedBox(height: 8),
+        ...widget.lesson.sentenceBuilding
+            .asMap()
+            .entries
+            .map(
+          (entry) {
+            final index = entry.key;
+            final item = entry.value;
+
+            final selected =
+                _buildingSelections[index] ??
+                    [];
+
+            final completed =
+                _completedBuildingItems
+                    .contains(index);
+
+            return _card(
               child: Column(
                 crossAxisAlignment:
                     CrossAxisAlignment.start,
@@ -1909,51 +2341,105 @@ class _A2LessonDetailPageState
                           FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
+                  if (selected.isNotEmpty)
+                    Container(
+                      width: double.infinity,
+                      padding:
+                          const EdgeInsets.all(
+                        12,
+                      ),
+                      decoration:
+                          BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(
+                          14,
+                        ),
+                        color: lavender
+                            .withOpacity(
+                          0.10,
+                        ),
+                      ),
+                      child: Text(
+                        selected.join(' '),
+                        style:
+                            const TextStyle(
+                          fontSize: 17,
+                          fontWeight:
+                              FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  if (selected.isNotEmpty)
+                    const SizedBox(height: 10),
                   Wrap(
                     spacing: 7,
                     runSpacing: 7,
-                    children: item.words
-                        .map(
-                          (word) => Chip(
-                            label:
-                                Text(word),
-                          ),
-                        )
-                        .toList(),
+                    children: item.words.map(
+                      (word) {
+                        final used =
+                            selected.contains(word);
+
+                        return FilterChip(
+                          label: Text(word),
+                          selected: used,
+                          onSelected: used
+                              ? null
+                              : (_) {
+                                  setState(() {
+                                    final list =
+                                        _buildingSelections[
+                                                index] ??=
+                                            [];
+
+                                    list.add(word);
+
+                                    if (_normalizeText(
+                                          list.join(' '),
+                                        ) ==
+                                        _normalizeText(
+                                          item.correctSentence,
+                                        )) {
+                                      _completedBuildingItems
+                                          .add(index);
+                                    }
+                                  });
+
+                                  _saveProgress();
+                                },
+                        );
+                      },
+                    ).toList(),
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    item.correctSentence,
-                    style:
-                        const TextStyle(
-                      color: lavender,
-                      fontWeight:
-                          FontWeight.w700,
+                  if (completed) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      lang.isPersian
+                          ? '✅ جمله درست ساخته شد!'
+                          : '✅ Sentence completed!',
+                      style: const TextStyle(
+                        color: Colors.green,
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    item.pronunciation,
-                    style:
-                        const TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.volume_up_rounded,
-                    ),
-                    onPressed: () =>
-                        _speak(
+                    const SizedBox(height: 4),
+                    Text(
                       item.correctSentence,
+                      style:
+                          const TextStyle(
+                        color: lavender,
+                        fontWeight:
+                            FontWeight.w700,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
-            ),
-          )
-          .toList(),
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -1962,9 +2448,39 @@ class _A2LessonDetailPageState
     MeowLocalizations lang,
   ) {
     return Column(
-      children: widget.lesson.conversations
-          .map(
-            (line) => _card(
+      children: [
+        _card(
+          child: Row(
+            children: [
+              const Icon(
+                Icons.forum_rounded,
+                color: lavender,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  lang.isPersian
+                      ? 'یک مکالمه واقعی بین میو و دانش‌آموز را بخوان و تمرین کن.'
+                      : 'Read and practice a realistic conversation between Meow and the student.',
+                  style:
+                      const TextStyle(
+                    fontWeight:
+                        FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        ...widget.lesson.conversations
+            .asMap()
+            .entries
+            .map(
+          (entry) {
+            final line = entry.value;
+
+            return _card(
               child: Row(
                 crossAxisAlignment:
                     CrossAxisAlignment.start,
@@ -1972,14 +2488,14 @@ class _A2LessonDetailPageState
                   Container(
                     padding:
                         const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 5,
+                      horizontal: 10,
+                      vertical: 6,
                     ),
                     decoration:
                         BoxDecoration(
                       borderRadius:
                           BorderRadius.circular(
-                        8,
+                        10,
                       ),
                       color: Theme.of(context)
                           .colorScheme
@@ -2032,9 +2548,10 @@ class _A2LessonDetailPageState
                   ),
                 ],
               ),
-            ),
-          )
-          .toList(),
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -2049,31 +2566,16 @@ class _A2LessonDetailPageState
       crossAxisAlignment:
           CrossAxisAlignment.start,
       children: [
-        _card(
-          child: Row(
-            children: [
-              const Icon(
-                Icons.headphones_rounded,
-                color: lavender,
-                size: 28,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  lang.isPersian
-                      ? 'برای عبور از این مرحله باید به همه جمله‌ها گوش بدهی.'
-                      : 'Listen to every sentence before continuing.',
-                  style:
-                      const TextStyle(
-                    fontWeight:
-                        FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
+        _progressCard(
+          context,
+          lang,
+          _listenedItems.length,
+          total,
+          lang.isPersian
+              ? 'برای عبور از این مرحله باید به همه جمله‌ها گوش بدهی.'
+              : 'Listen to every sentence before continuing.',
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         ...widget.lesson.sentences
             .asMap()
             .entries
@@ -2175,27 +2677,16 @@ class _A2LessonDetailPageState
 
     return Column(
       children: [
-        if (total > 0)
-          Padding(
-            padding:
-                const EdgeInsets.only(
-              bottom: 10,
-            ),
-            child: Align(
-              alignment:
-                  Alignment.centerLeft,
-              child: Text(
-                lang.isPersian
-                    ? '${_speakingResults.length} از $total سؤال انجام شده'
-                    : '${_speakingResults.length} of $total speaking questions completed',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontWeight:
-                      FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
+        _progressCard(
+          context,
+          lang,
+          _speakingResults.length,
+          total,
+          lang.isPersian
+              ? 'همه سؤال‌ها را حداقل یک بار امتحان کن.'
+              : 'Try every speaking question at least once.',
+        ),
+        const SizedBox(height: 8),
         ...widget.lesson.speakingQuestions
             .asMap()
             .entries
@@ -2336,7 +2827,7 @@ class _A2LessonDetailPageState
               ),
             );
           },
-        ).toList(),
+        ),
       ],
     );
   }
@@ -2432,6 +2923,69 @@ class _A2LessonDetailPageState
             ),
           )
           .toList(),
+    );
+  }
+
+  Widget _progressCard(
+    BuildContext context,
+    MeowLocalizations lang,
+    int completed,
+    int total,
+    String instruction,
+  ) {
+    return _card(
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
+        children: [
+          Text(
+            instruction,
+            style:
+                const TextStyle(
+              fontWeight:
+                  FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(
+                    20,
+                  ),
+                  child:
+                      LinearProgressIndicator(
+                    value: total == 0
+                        ? 1
+                        : completed / total,
+                    minHeight: 7,
+                    backgroundColor:
+                        Colors.grey
+                            .withOpacity(0.12),
+                    valueColor:
+                        const AlwaysStoppedAnimation<
+                            Color>(
+                      lavender,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                '$completed/$total',
+                style:
+                    const TextStyle(
+                  color: Colors.grey,
+                  fontWeight:
+                      FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
