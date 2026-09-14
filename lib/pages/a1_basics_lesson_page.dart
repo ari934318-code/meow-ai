@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/levels/a1/basics/a1_basics_models.dart';
+import '../data/levels/a1/basics/a1_basics_ui_config.dart';
 
 class A1BasicsLessonPage extends StatefulWidget {
   final A1BasicLesson lesson;
@@ -17,12 +18,10 @@ class A1BasicsLessonPage extends StatefulWidget {
   });
 
   @override
-  State<A1BasicsLessonPage> createState() =>
-      _A1BasicsLessonPageState();
+  State<A1BasicsLessonPage> createState() => _A1BasicsLessonPageState();
 }
 
-class _A1BasicsLessonPageState
-    extends State<A1BasicsLessonPage> {
+class _A1BasicsLessonPageState extends State<A1BasicsLessonPage> {
   static const String _completedLessonsKey =
       'a1_basics_completed_lessons';
 
@@ -61,49 +60,242 @@ class _A1BasicsLessonPageState
 
     _stages = _buildStages();
 
-    _initializeSpeech();
-    _initializeTts();
+    _initSpeech();
+    _initTts();
     _loadProgress();
   }
 
-  // ============================================================
+  // =========================================================
   // STAGES
-  // ============================================================
+  // =========================================================
 
   List<_A1Stage> _buildStages() {
     switch (widget.lesson.id) {
-      case 'a1_basic_01':
-        return _lesson01Stages();
+      case 'a1_01':
+      case 'lesson_1':
+      case '1':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 1, 12]),
+          _stage('Stage 2', 'مرحله ۲',
+              [2, 3, 7, 8, 17, 18, 22]),
+          _stage('Stage 3', 'مرحله ۳', [4, 9]),
+          _stage('Stage 4', 'مرحله ۴',
+              [5, 6, 10, 11, 19, 20, 41, 42]),
+          _stage('Stage 5', 'مرحله ۵',
+              [21, 23, 24, 25, 26, 27, 28, 29]),
+          _stage('Stage 6', 'مرحله ۶',
+              [13, 14, 15, 16, 30, 31, 32, 33, 34]),
+          _stage('Stage 7', 'مرحله ۷',
+              [35, 36, 37, 38, 39, 40]),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_02':
-        return _lesson02Stages();
+      case 'a1_02':
+      case 'lesson_2':
+      case '2':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 7]),
+          _stage('Stage 2', 'مرحله ۲', [1, 4, 6, 8]),
+          _stage('Stage 3', 'مرحله ۳', [2, 3, 5, 9]),
+          _stage('Stage 4', 'مرحله ۴', [10, 11, 12]),
+          _stage('Stage 5', 'مرحله ۵', [13, 14, 15]),
+          _stage('Stage 6', 'مرحله ۶', [16, 17, 18]),
+          _stage('Stage 7', 'مرحله ۷', [19, 20, 21, 22]),
+          _stage('Stage 8', 'مرحله ۸',
+              [23, 24, 25, 26, 27]),
+          _stage('Stage 9', 'مرحله ۹',
+              List.generate(11, (i) => i + 28)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_03':
-        return _lesson03Stages();
+      case 'a1_03':
+      case 'lesson_3':
+      case '3':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 2, 4, 6, 7, 9]),
+          _stage('Stage 2', 'مرحله ۲', [1, 3, 5, 8]),
+          _stage('Stage 3', 'مرحله ۳', [10, 11]),
+          _stage('Stage 4', 'مرحله ۴', [12, 13, 14]),
+          _stage('Stage 5', 'مرحله ۵',
+              [15, 16, 17, 18]),
+          _stage('Stage 6', 'مرحله ۶',
+              [19, 20, 21, 22, 23]),
+          _stage('Stage 7', 'مرحله ۷',
+              [24, 25, 26, 27]),
+          _stage('Stage 8', 'مرحله ۸',
+              List.generate(10, (i) => i + 28)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_04':
-        return _lesson04Stages();
+      case 'a1_04':
+      case 'lesson_4':
+      case '4':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 2, 4]),
+          _stage('Stage 2', 'مرحله ۲', [1, 3, 5]),
+          _stage('Stage 3', 'مرحله ۳',
+              [6, 7, 8, 9]),
+          _stage('Stage 4', 'مرحله ۴',
+              [10, 11, 12, 13]),
+          _stage('Stage 5', 'مرحله ۵',
+              [14, 15, 16, 17]),
+          _stage('Stage 6', 'مرحله ۶',
+              [18, 19, 20, 21, 22, 23]),
+          _stage('Stage 7', 'مرحله ۷',
+              [24, 25, 26, 27]),
+          _stage('Stage 8', 'مرحله ۸',
+              List.generate(11, (i) => i + 28)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_05':
-        return _lesson05Stages();
+      case 'a1_05':
+      case 'lesson_5':
+      case '5':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 2, 7]),
+          _stage('Stage 2', 'مرحله ۲', [1, 3, 5, 9]),
+          _stage('Stage 3', 'مرحله ۳', [4, 6, 8]),
+          _stage('Stage 4', 'مرحله ۴', [10, 11, 12]),
+          _stage('Stage 5', 'مرحله ۵',
+              [13, 14, 15, 16, 17]),
+          _stage('Stage 6', 'مرحله ۶',
+              [18, 19, 20, 21, 22, 23]),
+          _stage('Stage 7', 'مرحله ۷',
+              [24, 25, 26, 27, 28]),
+          _stage('Stage 8', 'مرحله ۸',
+              List.generate(10, (i) => i + 29)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_06':
-        return _lesson06Stages();
+      case 'a1_06':
+      case 'lesson_6':
+      case '6':
+        return [
+          _stage('Stage 1', 'مرحله ۱',
+              [0, 1, 2, 3]),
+          _stage('Stage 2', 'مرحله ۲',
+              [4, 5, 6, 7]),
+          _stage('Stage 3', 'مرحله ۳',
+              [8, 9, 10, 11]),
+          _stage('Stage 4', 'مرحله ۴',
+              [12, 13, 14, 15]),
+          _stage('Stage 5', 'مرحله ۵',
+              [16, 17, 18, 19, 20]),
+          _stage('Stage 6', 'مرحله ۶',
+              [21, 22, 23, 24, 25]),
+          _stage('Stage 7', 'مرحله ۷',
+              [26, 27, 28, 29]),
+          _stage('Stage 8', 'مرحله ۸',
+              [30, 31, 32, 33, 34, 35]),
+          _stage('Stage 9', 'مرحله ۹',
+              [36, 37, 38, 39, 40, 41, 42, 43]),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_07':
-        return _lesson07Stages();
+      case 'a1_07':
+      case 'lesson_7':
+      case '7':
+        return [
+          _stage('Stage 1', 'مرحله ۱',
+              List.generate(6, (i) => i)),
+          _stage('Stage 2', 'مرحله ۲', [6, 7]),
+          _stage('Stage 3', 'مرحله ۳',
+              List.generate(6, (i) => i + 8)),
+          _stage('Stage 4', 'مرحله ۴',
+              List.generate(9, (i) => i + 14)),
+          _stage('Stage 5', 'مرحله ۵',
+              List.generate(6, (i) => i + 23)),
+          _stage('Stage 6', 'مرحله ۶',
+              List.generate(5, (i) => i + 29)),
+          _stage('Stage 7', 'مرحله ۷', [34, 35, 36]),
+          _stage('Stage 8', 'مرحله ۸', [37, 38, 39]),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_08':
-        return _lesson08Stages();
+      case 'a1_08':
+      case 'lesson_8':
+      case '8':
+        return [
+          _stage('Stage 1', 'مرحله ۱',
+              List.generate(6, (i) => i)),
+          _stage('Stage 2', 'مرحله ۲', [6, 7]),
+          _stage('Stage 3', 'مرحله ۳', [8, 9]),
+          _stage('Stage 4', 'مرحله ۴',
+              List.generate(9, (i) => i + 10)),
+          _stage('Stage 5', 'مرحله ۵',
+              List.generate(6, (i) => i + 19)),
+          _stage('Stage 6', 'مرحله ۶',
+              List.generate(5, (i) => i + 25)),
+          _stage('Stage 7', 'مرحله ۷',
+              [30, 31, 32, 33]),
+          _stage('Stage 8', 'مرحله ۸',
+              List.generate(6, (i) => i + 34)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_09':
-        return _lesson09Stages();
+      case 'a1_09':
+      case 'lesson_9':
+      case '9':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 5, 10]),
+          _stage('Stage 2', 'مرحله ۲',
+              [1, 2, 6, 7, 11]),
+          _stage('Stage 3', 'مرحله ۳',
+              [3, 4, 8, 9, 12, 13]),
+          _stage('Stage 4', 'مرحله ۴',
+              List.generate(5, (i) => i + 14)),
+          _stage('Stage 5', 'مرحله ۵',
+              List.generate(5, (i) => i + 19)),
+          _stage('Stage 6', 'مرحله ۶',
+              List.generate(6, (i) => i + 24)),
+          _stage('Stage 7', 'مرحله ۷',
+              List.generate(10, (i) => i + 30)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_10':
-        return _lesson10Stages();
+      case 'a1_10':
+      case 'lesson_10':
+      case '10':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 1, 7, 8]),
+          _stage('Stage 2', 'مرحله ۲', [2, 3, 11, 12]),
+          _stage('Stage 3', 'مرحله ۳',
+              [4, 5, 13, 14, 18]),
+          _stage('Stage 4', 'مرحله ۴', [6, 15]),
+          _stage('Stage 5', 'مرحله ۵',
+              [9, 10, 16, 17, 19, 20, 21, 22, 23, 24]),
+          _stage('Stage 6', 'مرحله ۶',
+              List.generate(5, (i) => i + 25)),
+          _stage('Stage 7', 'مرحله ۷',
+              List.generate(5, (i) => i + 30)),
+          _stage('Stage 8', 'مرحله ۸',
+              List.generate(5, (i) => i + 35)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
-      case 'a1_basic_11':
-        return _lesson11Stages();
+      case 'a1_11':
+      case 'lesson_11':
+      case '11':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 3, 5, 7, 10]),
+          _stage('Stage 2', 'مرحله ۲',
+              [1, 2, 4, 6, 8, 9, 11]),
+          _stage('Stage 3', 'مرحله ۳',
+              [12, 13, 14, 15]),
+          _stage('Stage 4', 'مرحله ۴',
+              [16, 17, 18, 19]),
+          _stage('Stage 5', 'مرحله ۵',
+              [20, 21, 22, 23]),
+          _stage('Stage 6', 'مرحله ۶',
+              [24, 25, 26, 27, 33, 34, 35, 36, 37]),
+          _stage('Stage 7', 'مرحله ۷',
+              [28, 29, 30, 31, 32]),
+          _stage('Stage 8', 'مرحله ۸',
+              [38, 39, 40, 41, 42]),
+          _stage('Stage 9', 'مرحله ۹',
+              [43, 44, 45, 46]),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
 
       default:
         return _buildGenericStages(
@@ -113,776 +305,35 @@ class _A1BasicsLessonPageState
     }
   }
 
-  // ============================================================
-  // LESSON 01
-  // ============================================================
-
-  List<_A1Stage> _lesson01Stages() {
-    return [
-      _A1Stage(
-        title: 'I & You',
-        titleFa: 'مرحله ۱: I و You',
-        description:
-            'اول با I و You آشنا شو و کاربردشان را یاد بگیر.',
-        questionIndices: [0, 1, 12],
-      ),
-      _A1Stage(
-        title: 'He & She',
-        titleFa: 'مرحله ۲: He و She',
-        description:
-            'حالا He و She را برای افراد مختلف تمرین کن.',
-        questionIndices: [2, 3, 7, 8, 17, 18, 22],
-      ),
-      _A1Stage(
-        title: 'It',
-        titleFa: 'مرحله ۳: It',
-        description:
-            'کاربرد It را برای چیزها و اشیا یاد بگیر.',
-        questionIndices: [4, 9],
-      ),
-      _A1Stage(
-        title: 'We & They',
-        titleFa: 'مرحله ۴: We و They',
-        description:
-            'ضمیرهای مربوط به خودت با دیگران و گروه‌ها را تمرین کن.',
-        questionIndices: [5, 6, 10, 11, 19, 20, 41, 42],
-      ),
-      _A1Stage(
-        title: 'Pronoun Review',
-        titleFa: 'مرحله ۵: مرور ضمیرها',
-        description:
-            'همه ضمیرها را در جمله‌های واقعی مرور کن.',
-        questionIndices: [21, 23, 24, 25, 26, 27, 28, 29],
-      ),
-      _A1Stage(
-        title: 'Pronouns in Sentences',
-        titleFa: 'مرحله ۶: ضمیرها در جمله',
-        description:
-            'ضمیرها را با ترجمه و ساختار جمله تمرین کن.',
-        questionIndices: [13, 14, 15, 16, 30, 31, 32, 33, 34],
-      ),
-      _A1Stage(
-        title: 'Word Order & Usage',
-        titleFa: 'مرحله ۷: جمله‌سازی و کاربرد',
-        description:
-            'ترتیب کلمات و کاربرد درست ضمیرها را جمع‌بندی کن.',
-        questionIndices: [35, 36, 37, 38, 39, 40],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۸: مکالمه',
-        description:
-            'حالا با صدای خودت ضمیرها را در جمله استفاده کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
+  _A1Stage _stage(
+    String title,
+    String titleFa,
+    List<int> questions,
+  ) {
+    return _A1Stage(
+      title: title,
+      titleFa: titleFa,
+      description:
+          'این بخش را یاد بگیر و بعد تمرین‌های آن را انجام بده.',
+      questionIndices: questions,
+    );
   }
 
-  // ============================================================
-  // LESSON 02
-  // ============================================================
-
-  List<_A1Stage> _lesson02Stages() {
-    return [
-      _A1Stage(
-        title: 'Am',
-        titleFa: 'مرحله ۱: Am',
-        description: 'کاربرد am با I را یاد بگیر.',
-        questionIndices: [0, 7],
+  _A1Stage _speakingStage(
+    String title,
+    String titleFa,
+  ) {
+    return _A1Stage(
+      title: title,
+      titleFa: titleFa,
+      description:
+          'با صدای خودت به سؤال‌ها پاسخ بده.',
+      speakingIndices: List.generate(
+        widget.lesson.speakingQuestions.length,
+        (index) => index,
       ),
-      _A1Stage(
-        title: 'Is',
-        titleFa: 'مرحله ۲: Is',
-        description: 'کاربرد is با he, she و it را تمرین کن.',
-        questionIndices: [1, 4, 6, 8],
-      ),
-      _A1Stage(
-        title: 'Are',
-        titleFa: 'مرحله ۳: Are',
-        description: 'کاربرد are با you, we و they را تمرین کن.',
-        questionIndices: [2, 3, 5, 9],
-      ),
-      _A1Stage(
-        title: 'Negative',
-        titleFa: 'مرحله ۴: جمله‌های منفی',
-        description: 'am not، is not و are not را یاد بگیر.',
-        questionIndices: [10, 11, 12],
-      ),
-      _A1Stage(
-        title: 'Contractions',
-        titleFa: 'مرحله ۵: شکل کوتاه',
-        description: 'شکل‌های کوتاه am, is و are را تمرین کن.',
-        questionIndices: [13, 14, 15],
-      ),
-      _A1Stage(
-        title: 'Questions',
-        titleFa: 'مرحله ۶: سؤال‌ها',
-        description: 'سؤال‌های ساده با am, is و are بساز.',
-        questionIndices: [16, 17, 18],
-      ),
-      _A1Stage(
-        title: 'Short Answers',
-        titleFa: 'مرحله ۷: جواب کوتاه',
-        description: 'به سؤال‌های To Be با جواب کوتاه پاسخ بده.',
-        questionIndices: [19, 20, 21, 22],
-      ),
-      _A1Stage(
-        title: 'Rules & Review',
-        titleFa: 'مرحله ۸: قوانین و مرور',
-        description: 'کاربرد درست am, is و are را بررسی کن.',
-        questionIndices: [23, 24, 25, 26, 27],
-      ),
-      _A1Stage(
-        title: 'Translation & Word Order',
-        titleFa: 'مرحله ۹: ترجمه و جمله‌سازی',
-        description: 'ترجمه و ترتیب کلمات را تمرین کن.',
-        questionIndices: [
-          28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38
-        ],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۱۰: مکالمه',
-        description: 'با صدای خودت از To Be استفاده کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
+    );
   }
-
-  // ============================================================
-  // LESSON 03
-  // ============================================================
-
-  List<_A1Stage> _lesson03Stages() {
-    return [
-      _A1Stage(
-        title: 'Have',
-        titleFa: 'مرحله ۱: Have',
-        description: 'کاربرد have با I, you, we و they را یاد بگیر.',
-        questionIndices: [0, 2, 4, 6, 7, 9],
-      ),
-      _A1Stage(
-        title: 'Has',
-        titleFa: 'مرحله ۲: Has',
-        description: 'کاربرد has با he, she و it را تمرین کن.',
-        questionIndices: [1, 3, 5, 8],
-      ),
-      _A1Stage(
-        title: 'Negative',
-        titleFa: 'مرحله ۳: جمله‌های منفی',
-        description: 'don’t have و doesn’t have را یاد بگیر.',
-        questionIndices: [10, 11],
-      ),
-      _A1Stage(
-        title: 'Questions',
-        titleFa: 'مرحله ۴: سؤال با Do و Does',
-        description: 'سؤال‌های have و has را درست بساز.',
-        questionIndices: [12, 13, 14],
-      ),
-      _A1Stage(
-        title: 'Short Answers',
-        titleFa: 'مرحله ۵: جواب کوتاه',
-        description:
-            'جواب‌های کوتاه do, don’t, does و doesn’t را تمرین کن.',
-        questionIndices: [15, 16, 17, 18],
-      ),
-      _A1Stage(
-        title: 'Common Mistakes',
-        titleFa: 'مرحله ۶: اشتباهات رایج',
-        description: 'اشتباهات مهم have و has را پیدا کن.',
-        questionIndices: [19, 20, 21, 22, 23],
-      ),
-      _A1Stage(
-        title: 'Translation',
-        titleFa: 'مرحله ۷: ترجمه',
-        description:
-            'جمله‌های have و has را از فارسی به انگلیسی تبدیل کن.',
-        questionIndices: [24, 25, 26, 27],
-      ),
-      _A1Stage(
-        title: 'Word Order & Review',
-        titleFa: 'مرحله ۸: جمله‌سازی و مرور',
-        description:
-            'ساختار جمله و کاربرد have و has را جمع‌بندی کن.',
-        questionIndices: [28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۹: مکالمه',
-        description: 'با صدای خودت از have و has استفاده کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // LESSON 04
-  // ============================================================
-
-  List<_A1Stage> _lesson04Stages() {
-    return [
-      _A1Stage(
-        title: 'Do',
-        titleFa: 'مرحله ۱: Do',
-        description: 'کاربرد do با I, you, we و they را یاد بگیر.',
-        questionIndices: [0, 2, 4],
-      ),
-      _A1Stage(
-        title: 'Does',
-        titleFa: 'مرحله ۲: Does',
-        description: 'کاربرد does با he, she و it را تمرین کن.',
-        questionIndices: [1, 3, 5],
-      ),
-      _A1Stage(
-        title: 'Don’t & Doesn’t',
-        titleFa: 'مرحله ۳: Don’t و Doesn’t',
-        description: 'جمله‌های منفی با do و does را یاد بگیر.',
-        questionIndices: [6, 7, 8, 9],
-      ),
-      _A1Stage(
-        title: 'Questions',
-        titleFa: 'مرحله ۴: سؤال‌ها',
-        description: 'سؤال‌های درست با do و does بساز.',
-        questionIndices: [10, 11, 12, 13],
-      ),
-      _A1Stage(
-        title: 'Short Answers',
-        titleFa: 'مرحله ۵: جواب کوتاه',
-        description:
-            'جواب‌های کوتاه do, don’t, does و doesn’t را تمرین کن.',
-        questionIndices: [14, 15, 16, 17],
-      ),
-      _A1Stage(
-        title: 'Rules & Mistakes',
-        titleFa: 'مرحله ۶: قوانین و اشتباهات',
-        description: 'اشتباهات رایج do و does را پیدا کن.',
-        questionIndices: [18, 19, 20, 21, 22, 23],
-      ),
-      _A1Stage(
-        title: 'Translation',
-        titleFa: 'مرحله ۷: ترجمه',
-        description: 'جمله‌های روزمره را ترجمه کن.',
-        questionIndices: [24, 25, 26, 27],
-      ),
-      _A1Stage(
-        title: 'Word Order & Do',
-        titleFa: 'مرحله ۸: جمله‌سازی و کاربرد Do',
-        description:
-            'ترتیب کلمات و تفاوت do به‌عنوان فعل اصلی و کمکی را تمرین کن.',
-        questionIndices: [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۹: مکالمه',
-        description: 'با صدای خودت سؤال و جواب بساز.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // LESSON 05
-  // ============================================================
-
-  List<_A1Stage> _lesson05Stages() {
-    return [
-      _A1Stage(
-        title: 'Base Form',
-        titleFa: 'مرحله ۱: شکل پایه فعل',
-        description:
-            'با I, you, we و they از شکل پایه فعل استفاده کن.',
-        questionIndices: [0, 2, 7],
-      ),
-      _A1Stage(
-        title: 'He / She / It',
-        titleFa: 'مرحله ۲: He / She / It',
-        description: 'تغییر فعل با he, she و it را یاد بگیر.',
-        questionIndices: [1, 3, 5, 9],
-      ),
-      _A1Stage(
-        title: 'S, ES & IES',
-        titleFa: 'مرحله ۳: S، ES و IES',
-        description:
-            'قوانین اضافه کردن s، es و تغییر y به ies را تمرین کن.',
-        questionIndices: [4, 6, 8],
-      ),
-      _A1Stage(
-        title: 'Positive Sentences',
-        titleFa: 'مرحله ۴: جمله‌های مثبت',
-        description: 'جمله‌های مثبت حال ساده را بساز.',
-        questionIndices: [10, 11, 12],
-      ),
-      _A1Stage(
-        title: 'Negative & Questions',
-        titleFa: 'مرحله ۵: منفی و سؤال',
-        description:
-            'جمله‌های منفی و سؤال‌های حال ساده را تمرین کن.',
-        questionIndices: [13, 14, 15, 16, 17],
-      ),
-      _A1Stage(
-        title: 'Common Mistakes',
-        titleFa: 'مرحله ۶: اشتباهات رایج',
-        description: 'اشتباهات مهم در s و do/does را پیدا کن.',
-        questionIndices: [18, 19, 20, 21, 22, 23],
-      ),
-      _A1Stage(
-        title: 'Translation',
-        titleFa: 'مرحله ۷: ترجمه',
-        description: 'جمله‌های روزمره را به انگلیسی ترجمه کن.',
-        questionIndices: [24, 25, 26, 27, 28],
-      ),
-      _A1Stage(
-        title: 'Word Order & Review',
-        titleFa: 'مرحله ۸: جمله‌سازی و مرور',
-        description:
-            'ترتیب کلمات و قوانین s و es را جمع‌بندی کن.',
-        questionIndices: [29, 30, 31, 32, 33, 34, 35, 36, 37, 38],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۹: مکالمه',
-        description:
-            'با صدای خودت از افعال باقاعده استفاده کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // LESSON 06
-  // ============================================================
-
-  List<_A1Stage> _lesson06Stages() {
-    return [
-      _A1Stage(
-        title: 'Go & Have',
-        titleFa: 'مرحله ۱: Go و Have',
-        description:
-            'شکل‌های go/goes و have/has را تمرین کن.',
-        questionIndices: [0, 1, 2, 3],
-      ),
-      _A1Stage(
-        title: 'Do & Get',
-        titleFa: 'مرحله ۲: Do و Get',
-        description: 'do/does و get/gets را یاد بگیر.',
-        questionIndices: [4, 5, 6, 7],
-      ),
-      _A1Stage(
-        title: 'Make & Take',
-        titleFa: 'مرحله ۳: Make و Take',
-        description:
-            'make/makes و take/takes را تمرین کن.',
-        questionIndices: [8, 9, 10, 11],
-      ),
-      _A1Stage(
-        title: 'Give & See',
-        titleFa: 'مرحله ۴: Give و See',
-        description:
-            'give/gives و see/sees را یاد بگیر.',
-        questionIndices: [12, 13, 14, 15],
-      ),
-      _A1Stage(
-        title: 'Know & Say',
-        titleFa: 'مرحله ۵: Know و Say',
-        description:
-            'know/knows و say/says را در جمله تمرین کن.',
-        questionIndices: [16, 17, 18, 19, 20],
-      ),
-      _A1Stage(
-        title: 'Questions',
-        titleFa: 'مرحله ۶: سؤال‌ها',
-        description:
-            'بعد از does از شکل پایه فعل استفاده کن.',
-        questionIndices: [21, 22, 23, 24, 25],
-      ),
-      _A1Stage(
-        title: 'Negative',
-        titleFa: 'مرحله ۷: جمله‌های منفی',
-        description:
-            'بعد از doesn’t همیشه شکل پایه فعل می‌آید.',
-        questionIndices: [26, 27, 28, 29],
-      ),
-      _A1Stage(
-        title: 'Rules & Mistakes',
-        titleFa: 'مرحله ۸: قوانین و اشتباهات',
-        description:
-            'شکل درست افعال را در جمله تشخیص بده.',
-        questionIndices: [30, 31, 32, 33, 34, 35],
-      ),
-      _A1Stage(
-        title: 'Translation & Word Order',
-        titleFa: 'مرحله ۹: ترجمه و جمله‌سازی',
-        description:
-            'ترجمه و ترتیب کلمات را تمرین کن.',
-        questionIndices: [36, 37, 38, 39, 40, 41, 42, 43],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۱۰: مکالمه',
-        description:
-            'افعال روزمره را با صدای خودت استفاده کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // LESSON 07
-  // ============================================================
-
-  List<_A1Stage> _lesson07Stages() {
-    return [
-      _A1Stage(
-        title: 'Can + Ability',
-        titleFa: 'مرحله ۱: Can و توانایی',
-        description: 'Can را برای بیان توانایی یاد بگیر.',
-        questionIndices: [0, 1, 2, 3, 4, 5],
-      ),
-      _A1Stage(
-        title: 'Can’t',
-        titleFa: 'مرحله ۲: Can’t',
-        description: 'ناتوانی را با can’t بیان کن.',
-        questionIndices: [6, 7],
-      ),
-      _A1Stage(
-        title: 'Can Questions',
-        titleFa: 'مرحله ۳: سؤال با Can',
-        description: 'سؤال‌های Can را درست بساز.',
-        questionIndices: [8, 9, 10, 11, 12, 13],
-      ),
-      _A1Stage(
-        title: 'Correct Sentences',
-        titleFa: 'مرحله ۴: جمله‌های درست',
-        description:
-            'جمله‌های مثبت، منفی و جواب‌های کوتاه را تمرین کن.',
-        questionIndices: [14, 15, 16, 17, 18, 19, 20, 21, 22],
-      ),
-      _A1Stage(
-        title: 'Rules & Mistakes',
-        titleFa: 'مرحله ۵: قوانین و اشتباهات',
-        description: 'اشتباهات رایج Can را پیدا کن.',
-        questionIndices: [23, 24, 25, 26, 27, 28],
-      ),
-      _A1Stage(
-        title: 'Translation',
-        titleFa: 'مرحله ۶: ترجمه',
-        description: 'جمله‌های Can و Can’t را ترجمه کن.',
-        questionIndices: [29, 30, 31, 32, 33],
-      ),
-      _A1Stage(
-        title: 'Word Order',
-        titleFa: 'مرحله ۷: جمله‌سازی',
-        description: 'ترتیب درست کلمات را تمرین کن.',
-        questionIndices: [34, 35, 36],
-      ),
-      _A1Stage(
-        title: 'Permission & Requests',
-        titleFa: 'مرحله ۸: اجازه و درخواست',
-        description:
-            'تفاوت درخواست، اجازه و ناتوانی را یاد بگیر.',
-        questionIndices: [37, 38, 39],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۹: مکالمه',
-        description:
-            'با صدای خودت از Can و Can’t استفاده کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // LESSON 08
-  // ============================================================
-
-  List<_A1Stage> _lesson08Stages() {
-    return [
-      _A1Stage(
-        title: 'Must',
-        titleFa: 'مرحله ۱: Must',
-        description:
-            'Must را برای ضرورت و اجبار یاد بگیر.',
-        questionIndices: [0, 1, 2, 3, 4, 5],
-      ),
-      _A1Stage(
-        title: 'Mustn’t',
-        titleFa: 'مرحله ۲: Mustn’t',
-        description:
-            'Mustn’t را برای ممنوعیت تمرین کن.',
-        questionIndices: [6, 7],
-      ),
-      _A1Stage(
-        title: 'Must Questions',
-        titleFa: 'مرحله ۳: سؤال با Must',
-        description: 'سؤال‌های Must را یاد بگیر.',
-        questionIndices: [8, 9],
-      ),
-      _A1Stage(
-        title: 'Rules & Meaning',
-        titleFa: 'مرحله ۴: قوانین و معنی',
-        description:
-            'ضرورت، ممنوعیت و کاربرد Must را در جمله تشخیص بده.',
-        questionIndices: [10, 11, 12, 13, 14, 15, 16, 17, 18],
-      ),
-      _A1Stage(
-        title: 'Common Mistakes',
-        titleFa: 'مرحله ۵: اشتباهات رایج',
-        description:
-            'اشتباهات مربوط به must و mustn’t را پیدا کن.',
-        questionIndices: [19, 20, 21, 22, 23, 24],
-      ),
-      _A1Stage(
-        title: 'Translation',
-        titleFa: 'مرحله ۶: ترجمه',
-        description:
-            'جمله‌های Must و Mustn’t را ترجمه کن.',
-        questionIndices: [25, 26, 27, 28, 29],
-      ),
-      _A1Stage(
-        title: 'Word Order',
-        titleFa: 'مرحله ۷: جمله‌سازی',
-        description:
-            'ترتیب درست جمله‌های Must را تمرین کن.',
-        questionIndices: [30, 31, 32, 33],
-      ),
-      _A1Stage(
-        title: 'Real-Life Review',
-        titleFa: 'مرحله ۸: مرور واقعی',
-        description:
-            'Must و Mustn’t را در موقعیت‌های واقعی مرور کن.',
-        questionIndices: [34, 35, 36, 37, 38, 39],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۹: مکالمه',
-        description:
-            'با صدای خودت درباره ضرورت و ممنوعیت صحبت کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // LESSON 09
-  // ============================================================
-
-  List<_A1Stage> _lesson09Stages() {
-    return [
-      _A1Stage(
-        title: 'Me & You',
-        titleFa: 'مرحله ۱: Me و You',
-        description:
-            'Me و You را به‌عنوان ضمیر مفعولی یاد بگیر.',
-        questionIndices: [0, 5, 10],
-      ),
-      _A1Stage(
-        title: 'Him & Her',
-        titleFa: 'مرحله ۲: Him و Her',
-        description: 'Him و Her را در جمله تمرین کن.',
-        questionIndices: [1, 2, 6, 7, 11],
-      ),
-      _A1Stage(
-        title: 'It, Us & Them',
-        titleFa: 'مرحله ۳: It، Us و Them',
-        description:
-            'سه ضمیر مفعولی دیگر را در موقعیت‌های واقعی استفاده کن.',
-        questionIndices: [3, 4, 8, 9, 12, 13],
-      ),
-      _A1Stage(
-        title: 'Object Pronouns',
-        titleFa: 'مرحله ۴: ضمیر مفعولی در جمله',
-        description:
-            'ضمیرهای مفعولی را بعد از فعل‌ها تمرین کن.',
-        questionIndices: [14, 15, 16, 17, 18],
-      ),
-      _A1Stage(
-        title: 'Replacing Nouns',
-        titleFa: 'مرحله ۵: جایگزین کردن اسم',
-        description:
-            'اسم‌ها را با ضمیر مفعولی مناسب جایگزین کن.',
-        questionIndices: [19, 20, 21, 22, 23],
-      ),
-      _A1Stage(
-        title: 'Common Mistakes',
-        titleFa: 'مرحله ۶: اشتباهات رایج',
-        description:
-            'تفاوت ضمیر فاعلی و مفعولی را بررسی کن.',
-        questionIndices: [24, 25, 26, 27, 28, 29],
-      ),
-      _A1Stage(
-        title: 'Translation & Review',
-        titleFa: 'مرحله ۷: ترجمه و مرور',
-        description:
-            'ضمیرهای مفعولی را در ترجمه و جمله‌سازی مرور کن.',
-        questionIndices: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۸: مکالمه',
-        description:
-            'ضمیرهای مفعولی را با صدای خودت استفاده کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // LESSON 10
-  // ============================================================
-
-  List<_A1Stage> _lesson10Stages() {
-    return [
-      _A1Stage(
-        title: 'My & Your',
-        titleFa: 'مرحله ۱: My و Your',
-        description:
-            'My و Your را قبل از اسم درست استفاده کن.',
-        questionIndices: [0, 1, 7, 8],
-      ),
-      _A1Stage(
-        title: 'His & Her',
-        titleFa: 'مرحله ۲: His و Her',
-        description:
-            'His و Her را برای مالکیت تمرین کن.',
-        questionIndices: [2, 3, 11, 12],
-      ),
-      _A1Stage(
-        title: 'Our & Their',
-        titleFa: 'مرحله ۳: Our و Their',
-        description:
-            'مالکیت برای ما و آنها را یاد بگیر.',
-        questionIndices: [4, 5, 13, 14, 18],
-      ),
-      _A1Stage(
-        title: 'Its',
-        titleFa: 'مرحله ۴: Its',
-        description:
-            'Its را برای حیوانات و اشیا تمرین کن.',
-        questionIndices: [6, 15],
-      ),
-      _A1Stage(
-        title: 'Possession',
-        titleFa: 'مرحله ۵: مفهوم مالکیت',
-        description:
-            'معنی و کاربرد صفت‌های ملکی را تشخیص بده.',
-        questionIndices: [
-          9, 10, 16, 17, 19, 20, 21, 22, 23, 24
-        ],
-      ),
-      _A1Stage(
-        title: 'Rules',
-        titleFa: 'مرحله ۶: قوانین مهم',
-        description:
-            'قوانین My, Mine, His, Her و Their را مرور کن.',
-        questionIndices: [25, 26, 27, 28, 29],
-      ),
-      _A1Stage(
-        title: 'Its vs It’s',
-        titleFa: 'مرحله ۷: Its و It’s + ترجمه',
-        description:
-            'تفاوت Its و It’s و کاربرد آنها را یاد بگیر.',
-        questionIndices: [30, 31, 32, 33, 34],
-      ),
-      _A1Stage(
-        title: 'Word Order & Review',
-        titleFa: 'مرحله ۸: جمله‌سازی و مرور',
-        description:
-            'ساختار جمله و کاربرد صفت‌های ملکی را جمع‌بندی کن.',
-        questionIndices: [35, 36, 37, 38, 39],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۹: مکالمه',
-        description:
-            'صفت‌های ملکی را با صدای خودت استفاده کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // LESSON 11
-  // ============================================================
-
-  List<_A1Stage> _lesson11Stages() {
-    return [
-      _A1Stage(
-        title: 'I, You, We, They',
-        titleFa: 'مرحله ۱: I، You، We، They',
-        description:
-            'در Present Simple با I, you, we و they از شکل پایه فعل استفاده کن.',
-        questionIndices: [0, 3, 5, 7, 10],
-      ),
-      _A1Stage(
-        title: 'He, She, It',
-        titleFa: 'مرحله ۲: He، She، It',
-        description:
-            'تفاوت شکل فعل با he, she و it را یاد بگیر.',
-        questionIndices: [1, 2, 4, 6, 8, 9, 11],
-      ),
-      _A1Stage(
-        title: 'Negative',
-        titleFa: 'مرحله ۳: جمله‌های منفی',
-        description:
-            'don’t و doesn’t را در جمله‌های منفی استفاده کن.',
-        questionIndices: [12, 13, 14, 15],
-      ),
-      _A1Stage(
-        title: 'Do & Does Questions',
-        titleFa: 'مرحله ۴: سؤال با Do و Does',
-        description:
-            'سؤال‌های Present Simple را درست بساز.',
-        questionIndices: [16, 17, 18, 19],
-      ),
-      _A1Stage(
-        title: 'Base Verb',
-        titleFa: 'مرحله ۵: شکل پایه بعد از Does و Doesn’t',
-        description:
-            'بعد از does و doesn’t دیگر به فعل s اضافه نکن.',
-        questionIndices: [20, 21, 22, 23],
-      ),
-      _A1Stage(
-        title: 'Common Mistakes',
-        titleFa: 'مرحله ۶: اشتباهات رایج',
-        description:
-            'اشتباهات مهم Present Simple را تشخیص بده.',
-        questionIndices: [24, 25, 26, 27, 33, 34, 35, 36, 37],
-      ),
-      _A1Stage(
-        title: 'Frequency Adverbs',
-        titleFa: 'مرحله ۷: قیدهای تکرار',
-        description:
-            'always، usually، often، sometimes و never را یاد بگیر.',
-        questionIndices: [28, 29, 30, 31, 32],
-      ),
-      _A1Stage(
-        title: 'Translation',
-        titleFa: 'مرحله ۸: ترجمه',
-        description:
-            'جمله‌های Present Simple را ترجمه و مرور کن.',
-        questionIndices: [38, 39, 40, 41, 42],
-      ),
-      _A1Stage(
-        title: 'Word Order',
-        titleFa: 'مرحله ۹: جمله‌سازی',
-        description:
-            'ترتیب درست کلمات در Present Simple را تمرین کن.',
-        questionIndices: [43, 44, 45, 46],
-      ),
-      _A1Stage(
-        title: 'Speaking',
-        titleFa: 'مرحله ۱۰: مکالمه',
-        description:
-            'Present Simple را با صدای خودت تمرین کن.',
-        speakingIndices: List.generate(10, (i) => i),
-      ),
-    ];
-  }
-
-  // ============================================================
-  // GENERIC FALLBACK
-  // ============================================================
 
   List<_A1Stage> _buildGenericStages(
     int totalQuestions,
@@ -939,9 +390,9 @@ class _A1BasicsLessonPageState
     return stages;
   }
 
-  // ============================================================
-  // SECTION / LEARNING CONTENT
-  // ============================================================
+  // =========================================================
+  // SECTION
+  // =========================================================
 
   A1BasicSection? _getCurrentSection() {
     if (widget.lesson.sections.isEmpty) {
@@ -950,26 +401,21 @@ class _A1BasicsLessonPageState
 
     final stage = _stages[_currentStage];
 
-    // اول تلاش می‌کنیم خود عنوان Section با Stage هماهنگ باشد.
+    final normalizedStageTitle =
+        _normalizeTitle(stage.title);
+
+    final normalizedStageTitleFa =
+        _normalizeTitle(stage.titleFa);
+
     for (final section in widget.lesson.sections) {
       if (_normalizeTitle(section.title) ==
-              _normalizeTitle(stage.title) ||
+              normalizedStageTitle ||
           _normalizeTitle(section.titleFa) ==
-              _normalizeTitle(stage.titleFa)) {
+              normalizedStageTitleFa) {
         return section;
       }
     }
 
-    for (final section in widget.lesson.sections) {
-      if (_normalizeTitle(section.title)
-              .contains(_normalizeTitle(stage.title)) ||
-          _normalizeTitle(stage.title)
-              .contains(_normalizeTitle(section.title))) {
-        return section;
-      }
-    }
-
-    // اگر نام‌ها متفاوت بود، از ترتیب بخش‌ها استفاده می‌کنیم.
     if (_currentStage < widget.lesson.sections.length) {
       return widget.lesson.sections[_currentStage];
     }
@@ -977,210 +423,17 @@ class _A1BasicsLessonPageState
     return null;
   }
 
-  String _normalizeTitle(String text) {
-    return text
+  String _normalizeTitle(String value) {
+    return value
         .toLowerCase()
-        .replaceAll(RegExp(r'[^a-z0-9\u0600-\u06ff]+'), '')
-        .trim();
+        .replaceAll(RegExp(r'[^a-zA-Z0-9آ-ی]'), '');
   }
 
-  Widget _buildLearningContent() {
-    final section = _getCurrentSection();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle(
-          'Learn',
-          'اول یاد بگیریم',
-        ),
-
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(18),
-            child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 42,
-                      height: 42,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(0.12),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.menu_book_outlined,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        section?.titleFa ??
-                            _stages[_currentStage]
-                                .titleFa,
-                        style: const TextStyle(
-                          fontSize: 19,
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  section?.explanation ??
-                      widget.lesson.explanation,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    height: 1.7,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        if (section != null &&
-            section.examples.isNotEmpty) ...[
-          _buildSectionTitle(
-            'Examples',
-            'مثال‌ها',
-          ),
-          ...List.generate(
-            section.examples.length,
-            (index) => _buildExample(
-              section.examples[index],
-              index,
-              section,
-            ),
-          ),
-        ] else if (widget.lesson.examples.isNotEmpty) ...[
-          _buildSectionTitle(
-            'Examples',
-            'مثال‌ها',
-          ),
-          ...List.generate(
-            min(5, widget.lesson.examples.length),
-            (index) => _buildExample(
-              widget.lesson.examples[index],
-              index,
-              null,
-            ),
-          ),
-        ],
-
-        const SizedBox(height: 12),
-
-        Card(
-          color: Theme.of(context)
-              .colorScheme
-              .primary
-              .withOpacity(0.07),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.lightbulb_outline,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'اول مفهوم را یاد بگیر و مثال‌ها را ببین. '
-                    'بعد وارد تمرین می‌شویم. '
-                    'اینجا قرار نیست با یک جواب غلط از زندگی اخراجت کنیم 😼',
-                    style: const TextStyle(
-                      height: 1.5,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 18),
-
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: _startPractice,
-            icon: const Icon(
-              Icons.play_arrow_rounded,
-            ),
-            label: const Text(
-              'شروع تمرین',
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _startPractice() {
-    setState(() {
-      _learningMode = false;
-    });
-  }
-
-  // ============================================================
-  // PROGRESS
-  // ============================================================
-
-  String get _stageKey =>
-      'a1_basics_stage_${widget.lesson.id}';
-
-  Future<void> _loadProgress() async {
-    final prefs =
-        await SharedPreferences.getInstance();
-
-    final savedStage =
-        prefs.getInt(_stageKey);
-
-    if (!mounted) return;
-
-    setState(() {
-      _currentStage = min(
-        savedStage ?? 0,
-        max(0, _stages.length - 1),
-      );
-
-      _learningMode = true;
-    });
-  }
-
-  Future<void> _saveStage(int stage) async {
-    final prefs =
-        await SharedPreferences.getInstance();
-
-    await prefs.setInt(
-      _stageKey,
-      stage,
-    );
-  }
-
-  // ============================================================
+  // =========================================================
   // TTS
-  // ============================================================
+  // =========================================================
 
-  Future<void> _initializeTts() async {
+  Future<void> _initTts() async {
     await _tts.setLanguage('en-US');
     await _tts.setSpeechRate(0.45);
     await _tts.setPitch(1.0);
@@ -1188,21 +441,27 @@ class _A1BasicsLessonPageState
   }
 
   Future<void> _speak(String text) async {
+    if (!A1BasicsUIConfig.enableTextToSpeech) {
+      return;
+    }
+
     await _tts.stop();
     await _tts.speak(text);
   }
 
-  // ============================================================
+  // =========================================================
   // SPEECH
-  // ============================================================
+  // =========================================================
 
-  Future<void> _initializeSpeech() async {
+  Future<void> _initSpeech() async {
     _speechAvailable = await _speech.initialize(
       onStatus: (status) {
-        if (status == 'notListening' && mounted) {
-          setState(() {
-            _isListening = false;
-          });
+        if (status == 'done' || status == 'notListening') {
+          if (mounted) {
+            setState(() {
+              _isListening = false;
+            });
+          }
         }
       },
       onError: (_) {
@@ -1221,34 +480,24 @@ class _A1BasicsLessonPageState
 
   Future<void> _startListening(int index) async {
     if (!_speechAvailable) {
-      await _initializeSpeech();
-    }
-
-    if (!_speechAvailable) {
       return;
     }
 
+    if (_completedSpeaking.contains(index) &&
+        !A1BasicsUIConfig.allowSpeakingRetry) {
+      return;
+    }
+
+    await _speech.stop();
+
     setState(() {
       _currentSpeakingIndex = index;
-      _isListening = true;
       _recognizedText = '';
+      _isListening = true;
     });
 
     await _speech.listen(
-      onResult: (SpeechRecognitionResult result) {
-        if (!mounted) return;
-
-        setState(() {
-          _recognizedText = result.recognizedWords;
-        });
-
-        if (result.finalResult) {
-          _checkSpeakingAnswer(
-            index,
-            result.recognizedWords,
-          );
-        }
-      },
+      onResult: _onSpeechResult,
       localeId: 'en_US',
       listenMode: stt.ListenMode.dictation,
       partialResults: true,
@@ -1267,103 +516,105 @@ class _A1BasicsLessonPageState
     }
   }
 
+  void _onSpeechResult(
+    SpeechRecognitionResult result,
+  ) {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _recognizedText = result.recognizedWords;
+    });
+
+    if (result.finalResult &&
+        _currentSpeakingIndex != null) {
+      _checkSpeakingAnswer(
+        _currentSpeakingIndex!,
+        result.recognizedWords,
+      );
+    }
+  }
+
   void _checkSpeakingAnswer(
     int index,
     String spokenText,
   ) {
-    final normalizedSpoken =
-        _normalize(spokenText);
+    final text = _normalize(spokenText);
 
-    if (normalizedSpoken.isEmpty) {
+    if (text.isEmpty) {
       return;
     }
 
-    final acceptable =
-        widget.lesson
-            .speakingQuestions[index]
-            .acceptableAnswers;
+    final speaking =
+        widget.lesson.speakingQuestions[index];
 
-    double bestScore = 0;
+    double bestSimilarity = 0;
 
-    for (final answer in acceptable) {
-      final score = _similarity(
-        normalizedSpoken,
+    for (final answer in speaking.acceptableAnswers) {
+      final similarity = _similarity(
+        text,
         _normalize(answer),
       );
 
-      if (score > bestScore) {
-        bestScore = score;
-      }
+      bestSimilarity =
+          max(bestSimilarity, similarity);
     }
 
-    final correct = bestScore >= 0.78;
+    final correct = bestSimilarity >= 0.78;
 
-    if (mounted) {
-      setState(() {
-        _isListening = false;
-
-        // حتی اگر غلط باشد، تلاش انجام شده محسوب می‌شود.
-        _completedSpeaking.add(index);
-        _speakingResults[index] = correct;
-      });
+    if (A1BasicsUIConfig.speakingAttemptCountsAsComplete) {
+      _completedSpeaking.add(index);
+    } else if (correct) {
+      _completedSpeaking.add(index);
     }
 
-    _showSpeakingResult(
-      correct,
-      acceptable.isNotEmpty
-          ? acceptable.first
-          : null,
-    );
+    _speakingResults[index] = correct;
+    _isListening = false;
+
+    setState(() {});
+
+    if (A1BasicsUIConfig.showSpeakingResult) {
+      _showSpeakingResult(
+        correct,
+        speaking.acceptableAnswers.first,
+      );
+    }
   }
 
   void _showSpeakingResult(
     bool correct,
-    String? correctAnswer,
+    String suggestedAnswer,
   ) {
-    if (!mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    ScaffoldMessenger.of(context)
-        .hideCurrentSnackBar();
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           correct
-              ? 'آفرین! درست گفتی 😼💜'
-              : correctAnswer != null
-                  ? 'این بار کامل نبود. جمله درست: $correctAnswer'
-                  : 'این بار کامل نبود، ولی تمرین ثبت شد 😼',
+              ? 'درست گفتی 😼✨'
+              : 'تقریباً! جمله پیشنهادی: $suggestedAnswer',
         ),
-        duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
 
-  String _normalize(String text) {
-    return text
+  String _normalize(String value) {
+    return value
         .toLowerCase()
-        .replaceAll(
-          RegExp(r'[^\w\s]'),
-          '',
-        )
-        .replaceAll(
-          RegExp(r'\s+'),
-          ' ',
-        )
+        .replaceAll(RegExp(r'[^\w\s]'), '')
+        .replaceAll(RegExp(r'\s+'), ' ')
         .trim();
   }
 
-  double _similarity(
-    String a,
-    String b,
-  ) {
-    if (a == b) {
-      return 1.0;
+  double _similarity(String a, String b) {
+    if (a.isEmpty || b.isEmpty) {
+      return 0;
     }
 
-    if (a.isEmpty || b.isEmpty) {
-      return 0.0;
+    if (a == b) {
+      return 1;
     }
 
     final distance = _levenshtein(a, b);
@@ -1372,13 +623,10 @@ class _A1BasicsLessonPageState
     return 1 - (distance / maxLength);
   }
 
-  int _levenshtein(
-    String a,
-    String b,
-  ) {
+  int _levenshtein(String a, String b) {
     final previous = List<int>.generate(
       b.length + 1,
-      (index) => index,
+      (i) => i,
     );
 
     for (int i = 1; i <= a.length; i++) {
@@ -1390,8 +638,7 @@ class _A1BasicsLessonPageState
       current[0] = i;
 
       for (int j = 1; j <= b.length; j++) {
-        final cost =
-            a[i - 1] == b[j - 1] ? 0 : 1;
+        final cost = a[i - 1] == b[j - 1] ? 0 : 1;
 
         current[j] = min(
           min(
@@ -1402,9 +649,7 @@ class _A1BasicsLessonPageState
         );
       }
 
-      for (int j = 0;
-          j < current.length;
-          j++) {
+      for (int j = 0; j <= b.length; j++) {
         previous[j] = current[j];
       }
     }
@@ -1412,171 +657,754 @@ class _A1BasicsLessonPageState
     return previous[b.length];
   }
 
-  // ============================================================
-  // QUESTION LOGIC
-  // ============================================================
+  // =========================================================
+  // PROGRESS
+  // =========================================================
 
-  bool _questionCorrect(
-    A1BasicQuestion question,
-    String answer,
-  ) {
-    return answer == question.answer;
-  }
+  String get _stageKey =>
+      'a1_basics_stage_${widget.lesson.id}';
 
-  void _answerQuestion(
-    A1BasicQuestion question,
-    int index,
-    String option,
-  ) {
-    if (_selectedAnswers.containsKey(index)) {
+  Future<void> _loadProgress() async {
+    if (!A1BasicsUIConfig.saveProgress ||
+        !A1BasicsUIConfig.allowResume ||
+        _stages.isEmpty) {
       return;
     }
 
-    final isCorrect =
-        _questionCorrect(
-      question,
-      option,
-    );
+    final prefs =
+        await SharedPreferences.getInstance();
+
+    final savedStage =
+        prefs.getInt(_stageKey) ?? 0;
+
+    if (!mounted) {
+      return;
+    }
 
     setState(() {
-      _selectedAnswers[index] = option;
+      _currentStage = savedStage.clamp(
+        0,
+        _stages.length - 1,
+      );
 
-      // مهم:
-      // درست یا غلط، سؤال انجام شده محسوب می‌شود.
-      _answeredQuestions.add(index);
+      _learningMode =
+          A1BasicsUIConfig.teachBeforePractice;
     });
+  }
 
-    ScaffoldMessenger.of(context)
-        .hideCurrentSnackBar();
+  Future<void> _saveStage(int stage) async {
+    if (!A1BasicsUIConfig.saveProgress) {
+      return;
+    }
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(
-      SnackBar(
-        content: Text(
-          isCorrect
-              ? 'درست! 😼💜'
-              : 'جواب درست: ${question.answer}',
+    final prefs =
+        await SharedPreferences.getInstance();
+
+    await prefs.setInt(
+      _stageKey,
+      stage,
+    );
+  }
+
+  // =========================================================
+  // LEARNING
+  // =========================================================
+
+  Widget _buildLearningContent() {
+    final section = _getCurrentSection();
+
+    final examples =
+        section != null && section.examples.isNotEmpty
+            ? section.examples
+            : widget.lesson.examples.take(5).toList();
+
+    return Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.stretch,
+      children: [
+        _buildSectionTitle(
+          section?.titleFa ??
+              _stages[_currentStage].titleFa,
+          section?.explanation ??
+              _stages[_currentStage].description,
         ),
-        duration: Duration(
-          seconds: isCorrect ? 1 : 3,
+        SizedBox(
+          height: A1BasicsUIConfig.sectionSpacing,
+        ),
+        if (A1BasicsUIConfig.showExamplesBeforeQuestions &&
+            examples.isNotEmpty) ...[
+          Text(
+            'مثال‌ها',
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          SizedBox(
+            height: A1BasicsUIConfig.cardSpacing,
+          ),
+          ...examples.map(
+            _buildExample,
+          ),
+          SizedBox(
+            height: A1BasicsUIConfig.sectionSpacing,
+          ),
+        ],
+        if (A1BasicsUIConfig.showFeedbackAfterAnswer)
+          Card(
+            margin: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                A1BasicsUIConfig.cardRadius,
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(
+                A1BasicsUIConfig.pagePadding,
+              ),
+              child: const Text(
+                'اول مفهوم را یاد بگیر و مثال‌ها را ببین. '
+                'بعد وارد تمرین می‌شویم. '
+                'اینجا قرار نیست با یک جواب غلط از زندگی اخراجت کنیم 😼',
+              ),
+            ),
+          ),
+        SizedBox(
+          height: A1BasicsUIConfig.sectionSpacing,
+        ),
+        FilledButton(
+          onPressed: _startPractice,
+          style: FilledButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                A1BasicsUIConfig.buttonRadius,
+              ),
+            ),
+          ),
+          child: const Text('شروع تمرین'),
+        ),
+      ],
+    );
+  }
+
+  void _startPractice() {
+    setState(() {
+      _learningMode = false;
+    });
+  }
+
+  Widget _buildSectionTitle(
+    String title,
+    String description,
+  ) {
+    return Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+              ?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          description,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge,
+        ),
+      ],
+    );
+  }
+
+  // =========================================================
+  // QUESTIONS
+  // =========================================================
+
+  Widget _buildQuestion(
+    int index,
+  ) {
+    final question = _questions[index];
+
+    final answered =
+        _answeredQuestions.contains(index);
+
+    final selected =
+        _selectedAnswers[index];
+
+    final isCorrect =
+        selected == question.answer;
+
+    return Card(
+      margin: EdgeInsets.only(
+        bottom: A1BasicsUIConfig.cardSpacing,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          A1BasicsUIConfig.cardRadius,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(
+          A1BasicsUIConfig.pagePadding,
+        ),
+        child: Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    question.question,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+                if (A1BasicsUIConfig.enableTextToSpeech)
+                  IconButton(
+                    tooltip: 'Listen',
+                    onPressed: () =>
+                        _speak(question.question),
+                    icon: const Icon(
+                      Icons.volume_up_rounded,
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(
+              height: A1BasicsUIConfig.cardSpacing,
+            ),
+            ...question.options.map(
+              (option) {
+                final selectedThis =
+                    selected == option;
+
+                final correctOption =
+                    option == question.answer;
+
+                final showCorrect =
+                    answered &&
+                    A1BasicsUIConfig
+                        .showCorrectAnswerAfterMistake &&
+                    correctOption;
+
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom:
+                        A1BasicsUIConfig.cardSpacing,
+                  ),
+                  child: OutlinedButton(
+                    onPressed:
+                        answered && isCorrect
+                            ? null
+                            : () => _answerQuestion(
+                                  index,
+                                  option,
+                                ),
+                    style: OutlinedButton.styleFrom(
+                      alignment:
+                          AlignmentDirectional.centerStart,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      side: BorderSide(
+                        color: showCorrect
+                            ? Colors.green
+                            : selectedThis
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .outline,
+                      ),
+                      shape:
+                          RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(
+                          A1BasicsUIConfig
+                              .buttonRadius,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(option),
+                        ),
+                        if (showCorrect)
+                          const Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                          )
+                        else if (selectedThis)
+                          Icon(
+                            isCorrect
+                                ? Icons
+                                    .check_circle
+                                : Icons.cancel,
+                            color: isCorrect
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+            if (answered &&
+                A1BasicsUIConfig.showFeedbackAfterAnswer)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 4,
+                ),
+                child: Text(
+                  isCorrect
+                      ? 'درست! 😼✨'
+                      : 'جواب صحیح: ${question.answer}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: isCorrect
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+              ),
+            if (answered &&
+                A1BasicsUIConfig.showQuestionExplanation &&
+                question.explanation != null &&
+                question.explanation!
+                    .trim()
+                    .isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 12,
+                ),
+                child: Text(
+                  question.explanation!,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium,
+                ),
+              ),
+            if (answered &&
+                !isCorrect &&
+                A1BasicsUIConfig.allowRetry)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 8,
+                ),
+                child: TextButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _selectedAnswers.remove(index);
+                      _answeredQuestions.remove(index);
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.refresh_rounded,
+                  ),
+                  label: const Text(
+                    'دوباره امتحان کن',
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
   }
 
-  // ============================================================
-  // STAGE COMPLETION
-  // ============================================================
-
-  bool _stageCompleted(
-    _A1Stage stage,
+  void _answerQuestion(
+    int index,
+    String answer,
   ) {
-    final questionDone =
+    final question = _questions[index];
+
+    final correct =
+        answer == question.answer;
+
+    setState(() {
+      _selectedAnswers[index] = answer;
+
+      if (correct ||
+          !A1BasicsUIConfig.allowRetry) {
+        _answeredQuestions.add(index);
+      } else {
+        _answeredQuestions.add(index);
+      }
+    });
+
+    if (!correct &&
+        A1BasicsUIConfig.showCorrectAnswerAfterMistake) {
+      ScaffoldMessenger.of(context)
+          .hideCurrentSnackBar();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'جواب صحیح: ${question.answer}',
+          ),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  // =========================================================
+  // SPEAKING
+  // =========================================================
+
+  Widget _buildSpeakingQuestion(
+    int index,
+  ) {
+    final speaking =
+        widget.lesson.speakingQuestions[index];
+
+    final completed =
+        _completedSpeaking.contains(index);
+
+    final result =
+        _speakingResults[index];
+
+    final active =
+        _isListening &&
+        _currentSpeakingIndex == index;
+
+    return Card(
+      margin: EdgeInsets.only(
+        bottom: A1BasicsUIConfig.cardSpacing,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          A1BasicsUIConfig.cardRadius,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(
+          A1BasicsUIConfig.pagePadding,
+        ),
+        child: Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              speaking.question,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              speaking.persian,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium,
+            ),
+            if (A1BasicsUIConfig.showRecognizedText &&
+                _recognizedText.isNotEmpty &&
+                _currentSpeakingIndex == index)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 12,
+                ),
+                child: Text(
+                  'شنیده شد: $_recognizedText',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+            if (A1BasicsUIConfig.showSpeakingResult &&
+                completed &&
+                result != null)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 12,
+                ),
+                child: Text(
+                  result
+                      ? 'تلفظت قابل قبول بود 😼✨'
+                      : 'تلاش ثبت شد. جواب پیشنهادی: '
+                          '${speaking.acceptableAnswers.first}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: result
+                        ? Colors.green
+                        : Colors.orange,
+                  ),
+                ),
+              ),
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              onPressed:
+                  completed &&
+                          !A1BasicsUIConfig
+                              .allowSpeakingRetry
+                      ? null
+                      : active
+                          ? _stopListening
+                          : () => _startListening(index),
+              icon: Icon(
+                active
+                    ? Icons.stop_rounded
+                    : Icons.mic_rounded,
+              ),
+              label: Text(
+                active
+                    ? 'توقف'
+                    : completed
+                        ? 'دوباره بگو'
+                        : 'پاسخ بده',
+              ),
+              style: FilledButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                    A1BasicsUIConfig
+                        .buttonRadius,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // =========================================================
+  // EXAMPLES
+  // =========================================================
+
+  Widget _buildExample(
+    A1BasicExample example,
+  ) {
+    final key = _exampleKey(example);
+
+    final listened =
+        _listenedExamples.contains(key);
+
+    return Card(
+      margin: EdgeInsets.only(
+        bottom: A1BasicsUIConfig.cardSpacing,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          A1BasicsUIConfig.cardRadius,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(
+          A1BasicsUIConfig.pagePadding,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    example.english,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(example.persian),
+                  if (example.pronunciation != null)
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(
+                        top: 6,
+                      ),
+                      child: Text(
+                        example.pronunciation!,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            if (A1BasicsUIConfig
+                    .showPronunciationButton &&
+                A1BasicsUIConfig
+                    .enableTextToSpeech)
+              IconButton(
+                tooltip: 'Listen',
+                onPressed: () async {
+                  await _speak(example.english);
+
+                  if (mounted) {
+                    setState(() {
+                      _listenedExamples.add(key);
+                    });
+                  }
+                },
+                icon: Icon(
+                  listened
+                      ? Icons.check_circle
+                      : Icons.volume_up_rounded,
+                  color: listened
+                      ? Colors.green
+                      : null,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  int _exampleKey(
+    A1BasicExample example,
+  ) {
+    return Object.hash(
+      example.english,
+      example.persian,
+      example.pronunciation,
+    );
+  }
+
+  // =========================================================
+  // STAGE COMPLETION
+  // =========================================================
+
+  bool _isCurrentStageComplete() {
+    final stage = _stages[_currentStage];
+
+    final questionsComplete =
         stage.questionIndices.every(
       (index) =>
           _answeredQuestions.contains(index),
     );
 
-    final speakingDone =
+    final speakingComplete =
         stage.speakingIndices.every(
       (index) =>
           _completedSpeaking.contains(index),
     );
 
-    return questionDone && speakingDone;
+    return questionsComplete &&
+        speakingComplete;
   }
 
   Future<void> _finishCurrentStage() async {
-    final stage =
-        _stages[_currentStage];
-
-    if (!_stageCompleted(stage)) {
+    if (A1BasicsUIConfig.requireStageCompletion &&
+        !_isCurrentStageComplete()) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(
+          .hideCurrentSnackBar();
+
+      ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'اول همه تمرین‌های این مرحله رو انجام بده 😼',
+            'اول تمرین‌های این مرحله را کامل کن 😼',
           ),
+          behavior: SnackBarBehavior.floating,
         ),
       );
 
       return;
     }
 
-    if (_currentStage <
-        _stages.length - 1) {
+    if (_currentStage < _stages.length - 1) {
       final nextStage =
           _currentStage + 1;
 
       setState(() {
         _currentStage = nextStage;
-
-        // هر مرحله جدید دوباره اول آموزش را نشان می‌دهد.
-        _learningMode = true;
-
+        _learningMode =
+            A1BasicsUIConfig.teachBeforePractice;
         _currentSpeakingIndex = null;
         _recognizedText = '';
+        _isListening = false;
       });
 
       await _saveStage(nextStage);
 
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context)
-          .showSnackBar(
-        SnackBar(
-          content: Text(
-            'مرحله بعد باز شد! 🎉\n'
-            '${_stages[nextStage].titleFa}',
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(
+          const SnackBar(
+            content: Text(
+              'مرحله بعدی باز شد 😼✨',
+            ),
+            behavior:
+                SnackBarBehavior.floating,
           ),
-          duration:
-              const Duration(seconds: 2),
-        ),
-      );
-
-      return;
+        );
+      }
+    } else {
+      await _completeLesson();
     }
-
-    await _completeLesson();
   }
 
   Future<void> _completeLesson() async {
-    final prefs =
-        await SharedPreferences.getInstance();
+    if (A1BasicsUIConfig.saveProgress) {
+      final prefs =
+          await SharedPreferences.getInstance();
 
-    final completed =
-        prefs.getStringList(
-              _completedLessonsKey,
-            ) ??
-            [];
+      final completed =
+          prefs.getStringList(
+                _completedLessonsKey,
+              ) ??
+              [];
 
-    if (!completed.contains(widget.lesson.id)) {
-      completed.add(widget.lesson.id);
+      if (!completed.contains(widget.lesson.id)) {
+        completed.add(widget.lesson.id);
+      }
+
+      await prefs.setStringList(
+        _completedLessonsKey,
+        completed,
+      );
     }
 
-    await prefs.setStringList(
-      _completedLessonsKey,
-      completed,
-    );
-
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     await showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
           title: const Text(
             'درس کامل شد 🎉',
           ),
-          content: Text(
-            'آفرین! درس «${widget.lesson.titleFa}» '
-            'را کامل کردی.\n\n'
-            'حالا می‌تونی بری سراغ درس بعدی 😼💜',
+          content: const Text(
+            'این درس را با موفقیت تمام کردی. '
+            'یک قدم دیگر به انگلیسی بهتر نزدیک شدی 😼💜',
           ),
           actions: [
-            TextButton(
+            FilledButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
               child: const Text('باشه'),
             ),
@@ -1586,51 +1414,64 @@ class _A1BasicsLessonPageState
     );
 
     if (mounted) {
-      Navigator.pop(context);
+      Navigator.of(context).pop();
     }
   }
 
-  // ============================================================
-  // UI
-  // ============================================================
+  // =========================================================
+  // PROGRESS HEADER
+  // =========================================================
 
   Widget _buildProgressHeader() {
     if (_stages.isEmpty) {
       return const SizedBox.shrink();
     }
 
-    final total = _stages.length;
     final progress =
-        (_currentStage + 1) / total;
+        (_currentStage + 1) / _stages.length;
 
     return Card(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig.sectionSpacing,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          A1BasicsUIConfig.cardRadius,
+        ),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(
+          A1BasicsUIConfig.pagePadding,
+        ),
         child: Column(
           crossAxisAlignment:
-              CrossAxisAlignment.start,
+              CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
                 Expanded(
                   child: Text(
-                    'مرحله ${_currentStage + 1} از $total',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight:
-                          FontWeight.bold,
-                    ),
+                    'مرحله ${_currentStage + 1} '
+                    'از ${_stages.length}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(
+                          fontWeight:
+                              FontWeight.bold,
+                        ),
                   ),
                 ),
                 Text(
                   '${(progress * 100).round()}%',
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primary,
-                    fontWeight:
-                        FontWeight.bold,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
                 ),
               ],
             ),
@@ -1649,666 +1490,84 @@ class _A1BasicsLessonPageState
     );
   }
 
-  Widget _buildSectionTitle(
-    String title,
-    String titleFa,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 20,
-        bottom: 10,
-      ),
-      child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
-        children: [
-          Text(
-            titleFa,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(
-                  fontWeight:
-                      FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            title,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withOpacity(0.65),
-                ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ============================================================
-  // QUESTION
-  // ============================================================
-
-  Widget _buildQuestion(
-    A1BasicQuestion question,
-    int index,
-  ) {
-    final answered =
-        _answeredQuestions.contains(index);
-
-    final selected =
-        _selectedAnswers[index];
-
-    final wasCorrect =
-        selected == question.answer;
-
-    return Card(
-      margin:
-          const EdgeInsets.only(bottom: 14),
-      child: Padding(
-        padding:
-            const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    question.question,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight:
-                          FontWeight.bold,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  tooltip: 'Listen',
-                  onPressed: () {
-                    _speak(
-                      question.question,
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.volume_up_outlined,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-
-            ...question.options.map(
-              (option) {
-                final isSelected =
-                    selected == option;
-
-                final isCorrectOption =
-                    answered &&
-                        option ==
-                            question.answer;
-
-                return Padding(
-                  padding:
-                      const EdgeInsets.only(
-                    bottom: 8,
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: answered
-                          ? null
-                          : () {
-                              _answerQuestion(
-                                question,
-                                index,
-                                option,
-                              );
-                            },
-                      style:
-                          OutlinedButton.styleFrom(
-                        alignment:
-                            Alignment.centerLeft,
-                        padding:
-                            const EdgeInsets
-                                .symmetric(
-                          horizontal: 14,
-                          vertical: 12,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(option),
-                          ),
-                          if (isCorrectOption)
-                            const Icon(
-                              Icons.check_circle,
-                              size: 20,
-                            )
-                          else if (isSelected)
-                            Icon(
-                              wasCorrect
-                                  ? Icons
-                                      .check_circle
-                                  : Icons
-                                      .cancel,
-                              size: 20,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-
-            if (answered) ...[
-              const SizedBox(height: 10),
-
-              Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(12),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary
-                      .withOpacity(0.07),
-                ),
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      wasCorrect
-                          ? '✓ درست بود'
-                          : '✗ جواب درست: ${question.answer}',
-                      style: TextStyle(
-                        fontWeight:
-                            FontWeight.bold,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary,
-                      ),
-                    ),
-                    if (question.explanation !=
-                        null) ...[
-                      const SizedBox(height: 6),
-                      Text(
-                        question.explanation!,
-                        style:
-                            const TextStyle(
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ============================================================
-  // SPEAKING
-  // ============================================================
-
-  Widget _buildSpeakingQuestion(
-    A1BasicSpeakingQuestion question,
-    int index,
-  ) {
-    final completed =
-        _completedSpeaking.contains(index);
-
-    final active =
-        _currentSpeakingIndex == index;
-
-    final result =
-        _speakingResults[index];
-
-    return Card(
-      margin:
-          const EdgeInsets.only(bottom: 14),
-      child: Padding(
-        padding:
-            const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    question.question,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight:
-                          FontWeight.bold,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    _speak(
-                      question.question,
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.volume_up_outlined,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Text(question.persian),
-            const SizedBox(height: 14),
-
-            if (active &&
-                _recognizedText.isNotEmpty)
-              Padding(
-                padding:
-                    const EdgeInsets.only(
-                  bottom: 10,
-                ),
-                child: Text(
-                  'شنیدم: $_recognizedText',
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primary,
-                  ),
-                ),
-              ),
-
-            if (completed &&
-                result != null) ...[
-              Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.all(12),
-                margin:
-                    const EdgeInsets.only(
-                  bottom: 12,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.circular(12),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary
-                      .withOpacity(0.07),
-                ),
-                child: Text(
-                  result
-                      ? '✓ تلفظت قابل قبول بود 😼💜'
-                      : question.acceptableAnswers
-                              .isNotEmpty
-                          ? 'جمله پیشنهادی: '
-                              '${question.acceptableAnswers.first}'
-                          : 'تلاش ثبت شد 😼',
-                  style: const TextStyle(
-                    height: 1.5,
-                  ),
-                ),
-              ),
-            ],
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: completed
-                    ? null
-                    : (_isListening && active
-                        ? _stopListening
-                        : () {
-                            _startListening(
-                              index,
-                            );
-                          }),
-                icon: Icon(
-                  _isListening && active
-                      ? Icons.stop
-                      : Icons.mic,
-                ),
-                label: Text(
-                  completed
-                      ? 'Completed ✓'
-                      : (_isListening && active
-                          ? 'Stop'
-                          : 'Speak'),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ============================================================
+  // =========================================================
   // CURRENT STAGE
-  // ============================================================
+  // =========================================================
 
   Widget _buildCurrentStage() {
     if (_stages.isEmpty) {
-      return const SizedBox.shrink();
+      return const Center(
+        child: Text(
+          'این درس هنوز محتوایی ندارد.',
+        ),
+      );
     }
 
     final stage =
         _stages[_currentStage];
 
-    final completed =
-        _stageCompleted(stage);
-
     return Column(
       crossAxisAlignment:
-          CrossAxisAlignment.start,
+          CrossAxisAlignment.stretch,
       children: [
-        // --------------------------------------------------------
-        // STAGE HEADER
-        // --------------------------------------------------------
-
-        Card(
-          child: Padding(
-            padding:
-                const EdgeInsets.all(18),
-            child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 42,
-                      height: 42,
-                      decoration:
-                          BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(0.12),
-                        shape:
-                            BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${_currentStage + 1}',
-                          style: TextStyle(
-                            color: Theme.of(
-                              context,
-                            )
-                                .colorScheme
-                                .primary,
-                            fontWeight:
-                                FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment
-                                .start,
-                        children: [
-                          Text(
-                            stage.titleFa,
-                            style:
-                                const TextStyle(
-                              fontSize: 22,
-                              fontWeight:
-                                  FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            stage.title,
-                            style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              )
-                                  .colorScheme
-                                  .primary,
-                              fontWeight:
-                                  FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  stage.description,
-                  style: const TextStyle(
-                    height: 1.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        Text(
+          stage.titleFa,
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+              ?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
         ),
-
-        // --------------------------------------------------------
-        // LEARNING MODE
-        // --------------------------------------------------------
-
+        const SizedBox(height: 6),
+        Text(stage.description),
+        SizedBox(
+          height: A1BasicsUIConfig.sectionSpacing,
+        ),
         if (_learningMode)
           _buildLearningContent()
-
-        // --------------------------------------------------------
-        // PRACTICE MODE
-        // --------------------------------------------------------
-
         else ...[
-          if (stage.questionIndices.isNotEmpty) ...[
-            _buildSectionTitle(
-              'Practice',
-              'تمرین',
-            ),
-
-            ...stage.questionIndices.map(
-              (index) => _buildQuestion(
-                _questions[index],
-                index,
-              ),
-            ),
-          ],
-
-          if (stage.speakingIndices.isNotEmpty) ...[
-            _buildSectionTitle(
-              'Speaking',
-              'تمرین مکالمه',
-            ),
-
-            ...stage.speakingIndices.map(
-              (index) =>
-                  _buildSpeakingQuestion(
-                widget.lesson
-                    .speakingQuestions[index],
-                index,
-              ),
-            ),
-          ],
-
-          const SizedBox(height: 18),
-
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: completed
-                  ? _finishCurrentStage
-                  : null,
-              icon: Icon(
-                _currentStage ==
-                        _stages.length - 1
-                    ? Icons.check_circle
-                    : Icons.arrow_forward,
-              ),
-              label: Text(
-                _currentStage ==
-                        _stages.length - 1
-                    ? 'Complete Lesson'
-                    : 'Complete Stage',
-              ),
-            ),
+          ...stage.questionIndices.map(
+            _buildQuestion,
           ),
-
-          const SizedBox(height: 8),
-
-          if (!completed)
-            Center(
-              child: Text(
-                'همه تمرین‌ها را انجام بده تا مرحله بعد باز شود.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withOpacity(0.6),
+          ...stage.speakingIndices.map(
+            _buildSpeakingQuestion,
+          ),
+          SizedBox(
+            height:
+                A1BasicsUIConfig.sectionSpacing,
+          ),
+          FilledButton(
+            onPressed:
+                _finishCurrentStage,
+            style: FilledButton.styleFrom(
+              shape:
+                  RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  A1BasicsUIConfig
+                      .buttonRadius,
                 ),
               ),
             ),
+            child: Text(
+              _currentStage ==
+                      _stages.length - 1
+                  ? 'پایان درس'
+                  : 'تکمیل مرحله',
+            ),
+          ),
         ],
       ],
     );
   }
 
-  // ============================================================
-  // EXAMPLE
-  // ============================================================
-
-  Widget _buildExample(
-    A1BasicExample example,
-    int index,
-    A1BasicSection? section,
-  ) {
-    // برای Sectionها index محلی است.
-    // برای مثال‌های کلی هم index محلی همان لیست است.
-    final exampleKey =
-        _exampleKey(section, index);
-
-    final listened =
-        _listenedExamples.contains(
-      exampleKey,
-    );
-
-    return Card(
-      margin:
-          const EdgeInsets.only(bottom: 10),
-      child: Padding(
-        padding:
-            const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    example.english,
-                    style:
-                        const TextStyle(
-                      fontSize: 17,
-                      fontWeight:
-                          FontWeight.bold,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  tooltip: 'Listen',
-                  onPressed: () async {
-                    await _speak(
-                      example.english,
-                    );
-
-                    if (mounted) {
-                      setState(() {
-                        _listenedExamples.add(
-                          exampleKey,
-                        );
-                      });
-                    }
-                  },
-                  icon: Icon(
-                    listened
-                        ? Icons.volume_up
-                        : Icons
-                            .volume_up_outlined,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Text(example.persian),
-            if (example.pronunciation != null) ...[
-              const SizedBox(height: 5),
-              Text(
-                example.pronunciation!,
-                style: TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary,
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  int _exampleKey(
-    A1BasicSection? section,
-    int index,
-  ) {
-    if (section == null) {
-      return 10000 + index;
-    }
-
-    final sectionIndex =
-        widget.lesson.sections.indexOf(section);
-
-    return (sectionIndex + 1) * 1000 + index;
-  }
-
-  // ============================================================
+  // =========================================================
   // BUILD
-  // ============================================================
+  // =========================================================
 
   @override
-  void dispose() {
-    _tts.stop();
-    _speech.stop();
-    super.dispose();
-  }
-
-  @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -2317,45 +1576,35 @@ class _A1BasicsLessonPageState
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding:
-              const EdgeInsets.fromLTRB(
-            16,
-            12,
-            16,
-            30,
+          padding: EdgeInsets.all(
+            A1BasicsUIConfig.pagePadding,
           ),
           child: Column(
             crossAxisAlignment:
-                CrossAxisAlignment.start,
+                CrossAxisAlignment.stretch,
             children: [
               Text(
                 widget.lesson.title,
-                style:
-                    Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(
+                      fontWeight:
+                          FontWeight.bold,
+                    ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
                 widget.lesson.topic,
-                style:
-                    Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(
-                          color:
-                              Theme.of(context)
-                                  .colorScheme
-                                  .primary,
-                        ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge,
               ),
-              const SizedBox(height: 18),
+              SizedBox(
+                height:
+                    A1BasicsUIConfig.sectionSpacing,
+              ),
               _buildProgressHeader(),
-              const SizedBox(height: 14),
               _buildCurrentStage(),
             ],
           ),
@@ -2363,17 +1612,23 @@ class _A1BasicsLessonPageState
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _tts.stop();
+    _speech.stop();
+    super.dispose();
+  }
 }
 
-// ============================================================
+// =========================================================
 // STAGE MODEL
-// ============================================================
+// =========================================================
 
 class _A1Stage {
   final String title;
   final String titleFa;
   final String description;
-
   final List<int> questionIndices;
   final List<int> speakingIndices;
 
