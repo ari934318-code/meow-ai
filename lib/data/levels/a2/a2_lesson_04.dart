@@ -192,7 +192,7 @@ const A2Lesson a2Lesson04 = A2Lesson(
       word: 'special',
       meaning: 'ویژه',
       pronunciation: 'اِسپِشِل',
-      example: 'What is today's special?',
+      example: "What is today's special?",
       exampleTranslation: 'غذای ویژه امروز چیست؟',
     ),
     A2Word(
