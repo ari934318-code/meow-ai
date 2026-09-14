@@ -40,7 +40,13 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
-          printf '%s' "$KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > android/meow-upload-key.jks
+          printf '%s' "$KEYSTORE_BASE64" | tr -d '[:space:]' > /tmp/keystore.b64
+
+          echo "Base64 length:"
+          wc -c /tmp/keystore.b64
+
+          echo "Base64 validation:"
+          base64 --decode /tmp/keystore.b64 > android/meow-upload-key.jks
 
           cat > android/key.properties <<EOF
           storePassword=$STORE_PASSWORD
