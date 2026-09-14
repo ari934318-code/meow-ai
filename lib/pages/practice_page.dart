@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../localization.dart';
 import '../services/practice_service.dart';
 import 'practice_mistakes_page.dart';
+import 'vocabulary_practice_page.dart';
 
 class PracticePage extends StatefulWidget {
   const PracticePage({super.key});
@@ -146,7 +147,15 @@ class _PracticePageState extends State<PracticePage> {
                   : 'Learn useful everyday words and phrases',
               icon: Icons.menu_book_rounded,
               color: const Color(0xFF4CAF50),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const VocabularyPracticePage(),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 10),
