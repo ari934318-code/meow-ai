@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -64,6 +65,12 @@ class _A1BasicsLessonPageState
           .colorScheme
           .outline
           .withAlpha(36);
+
+  String get _progressKey =>
+      'a1_basics_lesson_progress_${widget.lesson.id}';
+
+  String get _stageKey =>
+      'a1_basics_stage_${widget.lesson.id}';
 
   @override
   void initState() {
@@ -521,7 +528,8 @@ class _A1BasicsLessonPageState
   // =========================================================
 
   A1BasicSection? _getCurrentSection() {
-    if (widget.lesson.sections.isEmpty) {
+    if (widget.lesson.sections.isEmpty ||
+        _stages.isEmpty) {
       return null;
     }
 
@@ -708,6 +716,8 @@ class _A1BasicsLessonPageState
 
     setState(() {});
 
+    _saveProgress();
+
     if (A1BasicsUIConfig.showSpeakingResult) {
       _showSpeakingResult(
         correct,
@@ -817,11 +827,8 @@ class _A1BasicsLessonPageState
   }
 
   // =========================================================
-  // PROGRESS
+  // PROGRESS LOAD / SAVE
   // =========================================================
-
-  String get _stageKey =>
-      'a1_basics_stage_${widget.lesson.id}';
 
   Future<void> _loadProgress() async {
     if (!A1BasicsUIConfig.saveProgress ||
@@ -833,30 +840,188 @@ class _A1BasicsLessonPageState
     final prefs =
         await SharedPreferences.getInstance();
 
-    final savedStage =
+    // Backward compatibility with the old stage key.
+    final oldStage =
         prefs.getInt(_stageKey) ?? 0;
 
-    if (!mounted) {
+    final raw =
+        prefs.getString(_progressKey);
+
+    if (raw == null || raw.isEmpty) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _currentStage = oldStage
+            .clamp(
+              0,
+              _stages.length - 1,
+            )
+            .toInt();
+
+        _learningMode =
+            A1BasicsUIConfig
+                .teachBeforePractice;
+      });
+
       return;
     }
 
-    setState(() {
-      _currentStage = savedStage
-          .clamp(
-            0,
-            _stages.length - 1,
-          )
-          .toInt();
+    try {
+      final data =
+          jsonDecode(raw);
 
-      _learningMode =
-          A1BasicsUIConfig
-              .teachBeforePractice;
-    });
+      if (data is! Map) {
+        return;
+      }
+
+      final stage =
+          data['currentStage'];
+
+      final learning =
+          data['learningMode'];
+
+      final answered =
+          data['answeredQuestions'];
+
+      final selected =
+          data['selectedAnswers'];
+
+      final completedSpeaking =
+          data['completedSpeaking'];
+
+      final speakingResults =
+          data['speakingResults'];
+
+      final listenedExamples =
+          data['listenedExamples'];
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        if (stage is num) {
+          _currentStage = stage
+              .toInt()
+              .clamp(
+                0,
+                _stages.length - 1,
+              );
+        } else {
+          _currentStage = oldStage
+              .clamp(
+                0,
+                _stages.length - 1,
+              )
+              .toInt();
+        }
+
+        if (learning is bool) {
+          _learningMode = learning;
+        } else {
+          _learningMode =
+              A1BasicsUIConfig
+                  .teachBeforePractice;
+        }
+
+        _answeredQuestions.clear();
+
+        if (answered is List) {
+          for (final value in answered) {
+            if (value is num) {
+              _answeredQuestions
+                  .add(value.toInt());
+            }
+          }
+        }
+
+        _selectedAnswers.clear();
+
+        if (selected is Map) {
+          selected.forEach(
+            (key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              if (index != null &&
+                  value is String) {
+                _selectedAnswers[
+                    index] = value;
+              }
+            },
+          );
+        }
+
+        _completedSpeaking.clear();
+
+        if (completedSpeaking is List) {
+          for (final value
+              in completedSpeaking) {
+            if (value is num) {
+              _completedSpeaking
+                  .add(value.toInt());
+            }
+          }
+        }
+
+        _speakingResults.clear();
+
+        if (speakingResults is Map) {
+          speakingResults.forEach(
+            (key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              if (index != null &&
+                  value is bool) {
+                _speakingResults[
+                    index] = value;
+              }
+            },
+          );
+        }
+
+        _listenedExamples.clear();
+
+        if (listenedExamples is List) {
+          for (final value
+              in listenedExamples) {
+            if (value is num) {
+              _listenedExamples
+                  .add(value.toInt());
+            }
+          }
+        }
+      });
+    } catch (_) {
+      // If old/corrupt data exists,
+      // simply fall back to the saved stage.
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _currentStage = oldStage
+            .clamp(
+              0,
+              _stages.length - 1,
+            )
+            .toInt();
+
+        _learningMode =
+            A1BasicsUIConfig
+                .teachBeforePractice;
+      });
+    }
   }
 
-  Future<void> _saveStage(
-    int stage,
-  ) async {
+  Future<void> _saveProgress() async {
     if (!A1BasicsUIConfig.saveProgress) {
       return;
     }
@@ -864,10 +1029,51 @@ class _A1BasicsLessonPageState
     final prefs =
         await SharedPreferences.getInstance();
 
+    final data = <String, dynamic>{
+      'currentStage': _currentStage,
+      'learningMode': _learningMode,
+      'answeredQuestions':
+          _answeredQuestions.toList(),
+      'selectedAnswers':
+          _selectedAnswers.map(
+        (key, value) =>
+            MapEntry(
+          key.toString(),
+          value,
+        ),
+      ),
+      'completedSpeaking':
+          _completedSpeaking.toList(),
+      'speakingResults':
+          _speakingResults.map(
+        (key, value) =>
+            MapEntry(
+          key.toString(),
+          value,
+        ),
+      ),
+      'listenedExamples':
+          _listenedExamples.toList(),
+    };
+
+    await prefs.setString(
+      _progressKey,
+      jsonEncode(data),
+    );
+
+    // Keep the old stage key too.
     await prefs.setInt(
       _stageKey,
-      stage,
+      _currentStage,
     );
+  }
+
+  Future<void> _saveStage(int stage) async {
+    if (!A1BasicsUIConfig.saveProgress) {
+      return;
+    }
+
+    await _saveProgress();
   }
 
   // =========================================================
@@ -957,7 +1163,8 @@ class _A1BasicsLessonPageState
           onPressed: _startPractice,
           style: FilledButton.styleFrom(
             backgroundColor: lavender,
-            foregroundColor: Colors.black87,
+            foregroundColor:
+                Colors.black87,
             shape:
                 RoundedRectangleBorder(
               borderRadius:
@@ -1005,10 +1212,12 @@ class _A1BasicsLessonPageState
     );
   }
 
-  void _startPractice() {
+  Future<void> _startPractice() async {
     setState(() {
       _learningMode = false;
     });
+
+    await _saveProgress();
   }
 
   Widget _buildSectionTitle(
@@ -1016,7 +1225,8 @@ class _A1BasicsLessonPageState
     String description,
   ) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding:
+          const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: _surface,
         borderRadius:
@@ -1036,7 +1246,7 @@ class _A1BasicsLessonPageState
                 .headlineSmall
                 ?.copyWith(
                   fontWeight:
-                      FontWeight.w800,
+                      FontWeight.bold,
                   letterSpacing: -0.4,
                 ),
           ),
@@ -1066,9 +1276,8 @@ class _A1BasicsLessonPageState
         _questions[index];
 
     final answered =
-        _answeredQuestions.contains(
-      index,
-    );
+        _answeredQuestions
+            .contains(index);
 
     final selected =
         _selectedAnswers[index];
@@ -1112,7 +1321,7 @@ class _A1BasicsLessonPageState
                       .titleMedium
                       ?.copyWith(
                         fontWeight:
-                            FontWeight.w700,
+                            FontWeight.bold,
                       ),
                 ),
               ),
@@ -1160,7 +1369,8 @@ class _A1BasicsLessonPageState
                       A1BasicsUIConfig
                           .cardSpacing,
                 ),
-                child: OutlinedButton(
+                child:
+                    OutlinedButton(
                   onPressed:
                       answered &&
                               isCorrect
@@ -1202,9 +1412,8 @@ class _A1BasicsLessonPageState
                   child: Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          option,
-                        ),
+                        child:
+                            Text(option),
                       ),
                       if (showCorrect)
                         const Icon(
@@ -1270,10 +1479,7 @@ class _A1BasicsLessonPageState
                 question.explanation!,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyMedium
-                    ?.copyWith(
-                      height: 1.45,
-                    ),
+                    .bodyMedium,
               ),
             ),
           if (answered &&
@@ -1285,13 +1491,15 @@ class _A1BasicsLessonPageState
                 top: 8,
               ),
               child: TextButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     _selectedAnswers
                         .remove(index);
                     _answeredQuestions
                         .remove(index);
                   });
+
+                  await _saveProgress();
                 },
                 icon: const Icon(
                   Icons.refresh_rounded,
@@ -1308,10 +1516,10 @@ class _A1BasicsLessonPageState
     );
   }
 
-  void _answerQuestion(
+  Future<void> _answerQuestion(
     int index,
     String answer,
-  ) {
+  ) async {
     final question =
         _questions[index];
 
@@ -1322,10 +1530,10 @@ class _A1BasicsLessonPageState
       _selectedAnswers[index] =
           answer;
 
-      _answeredQuestions.add(
-        index,
-      );
+      _answeredQuestions.add(index);
     });
+
+    await _saveProgress();
 
     if (!correct &&
         A1BasicsUIConfig
@@ -1360,9 +1568,8 @@ class _A1BasicsLessonPageState
             .speakingQuestions[index];
 
     final completed =
-        _completedSpeaking.contains(
-      index,
-    );
+        _completedSpeaking
+            .contains(index);
 
     final result =
         _speakingResults[index];
@@ -1402,7 +1609,7 @@ class _A1BasicsLessonPageState
                 .titleMedium
                 ?.copyWith(
                   fontWeight:
-                      FontWeight.w700,
+                      FontWeight.bold,
                 ),
           ),
           if (_isPersian &&
@@ -1416,9 +1623,6 @@ class _A1BasicsLessonPageState
               ),
               child: Text(
                 speaking.persian,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium,
               ),
             ),
           if (A1BasicsUIConfig
@@ -1436,13 +1640,10 @@ class _A1BasicsLessonPageState
                 _isPersian
                     ? 'شنیده شد: $_recognizedText'
                     : 'Recognized: $_recognizedText',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
-                      fontWeight:
-                          FontWeight.bold,
-                    ),
+                style: const TextStyle(
+                  fontWeight:
+                      FontWeight.bold,
+                ),
               ),
             ),
           if (A1BasicsUIConfig
@@ -1568,7 +1769,7 @@ class _A1BasicsLessonPageState
                       .titleMedium
                       ?.copyWith(
                         fontWeight:
-                            FontWeight.w700,
+                            FontWeight.bold,
                       ),
                 ),
                 if (_isPersian &&
@@ -1624,6 +1825,8 @@ class _A1BasicsLessonPageState
                     _listenedExamples
                         .add(key);
                   });
+
+                  await _saveProgress();
                 }
               },
               icon: Icon(
@@ -1718,9 +1921,7 @@ class _A1BasicsLessonPageState
         _isListening = false;
       });
 
-      await _saveStage(
-        nextStage,
-      );
+      await _saveProgress();
 
       if (mounted) {
         ScaffoldMessenger.of(context)
@@ -1766,6 +1967,8 @@ class _A1BasicsLessonPageState
         _completedLessonsKey,
         completed,
       );
+
+      await _saveProgress();
     }
 
     if (!mounted) {
@@ -1850,7 +2053,8 @@ class _A1BasicsLessonPageState
             A1BasicsUIConfig
                 .sectionSpacing,
       ),
-      padding: const EdgeInsets.all(20),
+      padding:
+          const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: _surface,
         borderRadius:
@@ -1872,7 +2076,7 @@ class _A1BasicsLessonPageState
                       : 'Stage ${_currentStage + 1} of ${_stages.length}',
                   style: const TextStyle(
                     fontWeight:
-                        FontWeight.w700,
+                        FontWeight.bold,
                   ),
                 ),
               ),
@@ -1880,7 +2084,7 @@ class _A1BasicsLessonPageState
                 '${(progress * 100).round()}%',
                 style: const TextStyle(
                   fontWeight:
-                      FontWeight.w800,
+                      FontWeight.bold,
                   color: lavender,
                 ),
               ),
@@ -1953,8 +2157,7 @@ class _A1BasicsLessonPageState
                     .headlineSmall
                     ?.copyWith(
                       fontWeight:
-                          FontWeight.w800,
-                      letterSpacing: -0.4,
+                          FontWeight.bold,
                     ),
               ),
               const SizedBox(height: 6),
@@ -2050,8 +2253,7 @@ class _A1BasicsLessonPageState
           lessonTitle,
           style: const TextStyle(
             fontWeight:
-                FontWeight.w700,
-            letterSpacing: -0.3,
+                FontWeight.bold,
           ),
         ),
       ),
@@ -2091,7 +2293,7 @@ class _A1BasicsLessonPageState
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight:
-                            FontWeight.w800,
+                            FontWeight.bold,
                         letterSpacing: -0.5,
                       ),
                     ),
@@ -2106,10 +2308,12 @@ class _A1BasicsLessonPageState
                         ),
                         child: Text(
                           widget.lesson.topic,
-                          style: const TextStyle(
+                          style:
+                              const TextStyle(
                             fontSize: 14,
                             height: 1.4,
-                            color: Colors.grey,
+                            color:
+                                Colors.grey,
                           ),
                         ),
                       ),
