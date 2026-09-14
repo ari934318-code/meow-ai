@@ -597,4 +597,853 @@ class _A2LessonDetailPageState
                     ),
                     IconButton(
                       icon: const Icon(Icons.volume_up),
-                      on
+                      onPressed: () =>
+                          _speak(word.word),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Useful Sentences',
+            'جمله‌های کاربردی',
+          ),
+
+          ...lesson.sentences.map(
+            (sentence) => Card(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Row(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            sentence.english,
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            sentence.pronunciation,
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            sentence.translation,
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.volume_up),
+                      onPressed: () =>
+                          _speak(sentence.english),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Grammar',
+            'گرامر',
+          ),
+
+          ...lesson.grammar.map(
+            (grammar) => Card(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      grammar.title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(grammar.explanation),
+                    const SizedBox(height: 12),
+                    ...grammar.examples.map(
+                      (example) => Padding(
+                        padding:
+                            const EdgeInsets.only(
+                          bottom: 6,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                example,
+                                style: const TextStyle(
+                                  fontStyle:
+                                      FontStyle.italic,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.volume_up,
+                                size: 20,
+                              ),
+                              onPressed: () =>
+                                  _speak(example),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Multiple Choice',
+            'سؤالات چهارگزینه‌ای',
+          ),
+
+          ...lesson.questions
+              .asMap()
+              .entries
+              .map(
+            (entry) {
+              final index = entry.key;
+              final question = entry.value;
+
+              final selected =
+                  _questionAnswers[index];
+
+              return Card(
+                margin:
+                    const EdgeInsets.only(bottom: 12),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${index + 1}. ${question.question}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      ...question.options
+                          .asMap()
+                          .entries
+                          .map(
+                        (optionEntry) {
+                          final optionIndex =
+                              optionEntry.key;
+                          final option =
+                              optionEntry.value;
+
+                          final isSelected =
+                              selected ==
+                                  optionIndex;
+
+                          final isCorrect =
+                              optionIndex ==
+                                  question.correctIndex;
+
+                          Color? backgroundColor;
+
+                          if (isSelected) {
+                            backgroundColor =
+                                isCorrect
+                                    ? Colors.green
+                                        .withOpacity(0.12)
+                                    : Colors.red
+                                        .withOpacity(0.12);
+                          }
+
+                          return Padding(
+                            padding:
+                                const EdgeInsets.only(
+                              bottom: 7,
+                            ),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child:
+                                  OutlinedButton(
+                                style:
+                                    OutlinedButton
+                                        .styleFrom(
+                                  backgroundColor:
+                                      backgroundColor,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _questionAnswers[
+                                            index] =
+                                        optionIndex;
+                                  });
+                                },
+                                child: Align(
+                                  alignment:
+                                      Alignment.centerLeft,
+                                  child:
+                                      Text(option),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      if (selected != null) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          selected ==
+                                  question.correctIndex
+                              ? '✅ درست! 😼💜'
+                              : '❌ هنوز درست نیست.',
+                          style: TextStyle(
+                            fontWeight:
+                                FontWeight.bold,
+                            color: selected ==
+                                    question.correctIndex
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          question.explanation,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Fill in the Blank',
+            'جای خالی را پر کن',
+          ),
+
+          ...lesson.fillBlanks
+              .asMap()
+              .entries
+              .map(
+            (entry) {
+              final index = entry.key;
+              final item = entry.value;
+
+              final selected =
+                  _fillBlankAnswers[index];
+
+              return Card(
+                margin:
+                    const EdgeInsets.only(bottom: 12),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${index + 1}. ${item.sentence}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: item.options
+                            .asMap()
+                            .entries
+                            .map(
+                          (optionEntry) {
+                            final optionIndex =
+                                optionEntry.key;
+                            final option =
+                                optionEntry.value;
+
+                            return OutlinedButton(
+                              onPressed: () {
+                                setState(() {
+                                  _fillBlankAnswers[
+                                          index] =
+                                      optionIndex;
+                                });
+                              },
+                              child: Text(option),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                      if (selected != null) ...[
+                        const SizedBox(height: 10),
+                        Text(
+                          selected ==
+                                  item.correctIndex
+                              ? '✅ درست!'
+                              : '❌ دوباره امتحان کن.',
+                          style: TextStyle(
+                            fontWeight:
+                                FontWeight.bold,
+                            color: selected ==
+                                    item.correctIndex
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Sentence Ordering',
+            'مرتب کردن جمله',
+          ),
+
+          ...lesson.sentenceOrdering
+              .asMap()
+              .entries
+              .map(
+            (entry) {
+              final index = entry.key;
+              final item = entry.value;
+
+              final shuffled =
+                  [...item.shuffledWords];
+
+              return Card(
+                margin:
+                    const EdgeInsets.only(bottom: 12),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${index + 1}. کلمات را به ترتیب درست بچین:',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 7,
+                        runSpacing: 7,
+                        children: shuffled
+                            .map(
+                              (word) => Chip(
+                                label: Text(word),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'پاسخ صحیح: ${item.sentence}',
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.volume_up,
+                        ),
+                        onPressed: () =>
+                            _speak(item.sentence),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Matching',
+            'وصل کردن',
+          ),
+
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: lesson.matching.map(
+                  (item) {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(
+                        bottom: 12,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              item.left,
+                              style:
+                                  const TextStyle(
+                                fontWeight:
+                                    FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(item.right),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ).toList(),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Build the Sentence',
+            'جمله را بساز',
+          ),
+
+          ...lesson.sentenceBuilding
+              .asMap()
+              .entries
+              .map(
+            (entry) {
+              final index = entry.key;
+              final item = entry.value;
+
+              return Card(
+                margin:
+                    const EdgeInsets.only(bottom: 12),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${index + 1}. ${item.meaning}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 7,
+                        runSpacing: 7,
+                        children: item.words
+                            .map(
+                              (word) => Chip(
+                                label: Text(word),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        item.correctSentence,
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        item.pronunciation,
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurfaceVariant,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.volume_up,
+                        ),
+                        onPressed: () =>
+                            _speak(
+                          item.correctSentence,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Real-Life Conversation',
+            'مکالمه واقعی',
+          ),
+
+          ...lesson.conversations.map(
+            (line) => Card(
+              margin:
+                  const EdgeInsets.only(bottom: 8),
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Row(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(8),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primaryContainer,
+                      ),
+                      child: Text(
+                        line.speaker,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            line.english,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            line.pronunciation,
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            line.translation,
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.volume_up,
+                      ),
+                      onPressed: () =>
+                          _speak(line.english),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Speaking Practice',
+            'تمرین مکالمه',
+          ),
+
+          ...lesson.speakingQuestions
+              .asMap()
+              .entries
+              .map(
+            (entry) {
+              final index = entry.key;
+              final question = entry.value;
+
+              final recognizedText =
+                  _recognizedTexts[index] ?? '';
+
+              final result =
+                  _speakingResults[index];
+
+              final isListening =
+                  _isListening &&
+                  _listeningQuestionIndex == index;
+
+              return Card(
+                margin:
+                    const EdgeInsets.only(bottom: 16),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${index + 1}. ${question.question}',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 7),
+                      Text(
+                        question.pronunciation,
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: isListening
+                              ? _stopListening
+                              : () =>
+                                  _startListening(
+                                index,
+                              ),
+                          icon: Icon(
+                            isListening
+                                ? Icons.stop
+                                : Icons.mic,
+                          ),
+                          label: Text(
+                            isListening
+                                ? 'توقف'
+                                : 'صحبت کن',
+                          ),
+                        ),
+                      ),
+                      if (isListening) ...[
+                        const SizedBox(height: 10),
+                        Center(
+                          child: Text(
+                            '🎤 میو داره گوش می‌ده... 😼',
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary,
+                              fontWeight:
+                                  FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                      if (recognizedText.isNotEmpty) ...[
+                        const SizedBox(height: 12),
+                        Container(
+                          width: double.infinity,
+                          padding:
+                              const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.circular(12),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerHighest,
+                          ),
+                          child: Text(
+                            'میو شنید:\n$recognizedText',
+                          ),
+                        ),
+                      ],
+                      if (result != null) ...[
+                        const SizedBox(height: 12),
+                        Text(
+                          result
+                              ? '✅ خوب بود! 😼💜'
+                              : '❌ دوباره امتحان کن 😹',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: result
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Meow Challenge',
+            'چالش میو',
+          ),
+
+          ...lesson.challenges.map(
+            (challenge) => Card(
+              margin:
+                  const EdgeInsets.only(bottom: 12),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      challenge.title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      challenge.instruction,
+                    ),
+                    const SizedBox(height: 12),
+                    ...challenge.tasks.map(
+                      (task) => Padding(
+                        padding:
+                            const EdgeInsets.only(
+                          bottom: 7,
+                        ),
+                        child: Row(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          children: [
+                            const Text('• '),
+                            Expanded(
+                              child: Text(task),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          _sectionTitle(
+            context,
+            'Review',
+            'مرور',
+          ),
+
+          ...lesson.reviews.map(
+            (review) => Card(
+              margin:
+                  const EdgeInsets.only(bottom: 12),
+              child: ExpansionTile(
+                title: Text(
+                  review.title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                children: review.points
+                    .map(
+                      (point) => ListTile(
+                        leading: const Icon(
+                          Icons.check_circle_outline,
+                        ),
+                        title: Text(point),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionTitle(
+    BuildContext context,
+    String english,
+    String persian,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Text(
+        '$english\n$persian',
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+      ),
+    );
+  }
+}
