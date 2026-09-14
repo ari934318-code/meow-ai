@@ -8,6 +8,7 @@ import 'a2_lesson_06.dart';
 import 'a2_lesson_07.dart';
 import 'a2_lesson_08.dart';
 import 'a2_lesson_09.dart';
+import 'a2_lesson_10.dart';
 
 const List<A2Lesson> a2Lessons = [
   a2Lesson01,
@@ -19,4 +20,5 @@ const List<A2Lesson> a2Lessons = [
   a2Lesson07,
   a2Lesson08,
   a2Lesson09,
+  a2Lesson10,
 ];
