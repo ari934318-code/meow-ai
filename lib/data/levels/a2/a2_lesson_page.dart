@@ -172,8 +172,7 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) =>
-                        A2LessonDetailPage(
+                    builder: (_) => A2LessonDetailPage(
                       lesson: lesson,
                     ),
                   ),
@@ -272,9 +271,7 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                         : Icons.lock_rounded,
                 color: completed
                     ? Colors.green
-                    : unlocked
-                        ? Colors.grey
-                        : Colors.grey,
+                    : Colors.grey,
               ),
             ],
           ),
@@ -370,8 +367,7 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) =>
-                        const A2ExamPage(),
+                    builder: (_) => const A2ExamPage(),
                   ),
                 );
               }
@@ -749,9 +745,11 @@ class _A2LessonDetailPageState
             if (index != null &&
                 value is List) {
               _orderingSelections[index] =
-                  value.map(
-                (item) => item.toString(),
-              ).toList();
+                  value
+                      .map(
+                        (item) => item.toString(),
+                      )
+                      .toList();
             }
           });
         }
@@ -771,11 +769,13 @@ class _A2LessonDetailPageState
             if (index != null &&
                 value is List) {
               _buildingSelections[index] =
-                  value.map(
-                (item) => item.toString(),
-              ).toList();
+                  value
+                      .map(
+                        (item) => item.toString(),
+                      )
+                      .toList();
             }
-          }
+          });
         }
       }
 
@@ -1782,12 +1782,13 @@ class _A2LessonDetailPageState
                     ),
                   ),
                   const SizedBox(height: 10),
-
                   Text(
                     grammar.explanation,
                   ),
-
-                  if (lang.isPersian) ...[
+                  if (lang.isPersian &&
+                      grammar
+                          .explanationTranslation
+                          .isNotEmpty) ...[
                     const SizedBox(height: 5),
                     Text(
                       grammar.explanationTranslation,
@@ -1800,9 +1801,7 @@ class _A2LessonDetailPageState
                       ),
                     ),
                   ],
-
                   const SizedBox(height: 14),
-
                   ...grammar.examples
                       .asMap()
                       .entries
@@ -1827,8 +1826,7 @@ class _A2LessonDetailPageState
                         ),
                         child: Column(
                           crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
+                              CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -1857,9 +1855,9 @@ class _A2LessonDetailPageState
                                 ),
                               ],
                             ),
-
                             if (lang.isPersian &&
-                                translation != null) ...[
+                                translation != null &&
+                                translation.isNotEmpty) ...[
                               const SizedBox(height: 2),
                               Text(
                                 translation,
