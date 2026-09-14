@@ -32,14 +32,20 @@ class _A1BasicsLessonPageState
       'a1_basics_completed_lessons';
 
   final FlutterTts _tts = FlutterTts();
-  final stt.SpeechToText _speech = stt.SpeechToText();
+  final stt.SpeechToText _speech =
+      stt.SpeechToText();
 
   final Set<int> _answeredQuestions = {};
   final Set<int> _completedSpeaking = {};
   final Set<int> _listenedExamples = {};
 
   final Map<int, String> _selectedAnswers = {};
+  final Map<int, String> _typedAnswers = {};
+  final Map<int, bool> _typingResults = {};
   final Map<int, bool> _speakingResults = {};
+
+  final Map<int, TextEditingController>
+      _answerControllers = {};
 
   late List<A1BasicQuestion> _questions;
   late final List<_A1Stage> _stages;
@@ -66,11 +72,11 @@ class _A1BasicsLessonPageState
           .outline
           .withAlpha(36);
 
-  String get _progressKey =>
-      'a1_basics_lesson_progress_${widget.lesson.id}';
+  String get progressKey =>
+      'a1_basics_lesson_progress${widget.lesson.id}';
 
-  String get _stageKey =>
-      'a1_basics_stage_${widget.lesson.id}';
+  String get stageKey =>
+      'a1_basics_stage${widget.lesson.id}';
 
   @override
   void initState() {
@@ -98,18 +104,36 @@ class _A1BasicsLessonPageState
       case '1':
         return [
           _stage('Stage 1', 'مرحله ۱', [0, 1, 12]),
-          _stage('Stage 2', 'مرحله ۲',
-              [2, 3, 7, 8, 17, 18, 22]),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [2, 3, 7, 8, 17, 18, 22],
+          ),
           _stage('Stage 3', 'مرحله ۳', [4, 9]),
-          _stage('Stage 4', 'مرحله ۴',
-              [5, 6, 10, 11, 19, 20, 41, 42]),
-          _stage('Stage 5', 'مرحله ۵',
-              [21, 23, 24, 25, 26, 27, 28, 29]),
-          _stage('Stage 6', 'مرحله ۶',
-              [13, 14, 15, 16, 30, 31, 32, 33, 34]),
-          _stage('Stage 7', 'مرحله ۷',
-              [35, 36, 37, 38, 39, 40]),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [5, 6, 10, 11, 19, 20, 41, 42],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [21, 23, 24, 25, 26, 27, 28, 29],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [13, 14, 15, 16, 30, 31, 32, 33, 34],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [35, 36, 37, 38, 39, 40],
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_02':
@@ -117,113 +141,267 @@ class _A1BasicsLessonPageState
       case '2':
         return [
           _stage('Stage 1', 'مرحله ۱', [0, 7]),
-          _stage('Stage 2', 'مرحله ۲', [1, 4, 6, 8]),
-          _stage('Stage 3', 'مرحله ۳', [2, 3, 5, 9]),
-          _stage('Stage 4', 'مرحله ۴', [10, 11, 12]),
-          _stage('Stage 5', 'مرحله ۵', [13, 14, 15]),
-          _stage('Stage 6', 'مرحله ۶', [16, 17, 18]),
-          _stage('Stage 7', 'مرحله ۷', [19, 20, 21, 22]),
-          _stage('Stage 8', 'مرحله ۸',
-              [23, 24, 25, 26, 27]),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 4, 6, 8],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [2, 3, 5, 9],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [10, 11, 12],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [13, 14, 15],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [16, 17, 18],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [19, 20, 21, 22],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            [23, 24, 25, 26, 27],
+          ),
           _stage(
             'Stage 9',
             'مرحله ۹',
-            List.generate(11, (i) => i + 28),
+            List.generate(
+              11,
+              (i) => i + 28,
+            ),
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_03':
       case 'lesson_3':
       case '3':
         return [
-          _stage('Stage 1', 'مرحله ۱', [0, 2, 4, 6, 7, 9]),
-          _stage('Stage 2', 'مرحله ۲', [1, 3, 5, 8]),
-          _stage('Stage 3', 'مرحله ۳', [10, 11]),
-          _stage('Stage 4', 'مرحله ۴', [12, 13, 14]),
-          _stage('Stage 5', 'مرحله ۵',
-              [15, 16, 17, 18]),
-          _stage('Stage 6', 'مرحله ۶',
-              [19, 20, 21, 22, 23]),
-          _stage('Stage 7', 'مرحله ۷',
-              [24, 25, 26, 27]),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 2, 4, 6, 7, 9],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 3, 5, 8],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [10, 11],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [12, 13, 14],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [15, 16, 17, 18],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [19, 20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [24, 25, 26, 27],
+          ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(10, (i) => i + 28),
+            List.generate(
+              10,
+              (i) => i + 28,
+            ),
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_04':
       case 'lesson_4':
       case '4':
         return [
-          _stage('Stage 1', 'مرحله ۱', [0, 2, 4]),
-          _stage('Stage 2', 'مرحله ۲', [1, 3, 5]),
-          _stage('Stage 3', 'مرحله ۳',
-              [6, 7, 8, 9]),
-          _stage('Stage 4', 'مرحله ۴',
-              [10, 11, 12, 13]),
-          _stage('Stage 5', 'مرحله ۵',
-              [14, 15, 16, 17]),
-          _stage('Stage 6', 'مرحله ۶',
-              [18, 19, 20, 21, 22, 23]),
-          _stage('Stage 7', 'مرحله ۷',
-              [24, 25, 26, 27]),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 2, 4],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 3, 5],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [6, 7, 8, 9],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [10, 11, 12, 13],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [14, 15, 16, 17],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [18, 19, 20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [24, 25, 26, 27],
+          ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(11, (i) => i + 28),
+            List.generate(
+              11,
+              (i) => i + 28,
+            ),
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_05':
       case 'lesson_5':
       case '5':
         return [
-          _stage('Stage 1', 'مرحله ۱', [0, 2, 7]),
-          _stage('Stage 2', 'مرحله ۲', [1, 3, 5, 9]),
-          _stage('Stage 3', 'مرحله ۳', [4, 6, 8]),
-          _stage('Stage 4', 'مرحله ۴', [10, 11, 12]),
-          _stage('Stage 5', 'مرحله ۵',
-              [13, 14, 15, 16, 17]),
-          _stage('Stage 6', 'مرحله ۶',
-              [18, 19, 20, 21, 22, 23]),
-          _stage('Stage 7', 'مرحله ۷',
-              [24, 25, 26, 27, 28]),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 2, 7],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 3, 5, 9],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [4, 6, 8],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [10, 11, 12],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [13, 14, 15, 16, 17],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [18, 19, 20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [24, 25, 26, 27, 28],
+          ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(10, (i) => i + 29),
+            List.generate(
+              10,
+              (i) => i + 29,
+            ),
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_06':
       case 'lesson_6':
       case '6':
         return [
-          _stage('Stage 1', 'مرحله ۱',
-              [0, 1, 2, 3]),
-          _stage('Stage 2', 'مرحله ۲',
-              [4, 5, 6, 7]),
-          _stage('Stage 3', 'مرحله ۳',
-              [8, 9, 10, 11]),
-          _stage('Stage 4', 'مرحله ۴',
-              [12, 13, 14, 15]),
-          _stage('Stage 5', 'مرحله ۵',
-              [16, 17, 18, 19, 20]),
-          _stage('Stage 6', 'مرحله ۶',
-              [21, 22, 23, 24, 25]),
-          _stage('Stage 7', 'مرحله ۷',
-              [26, 27, 28, 29]),
-          _stage('Stage 8', 'مرحله ۸',
-              [30, 31, 32, 33, 34, 35]),
-          _stage('Stage 9', 'مرحله ۹',
-              [36, 37, 38, 39, 40, 41, 42, 43]),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 1, 2, 3],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [4, 5, 6, 7],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [8, 9, 10, 11],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [12, 13, 14, 15],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [16, 17, 18, 19, 20],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [21, 22, 23, 24, 25],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [26, 27, 28, 29],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            [30, 31, 32, 33, 34, 35],
+          ),
+          _stage(
+            'Stage 9',
+            'مرحله ۹',
+            [36, 37, 38, 39, 40, 41, 42, 43],
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_07':
@@ -233,32 +411,62 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 1',
             'مرحله ۱',
-            List.generate(6, (i) => i),
+            List.generate(
+              6,
+              (i) => i,
+            ),
           ),
-          _stage('Stage 2', 'مرحله ۲', [6, 7]),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [6, 7],
+          ),
           _stage(
             'Stage 3',
             'مرحله ۳',
-            List.generate(6, (i) => i + 8),
+            List.generate(
+              6,
+              (i) => i + 8,
+            ),
           ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            List.generate(9, (i) => i + 14),
+            List.generate(
+              9,
+              (i) => i + 14,
+            ),
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            List.generate(6, (i) => i + 23),
+            List.generate(
+              6,
+              (i) => i + 23,
+            ),
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(5, (i) => i + 29),
+            List.generate(
+              5,
+              (i) => i + 29,
+            ),
           ),
-          _stage('Stage 7', 'مرحله ۷', [34, 35, 36]),
-          _stage('Stage 8', 'مرحله ۸', [37, 38, 39]),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [34, 35, 36],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            [37, 38, 39],
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_08':
@@ -268,24 +476,44 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 1',
             'مرحله ۱',
-            List.generate(6, (i) => i),
+            List.generate(
+              6,
+              (i) => i,
+            ),
           ),
-          _stage('Stage 2', 'مرحله ۲', [6, 7]),
-          _stage('Stage 3', 'مرحله ۳', [8, 9]),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [6, 7],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [8, 9],
+          ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            List.generate(9, (i) => i + 10),
+            List.generate(
+              9,
+              (i) => i + 10,
+            ),
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            List.generate(6, (i) => i + 19),
+            List.generate(
+              6,
+              (i) => i + 19,
+            ),
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(5, (i) => i + 25),
+            List.generate(
+              5,
+              (i) => i + 25,
+            ),
           ),
           _stage(
             'Stage 7',
@@ -295,16 +523,26 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(6, (i) => i + 34),
+            List.generate(
+              6,
+              (i) => i + 34,
+            ),
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_09':
       case 'lesson_9':
       case '9':
         return [
-          _stage('Stage 1', 'مرحله ۱', [0, 5, 10]),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 5, 10],
+          ),
           _stage(
             'Stage 2',
             'مرحله ۲',
@@ -318,56 +556,109 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 4',
             'مرحله ۴',
-            List.generate(5, (i) => i + 14),
+            List.generate(
+              5,
+              (i) => i + 14,
+            ),
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            List.generate(5, (i) => i + 19),
+            List.generate(
+              5,
+              (i) => i + 19,
+            ),
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(6, (i) => i + 24),
+            List.generate(
+              6,
+              (i) => i + 24,
+            ),
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            List.generate(10, (i) => i + 30),
+            List.generate(
+              10,
+              (i) => i + 30,
+            ),
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_10':
       case 'lesson_10':
       case '10':
         return [
-          _stage('Stage 1', 'مرحله ۱', [0, 1, 7, 8]),
-          _stage('Stage 2', 'مرحله ۲', [2, 3, 11, 12]),
-          _stage('Stage 3', 'مرحله ۳',
-              [4, 5, 13, 14, 18]),
-          _stage('Stage 4', 'مرحله ۴', [6, 15]),
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 1, 7, 8],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [2, 3, 11, 12],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [4, 5, 13, 14, 18],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [6, 15],
+          ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            [9, 10, 16, 17, 19, 20, 21, 22, 23, 24],
+            [
+              9,
+              10,
+              16,
+              17,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+            ],
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(5, (i) => i + 25),
+            List.generate(
+              5,
+              (i) => i + 25,
+            ),
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            List.generate(5, (i) => i + 30),
+            List.generate(
+              5,
+              (i) => i + 30,
+            ),
           ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(5, (i) => i + 35),
+            List.generate(
+              5,
+              (i) => i + 35,
+            ),
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       case 'a1_11':
@@ -402,7 +693,17 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 6',
             'مرحله ۶',
-            [24, 25, 26, 27, 33, 34, 35, 36, 37],
+            [
+              24,
+              25,
+              26,
+              27,
+              33,
+              34,
+              35,
+              36,
+              37,
+            ],
           ),
           _stage(
             'Stage 7',
@@ -419,7 +720,10 @@ class _A1BasicsLessonPageState
             'مرحله ۹',
             [43, 44, 45, 46],
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
       default:
@@ -481,7 +785,8 @@ class _A1BasicsLessonPageState
           ((totalQuestions * i) / stageCount).floor();
 
       final end =
-          ((totalQuestions * (i + 1)) / stageCount).floor();
+          ((totalQuestions * (i + 1)) / stageCount)
+              .floor();
 
       if (start == end && totalQuestions > 0) {
         continue;
@@ -603,7 +908,7 @@ class _A1BasicsLessonPageState
           }
         }
       },
-      onError: (_) {
+      onError: () {
         if (mounted) {
           setState(() {
             _isListening = false;
@@ -749,11 +1054,21 @@ class _A1BasicsLessonPageState
     );
   }
 
+  // =========================================================
+  // ANSWER NORMALIZATION
+  // =========================================================
+
   String _normalize(String value) {
     return value
         .toLowerCase()
+        .replaceAll('ي', 'ی')
+        .replaceAll('ى', 'ی')
+        .replaceAll('ك', 'ک')
+        .replaceAll('\u200c', ' ')
+        .replaceAll('\u200f', '')
+        .replaceAll('\u200e', '')
         .replaceAll(
-          RegExp(r'[^\w\s]'),
+          RegExp(r'[^\w\sآ-ی]'),
           '',
         )
         .replaceAll(
@@ -761,6 +1076,28 @@ class _A1BasicsLessonPageState
           ' ',
         )
         .trim();
+  }
+
+  bool _isAnswerCorrect(
+    A1BasicQuestion question,
+    String userAnswer,
+  ) {
+    final normalizedUser =
+        _normalize(userAnswer);
+
+    if (normalizedUser.isEmpty) {
+      return false;
+    }
+
+    for (final accepted
+        in question.allAcceptedAnswers) {
+      if (_normalize(accepted) ==
+          normalizedUser) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   double _similarity(String a, String b) {
@@ -778,10 +1115,14 @@ class _A1BasicsLessonPageState
     final maxLength =
         max(a.length, b.length);
 
-    return 1 - (distance / maxLength);
+    return 1 -
+        (distance / maxLength);
   }
 
-  int _levenshtein(String a, String b) {
+  int _levenshtein(
+    String a,
+    String b,
+  ) {
     final previous =
         List<int>.generate(
       b.length + 1,
@@ -827,6 +1168,31 @@ class _A1BasicsLessonPageState
   }
 
   // =========================================================
+  // CONTROLLERS
+  // =========================================================
+
+  TextEditingController _controllerFor(
+    int index,
+  ) {
+    return _answerControllers.putIfAbsent(
+      index,
+      () {
+        final controller =
+            TextEditingController(
+          text: _typedAnswers[index] ?? '',
+        );
+
+        controller.addListener(() {
+          _typedAnswers[index] =
+              controller.text;
+        });
+
+        return controller;
+      },
+    );
+  }
+
+  // =========================================================
   // PROGRESS LOAD / SAVE
   // =========================================================
 
@@ -840,7 +1206,6 @@ class _A1BasicsLessonPageState
     final prefs =
         await SharedPreferences.getInstance();
 
-    // Backward compatibility with the old stage key.
     final oldStage =
         prefs.getInt(_stageKey) ?? 0;
 
@@ -869,8 +1234,7 @@ class _A1BasicsLessonPageState
     }
 
     try {
-      final data =
-          jsonDecode(raw);
+      final data = jsonDecode(raw);
 
       if (data is! Map) {
         return;
@@ -887,6 +1251,12 @@ class _A1BasicsLessonPageState
 
       final selected =
           data['selectedAnswers'];
+
+      final typed =
+          data['typedAnswers'];
+
+      final typingResults =
+          data['typingResults'];
 
       final completedSpeaking =
           data['completedSpeaking'];
@@ -949,8 +1319,56 @@ class _A1BasicsLessonPageState
 
               if (index != null &&
                   value is String) {
-                _selectedAnswers[
-                    index] = value;
+                _selectedAnswers[index] =
+                    value;
+              }
+            },
+          );
+        }
+
+        _typedAnswers.clear();
+
+        if (typed is Map) {
+          typed.forEach(
+            (key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              if (index != null &&
+                  value is String) {
+                _typedAnswers[index] =
+                    value;
+
+                final controller =
+                    _answerControllers
+                        .putIfAbsent(
+                  index,
+                  () =>
+                      TextEditingController(),
+                );
+
+                controller.text = value;
+              }
+            },
+          );
+        }
+
+        _typingResults.clear();
+
+        if (typingResults is Map) {
+          typingResults.forEach(
+            (key, value) {
+              final index =
+                  int.tryParse(
+                key.toString(),
+              );
+
+              if (index != null &&
+                  value is bool) {
+                _typingResults[index] =
+                    value;
               }
             },
           );
@@ -980,8 +1398,8 @@ class _A1BasicsLessonPageState
 
               if (index != null &&
                   value is bool) {
-                _speakingResults[
-                    index] = value;
+                _speakingResults[index] =
+                    value;
               }
             },
           );
@@ -1000,8 +1418,6 @@ class _A1BasicsLessonPageState
         }
       });
     } catch (_) {
-      // If old/corrupt data exists,
-      // simply fall back to the saved stage.
       if (!mounted) {
         return;
       }
@@ -1032,8 +1448,10 @@ class _A1BasicsLessonPageState
     final data = <String, dynamic>{
       'currentStage': _currentStage,
       'learningMode': _learningMode,
+
       'answeredQuestions':
           _answeredQuestions.toList(),
+
       'selectedAnswers':
           _selectedAnswers.map(
         (key, value) =>
@@ -1042,8 +1460,28 @@ class _A1BasicsLessonPageState
           value,
         ),
       ),
+
+      'typedAnswers':
+          _typedAnswers.map(
+        (key, value) =>
+            MapEntry(
+          key.toString(),
+          value,
+        ),
+      ),
+
+      'typingResults':
+          _typingResults.map(
+        (key, value) =>
+            MapEntry(
+          key.toString(),
+          value,
+        ),
+      ),
+
       'completedSpeaking':
           _completedSpeaking.toList(),
+
       'speakingResults':
           _speakingResults.map(
         (key, value) =>
@@ -1052,23 +1490,25 @@ class _A1BasicsLessonPageState
           value,
         ),
       ),
+
       'listenedExamples':
           _listenedExamples.toList(),
     };
 
     await prefs.setString(
-      _progressKey,
+      progressKey,
       jsonEncode(data),
     );
 
-    // Keep the old stage key too.
     await prefs.setInt(
-      _stageKey,
+      stageKey,
       _currentStage,
     );
   }
 
-  Future<void> _saveStage(int stage) async {
+  Future<void> _saveStage(
+    int stage,
+  ) async {
     if (!A1BasicsUIConfig.saveProgress) {
       return;
     }
@@ -1121,7 +1561,8 @@ class _A1BasicsLessonPageState
         ),
         SizedBox(
           height:
-              A1BasicsUIConfig.sectionSpacing,
+              A1BasicsUIConfig
+                  .sectionSpacing,
         ),
         if (A1BasicsUIConfig
                 .showExamplesBeforeQuestions &&
@@ -1140,7 +1581,8 @@ class _A1BasicsLessonPageState
           ),
           SizedBox(
             height:
-                A1BasicsUIConfig.cardSpacing,
+                A1BasicsUIConfig
+                    .cardSpacing,
           ),
           ...examples.map(
             _buildExample,
@@ -1160,9 +1602,12 @@ class _A1BasicsLessonPageState
                   .sectionSpacing,
         ),
         FilledButton(
-          onPressed: _startPractice,
-          style: FilledButton.styleFrom(
-            backgroundColor: lavender,
+          onPressed:
+              _startPractice,
+          style:
+              FilledButton.styleFrom(
+            backgroundColor:
+                lavender,
             foregroundColor:
                 Colors.black87,
             shape:
@@ -1275,9 +1720,38 @@ class _A1BasicsLessonPageState
     final question =
         _questions[index];
 
+    switch (question.type) {
+      case 'typing':
+        return _buildTypingQuestion(
+          index,
+          question,
+        );
+
+      case 'fillInTheBlank':
+        return _buildFillInTheBlankQuestion(
+          index,
+          question,
+        );
+
+      case 'multipleChoice':
+      default:
+        return _buildMultipleChoiceQuestion(
+          index,
+          question,
+        );
+    }
+  }
+
+  // =========================================================
+  // MULTIPLE CHOICE
+  // =========================================================
+
+  Widget _buildMultipleChoiceQuestion(
+    int index,
+    A1BasicQuestion question,
+  ) {
     final answered =
-        _answeredQuestions
-            .contains(index);
+        _answeredQuestions.contains(index);
 
     final selected =
         _selectedAnswers[index];
@@ -1288,7 +1762,8 @@ class _A1BasicsLessonPageState
     return Container(
       margin: EdgeInsets.only(
         bottom:
-            A1BasicsUIConfig.cardSpacing,
+            A1BasicsUIConfig
+                .cardSpacing,
       ),
       padding: EdgeInsets.all(
         A1BasicsUIConfig.pagePadding,
@@ -1377,34 +1852,39 @@ class _A1BasicsLessonPageState
                           ? null
                           : () =>
                               _answerQuestion(
-                            index,
-                            option,
-                          ),
+                                index,
+                                option,
+                              ),
                   style:
-                      OutlinedButton.styleFrom(
+                      OutlinedButton
+                          .styleFrom(
                     alignment:
                         AlignmentDirectional
                             .centerStart,
                     padding:
-                        const EdgeInsets.symmetric(
+                        const EdgeInsets
+                            .symmetric(
                       horizontal: 16,
                       vertical: 14,
                     ),
                     side: BorderSide(
-                      color: showCorrect
-                          ? Colors.green
-                          : selectedThis
-                              ? lavender
-                              : Theme.of(
-                                  context,
-                                )
-                                  .colorScheme
-                                  .outline,
+                      color:
+                          showCorrect
+                              ? Colors
+                                  .green
+                              : selectedThis
+                                  ? lavender
+                                  : Theme.of(
+                                      context,
+                                    )
+                                      .colorScheme
+                                      .outline,
                     ),
                     shape:
                         RoundedRectangleBorder(
                       borderRadius:
-                          BorderRadius.circular(
+                          BorderRadius
+                              .circular(
                         16,
                       ),
                     ),
@@ -1412,8 +1892,9 @@ class _A1BasicsLessonPageState
                   child: Row(
                     children: [
                       Expanded(
-                        child:
-                            Text(option),
+                        child: Text(
+                          option,
+                        ),
                       ),
                       if (showCorrect)
                         const Icon(
@@ -1428,9 +1909,12 @@ class _A1BasicsLessonPageState
                               ? Icons
                                   .check_circle
                               : Icons.cancel,
-                          color: isCorrect
-                              ? Colors.green
-                              : Colors.red,
+                          color:
+                              isCorrect
+                                  ? Colors
+                                      .green
+                                  : Colors
+                                      .red,
                         ),
                     ],
                   ),
@@ -1466,7 +1950,8 @@ class _A1BasicsLessonPageState
           if (answered &&
               A1BasicsUIConfig
                   .showQuestionExplanation &&
-              question.explanation != null &&
+              question.explanation !=
+                  null &&
               question.explanation!
                   .trim()
                   .isNotEmpty)
@@ -1485,31 +1970,8 @@ class _A1BasicsLessonPageState
           if (answered &&
               !isCorrect &&
               A1BasicsUIConfig.allowRetry)
-            Padding(
-              padding:
-                  const EdgeInsets.only(
-                top: 8,
-              ),
-              child: TextButton.icon(
-                onPressed: () async {
-                  setState(() {
-                    _selectedAnswers
-                        .remove(index);
-                    _answeredQuestions
-                        .remove(index);
-                  });
-
-                  await _saveProgress();
-                },
-                icon: const Icon(
-                  Icons.refresh_rounded,
-                ),
-                label: Text(
-                  _isPersian
-                      ? 'دوباره امتحان کن'
-                      : 'Try Again',
-                ),
-              ),
+            _buildRetryButton(
+              index,
             ),
         ],
       ),
@@ -1557,6 +2019,552 @@ class _A1BasicsLessonPageState
   }
 
   // =========================================================
+  // TYPING
+  // =========================================================
+
+  Widget _buildTypingQuestion(
+    int index,
+    A1BasicQuestion question,
+  ) {
+    final answered =
+        _answeredQuestions.contains(index);
+
+    final result =
+        _typingResults[index];
+
+    final controller =
+        _controllerFor(index);
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig
+                .cardSpacing,
+      ),
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: !answered
+              ? _outline
+              : result == true
+                  ? Colors.green
+                      .withAlpha(55)
+                  : Colors.red
+                      .withAlpha(45),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          _buildQuestionHeader(
+            question.question,
+            allowTts: true,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: controller,
+            enabled: !answered ||
+                (result == false &&
+                    A1BasicsUIConfig
+                        .allowRetry),
+            textInputAction:
+                TextInputAction.done,
+            onChanged: (value) {
+              _typedAnswers[index] =
+                  value;
+            },
+            onSubmitted: (_) =>
+                _submitTypedAnswer(
+              index,
+            ),
+            decoration:
+                InputDecoration(
+              hintText: _isPersian
+                  ? 'جوابت را بنویس...'
+                  : 'Type your answer...',
+              border:
+                  OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  16,
+                ),
+              ),
+              focusedBorder:
+                  OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  16,
+                ),
+                borderSide:
+                    const BorderSide(
+                  color: lavender,
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+          if (question.hint != null &&
+              question.hint!
+                  .trim()
+                  .isNotEmpty &&
+              !answered)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 10,
+              ),
+              child: Text(
+                question.hint!,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall,
+              ),
+            ),
+          const SizedBox(height: 14),
+          if (!answered ||
+              (result == false &&
+                  A1BasicsUIConfig
+                      .allowRetry))
+            FilledButton.icon(
+              onPressed: () =>
+                  _submitTypedAnswer(
+                index,
+              ),
+              icon: const Icon(
+                Icons.check_rounded,
+              ),
+              label: Text(
+                _isPersian
+                    ? 'بررسی جواب'
+                    : 'Check Answer',
+              ),
+              style:
+                  FilledButton.styleFrom(
+                backgroundColor:
+                    lavender,
+                foregroundColor:
+                    Colors.black87,
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                    A1BasicsUIConfig
+                        .buttonRadius,
+                  ),
+                ),
+              ),
+            ),
+          if (answered)
+            _buildTypingFeedback(
+              question,
+              result == true,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submitTypedAnswer(
+    int index,
+  ) async {
+    final question =
+        _questions[index];
+
+    final controller =
+        _controllerFor(index);
+
+    final answer =
+        controller.text.trim();
+
+    if (answer.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .hideCurrentSnackBar();
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content: Text(
+            _isPersian
+                ? 'اول جوابت رو بنویس 😼'
+                : 'Type an answer first 😼',
+          ),
+          behavior:
+              SnackBarBehavior.floating,
+        ),
+      );
+
+      return;
+    }
+
+    final correct =
+        _isAnswerCorrect(
+      question,
+      answer,
+    );
+
+    setState(() {
+      _typedAnswers[index] =
+          answer;
+
+      _typingResults[index] =
+          correct;
+
+      _answeredQuestions.add(index);
+    });
+
+    await _saveProgress();
+
+    if (!correct &&
+        A1BasicsUIConfig
+            .showCorrectAnswerAfterMistake) {
+      ScaffoldMessenger.of(context)
+          .hideCurrentSnackBar();
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content: Text(
+            _isPersian
+                ? 'جواب درست: ${question.answer}'
+                : 'Correct answer: ${question.answer}',
+          ),
+          behavior:
+              SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  Widget _buildTypingFeedback(
+    A1BasicQuestion question,
+    bool correct,
+  ) {
+    return Padding(
+      padding:
+          const EdgeInsets.only(
+        top: 14,
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            correct
+                ? (_isPersian
+                    ? 'درست! 😼✨'
+                    : 'Correct! 😼✨')
+                : (_isPersian
+                    ? 'جوابت درست نبود.'
+                    : 'Your answer was not correct.'),
+            style: TextStyle(
+              fontWeight:
+                  FontWeight.bold,
+              color: correct
+                  ? Colors.green
+                  : Colors.red,
+            ),
+          ),
+          if (!correct)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 6,
+              ),
+              child: Text(
+                _isPersian
+                    ? 'جواب صحیح: ${question.answer}'
+                    : 'Correct answer: ${question.answer}',
+              ),
+            ),
+          if (A1BasicsUIConfig
+                  .showQuestionExplanation &&
+              question.explanation !=
+                  null &&
+              question.explanation!
+                  .trim()
+                  .isNotEmpty)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 10,
+              ),
+              child: Text(
+                question.explanation!,
+              ),
+            ),
+          if (!correct &&
+              A1BasicsUIConfig.allowRetry)
+            _buildRetryButton(
+              _questions.indexOf(
+                question,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  // =========================================================
+  // FILL IN THE BLANK
+  // =========================================================
+
+  Widget _buildFillInTheBlankQuestion(
+    int index,
+    A1BasicQuestion question,
+  ) {
+    final answered =
+        _answeredQuestions.contains(index);
+
+    final result =
+        _typingResults[index];
+
+    final controller =
+        _controllerFor(index);
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig
+                .cardSpacing,
+      ),
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: !answered
+              ? _outline
+              : result == true
+                  ? Colors.green
+                      .withAlpha(55)
+                  : Colors.red
+                      .withAlpha(45),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            _isPersian
+                ? 'جای خالی را کامل کن'
+                : 'Fill in the blank',
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(
+                  color: lavender,
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 10),
+          _buildQuestionHeader(
+            question.question,
+            allowTts: true,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: controller,
+            enabled: !answered ||
+                (result == false &&
+                    A1BasicsUIConfig
+                        .allowRetry),
+            textInputAction:
+                TextInputAction.done,
+            onChanged: (value) {
+              _typedAnswers[index] =
+                  value;
+            },
+            onSubmitted: (_) =>
+                _submitTypedAnswer(
+              index,
+            ),
+            decoration:
+                InputDecoration(
+              hintText: _isPersian
+                  ? 'کلمه مناسب را بنویس...'
+                  : 'Type the missing word...',
+              border:
+                  OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  16,
+                ),
+              ),
+              focusedBorder:
+                  OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  16,
+                ),
+                borderSide:
+                    const BorderSide(
+                  color: lavender,
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+          if (question.hint != null &&
+              question.hint!
+                  .trim()
+                  .isNotEmpty &&
+              !answered)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 10,
+              ),
+              child: Text(
+                question.hint!,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall,
+              ),
+            ),
+          const SizedBox(height: 14),
+          if (!answered ||
+              (result == false &&
+                  A1BasicsUIConfig
+                      .allowRetry))
+            FilledButton.icon(
+              onPressed: () =>
+                  _submitTypedAnswer(
+                index,
+              ),
+              icon: const Icon(
+                Icons.check_rounded,
+              ),
+              label: Text(
+                _isPersian
+                    ? 'بررسی جواب'
+                    : 'Check Answer',
+              ),
+              style:
+                  FilledButton.styleFrom(
+                backgroundColor:
+                    lavender,
+                foregroundColor:
+                    Colors.black87,
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                    A1BasicsUIConfig
+                        .buttonRadius,
+                  ),
+                ),
+              ),
+            ),
+          if (answered)
+            _buildTypingFeedback(
+              question,
+              result == true,
+            ),
+        ],
+      ),
+    );
+  }
+
+  // =========================================================
+  // QUESTION HEADER
+  // =========================================================
+
+  Widget _buildQuestionHeader(
+    String questionText, {
+    bool allowTts = false,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            questionText,
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+          ),
+        ),
+        if (allowTts &&
+            A1BasicsUIConfig
+                .enableTextToSpeech)
+          IconButton(
+            tooltip: _isPersian
+                ? 'تلفظ'
+                : 'Listen',
+            onPressed: () =>
+                _speak(questionText),
+            icon: const Icon(
+              Icons
+                  .volume_up_rounded,
+            ),
+          ),
+      ],
+    );
+  }
+
+  // =========================================================
+  // RETRY
+  // =========================================================
+
+  Widget _buildRetryButton(
+    int index,
+  ) {
+    return Padding(
+      padding:
+          const EdgeInsets.only(
+        top: 8,
+      ),
+      child: TextButton.icon(
+        onPressed: () async {
+          setState(() {
+            _selectedAnswers
+                .remove(index);
+
+            _typedAnswers
+                .remove(index);
+
+            _typingResults
+                .remove(index);
+
+            _answeredQuestions
+                .remove(index);
+
+            final controller =
+                _answerControllers[
+                    index];
+
+            controller?.clear();
+          });
+
+          await _saveProgress();
+        },
+        icon: const Icon(
+          Icons.refresh_rounded,
+        ),
+        label: Text(
+          _isPersian
+              ? 'دوباره امتحان کن'
+              : 'Try Again',
+        ),
+      ),
+    );
+  }
+
+  // =========================================================
   // SPEAKING
   // =========================================================
 
@@ -1582,7 +2590,8 @@ class _A1BasicsLessonPageState
     return Container(
       margin: EdgeInsets.only(
         bottom:
-            A1BasicsUIConfig.cardSpacing,
+            A1BasicsUIConfig
+                .cardSpacing,
       ),
       padding: EdgeInsets.all(
         A1BasicsUIConfig.pagePadding,
@@ -1742,7 +2751,8 @@ class _A1BasicsLessonPageState
     return Container(
       margin: EdgeInsets.only(
         bottom:
-            A1BasicsUIConfig.cardSpacing,
+            A1BasicsUIConfig
+                .cardSpacing,
       ),
       padding: EdgeInsets.all(
         A1BasicsUIConfig.pagePadding,
@@ -1800,7 +2810,8 @@ class _A1BasicsLessonPageState
                           .textTheme
                           .bodySmall
                           ?.copyWith(
-                            color: Colors.grey,
+                            color:
+                                Colors.grey,
                           ),
                     ),
                   ),
@@ -1912,12 +2923,16 @@ class _A1BasicsLessonPageState
       setState(() {
         _currentStage =
             nextStage;
+
         _learningMode =
             A1BasicsUIConfig
                 .teachBeforePractice;
+
         _currentSpeakingIndex =
             null;
+
         _recognizedText = '';
+
         _isListening = false;
       });
 
@@ -2074,7 +3089,8 @@ class _A1BasicsLessonPageState
                   _isPersian
                       ? 'مرحله ${_currentStage + 1} از ${_stages.length}'
                       : 'Stage ${_currentStage + 1} of ${_stages.length}',
-                  style: const TextStyle(
+                  style:
+                      const TextStyle(
                     fontWeight:
                         FontWeight.bold,
                   ),
@@ -2082,7 +3098,8 @@ class _A1BasicsLessonPageState
               ),
               Text(
                 '${(progress * 100).round()}%',
-                style: const TextStyle(
+                style:
+                    const TextStyle(
                   fontWeight:
                       FontWeight.bold,
                   color: lavender,
@@ -2093,7 +3110,9 @@ class _A1BasicsLessonPageState
           const SizedBox(height: 10),
           ClipRRect(
             borderRadius:
-                BorderRadius.circular(20),
+                BorderRadius.circular(
+              20,
+            ),
             child:
                 LinearProgressIndicator(
               value: progress,
@@ -2139,7 +3158,9 @@ class _A1BasicsLessonPageState
           decoration: BoxDecoration(
             color: _surface,
             borderRadius:
-                BorderRadius.circular(24),
+                BorderRadius.circular(
+              24,
+            ),
             border: Border.all(
               color: _outline,
             ),
@@ -2251,14 +3272,16 @@ class _A1BasicsLessonPageState
         elevation: 0,
         title: Text(
           lessonTitle,
-          style: const TextStyle(
+          style:
+              const TextStyle(
             fontWeight:
                 FontWeight.bold,
           ),
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child:
+            SingleChildScrollView(
           padding:
               const EdgeInsets.fromLTRB(
             20,
@@ -2268,11 +3291,14 @@ class _A1BasicsLessonPageState
           ),
           child: Column(
             crossAxisAlignment:
-                CrossAxisAlignment.stretch,
+                CrossAxisAlignment
+                    .stretch,
             children: [
               Container(
                 padding:
-                    const EdgeInsets.all(20),
+                    const EdgeInsets.all(
+                  20,
+                ),
                 decoration:
                     BoxDecoration(
                   color: _surface,
@@ -2280,21 +3306,25 @@ class _A1BasicsLessonPageState
                       BorderRadius.circular(
                     24,
                   ),
-                  border: Border.all(
+                  border:
+                      Border.all(
                     color: _outline,
                   ),
                 ),
                 child: Column(
                   crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      CrossAxisAlignment
+                          .start,
                   children: [
                     Text(
                       lessonTitle,
-                      style: const TextStyle(
+                      style:
+                          const TextStyle(
                         fontSize: 24,
                         fontWeight:
                             FontWeight.bold,
-                        letterSpacing: -0.5,
+                        letterSpacing:
+                            -0.5,
                       ),
                     ),
                     if (widget.lesson.topic
@@ -2307,7 +3337,8 @@ class _A1BasicsLessonPageState
                           top: 6,
                         ),
                         child: Text(
-                          widget.lesson.topic,
+                          widget.lesson
+                              .topic,
                           style:
                               const TextStyle(
                             fontSize: 14,
@@ -2334,6 +3365,12 @@ class _A1BasicsLessonPageState
   void dispose() {
     _tts.stop();
     _speech.stop();
+
+    for (final controller
+        in _answerControllers.values) {
+      controller.dispose();
+    }
+
     super.dispose();
   }
 }
@@ -2357,7 +3394,9 @@ class _A1Stage {
     required this.titleFa,
     required this.description,
     required this.descriptionFa,
-    this.questionIndices = const [],
-    this.speakingIndices = const [],
+    this.questionIndices =
+        const [],
+    this.speakingIndices =
+        const [],
   });
 }
