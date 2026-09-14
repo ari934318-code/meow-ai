@@ -124,7 +124,7 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          'A1 Basics',
+          lang.isPersian ? 'مبانی A1' : 'A1 Basics',
           style: const TextStyle(
             fontWeight: FontWeight.w700,
             letterSpacing: -0.3,
@@ -149,7 +149,7 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
               progress,
             ),
             const SizedBox(height: 20),
-            _buildLessons(),
+            _buildLessons(lang),
             const SizedBox(height: 8),
             _buildExamCard(lang),
           ],
@@ -179,7 +179,9 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
             CrossAxisAlignment.start,
         children: [
           Text(
-            'A1 Basics 🐱',
+            lang.isPersian
+                ? 'مبانی A1 🐱'
+                : 'A1 Basics 🐱',
             style: const TextStyle(
               fontSize: 27,
               fontWeight: FontWeight.w900,
@@ -203,7 +205,9 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                 MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                lang.isPersian ? 'پیشرفت' : 'Progress',
+                lang.isPersian
+                    ? 'پیشرفت'
+                    : 'Progress',
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
@@ -236,20 +240,26 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
     );
   }
 
-  Widget _buildLessons() {
+  Widget _buildLessons(
+    MeowLocalizations lang,
+  ) {
     return Column(
       children: List.generate(
         a1BasicsLessons.length,
         (index) {
-          final lesson = a1BasicsLessons[index];
+          final lesson =
+              a1BasicsLessons[index];
 
           final unlocked =
               _isLessonUnlocked(index);
 
           final completed =
-              completedLessons.contains(lesson.id);
+              completedLessons.contains(
+            lesson.id,
+          );
 
           return _buildLessonCard(
+            lang: lang,
             lesson: lesson,
             index: index,
             unlocked: unlocked,
@@ -261,24 +271,40 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
   }
 
   Widget _buildLessonCard({
+    required MeowLocalizations lang,
     required A1BasicLesson lesson,
     required int index,
     required bool unlocked,
     required bool completed,
   }) {
+    final lessonNumber = index + 1;
+
+    final label = lang.isPersian
+        ? 'مبانی $lessonNumber'
+        : 'Basics $lessonNumber';
+
+    final title = lang.isPersian
+        ? lesson.titleFa
+        : lesson.title;
+
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(
+        bottom: 14,
+      ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius:
+            BorderRadius.circular(24),
         onTap: unlocked
             ? () => _openLesson(lesson)
             : null,
         child: AnimatedOpacity(
           duration:
               const Duration(milliseconds: 200),
-          opacity: unlocked ? 1.0 : 0.55,
+          opacity:
+              unlocked ? 1.0 : 0.55,
           child: Container(
-            padding: const EdgeInsets.all(18),
+            padding:
+                const EdgeInsets.all(18),
             decoration: BoxDecoration(
               color: Theme.of(context)
                   .colorScheme
@@ -294,8 +320,8 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
             child: Row(
               children: [
                 Container(
-                  width: 54,
-                  height: 54,
+                  width: 50,
+                  height: 50,
                   decoration: BoxDecoration(
                     color: completed
                         ? Colors.green.withAlpha(28)
@@ -304,16 +330,18 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                   ),
                   child: Icon(
                     completed
-                        ? Icons.check_circle_rounded
+                        ? Icons
+                            .check_circle_rounded
                         : unlocked
-                            ? Icons.menu_book_rounded
+                            ? Icons
+                                .menu_book_rounded
                             : Icons.lock_rounded,
                     color: completed
                         ? Colors.green
                         : unlocked
                             ? lavender
                             : Colors.grey,
-                    size: 26,
+                    size: 25,
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -323,29 +351,22 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                         CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Basics ${index + 1}',
+                        label,
                         style: const TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.w700,
+                          fontWeight:
+                              FontWeight.w700,
                           color: lavender,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        lesson.title,
+                        title,
                         style: const TextStyle(
                           fontSize: 17,
-                          fontWeight: FontWeight.w700,
+                          fontWeight:
+                              FontWeight.w700,
                           letterSpacing: -0.2,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        lesson.titleFa,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey,
-                          height: 1.35,
                         ),
                       ),
                     ],
@@ -354,11 +375,13 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                 const SizedBox(width: 8),
                 Icon(
                   completed
-                      ? Icons.check_circle_rounded
+                      ? Icons
+                          .check_circle_rounded
                       : unlocked
                           ? Icons
                               .arrow_forward_ios_rounded
-                          : Icons.lock_outline_rounded,
+                          : Icons
+                              .lock_outline_rounded,
                   size: completed ? 23 : 17,
                   color: completed
                       ? Colors.green
@@ -374,22 +397,48 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
     );
   }
 
-  Widget _buildExamCard(MeowLocalizations lang) {
-    final unlocked = _areAllLessonsCompleted();
+  Widget _buildExamCard(
+    MeowLocalizations lang,
+  ) {
+    final unlocked =
+        _areAllLessonsCompleted();
+
+    final title = examCompleted
+        ? (lang.isPersian
+            ? 'آزمون مبانی با موفقیت تمام شد 🎉'
+            : 'Basics Exam Completed 🎉')
+        : (lang.isPersian
+            ? 'آزمون مبانی'
+            : 'Basics Exam');
+
+    final description = examCompleted
+        ? (lang.isPersian
+            ? 'آفرین! همه درس‌های مبانی را پشت سر گذاشتی.'
+            : 'Great job! You completed all the Basics lessons.')
+        : unlocked
+            ? (lang.isPersian
+                ? 'آزمون مبانی را کامل کن تا درس ۱ سطح A1 باز شود.'
+                : 'Complete the Basics exam to unlock A1 Lesson 1.')
+            : (lang.isPersian
+                ? 'ابتدا هر ۱۱ درس مبانی را کامل کن.'
+                : 'Complete all 11 Basics lessons first.');
 
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius:
+            BorderRadius.circular(24),
         onTap: unlocked
             ? _openBasicsExam
             : null,
         child: AnimatedOpacity(
           duration:
               const Duration(milliseconds: 200),
-          opacity: unlocked ? 1.0 : 0.55,
+          opacity:
+              unlocked ? 1.0 : 0.55,
           child: Container(
-            padding: const EdgeInsets.all(18),
+            padding:
+                const EdgeInsets.all(18),
             decoration: BoxDecoration(
               color: Theme.of(context)
                   .colorScheme
@@ -405,8 +454,8 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
             child: Row(
               children: [
                 Container(
-                  width: 54,
-                  height: 54,
+                  width: 50,
+                  height: 50,
                   decoration: BoxDecoration(
                     color: examCompleted
                         ? Colors.green.withAlpha(28)
@@ -417,7 +466,8 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                   ),
                   child: Icon(
                     examCompleted
-                        ? Icons.check_circle_rounded
+                        ? Icons
+                            .check_circle_rounded
                         : unlocked
                             ? Icons.quiz_rounded
                             : Icons.lock_rounded,
@@ -426,7 +476,7 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                         : unlocked
                             ? lavender
                             : Colors.grey,
-                    size: 26,
+                    size: 25,
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -436,31 +486,16 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                         CrossAxisAlignment.start,
                     children: [
                       Text(
-                        examCompleted
-                            ? (lang.isPersian
-                                ? 'آزمون Basics با موفقیت تمام شد 🎉'
-                                : 'Basics Exam Completed 🎉')
-                            : (lang.isPersian
-                                ? 'آزمون Basics'
-                                : 'Basics Exam'),
+                        title,
                         style: const TextStyle(
                           fontSize: 17,
-                          fontWeight: FontWeight.w700,
+                          fontWeight:
+                              FontWeight.w700,
                         ),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        examCompleted
-                            ? (lang.isPersian
-                                ? 'آفرین! همه درس‌های Basics را پشت سر گذاشتی.'
-                                : 'Great job! You completed all the Basics lessons.')
-                            : unlocked
-                                ? (lang.isPersian
-                                    ? 'آزمون Basics را کامل کن تا Lesson 1 سطح A1 باز شود.'
-                                    : 'Complete the Basics exam to unlock A1 Lesson 1.')
-                                : (lang.isPersian
-                                    ? 'ابتدا هر 11 درس Basics را کامل کن.'
-                                    : 'Complete all 11 Basics lessons first.'),
+                        description,
                         style: const TextStyle(
                           fontSize: 12,
                           height: 1.4,
@@ -472,11 +507,13 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                 ),
                 Icon(
                   examCompleted
-                      ? Icons.check_circle_rounded
+                      ? Icons
+                          .check_circle_rounded
                       : unlocked
                           ? Icons
                               .arrow_forward_ios_rounded
-                          : Icons.lock_outline_rounded,
+                          : Icons
+                              .lock_outline_rounded,
                   color: examCompleted
                       ? Colors.green
                       : unlocked
