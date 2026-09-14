@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
+import '../../../localization.dart';
 import 'a2_data.dart';
 import 'a2_models.dart';
 import 'a2_exam_page.dart';
@@ -9,136 +10,294 @@ import 'a2_exam_page.dart';
 class A2LessonsPage extends StatelessWidget {
   const A2LessonsPage({super.key});
 
+  static const Color lavender = Color(0xFFB9A7E8);
+
   @override
   Widget build(BuildContext context) {
+    final lang = MeowLocalizations.of(context);
+
     return Scaffold(
+      backgroundColor:
+          Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('A2 Lessons'),
+        elevation: 0,
+        title: Text(
+          lang.isPersian ? 'سطح A2' : 'A2 Level',
+          style: const TextStyle(
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
+        ),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: a2Lessons.length + 1,
-        itemBuilder: (context, index) {
-          // =====================================================
-          // FINAL EXAM
-          // =====================================================
-
-          if (index == a2Lessons.length) {
-            return Card(
-              margin: const EdgeInsets.only(
-                top: 8,
-                bottom: 20,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(
+            20,
+            8,
+            20,
+            110,
+          ),
+          children: [
+            Text(
+              lang.isPersian
+                  ? 'درس‌های A2'
+                  : 'A2 Lessons',
+              style: const TextStyle(
+                fontSize: 29,
+                fontWeight: FontWeight.w700,
+                letterSpacing: -0.8,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(18),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primaryContainer,
-                          ),
-                          child: Icon(
-                            Icons.workspace_premium_rounded,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primary,
-                          ),
-                        ),
-                        const SizedBox(width: 14),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'A2 Final Exam',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'آزمون نهایی سطح A2',
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 14),
-
-                    Text(
-                      'Complete the final exam to finish A2 and unlock B1.',
-                      style: TextStyle(
-                        color: Colors.grey.shade700,
-                        height: 1.4,
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  const A2ExamPage(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.play_arrow_rounded,
-                        ),
-                        label: const Text(
-                          'Start Final Exam',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              lang.isPersian
+                  ? 'انگلیسی روزمره را مرحله‌به‌مرحله یاد بگیر.'
+                  : 'Learn practical English step by step.',
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.grey,
               ),
-            );
-          }
+            ),
+            const SizedBox(height: 22),
 
-          final lesson = a2Lessons[index];
+            ...List.generate(
+              a2Lessons.length,
+              (index) {
+                final lesson = a2Lessons[index];
 
-          return Card(
-            margin: const EdgeInsets.only(bottom: 12),
-            child: ListTile(
-              leading: CircleAvatar(
-                child: Text('${index + 1}'),
-              ),
-              title: Text(lesson.title),
-              subtitle: Text(lesson.topic),
-              trailing: const Icon(
-                Icons.arrow_forward_ios,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => A2LessonDetailPage(
-                      lesson: lesson,
-                    ),
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 14,
+                  ),
+                  child: _lessonCard(
+                    context,
+                    lang,
+                    lesson,
+                    index,
                   ),
                 );
               },
             ),
-          );
-        },
+
+            const SizedBox(height: 4),
+
+            _examCard(
+              context,
+              lang,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _lessonCard(
+    BuildContext context,
+    MeowLocalizations lang,
+    A2Lesson lesson,
+    int index,
+  ) {
+    final lessonNumber = index + 1;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(24),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => A2LessonDetailPage(
+              lesson: lesson,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Theme.of(context)
+              .colorScheme
+              .surface,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.14),
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                color: lavender.withOpacity(0.14),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  '$lessonNumber',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: lavender,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    lang.isPersian
+                        ? 'درس $lessonNumber'
+                        : 'Lesson $lessonNumber',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    _getLessonTitle(
+                      lang,
+                      lesson,
+                      lessonNumber,
+                    ),
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    lesson.topic,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getLessonTitle(
+    MeowLocalizations lang,
+    A2Lesson lesson,
+    int lessonNumber,
+  ) {
+    if (!lang.isPersian) {
+      return lesson.title;
+    }
+
+    const persianTitles = [
+      'برنامه‌های روزانه',
+      'خرید و فروشگاه',
+      'غذا و رستوران',
+      'خانه و زندگی روزمره',
+      'کار و شغل',
+      'اوقات فراغت',
+      'سلامتی و مراقبت از خود',
+      'سفر و حمل‌ونقل',
+      'آب‌وهوا',
+      'دوستان و روابط',
+      'برنامه‌ریزی و قرارها',
+      'تجربه‌های گذشته',
+      'زندگی شهری',
+      'ارتباطات روزمره',
+      'موقعیت‌های واقعی',
+      'مرور A2',
+    ];
+
+    if (lessonNumber >= 1 &&
+        lessonNumber <= persianTitles.length) {
+      return persianTitles[lessonNumber - 1];
+    }
+
+    return lesson.title;
+  }
+
+  Widget _examCard(
+    BuildContext context,
+    MeowLocalizations lang,
+  ) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(24),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const A2ExamPage(),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: lavender.withOpacity(0.10),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: lavender.withOpacity(0.20),
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: lavender.withOpacity(0.15),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.workspace_premium_rounded,
+                color: lavender,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    lang.isPersian
+                        ? 'امتحان نهایی A2'
+                        : 'A2 Final Exam',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    lang.isPersian
+                        ? '۶۰ سؤال • حداقل نمره قبولی ۷۰٪'
+                        : '60 questions • 70% passing score',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: Colors.grey,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -382,12 +541,7 @@ class _A2LessonDetailPageState
                 .textTheme
                 .headlineSmall,
           ),
-
           const SizedBox(height: 24),
-
-          // =========================
-          // WORDS
-          // =========================
 
           _sectionTitle(
             context,
@@ -443,897 +597,4 @@ class _A2LessonDetailPageState
                     ),
                     IconButton(
                       icon: const Icon(Icons.volume_up),
-                      onPressed: () =>
-                          _speak(word.word),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // SENTENCES
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Useful Sentences',
-            'جمله‌های کاربردی',
-          ),
-
-          ...lesson.sentences.map(
-            (sentence) => Card(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Row(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            sentence.english,
-                            style: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            sentence.pronunciation,
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            sentence.translation,
-                          ),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.volume_up),
-                      onPressed: () =>
-                          _speak(sentence.english),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // GRAMMAR
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Grammar',
-            'گرامر',
-          ),
-
-          ...lesson.grammar.map(
-            (grammar) => Card(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      grammar.title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(grammar.explanation),
-                    const SizedBox(height: 12),
-                    ...grammar.examples.map(
-                      (example) => Padding(
-                        padding:
-                            const EdgeInsets.only(
-                          bottom: 6,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                example,
-                                style: const TextStyle(
-                                  fontStyle:
-                                      FontStyle.italic,
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.volume_up,
-                                size: 20,
-                              ),
-                              onPressed: () =>
-                                  _speak(example),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // MULTIPLE CHOICE
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Multiple Choice',
-            'سؤالات چهارگزینه‌ای',
-          ),
-
-          ...lesson.questions
-              .asMap()
-              .entries
-              .map(
-            (entry) {
-              final index = entry.key;
-              final question = entry.value;
-
-              final selected =
-                  _questionAnswers[index];
-
-              return Card(
-                margin:
-                    const EdgeInsets.only(bottom: 12),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${index + 1}. ${question.question}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ...question.options
-                          .asMap()
-                          .entries
-                          .map(
-                        (optionEntry) {
-                          final optionIndex =
-                              optionEntry.key;
-                          final option =
-                              optionEntry.value;
-
-                          final isSelected =
-                              selected ==
-                                  optionIndex;
-
-                          final isCorrect =
-                              optionIndex ==
-                                  question.correctIndex;
-
-                          Color? backgroundColor;
-
-                          if (isSelected) {
-                            backgroundColor =
-                                isCorrect
-                                    ? Colors.green
-                                        .withOpacity(0.12)
-                                    : Colors.red
-                                        .withOpacity(0.12);
-                          }
-
-                          return Padding(
-                            padding:
-                                const EdgeInsets.only(
-                              bottom: 7,
-                            ),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child:
-                                  OutlinedButton(
-                                style:
-                                    OutlinedButton
-                                        .styleFrom(
-                                  backgroundColor:
-                                      backgroundColor,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _questionAnswers[
-                                            index] =
-                                        optionIndex;
-                                  });
-                                },
-                                child: Align(
-                                  alignment:
-                                      Alignment.centerLeft,
-                                  child:
-                                      Text(option),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      if (selected != null) ...[
-                        const SizedBox(height: 8),
-                        Text(
-                          selected ==
-                                  question.correctIndex
-                              ? '✅ درست! 😼💜'
-                              : '❌ هنوز درست نیست.',
-                          style: TextStyle(
-                            fontWeight:
-                                FontWeight.bold,
-                            color: selected ==
-                                    question.correctIndex
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          question.explanation,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // FILL BLANK
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Fill in the Blank',
-            'جای خالی را پر کن',
-          ),
-
-          ...lesson.fillBlanks
-              .asMap()
-              .entries
-              .map(
-            (entry) {
-              final index = entry.key;
-              final item = entry.value;
-
-              final selected =
-                  _fillBlankAnswers[index];
-
-              return Card(
-                margin:
-                    const EdgeInsets.only(bottom: 12),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${index + 1}. ${item.sentence}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: item.options
-                            .asMap()
-                            .entries
-                            .map(
-                          (optionEntry) {
-                            final optionIndex =
-                                optionEntry.key;
-                            final option =
-                                optionEntry.value;
-
-                            return OutlinedButton(
-                              onPressed: () {
-                                setState(() {
-                                  _fillBlankAnswers[
-                                          index] =
-                                      optionIndex;
-                                });
-                              },
-                              child: Text(option),
-                            );
-                          },
-                        ).toList(),
-                      ),
-                      if (selected != null) ...[
-                        const SizedBox(height: 10),
-                        Text(
-                          selected ==
-                                  item.correctIndex
-                              ? '✅ درست!'
-                              : '❌ دوباره امتحان کن.',
-                          style: TextStyle(
-                            fontWeight:
-                                FontWeight.bold,
-                            color: selected ==
-                                    item.correctIndex
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // SENTENCE ORDERING
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Sentence Ordering',
-            'مرتب کردن جمله',
-          ),
-
-          ...lesson.sentenceOrdering
-              .asMap()
-              .entries
-              .map(
-            (entry) {
-              final index = entry.key;
-              final item = entry.value;
-
-              final shuffled =
-                  [...item.shuffledWords];
-
-              return Card(
-                margin:
-                    const EdgeInsets.only(bottom: 12),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${index + 1}. کلمات را به ترتیب درست بچین:',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 7,
-                        runSpacing: 7,
-                        children: shuffled
-                            .map(
-                              (word) => Chip(
-                                label: Text(word),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'پاسخ صحیح: ${item.sentence}',
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.volume_up,
-                        ),
-                        onPressed: () =>
-                            _speak(item.sentence),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // MATCHING
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Matching',
-            'وصل کردن',
-          ),
-
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: lesson.matching.map(
-                  (item) {
-                    return Padding(
-                      padding:
-                          const EdgeInsets.only(
-                        bottom: 12,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              item.left,
-                              style:
-                                  const TextStyle(
-                                fontWeight:
-                                    FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(item.right),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ).toList(),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // SENTENCE BUILDING
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Build the Sentence',
-            'جمله را بساز',
-          ),
-
-          ...lesson.sentenceBuilding
-              .asMap()
-              .entries
-              .map(
-            (entry) {
-              final index = entry.key;
-              final item = entry.value;
-
-              return Card(
-                margin:
-                    const EdgeInsets.only(bottom: 12),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${index + 1}. ${item.meaning}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 7,
-                        runSpacing: 7,
-                        children: item.words
-                            .map(
-                              (word) => Chip(
-                                label: Text(word),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        item.correctSentence,
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        item.pronunciation,
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurfaceVariant,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.volume_up,
-                        ),
-                        onPressed: () =>
-                            _speak(
-                          item.correctSentence,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // REAL-LIFE CONVERSATION
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Real-Life Conversation',
-            'مکالمه واقعی',
-          ),
-
-          ...lesson.conversations.map(
-            (line) => Card(
-              margin:
-                  const EdgeInsets.only(bottom: 8),
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Row(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding:
-                          const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(8),
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primaryContainer,
-                      ),
-                      child: Text(
-                        line.speaker,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            line.english,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            line.pronunciation,
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            line.translation,
-                          ),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.volume_up,
-                      ),
-                      onPressed: () =>
-                          _speak(line.english),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // SPEAKING
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Speaking Practice',
-            'تمرین مکالمه',
-          ),
-
-          ...lesson.speakingQuestions
-              .asMap()
-              .entries
-              .map(
-            (entry) {
-              final index = entry.key;
-              final question = entry.value;
-
-              final recognizedText =
-                  _recognizedTexts[index] ?? '';
-
-              final result =
-                  _speakingResults[index];
-
-              final isListening =
-                  _isListening &&
-                  _listeningQuestionIndex == index;
-
-              return Card(
-                margin:
-                    const EdgeInsets.only(bottom: 16),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${index + 1}. ${question.question}',
-                        style: const TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 7),
-                      Text(
-                        question.pronunciation,
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      Center(
-                        child: ElevatedButton.icon(
-                          onPressed: isListening
-                              ? _stopListening
-                              : () =>
-                                  _startListening(
-                                index,
-                              ),
-                          icon: Icon(
-                            isListening
-                                ? Icons.stop
-                                : Icons.mic,
-                          ),
-                          label: Text(
-                            isListening
-                                ? 'توقف'
-                                : 'صحبت کن',
-                          ),
-                        ),
-                      ),
-                      if (isListening) ...[
-                        const SizedBox(height: 10),
-                        Center(
-                          child: Text(
-                            '🎤 میو داره گوش می‌ده... 😼',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary,
-                              fontWeight:
-                                  FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                      if (recognizedText.isNotEmpty) ...[
-                        const SizedBox(height: 12),
-                        Container(
-                          width: double.infinity,
-                          padding:
-                              const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(12),
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerHighest,
-                          ),
-                          child: Text(
-                            'میو شنید:\n$recognizedText',
-                          ),
-                        ),
-                      ],
-                      if (result != null) ...[
-                        const SizedBox(height: 12),
-                        Text(
-                          result
-                              ? '✅ خوب بود! 😼💜'
-                              : '❌ دوباره امتحان کن 😹',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: result
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // CHALLENGES
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Meow Challenge',
-            'چالش میو',
-          ),
-
-          ...lesson.challenges.map(
-            (challenge) => Card(
-              margin:
-                  const EdgeInsets.only(bottom: 12),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      challenge.title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      challenge.instruction,
-                    ),
-                    const SizedBox(height: 12),
-                    ...challenge.tasks.map(
-                      (task) => Padding(
-                        padding:
-                            const EdgeInsets.only(
-                          bottom: 7,
-                        ),
-                        child: Row(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                          children: [
-                            const Text('• '),
-                            Expanded(
-                              child: Text(task),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          // =========================
-          // REVIEW
-          // =========================
-
-          _sectionTitle(
-            context,
-            'Review',
-            'مرور',
-          ),
-
-          ...lesson.reviews.map(
-            (review) => Card(
-              margin:
-                  const EdgeInsets.only(bottom: 12),
-              child: ExpansionTile(
-                title: Text(
-                  review.title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                children: review.points
-                    .map(
-                      (point) => ListTile(
-                        leading: const Icon(
-                          Icons.check_circle_outline,
-                        ),
-                        title: Text(point),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 40),
-        ],
-      ),
-    );
-  }
-
-  Widget _sectionTitle(
-    BuildContext context,
-    String english,
-    String persian,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        '$english\n$persian',
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge
-            ?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-      ),
-    );
-  }
-}
+                      on
