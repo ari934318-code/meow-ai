@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +16,10 @@ class A2ExamPage extends StatefulWidget {
 class _A2ExamPageState extends State<A2ExamPage> {
   final PageController _pageController = PageController();
 
+  static const String _a2WrongAnswersKey = 'a2_wrong_answers';
+
   late List<int?> _answers;
+
   int _currentIndex = 0;
   bool _finished = false;
   A2ExamResult? _result;
@@ -73,6 +78,41 @@ class _A2ExamPageState extends State<A2ExamPage> {
     );
   }
 
+  Future<void> _saveA2Mistakes(
+    List<A2ExamMistake> mistakes,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final encoded = mistakes.map((mistake) {
+      final isUnanswered =
+          mistake.selectedAnswer == 'بدون پاسخ';
+
+      return {
+        'level': 'A2',
+        'source': 'A2 Final Exam',
+        'category': 'Final Exam',
+        'topic': 'A2 Final Exam',
+
+        'questionIndex': mistake.questionIndex,
+
+        'question': mistake.question,
+
+        'userAnswer': isUnanswered
+            ? 'بدون پاسخ'
+            : mistake.selectedAnswer,
+
+        'correctAnswer': mistake.correctAnswer,
+
+        'explanation': mistake.explanation,
+      };
+    }).toList();
+
+    await prefs.setString(
+      _a2WrongAnswersKey,
+      jsonEncode(encoded),
+    );
+  }
+
   Future<void> _finishExam() async {
     int correct = 0;
     int wrong = 0;
@@ -92,7 +132,8 @@ class _A2ExamPageState extends State<A2ExamPage> {
             questionIndex: i,
             question: question.question,
             selectedAnswer: 'بدون پاسخ',
-            correctAnswer: question.options[question.correctIndex],
+            correctAnswer:
+                question.options[question.correctIndex],
             explanation: question.explanation,
           ),
         );
@@ -110,7 +151,8 @@ class _A2ExamPageState extends State<A2ExamPage> {
             questionIndex: i,
             question: question.question,
             selectedAnswer: question.options[selected],
-            correctAnswer: question.options[question.correctIndex],
+            correctAnswer:
+                question.options[question.correctIndex],
             explanation: question.explanation,
           ),
         );
@@ -135,7 +177,6 @@ class _A2ExamPageState extends State<A2ExamPage> {
     final prefs = await SharedPreferences.getInstance();
 
     // Once A2 is passed, it stays completed permanently.
-    // Retaking the exam cannot lock A2 again.
     final previousCompleted =
         prefs.getBool('a2_completed') ?? false;
 
@@ -172,6 +213,9 @@ class _A2ExamPageState extends State<A2ExamPage> {
       unanswered,
     );
 
+    // Save the current A2 mistakes permanently.
+    await _saveA2Mistakes(mistakes);
+
     if (!mounted) return;
 
     setState(() {
@@ -198,7 +242,9 @@ class _A2ExamPageState extends State<A2ExamPage> {
   }
 
   void _reviewMistakes() {
-    if (_result == null || _result!.mistakes.isEmpty) return;
+    if (_result == null || _result!.mistakes.isEmpty) {
+      return;
+    }
 
     Navigator.push(
       context,
@@ -213,11 +259,17 @@ class _A2ExamPageState extends State<A2ExamPage> {
   @override
   Widget build(BuildContext context) {
     if (_finished && _result != null) {
-      return _buildResultPage(context, _result!);
+      return _buildResultPage(
+        context,
+        _result!,
+      );
     }
 
-    final question = a2ExamQuestions[_currentIndex];
-    final selected = _answers[_currentIndex];
+    final question =
+        a2ExamQuestions[_currentIndex];
+
+    final selected =
+        _answers[_currentIndex];
 
     return Scaffold(
       appBar: AppBar(
@@ -232,11 +284,17 @@ class _A2ExamPageState extends State<A2ExamPage> {
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: a2ExamQuestions.length,
-                itemBuilder: (context, index) {
-                  final item = a2ExamQuestions[index];
-                  final selectedAnswer = _answers[index];
+                physics:
+                    const NeverScrollableScrollPhysics(),
+                itemCount:
+                    a2ExamQuestions.length,
+                itemBuilder:
+                    (context, index) {
+                  final item =
+                      a2ExamQuestions[index];
+
+                  final selectedAnswer =
+                      _answers[index];
 
                   return _buildQuestionCard(
                     item,
@@ -257,10 +315,17 @@ class _A2ExamPageState extends State<A2ExamPage> {
 
   Widget _buildProgressHeader() {
     final progress =
-        (_currentIndex + 1) / a2ExamQuestions.length;
+        (_currentIndex + 1) /
+            a2ExamQuestions.length;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+      padding:
+          const EdgeInsets.fromLTRB(
+        20,
+        12,
+        20,
+        8,
+      ),
       child: Column(
         children: [
           Row(
@@ -284,7 +349,8 @@ class _A2ExamPageState extends State<A2ExamPage> {
           ),
           const SizedBox(height: 10),
           ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius:
+                BorderRadius.circular(20),
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 7,
@@ -300,14 +366,22 @@ class _A2ExamPageState extends State<A2ExamPage> {
     int? selected,
   ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+      padding:
+          const EdgeInsets.fromLTRB(
+        20,
+        12,
+        20,
+        20,
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
         children: [
           Card(
             elevation: 0,
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding:
+                  const EdgeInsets.all(20),
               child: Text(
                 question.question,
                 style: const TextStyle(
@@ -324,26 +398,41 @@ class _A2ExamPageState extends State<A2ExamPage> {
           ...List.generate(
             question.options.length,
             (index) {
-              final isSelected = selected == index;
+              final isSelected =
+                  selected == index;
 
               return Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding:
+                    const EdgeInsets.only(
+                  bottom: 12,
+                ),
                 child: OutlinedButton(
-                  onPressed: () => _selectAnswer(index),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
+                  onPressed: () =>
+                      _selectAnswer(index),
+                  style:
+                      OutlinedButton.styleFrom(
+                    padding:
+                        const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 16,
                     ),
-                    alignment: Alignment.centerLeft,
+                    alignment:
+                        Alignment.centerLeft,
                     side: BorderSide(
                       color: isSelected
-                          ? Theme.of(context).colorScheme.primary
+                          ? Theme.of(context)
+                              .colorScheme
+                              .primary
                           : Colors.grey.shade400,
-                      width: isSelected ? 2 : 1,
+                      width:
+                          isSelected ? 2 : 1,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                    shape:
+                        RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(
+                        16,
+                      ),
                     ),
                   ),
                   child: Row(
@@ -351,9 +440,12 @@ class _A2ExamPageState extends State<A2ExamPage> {
                       Container(
                         width: 34,
                         height: 34,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+                        alignment:
+                            Alignment.center,
+                        decoration:
+                            BoxDecoration(
+                          shape:
+                              BoxShape.circle,
                           color: isSelected
                               ? Theme.of(context)
                                   .colorScheme
@@ -361,27 +453,38 @@ class _A2ExamPageState extends State<A2ExamPage> {
                               : Colors.transparent,
                           border: Border.all(
                             color: isSelected
-                                ? Theme.of(context)
+                                ? Theme.of(
+                                    context,
+                                  )
                                     .colorScheme
                                     .primary
-                                : Colors.grey.shade400,
+                                : Colors
+                                    .grey
+                                    .shade400,
                           ),
                         ),
                         child: Text(
-                          String.fromCharCode(65 + index),
+                          String.fromCharCode(
+                            65 + index,
+                          ),
                           style: TextStyle(
-                            fontWeight: FontWeight.w700,
+                            fontWeight:
+                                FontWeight.w700,
                             color: isSelected
                                 ? Colors.white
                                 : null,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(
+                        width: 12,
+                      ),
                       Expanded(
                         child: Text(
-                          question.options[index],
-                          style: const TextStyle(
+                          question
+                              .options[index],
+                          style:
+                              const TextStyle(
                             fontSize: 15,
                             height: 1.4,
                           ),
@@ -402,19 +505,28 @@ class _A2ExamPageState extends State<A2ExamPage> {
     required int? selected,
   }) {
     final isLast =
-        _currentIndex == a2ExamQuestions.length - 1;
+        _currentIndex ==
+            a2ExamQuestions.length - 1;
 
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 14),
+        padding:
+            const EdgeInsets.fromLTRB(
+          20,
+          8,
+          20,
+          14,
+        ),
         child: Row(
           children: [
             if (_currentIndex > 0)
               Expanded(
                 child: OutlinedButton(
-                  onPressed: _previousQuestion,
-                  child: const Text('Previous'),
+                  onPressed:
+                      _previousQuestion,
+                  child:
+                      const Text('Previous'),
                 ),
               ),
 
@@ -424,11 +536,14 @@ class _A2ExamPageState extends State<A2ExamPage> {
             Expanded(
               flex: 2,
               child: ElevatedButton(
-                onPressed: selected == null
-                    ? null
-                    : _nextQuestion,
+                onPressed:
+                    selected == null
+                        ? null
+                        : _nextQuestion,
                 child: Text(
-                  isLast ? 'Finish Exam' : 'Next',
+                  isLast
+                      ? 'Finish Exam'
+                      : 'Next',
                 ),
               ),
             ),
@@ -447,13 +562,16 @@ class _A2ExamPageState extends State<A2ExamPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('A2 Exam Result'),
+        title:
+            const Text('A2 Exam Result'),
         centerTitle: true,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading:
+            false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding:
+              const EdgeInsets.all(20),
           child: Column(
             children: [
               const SizedBox(height: 12),
@@ -461,7 +579,8 @@ class _A2ExamPageState extends State<A2ExamPage> {
               Container(
                 width: 130,
                 height: 130,
-                decoration: BoxDecoration(
+                decoration:
+                    BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
                     width: 8,
@@ -470,12 +589,15 @@ class _A2ExamPageState extends State<A2ExamPage> {
                         : Colors.red,
                   ),
                 ),
-                alignment: Alignment.center,
+                alignment:
+                    Alignment.center,
                 child: Text(
                   '$percentage%',
-                  style: const TextStyle(
+                  style:
+                      const TextStyle(
                     fontSize: 30,
-                    fontWeight: FontWeight.w800,
+                    fontWeight:
+                        FontWeight.w800,
                   ),
                 ),
               ),
@@ -488,7 +610,8 @@ class _A2ExamPageState extends State<A2ExamPage> {
                     : 'A2 Not Passed',
                 style: TextStyle(
                   fontSize: 25,
-                  fontWeight: FontWeight.w800,
+                  fontWeight:
+                      FontWeight.w800,
                   color: result.passed
                       ? Colors.green
                       : Colors.red,
@@ -500,10 +623,12 @@ class _A2ExamPageState extends State<A2ExamPage> {
               Text(
                 result.passed
                     ? 'You passed the A2 final exam.'
-                    : 'You need ${passScore}% to pass the exam.',
-                textAlign: TextAlign.center,
+                    : 'You need $passScore% to pass the exam.',
+                textAlign:
+                    TextAlign.center,
                 style: TextStyle(
-                  color: Colors.grey.shade600,
+                  color:
+                      Colors.grey.shade600,
                   fontSize: 15,
                 ),
               ),
@@ -514,13 +639,18 @@ class _A2ExamPageState extends State<A2ExamPage> {
 
               const SizedBox(height: 24),
 
-              if (result.mistakes.isNotEmpty)
+              if (result
+                  .mistakes
+                  .isNotEmpty)
                 SizedBox(
                   width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: _reviewMistakes,
+                  child:
+                      OutlinedButton.icon(
+                    onPressed:
+                        _reviewMistakes,
                     icon: const Icon(
-                      Icons.error_outline_rounded,
+                      Icons
+                          .error_outline_rounded,
                     ),
                     label: Text(
                       'My Mistakes (${result.mistakes.length})',
@@ -532,10 +662,13 @@ class _A2ExamPageState extends State<A2ExamPage> {
 
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _restartExam,
+                child:
+                    ElevatedButton.icon(
+                  onPressed:
+                      _restartExam,
                   icon: const Icon(
-                    Icons.refresh_rounded,
+                    Icons
+                        .refresh_rounded,
                   ),
                   label: const Text(
                     'Retake Exam',
@@ -547,23 +680,38 @@ class _A2ExamPageState extends State<A2ExamPage> {
                 const SizedBox(height: 12),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    color: Theme.of(context)
+                  padding:
+                      const EdgeInsets.all(
+                    18,
+                  ),
+                  decoration:
+                      BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(
+                      18,
+                    ),
+                    color: Theme.of(
+                      context,
+                    )
                         .colorScheme
                         .primary
                         .withOpacity(0.10),
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.lock_open_rounded),
+                      Icon(
+                        Icons
+                            .lock_open_rounded,
+                      ),
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           'A2 is completed. B1 can now be unlocked.',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
+                          style:
+                              TextStyle(
+                            fontWeight:
+                                FontWeight
+                                    .w600,
                           ),
                         ),
                       ),
@@ -578,11 +726,14 @@ class _A2ExamPageState extends State<A2ExamPage> {
     );
   }
 
-  Widget _buildResultStats(A2ExamResult result) {
+  Widget _buildResultStats(
+    A2ExamResult result,
+  ) {
     return Card(
       elevation: 0,
       child: Padding(
-        padding: const EdgeInsets.all(18),
+        padding:
+            const EdgeInsets.all(18),
         child: Column(
           children: [
             _resultRow(
@@ -623,15 +774,19 @@ class _A2ExamPageState extends State<A2ExamPage> {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
+          style:
+              const TextStyle(
+            fontWeight:
+                FontWeight.w600,
           ),
         ),
         const Spacer(),
         Text(
           value,
-          style: const TextStyle(
-            fontWeight: FontWeight.w800,
+          style:
+              const TextStyle(
+            fontWeight:
+                FontWeight.w800,
           ),
         ),
       ],
@@ -640,10 +795,11 @@ class _A2ExamPageState extends State<A2ExamPage> {
 }
 
 // ============================================================
-// MISTAKES PAGE
+// A2 MISTAKES PAGE
 // ============================================================
 
-class A2MistakesPage extends StatelessWidget {
+class A2MistakesPage
+    extends StatelessWidget {
   final List<A2ExamMistake> mistakes;
 
   const A2MistakesPage({
@@ -652,76 +808,116 @@ class A2MistakesPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Mistakes'),
+        title:
+            const Text('My Mistakes'),
         centerTitle: true,
       ),
       body: mistakes.isEmpty
           ? const Center(
               child: Text(
                 'No mistakes 🎉',
-                style: TextStyle(
+                style:
+                    TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                  fontWeight:
+                      FontWeight.w700,
                 ),
               ),
             )
           : ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: mistakes.length,
-              itemBuilder: (context, index) {
-                final mistake = mistakes[index];
+              padding:
+                  const EdgeInsets.all(16),
+              itemCount:
+                  mistakes.length,
+              itemBuilder:
+                  (context, index) {
+                final mistake =
+                    mistakes[index];
 
                 final unanswered =
-                    mistake.selectedAnswer == 'بدون پاسخ';
+                    mistake
+                            .selectedAnswer ==
+                        'بدون پاسخ';
 
                 return Card(
-                  margin: const EdgeInsets.only(
+                  margin:
+                      const EdgeInsets.only(
                     bottom: 14,
                   ),
                   elevation: 0,
                   child: Padding(
-                    padding: const EdgeInsets.all(18),
+                    padding:
+                        const EdgeInsets.all(
+                      18,
+                    ),
                     child: Column(
                       crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                          CrossAxisAlignment
+                              .start,
                       children: [
                         Text(
                           'Question ${mistake.questionIndex + 1}',
                           style: TextStyle(
-                            color: Theme.of(context)
+                            color: Theme.of(
+                              context,
+                            )
                                 .colorScheme
                                 .primary,
-                            fontWeight: FontWeight.w800,
+                            fontWeight:
+                                FontWeight
+                                    .w800,
                           ),
                         ),
 
-                        const SizedBox(height: 10),
+                        const SizedBox(
+                          height: 10,
+                        ),
 
                         Text(
                           mistake.question,
-                          style: const TextStyle(
+                          style:
+                              const TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w700,
+                            fontWeight:
+                                FontWeight
+                                    .w700,
                             height: 1.4,
                           ),
                         ),
 
-                        const SizedBox(height: 16),
+                        const SizedBox(
+                          height: 16,
+                        ),
 
                         Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(13),
-                          decoration: BoxDecoration(
+                          width:
+                              double.infinity,
+                          padding:
+                              const EdgeInsets
+                                  .all(13),
+                          decoration:
+                              BoxDecoration(
                             borderRadius:
-                                BorderRadius.circular(12),
+                                BorderRadius
+                                    .circular(
+                              12,
+                            ),
                             color: unanswered
-                                ? Colors.orange
-                                    .withOpacity(0.10)
-                                : Colors.red
-                                    .withOpacity(0.08),
+                                ? Colors
+                                    .orange
+                                    .withOpacity(
+                                    0.10,
+                                  )
+                                : Colors
+                                    .red
+                                    .withOpacity(
+                                    0.08,
+                                  ),
                           ),
                           child: Text(
                             unanswered
@@ -729,48 +925,79 @@ class A2MistakesPage extends StatelessWidget {
                                 : 'Your answer:\n${mistake.selectedAnswer}',
                             style: TextStyle(
                               color: unanswered
-                                  ? Colors.orange.shade800
-                                  : Colors.red.shade700,
-                              fontWeight: FontWeight.w600,
+                                  ? Colors
+                                      .orange
+                                      .shade800
+                                  : Colors
+                                      .red
+                                      .shade700,
+                              fontWeight:
+                                  FontWeight
+                                      .w600,
                             ),
                           ),
                         ),
 
-                        const SizedBox(height: 10),
+                        const SizedBox(
+                          height: 10,
+                        ),
 
                         Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(13),
-                          decoration: BoxDecoration(
+                          width:
+                              double.infinity,
+                          padding:
+                              const EdgeInsets
+                                  .all(13),
+                          decoration:
+                              BoxDecoration(
                             borderRadius:
-                                BorderRadius.circular(12),
-                            color: Colors.green
-                                .withOpacity(0.08),
+                                BorderRadius
+                                    .circular(
+                              12,
+                            ),
+                            color: Colors
+                                .green
+                                .withOpacity(
+                                0.08,
+                              ),
                           ),
                           child: Text(
                             'Correct answer:\n${mistake.correctAnswer}',
                             style: TextStyle(
-                              color: Colors.green.shade700,
-                              fontWeight: FontWeight.w600,
+                              color: Colors
+                                  .green
+                                  .shade700,
+                              fontWeight:
+                                  FontWeight
+                                      .w600,
                             ),
                           ),
                         ),
 
-                        const SizedBox(height: 14),
+                        const SizedBox(
+                          height: 14,
+                        ),
 
                         const Text(
                           'Why?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
+                          style:
+                              TextStyle(
+                            fontWeight:
+                                FontWeight
+                                    .w800,
                           ),
                         ),
 
-                        const SizedBox(height: 5),
+                        const SizedBox(
+                          height: 5,
+                        ),
 
                         Text(
                           mistake.explanation,
                           style: TextStyle(
-                            color: Colors.grey.shade700,
+                            color: Colors
+                                .grey
+                                .shade700,
                             height: 1.45,
                           ),
                         ),
