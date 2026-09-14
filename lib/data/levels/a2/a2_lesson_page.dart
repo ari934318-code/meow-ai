@@ -32,8 +32,7 @@ class A2LessonsPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(18),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -63,8 +62,7 @@ class A2LessonsPage extends StatelessWidget {
                                 'A2 Final Exam',
                                 style: TextStyle(
                                   fontSize: 18,
-                                  fontWeight:
-                                      FontWeight.bold,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               SizedBox(height: 4),
@@ -132,8 +130,7 @@ class A2LessonsPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) =>
-                        A2LessonDetailPage(
+                    builder: (_) => A2LessonDetailPage(
                       lesson: lesson,
                     ),
                   ),
@@ -196,8 +193,7 @@ class _A2LessonDetailPageState
   Future<void> _initializeSpeech() async {
     final available = await _speech.initialize(
       onStatus: (status) {
-        if (status == 'done' ||
-            status == 'notListening') {
+        if (status == 'done' || status == 'notListening') {
           if (mounted) {
             setState(() {
               _isListening = false;
@@ -266,8 +262,7 @@ class _A2LessonDetailPageState
       onResult: (result) {
         if (!mounted) return;
 
-        final text =
-            result.recognizedWords.trim();
+        final text = result.recognizedWords.trim();
 
         setState(() {
           _recognizedTexts[questionIndex] = text;
@@ -305,8 +300,7 @@ class _A2LessonDetailPageState
     String spokenText,
   ) {
     final question =
-        widget.lesson.speakingQuestions[
-            questionIndex];
+        widget.lesson.speakingQuestions[questionIndex];
 
     final normalizedSpoken =
         _normalizeText(spokenText);
@@ -354,7 +348,7 @@ class _A2LessonDetailPageState
     return text
         .toLowerCase()
         .replaceAll(
-          RegExp(r"[.,!?;:'\"()]"),
+          RegExp(r'''[.,!?;:'"()]'''),
           ' ',
         )
         .replaceAll(
@@ -403,8 +397,7 @@ class _A2LessonDetailPageState
 
           ...lesson.words.map(
             (word) => Card(
-              margin:
-                  const EdgeInsets.only(bottom: 10),
+              margin: const EdgeInsets.only(bottom: 10),
               child: Padding(
                 padding: const EdgeInsets.all(14),
                 child: Row(
@@ -418,11 +411,9 @@ class _A2LessonDetailPageState
                         children: [
                           Text(
                             word.word,
-                            style:
-                                const TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
-                              fontWeight:
-                                  FontWeight.bold,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 4),
@@ -439,10 +430,8 @@ class _A2LessonDetailPageState
                           const SizedBox(height: 8),
                           Text(
                             word.example,
-                            style:
-                                const TextStyle(
-                              fontStyle:
-                                  FontStyle.italic,
+                            style: const TextStyle(
+                              fontStyle: FontStyle.italic,
                             ),
                           ),
                           const SizedBox(height: 3),
@@ -453,9 +442,7 @@ class _A2LessonDetailPageState
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(
-                        Icons.volume_up,
-                      ),
+                      icon: const Icon(Icons.volume_up),
                       onPressed: () =>
                           _speak(word.word),
                     ),
@@ -479,8 +466,7 @@ class _A2LessonDetailPageState
 
           ...lesson.sentences.map(
             (sentence) => Card(
-              margin:
-                  const EdgeInsets.only(bottom: 10),
+              margin: const EdgeInsets.only(bottom: 10),
               child: Padding(
                 padding: const EdgeInsets.all(14),
                 child: Row(
@@ -494,11 +480,9 @@ class _A2LessonDetailPageState
                         children: [
                           Text(
                             sentence.english,
-                            style:
-                                const TextStyle(
+                            style: const TextStyle(
                               fontSize: 17,
-                              fontWeight:
-                                  FontWeight.bold,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 5),
@@ -518,9 +502,7 @@ class _A2LessonDetailPageState
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(
-                        Icons.volume_up,
-                      ),
+                      icon: const Icon(Icons.volume_up),
                       onPressed: () =>
                           _speak(sentence.english),
                     ),
@@ -544,8 +526,7 @@ class _A2LessonDetailPageState
 
           ...lesson.grammar.map(
             (grammar) => Card(
-              margin:
-                  const EdgeInsets.only(bottom: 12),
+              margin: const EdgeInsets.only(bottom: 12),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -554,11 +535,9 @@ class _A2LessonDetailPageState
                   children: [
                     Text(
                       grammar.title,
-                      style:
-                          const TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
-                        fontWeight:
-                            FontWeight.bold,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -575,11 +554,9 @@ class _A2LessonDetailPageState
                             Expanded(
                               child: Text(
                                 example,
-                                style:
-                                    const TextStyle(
+                                style: const TextStyle(
                                   fontStyle:
-                                      FontStyle
-                                          .italic,
+                                      FontStyle.italic,
                                 ),
                               ),
                             ),
@@ -626,22 +603,17 @@ class _A2LessonDetailPageState
 
               return Card(
                 margin:
-                    const EdgeInsets.only(
-                  bottom: 12,
-                ),
+                    const EdgeInsets.only(bottom: 12),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment:
                         CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${index + 1}. ${question.question}',
-                        style:
-                            const TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
@@ -662,8 +634,7 @@ class _A2LessonDetailPageState
 
                           final isCorrect =
                               optionIndex ==
-                                  question
-                                      .correctIndex;
+                                  question.correctIndex;
 
                           Color? backgroundColor;
 
@@ -671,24 +642,18 @@ class _A2LessonDetailPageState
                             backgroundColor =
                                 isCorrect
                                     ? Colors.green
-                                        .withOpacity(
-                                        0.12,
-                                      )
+                                        .withOpacity(0.12)
                                     : Colors.red
-                                        .withOpacity(
-                                        0.12,
-                                      );
+                                        .withOpacity(0.12);
                           }
 
                           return Padding(
                             padding:
-                                const EdgeInsets
-                                    .only(
+                                const EdgeInsets.only(
                               bottom: 7,
                             ),
                             child: SizedBox(
-                              width:
-                                  double.infinity,
+                              width: double.infinity,
                               child:
                                   OutlinedButton(
                                 style:
@@ -706,8 +671,7 @@ class _A2LessonDetailPageState
                                 },
                                 child: Align(
                                   alignment:
-                                      Alignment
-                                          .centerLeft,
+                                      Alignment.centerLeft,
                                   child:
                                       Text(option),
                                 ),
@@ -720,16 +684,14 @@ class _A2LessonDetailPageState
                         const SizedBox(height: 8),
                         Text(
                           selected ==
-                                  question
-                                      .correctIndex
+                                  question.correctIndex
                               ? '✅ درست! 😼💜'
                               : '❌ هنوز درست نیست.',
                           style: TextStyle(
                             fontWeight:
                                 FontWeight.bold,
                             color: selected ==
-                                    question
-                                        .correctIndex
+                                    question.correctIndex
                                 ? Colors.green
                                 : Colors.red,
                           ),
@@ -771,22 +733,17 @@ class _A2LessonDetailPageState
 
               return Card(
                 margin:
-                    const EdgeInsets.only(
-                  bottom: 12,
-                ),
+                    const EdgeInsets.only(bottom: 12),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment:
                         CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${index + 1}. ${item.sentence}',
-                        style:
-                            const TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -811,8 +768,7 @@ class _A2LessonDetailPageState
                                       optionIndex;
                                 });
                               },
-                              child:
-                                  Text(option),
+                              child: Text(option),
                             );
                           },
                         ).toList(),
@@ -866,22 +822,17 @@ class _A2LessonDetailPageState
 
               return Card(
                 margin:
-                    const EdgeInsets.only(
-                  bottom: 12,
-                ),
+                    const EdgeInsets.only(bottom: 12),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment:
                         CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${index + 1}. کلمات را به ترتیب درست بچین:',
-                        style:
-                            const TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -891,8 +842,7 @@ class _A2LessonDetailPageState
                         children: shuffled
                             .map(
                               (word) => Chip(
-                                label:
-                                    Text(word),
+                                label: Text(word),
                               ),
                             )
                             .toList(),
@@ -904,8 +854,7 @@ class _A2LessonDetailPageState
                           color: Theme.of(context)
                               .colorScheme
                               .primary,
-                          fontWeight:
-                              FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       IconButton(
@@ -913,9 +862,7 @@ class _A2LessonDetailPageState
                           Icons.volume_up,
                         ),
                         onPressed: () =>
-                            _speak(
-                          item.sentence,
-                        ),
+                            _speak(item.sentence),
                       ),
                     ],
                   ),
@@ -938,8 +885,7 @@ class _A2LessonDetailPageState
 
           Card(
             child: Padding(
-              padding:
-                  const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: lesson.matching.map(
                   (item) {
@@ -966,8 +912,7 @@ class _A2LessonDetailPageState
                           ),
                           const SizedBox(width: 10),
                           Expanded(
-                            child:
-                                Text(item.right),
+                            child: Text(item.right),
                           ),
                         ],
                       ),
@@ -1000,22 +945,17 @@ class _A2LessonDetailPageState
 
               return Card(
                 margin:
-                    const EdgeInsets.only(
-                  bottom: 12,
-                ),
+                    const EdgeInsets.only(bottom: 12),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment:
                         CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${index + 1}. ${item.meaning}',
-                        style:
-                            const TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -1025,8 +965,7 @@ class _A2LessonDetailPageState
                         children: item.words
                             .map(
                               (word) => Chip(
-                                label:
-                                    Text(word),
+                                label: Text(word),
                               ),
                             )
                             .toList(),
@@ -1038,8 +977,7 @@ class _A2LessonDetailPageState
                           color: Theme.of(context)
                               .colorScheme
                               .primary,
-                          fontWeight:
-                              FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
@@ -1081,38 +1019,30 @@ class _A2LessonDetailPageState
           ...lesson.conversations.map(
             (line) => Card(
               margin:
-                  const EdgeInsets.only(
-                bottom: 8,
-              ),
+                  const EdgeInsets.only(bottom: 8),
               child: Padding(
-                padding:
-                    const EdgeInsets.all(14),
+                padding: const EdgeInsets.all(14),
                 child: Row(
                   crossAxisAlignment:
                       CrossAxisAlignment.start,
                   children: [
                     Container(
                       padding:
-                          const EdgeInsets
-                              .symmetric(
+                          const EdgeInsets.symmetric(
                         horizontal: 8,
                         vertical: 5,
                       ),
-                      decoration:
-                          BoxDecoration(
+                      decoration: BoxDecoration(
                         borderRadius:
-                            BorderRadius
-                                .circular(8),
+                            BorderRadius.circular(8),
                         color: Theme.of(context)
                             .colorScheme
                             .primaryContainer,
                       ),
                       child: Text(
                         line.speaker,
-                        style:
-                            const TextStyle(
-                          fontWeight:
-                              FontWeight.bold,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -1120,33 +1050,24 @@ class _A2LessonDetailPageState
                     Expanded(
                       child: Column(
                         crossAxisAlignment:
-                            CrossAxisAlignment
-                                .start,
+                            CrossAxisAlignment.start,
                         children: [
                           Text(
                             line.english,
-                            style:
-                                const TextStyle(
-                              fontWeight:
-                                  FontWeight.bold,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(
-                            height: 4,
-                          ),
+                          const SizedBox(height: 4),
                           Text(
                             line.pronunciation,
                             style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              )
+                              color: Theme.of(context)
                                   .colorScheme
                                   .primary,
                             ),
                           ),
-                          const SizedBox(
-                            height: 4,
-                          ),
+                          const SizedBox(height: 4),
                           Text(
                             line.translation,
                           ),
@@ -1158,9 +1079,7 @@ class _A2LessonDetailPageState
                         Icons.volume_up,
                       ),
                       onPressed: () =>
-                          _speak(
-                        line.english,
-                      ),
+                          _speak(line.english),
                     ),
                   ],
                 ),
@@ -1189,36 +1108,29 @@ class _A2LessonDetailPageState
               final question = entry.value;
 
               final recognizedText =
-                  _recognizedTexts[index] ??
-                      '';
+                  _recognizedTexts[index] ?? '';
 
               final result =
                   _speakingResults[index];
 
               final isListening =
                   _isListening &&
-                  _listeningQuestionIndex ==
-                      index;
+                  _listeningQuestionIndex == index;
 
               return Card(
                 margin:
-                    const EdgeInsets.only(
-                  bottom: 16,
-                ),
+                    const EdgeInsets.only(bottom: 16),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment:
                         CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${index + 1}. ${question.question}',
-                        style:
-                            const TextStyle(
+                        style: const TextStyle(
                           fontSize: 17,
-                          fontWeight:
-                              FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 7),
@@ -1232,8 +1144,7 @@ class _A2LessonDetailPageState
                       ),
                       const SizedBox(height: 14),
                       Center(
-                        child:
-                            ElevatedButton.icon(
+                        child: ElevatedButton.icon(
                           onPressed: isListening
                               ? _stopListening
                               : () =>
@@ -1258,9 +1169,7 @@ class _A2LessonDetailPageState
                           child: Text(
                             '🎤 میو داره گوش می‌ده... 😼',
                             style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              )
+                              color: Theme.of(context)
                                   .colorScheme
                                   .primary,
                               fontWeight:
@@ -1269,23 +1178,16 @@ class _A2LessonDetailPageState
                           ),
                         ),
                       ],
-                      if (recognizedText
-                          .isNotEmpty) ...[
+                      if (recognizedText.isNotEmpty) ...[
                         const SizedBox(height: 12),
                         Container(
-                          width:
-                              double.infinity,
+                          width: double.infinity,
                           padding:
-                              const EdgeInsets
-                                  .all(12),
-                          decoration:
-                              BoxDecoration(
+                              const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius
-                                    .circular(12),
-                            color: Theme.of(
-                              context,
-                            )
+                                BorderRadius.circular(12),
+                            color: Theme.of(context)
                                 .colorScheme
                                 .surfaceContainerHighest,
                           ),
@@ -1301,8 +1203,7 @@ class _A2LessonDetailPageState
                               ? '✅ خوب بود! 😼💜'
                               : '❌ دوباره امتحان کن 😹',
                           style: TextStyle(
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                             color: result
                                 ? Colors.green
                                 : Colors.red,
@@ -1331,23 +1232,18 @@ class _A2LessonDetailPageState
           ...lesson.challenges.map(
             (challenge) => Card(
               margin:
-                  const EdgeInsets.only(
-                bottom: 12,
-              ),
+                  const EdgeInsets.only(bottom: 12),
               child: Padding(
-                padding:
-                    const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment:
                       CrossAxisAlignment.start,
                   children: [
                     Text(
                       challenge.title,
-                      style:
-                          const TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
-                        fontWeight:
-                            FontWeight.bold,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -1358,14 +1254,12 @@ class _A2LessonDetailPageState
                     ...challenge.tasks.map(
                       (task) => Padding(
                         padding:
-                            const EdgeInsets
-                                .only(
+                            const EdgeInsets.only(
                           bottom: 7,
                         ),
                         child: Row(
                           crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
+                              CrossAxisAlignment.start,
                           children: [
                             const Text('• '),
                             Expanded(
@@ -1396,28 +1290,21 @@ class _A2LessonDetailPageState
           ...lesson.reviews.map(
             (review) => Card(
               margin:
-                  const EdgeInsets.only(
-                bottom: 12,
-              ),
+                  const EdgeInsets.only(bottom: 12),
               child: ExpansionTile(
                 title: Text(
                   review.title,
-                  style:
-                      const TextStyle(
-                    fontWeight:
-                        FontWeight.bold,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 children: review.points
                     .map(
                       (point) => ListTile(
-                        leading:
-                            const Icon(
-                          Icons
-                              .check_circle_outline,
+                        leading: const Icon(
+                          Icons.check_circle_outline,
                         ),
-                        title:
-                            Text(point),
+                        title: Text(point),
                       ),
                     )
                     .toList(),
@@ -1437,16 +1324,14 @@ class _A2LessonDetailPageState
     String persian,
   ) {
     return Padding(
-      padding:
-          const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Text(
         '$english\n$persian',
         style: Theme.of(context)
             .textTheme
             .titleLarge
             ?.copyWith(
-              fontWeight:
-                  FontWeight.bold,
+              fontWeight: FontWeight.bold,
             ),
       ),
     );
