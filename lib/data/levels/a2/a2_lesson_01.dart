@@ -3,15 +3,15 @@ import 'a2_models.dart';
 const A2Lesson a2Lesson01 = A2Lesson(
   id: 'a2_lesson_01',
   title: 'Daily Life & Routines',
-  topic: 'Talking about your daily routine, habits, and everyday activities',
+  topic: 'Talking about daily routines, habits, and everyday activities',
 
   words: [
     A2Word(
       word: 'wake up',
       meaning: 'از خواب بیدار شدن',
       pronunciation: 'وِیک اَپ',
-      example: 'I usually wake up at 7.',
-      exampleTranslation: 'من معمولاً ساعت ۷ از خواب بیدار می‌شوم.',
+      example: 'I usually wake up at seven.',
+      exampleTranslation: 'من معمولاً ساعت هفت بیدار می‌شوم.',
     ),
     A2Word(
       word: 'get up',
@@ -24,15 +24,15 @@ const A2Lesson a2Lesson01 = A2Lesson(
       word: 'get ready',
       meaning: 'آماده شدن',
       pronunciation: 'گِت رِدی',
-      example: 'I get ready for work at 7:30.',
-      exampleTranslation: 'من ساعت ۷:۳۰ برای کار آماده می‌شوم.',
+      example: 'I get ready for work after breakfast.',
+      exampleTranslation: 'بعد از صبحانه برای کار آماده می‌شوم.',
     ),
     A2Word(
       word: 'get dressed',
       meaning: 'لباس پوشیدن',
       pronunciation: 'گِت دْرِست',
-      example: 'I get dressed after breakfast.',
-      exampleTranslation: 'بعد از صبحانه لباس می‌پوشم.',
+      example: 'I get dressed before I leave home.',
+      exampleTranslation: 'قبل از اینکه از خانه بیرون بروم لباس می‌پوشم.',
     ),
     A2Word(
       word: 'brush my teeth',
@@ -59,43 +59,36 @@ const A2Lesson a2Lesson01 = A2Lesson(
       word: 'leave home',
       meaning: 'از خانه خارج شدن',
       pronunciation: 'لیو هوم',
-      example: 'I leave home at 8.',
-      exampleTranslation: 'ساعت ۸ از خانه خارج می‌شوم.',
+      example: 'I leave home at eight.',
+      exampleTranslation: 'ساعت هشت از خانه خارج می‌شوم.',
     ),
     A2Word(
       word: 'arrive',
       meaning: 'رسیدن',
       pronunciation: 'اِرایو',
-      example: 'I arrive at work at 8:30.',
-      exampleTranslation: 'ساعت ۸:۳۰ به محل کار می‌رسم.',
-    ),
-    A2Word(
-      word: 'start work',
-      meaning: 'کار را شروع کردن',
-      pronunciation: 'اِستارت وِرک',
-      example: 'I start work at nine.',
-      exampleTranslation: 'من ساعت ۹ کار را شروع می‌کنم.',
+      example: 'I arrive at work at eight thirty.',
+      exampleTranslation: 'ساعت هشت و نیم به محل کار می‌رسم.',
     ),
     A2Word(
       word: 'take a break',
-      meaning: 'استراحت کردن / استراحت کوتاه داشتن',
+      meaning: 'استراحت کوتاه داشتن',
       pronunciation: 'تِیک اَ بِرِیک',
-      example: 'I usually take a break at noon.',
-      exampleTranslation: 'من معمولاً ظهر کمی استراحت می‌کنم.',
+      example: 'I take a short break around noon.',
+      exampleTranslation: 'حدود ظهر یک استراحت کوتاه دارم.',
     ),
     A2Word(
       word: 'have lunch',
       meaning: 'ناهار خوردن',
       pronunciation: 'هَو لانچ',
       example: 'I have lunch with my coworkers.',
-      exampleTranslation: 'من با همکارانم ناهار می‌خورم.',
+      exampleTranslation: 'با همکارانم ناهار می‌خورم.',
     ),
     A2Word(
       word: 'finish work',
       meaning: 'کار را تمام کردن',
       pronunciation: 'فینیش وِرک',
       example: 'I finish work at five.',
-      exampleTranslation: 'ساعت ۵ کارم تمام می‌شود.',
+      exampleTranslation: 'ساعت پنج کارم تمام می‌شود.',
     ),
     A2Word(
       word: 'go home',
@@ -108,8 +101,8 @@ const A2Lesson a2Lesson01 = A2Lesson(
       word: 'relax',
       meaning: 'استراحت کردن',
       pronunciation: 'ری‌لَکس',
-      example: 'I relax for an hour in the evening.',
-      exampleTranslation: 'عصر یک ساعت استراحت می‌کنم.',
+      example: 'I relax in the evening.',
+      exampleTranslation: 'عصرها استراحت می‌کنم.',
     ),
     A2Word(
       word: 'do homework',
@@ -144,14 +137,14 @@ const A2Lesson a2Lesson01 = A2Lesson(
       meaning: 'به رختخواب رفتن',
       pronunciation: 'گو تو بِد',
       example: 'I usually go to bed at eleven.',
-      exampleTranslation: 'من معمولاً ساعت ۱۱ به رختخواب می‌روم.',
+      exampleTranslation: 'معمولاً ساعت یازده به رختخواب می‌روم.',
     ),
     A2Word(
       word: 'fall asleep',
       meaning: 'به خواب رفتن',
       pronunciation: 'فال اَسلیپ',
       example: 'I usually fall asleep quickly.',
-      exampleTranslation: 'من معمولاً سریع به خواب می‌روم.',
+      exampleTranslation: 'معمولاً سریع به خواب می‌روم.',
     ),
     A2Word(
       word: 'stay up',
@@ -168,43 +161,8 @@ const A2Lesson a2Lesson01 = A2Lesson(
       exampleTranslation: 'باید عجله کنم وگرنه دیر می‌کنم.',
     ),
     A2Word(
-      word: 'be late',
-      meaning: 'دیر کردن',
-      pronunciation: 'بی لِیت',
-      example: 'I am late for work.',
-      exampleTranslation: 'برای کار دیر کرده‌ام.',
-    ),
-    A2Word(
-      word: 'be early',
-      meaning: 'زود رسیدن',
-      pronunciation: 'بی اِرلی',
-      example: 'I usually arrive early.',
-      exampleTranslation: 'من معمولاً زود می‌رسم.',
-    ),
-    A2Word(
-      word: 'spend time',
-      meaning: 'وقت گذراندن',
-      pronunciation: 'اِسپِند تایم',
-      example: 'I spend time with my family in the evening.',
-      exampleTranslation: 'عصرها با خانواده‌ام وقت می‌گذرانم.',
-    ),
-    A2Word(
-      word: 'exercise',
-      meaning: 'ورزش کردن',
-      pronunciation: 'اِکسِرسایز',
-      example: 'I exercise three times a week.',
-      exampleTranslation: 'من سه بار در هفته ورزش می‌کنم.',
-    ),
-    A2Word(
-      word: 'check my phone',
-      meaning: 'گوشی‌ام را چک کردن',
-      pronunciation: 'چِک مای فون',
-      example: 'I check my phone after I wake up.',
-      exampleTranslation: 'بعد از بیدار شدن گوشی‌ام را چک می‌کنم.',
-    ),
-    A2Word(
       word: 'run late',
-      meaning: 'دیر کردن / از برنامه عقب بودن',
+      meaning: 'دیر کردن',
       pronunciation: 'ران لِیت',
       example: 'I am running late this morning.',
       exampleTranslation: 'امروز صبح دارم دیر می‌کنم.',
@@ -215,6 +173,27 @@ const A2Lesson a2Lesson01 = A2Lesson(
       pronunciation: 'آن مای وِی',
       example: 'I am on my way home.',
       exampleTranslation: 'در راه خانه هستم.',
+    ),
+    A2Word(
+      word: 'spend time',
+      meaning: 'وقت گذراندن',
+      pronunciation: 'اِسپِند تایم',
+      example: 'I spend time with my family.',
+      exampleTranslation: 'با خانواده‌ام وقت می‌گذرانم.',
+    ),
+    A2Word(
+      word: 'exercise',
+      meaning: 'ورزش کردن',
+      pronunciation: 'اِکسِرسایز',
+      example: 'I exercise three times a week.',
+      exampleTranslation: 'سه بار در هفته ورزش می‌کنم.',
+    ),
+    A2Word(
+      word: 'check my phone',
+      meaning: 'گوشی‌ام را چک کردن',
+      pronunciation: 'چِک مای فون',
+      example: 'I check my phone after I wake up.',
+      exampleTranslation: 'بعد از بیدار شدن گوشی‌ام را چک می‌کنم.',
     ),
     A2Word(
       word: 'exhausted',
@@ -242,14 +221,9 @@ const A2Lesson a2Lesson01 = A2Lesson(
       translation: 'بعد از صبحانه برای کار آماده می‌شوم.',
     ),
     A2Sentence(
-      english: 'I usually leave home at eight.',
-      pronunciation: 'آی یوژوِلی لیو هوم اَت اِیت.',
-      translation: 'من معمولاً ساعت هشت از خانه خارج می‌شوم.',
-    ),
-    A2Sentence(
-      english: 'I start work at nine.',
-      pronunciation: 'آی اِستارت وِرک اَت ناین.',
-      translation: 'ساعت نه کار را شروع می‌کنم.',
+      english: 'I leave home at eight.',
+      pronunciation: 'آی لیو هوم اَت اِیت.',
+      translation: 'ساعت هشت از خانه خارج می‌شوم.',
     ),
     A2Sentence(
       english: 'I take a short break around noon.',
@@ -277,14 +251,52 @@ const A2Lesson a2Lesson01 = A2Lesson(
       translation: 'گاهی تا دیر وقت بیدار می‌مانم.',
     ),
     A2Sentence(
-      english: 'I rarely watch TV during the week.',
-      pronunciation: 'آی رِرلی واچ تی‌وی دیورینگ دِ ویک.',
-      translation: 'در طول هفته به‌ندرت تلویزیون تماشا می‌کنم.',
-    ),
-    A2Sentence(
       english: 'I never skip breakfast.',
       pronunciation: 'آی نِوِر اِسکیپ بِرِکفِست.',
       translation: 'من هیچ‌وقت صبحانه را حذف نمی‌کنم.',
+    ),
+  ],
+
+  grammar: [
+    A2Grammar(
+      title: 'Present Simple for Daily Routines',
+      explanation:
+          'از Present Simple برای کارهایی استفاده می‌کنیم که معمولاً، مرتب یا به صورت عادت انجام می‌شوند.',
+      examples: [
+        'I wake up at seven.',
+        'She goes to work every day.',
+        'They have dinner at eight.',
+      ],
+    ),
+    A2Grammar(
+      title: 'Do / Does in Questions',
+      explanation:
+          'برای سؤال‌های Present Simple با I, you, we, they از do و با he, she, it از does استفاده می‌کنیم.',
+      examples: [
+        'Do you wake up early?',
+        'Do they work here?',
+        'Does she exercise every day?',
+      ],
+    ),
+    A2Grammar(
+      title: 'Negative Sentences',
+      explanation:
+          'برای منفی کردن Present Simple از do not یا does not استفاده می‌کنیم. بعد از does not، فعل اصلی بدون s می‌آید.',
+      examples: [
+        'I do not stay up late.',
+        'They do not work on Fridays.',
+        'She does not drink coffee.',
+      ],
+    ),
+    A2Grammar(
+      title: 'Frequency Adverbs',
+      explanation:
+          'کلماتی مثل always, usually, sometimes, rarely و never برای نشان دادن میزان تکرار یک کار استفاده می‌شوند.',
+      examples: [
+        'I usually wake up early.',
+        'She sometimes cooks dinner.',
+        'He never skips breakfast.',
+      ],
     ),
   ],
 
@@ -293,31 +305,25 @@ const A2Lesson a2Lesson01 = A2Lesson(
       question: 'She ___ to work at eight every day.',
       options: ['go', 'goes', 'going', 'gone'],
       correctIndex: 1,
-      explanation: 'With he, she, and it, the verb usually takes -s in the Present Simple.',
-    ),
-    A2Question(
-      question: 'I ___ breakfast before work.',
-      options: ['have', 'has', 'having', 'had'],
-      correctIndex: 0,
-      explanation: 'With I, we use the base form: have.',
+      explanation: 'With she, the Present Simple verb takes -s.',
     ),
     A2Question(
       question: '___ you usually get up early?',
       options: ['Does', 'Do', 'Are', 'Is'],
       correctIndex: 1,
-      explanation: 'Use Do with I, you, we, and they in Present Simple questions.',
+      explanation: 'Use Do with you in Present Simple questions.',
     ),
     A2Question(
       question: 'He ___ drink coffee in the morning.',
       options: ['don’t', 'doesn’t', 'isn’t', 'not'],
       correctIndex: 1,
-      explanation: 'With he, use doesn’t for Present Simple negatives.',
+      explanation: 'Use doesn’t with he.',
     ),
     A2Question(
       question: 'What time ___ she start work?',
       options: ['do', 'does', 'is', 'are'],
       correctIndex: 1,
-      explanation: 'Use does with she in Present Simple questions.',
+      explanation: 'Use does with she.',
     ),
     A2Question(
       question: 'Which sentence is correct?',
@@ -328,13 +334,13 @@ const A2Lesson a2Lesson01 = A2Lesson(
         'She not get up early.',
       ],
       correctIndex: 2,
-      explanation: 'After doesn’t, use the base form of the verb: get.',
+      explanation: 'After doesn’t, use the base form: get.',
     ),
     A2Question(
       question: 'I ___ check my phone after I wake up.',
       options: ['usually', 'am usually', 'usual', 'use'],
       correctIndex: 0,
-      explanation: 'Usually is a frequency adverb and normally comes before the main verb.',
+      explanation: 'Usually normally comes before the main verb.',
     ),
     A2Question(
       question: 'Which phrase means "در راه بودن"?',
@@ -346,7 +352,7 @@ const A2Lesson a2Lesson01 = A2Lesson(
       question: 'I am ___ late. I need to hurry.',
       options: ['running', 'doing', 'taking', 'making'],
       correctIndex: 0,
-      explanation: 'Run late is a common expression meaning to be late or behind schedule.',
+      explanation: 'Run late is a common expression meaning to be late.',
     ),
     A2Question(
       question: 'Which sentence sounds natural?',
@@ -357,31 +363,13 @@ const A2Lesson a2Lesson01 = A2Lesson(
         'I have a showering every morning.',
       ],
       correctIndex: 1,
-      explanation: 'Take a shower is the common English expression.',
+      explanation: 'Take a shower is the common expression.',
     ),
     A2Question(
       question: 'Which word means "خیلی خسته"?',
       options: ['early', 'ready', 'exhausted', 'usually'],
       correctIndex: 2,
       explanation: 'Exhausted means extremely tired.',
-    ),
-    A2Question(
-      question: 'I ___ exercise three times a week.',
-      options: ['do', 'make', 'go', 'take'],
-      correctIndex: 0,
-      explanation: 'We commonly say do exercise or exercise.',
-    ),
-    A2Question(
-      question: 'They ___ dinner together every evening.',
-      options: ['has', 'have', 'having', 'does'],
-      correctIndex: 1,
-      explanation: 'With they, use have.',
-    ),
-    A2Question(
-      question: 'She ___ stays up late on weekdays.',
-      options: ['rarely', 'rare', 'is rarely', 'does rarely'],
-      correctIndex: 0,
-      explanation: 'Rarely is placed before the main verb in this sentence.',
     ),
     A2Question(
       question: 'What does "fall asleep" mean?',
@@ -406,33 +394,22 @@ const A2Lesson a2Lesson01 = A2Lesson(
       explanation: 'After does, use the base form: work.',
     ),
     A2Question(
-      question: 'I ___ go to bed early on weekends.',
-      options: ['never', 'am never', 'never am', 'does never'],
-      correctIndex: 0,
-      explanation: 'Never normally comes before the main verb.',
-    ),
-    A2Question(
-      question: 'Which expression means "کمی استراحت کردن"?',
+      question: 'Which expression means "استراحت کوتاه داشتن"?',
       options: ['take a break', 'take a shower', 'get ready', 'go home'],
       correctIndex: 0,
-      explanation: 'Take a break means to stop working for a short period and rest.',
+      explanation: 'Take a break means to stop and rest for a short time.',
     ),
     A2Question(
-      question: 'He ___ home at six.',
-      options: ['go', 'goes', 'going', 'does go'],
+      question: 'What time ___ you usually leave home?',
+      options: ['does', 'do', 'are', 'is'],
       correctIndex: 1,
-      explanation: 'He takes -s in the Present Simple: goes.',
+      explanation: 'Use do with you.',
     ),
     A2Question(
-      question: 'Which question is correct?',
-      options: [
-        'What time you wake up?',
-        'What time do you wake up?',
-        'What time does you wake up?',
-        'What time are you wake up?',
-      ],
+      question: 'She ___ her teeth twice a day.',
+      options: ['brush', 'brushes', 'brushing', 'brush'],
       correctIndex: 1,
-      explanation: 'Use do with you in Present Simple questions.',
+      explanation: 'With she, brush becomes brushes.',
     ),
   ],
 
@@ -473,9 +450,14 @@ const A2Lesson a2Lesson01 = A2Lesson(
       correctIndex: 1,
     ),
     A2FillBlank(
-      sentence: 'He ___ coffee in the morning.',
-      options: ['don’t drink', 'doesn’t drinks', 'doesn’t drink', 'not drink'],
-      correctIndex: 2,
+      sentence: 'He ___ drink coffee in the morning.',
+      options: [
+        'don’t',
+        'doesn’t',
+        'isn’t',
+        'not',
+      ],
+      correctIndex: 1,
     ),
     A2FillBlank(
       sentence: 'I ___ stay up late on weekdays.',
@@ -497,20 +479,221 @@ const A2Lesson a2Lesson01 = A2Lesson(
       options: ['running', 'doing', 'taking', 'making'],
       correctIndex: 0,
     ),
-    A2FillBlank(
-      sentence: 'We ___ home after work.',
-      options: ['go', 'goes', 'going', 'gone'],
-      correctIndex: 0,
+  ],
+
+  sentenceOrdering: [
+    A2SentenceOrdering(
+      sentence: 'I usually wake up at seven.',
+      shuffledWords: [
+        'seven.',
+        'wake',
+        'usually',
+        'I',
+        'up',
+        'at',
+      ],
     ),
-    A2FillBlank(
-      sentence: 'She ___ her teeth twice a day.',
-      options: ['brush', 'brushes', 'brushing', 'brushes to'],
-      correctIndex: 1,
+    A2SentenceOrdering(
+      sentence: 'She goes to work every day.',
+      shuffledWords: [
+        'every',
+        'work',
+        'goes',
+        'day.',
+        'She',
+        'to',
+      ],
     ),
-    A2FillBlank(
-      sentence: 'I ___ fall asleep quickly.',
-      options: ['usually', 'usual', 'am usual', 'does usually'],
-      correctIndex: 0,
+    A2SentenceOrdering(
+      sentence: 'I have breakfast before work.',
+      shuffledWords: [
+        'before',
+        'I',
+        'work.',
+        'breakfast',
+        'have',
+      ],
+    ),
+    A2SentenceOrdering(
+      sentence: 'They usually have dinner together.',
+      shuffledWords: [
+        'together.',
+        'usually',
+        'They',
+        'have',
+        'dinner',
+      ],
+    ),
+    A2SentenceOrdering(
+      sentence: 'Does she exercise every morning?',
+      shuffledWords: [
+        'every',
+        'she',
+        'Does',
+        'morning?',
+        'exercise',
+      ],
+    ),
+    A2SentenceOrdering(
+      sentence: 'I sometimes stay up late.',
+      shuffledWords: [
+        'late.',
+        'sometimes',
+        'I',
+        'up',
+        'stay',
+      ],
+    ),
+  ],
+
+  matching: [
+    A2Matching(
+      left: 'wake up',
+      right: 'از خواب بیدار شدن',
+    ),
+    A2Matching(
+      left: 'get dressed',
+      right: 'لباس پوشیدن',
+    ),
+    A2Matching(
+      left: 'take a break',
+      right: 'استراحت کوتاه داشتن',
+    ),
+    A2Matching(
+      left: 'leave home',
+      right: 'از خانه خارج شدن',
+    ),
+    A2Matching(
+      left: 'fall asleep',
+      right: 'به خواب رفتن',
+    ),
+    A2Matching(
+      left: 'stay up',
+      right: 'بیدار ماندن',
+    ),
+    A2Matching(
+      left: 'run late',
+      right: 'دیر کردن',
+    ),
+    A2Matching(
+      left: 'on my way',
+      right: 'در راه بودن',
+    ),
+  ],
+
+  sentenceBuilding: [
+    A2SentenceBuilding(
+      meaning: 'من معمولاً ساعت هفت بیدار می‌شوم.',
+      words: [
+        'I',
+        'usually',
+        'wake',
+        'up',
+        'at',
+        'seven.',
+      ],
+      correctSentence: 'I usually wake up at seven.',
+      pronunciation: 'آی یوژوِلی وِیک اَپ اَت سِوِن.',
+    ),
+    A2SentenceBuilding(
+      meaning: 'او هر روز به سر کار می‌رود.',
+      words: [
+        'She',
+        'goes',
+        'to',
+        'work',
+        'every',
+        'day.',
+      ],
+      correctSentence: 'She goes to work every day.',
+      pronunciation: 'شی گوز تو وِرک اِوری دِی.',
+    ),
+    A2SentenceBuilding(
+      meaning: 'من بعد از کار به خانه می‌روم.',
+      words: [
+        'I',
+        'go',
+        'home',
+        'after',
+        'work.',
+      ],
+      correctSentence: 'I go home after work.',
+      pronunciation: 'آی گو هوم اَفتِر وِرک.',
+    ),
+    A2SentenceBuilding(
+      meaning: 'آیا تو صبح‌ها ورزش می‌کنی؟',
+      words: [
+        'Do',
+        'you',
+        'exercise',
+        'in',
+        'the',
+        'morning?',
+      ],
+      correctSentence: 'Do you exercise in the morning?',
+      pronunciation: 'دو یو اِکسِرسایز اِن دِ مورنینگ؟',
+    ),
+    A2SentenceBuilding(
+      meaning: 'او هیچ‌وقت صبحانه را حذف نمی‌کند.',
+      words: [
+        'She',
+        'never',
+        'skips',
+        'breakfast.',
+      ],
+      correctSentence: 'She never skips breakfast.',
+      pronunciation: 'شی نِوِر اِسکیپس بِرِکفِست.',
+    ),
+  ],
+
+  conversations: [
+    A2Conversation(
+      speaker: 'Meow',
+      english: 'What time do you usually wake up?',
+      pronunciation: 'وات تایم دو یو یوژوِلی وِیک اَپ؟',
+      translation: 'معمولاً چه ساعتی بیدار می‌شوی؟',
+    ),
+    A2Conversation(
+      speaker: 'Student',
+      english: 'I usually wake up at seven.',
+      pronunciation: 'آی یوژوِلی وِیک اَپ اَت سِوِن.',
+      translation: 'معمولاً ساعت هفت بیدار می‌شوم.',
+    ),
+    A2Conversation(
+      speaker: 'Meow',
+      english: 'What do you do after you wake up?',
+      pronunciation: 'وات دو یو دو اَفتِر یو وِیک اَپ؟',
+      translation: 'بعد از بیدار شدن چه کار می‌کنی؟',
+    ),
+    A2Conversation(
+      speaker: 'Student',
+      english: 'I wash my face and check my phone.',
+      pronunciation: 'آی واش مای فِیس اَند چِک مای فون.',
+      translation: 'صورتم را می‌شویم و گوشی‌ام را چک می‌کنم.',
+    ),
+    A2Conversation(
+      speaker: 'Meow',
+      english: 'Do you have breakfast at home?',
+      pronunciation: 'دو یو هَو بِرِکفِست اَت هوم؟',
+      translation: 'در خانه صبحانه می‌خوری؟',
+    ),
+    A2Conversation(
+      speaker: 'Student',
+      english: 'Yes, I usually have breakfast at home.',
+      pronunciation: 'یِس، آی یوژوِلی هَو بِرِکفِست اَت هوم.',
+      translation: 'بله، معمولاً در خانه صبحانه می‌خورم.',
+    ),
+    A2Conversation(
+      speaker: 'Meow',
+      english: 'What time do you go to bed?',
+      pronunciation: 'وات تایم دو یو گو تو بِد؟',
+      translation: 'چه ساعتی به رختخواب می‌روی؟',
+    ),
+    A2Conversation(
+      speaker: 'Student',
+      english: 'It depends. I sometimes stay up late.',
+      pronunciation: 'اِت دیپِندز. آی سام‌تایمز اِستِی اَپ لِیت.',
+      translation: 'بستگی دارد. گاهی تا دیر وقت بیدار می‌مانم.',
     ),
   ],
 
@@ -544,24 +727,69 @@ const A2Lesson a2Lesson01 = A2Lesson(
       pronunciation: 'دو یو یوژوِلی گو تو بِد اِرلی اُر لِیت؟',
     ),
     A2SpeakingQuestion(
-      question: 'What part of your daily routine do you enjoy the most?',
-      pronunciation: 'وات پارت آو یور دِیلی روتین دو یو اِن‌جوی دِ موست؟',
-    ),
-    A2SpeakingQuestion(
       question: 'Describe your typical weekday.',
       pronunciation: 'دیسکرایب یور تیپیکَل ویک‌دِی.',
     ),
-    A2SpeakingQuestion(
-      question: 'Tell Meow about your morning routine.',
-      pronunciation: 'تِل میو اَباوت یور مورنینگ روتین.',
+  ],
+
+  challenges: [
+    A2Challenge(
+      title: 'My Daily Routine',
+      instruction:
+          'با استفاده از کلمات درس، روتین روزانه خودت را در چند جمله انگلیسی توضیح بده.',
+      tasks: [
+        'Say what time you wake up.',
+        'Say what you do in the morning.',
+        'Say when you leave home.',
+        'Say what you do in the evening.',
+        'Say what time you usually go to bed.',
+      ],
     ),
-    A2SpeakingQuestion(
-      question: 'What is one habit you would like to change?',
-      pronunciation: 'وات ایز وان هَبیت یو وود لایک تو چِینج؟',
+    A2Challenge(
+      title: 'Meow Challenge',
+      instruction:
+          'بدون نگاه کردن به ترجمه، حداقل پنج عبارت مربوط به روتین روزانه را به انگلیسی بگو.',
+      tasks: [
+        'Use wake up.',
+        'Use get ready.',
+        'Use have breakfast.',
+        'Use take a break.',
+        'Use go to bed.',
+      ],
     ),
-    A2SpeakingQuestion(
-      question: 'Describe your perfect daily routine.',
-      pronunciation: 'دیسکرایب یور پِرفِکت دِیلی روتین.',
+  ],
+
+  reviews: [
+    A2Review(
+      title: 'Grammar Review',
+      points: [
+        'Present Simple is used for routines and habits.',
+        'Use do with I, you, we, and they.',
+        'Use does with he, she, and it.',
+        'After does or doesn’t, use the base form of the verb.',
+      ],
+    ),
+    A2Review(
+      title: 'Vocabulary Review',
+      points: [
+        'wake up = از خواب بیدار شدن',
+        'get ready = آماده شدن',
+        'leave home = از خانه خارج شدن',
+        'take a break = استراحت کوتاه داشتن',
+        'stay up = بیدار ماندن',
+        'fall asleep = به خواب رفتن',
+        'run late = دیر کردن',
+        'on my way = در راه بودن',
+      ],
+    ),
+    A2Review(
+      title: 'Before You Finish',
+      points: [
+        'Can you describe your morning in English?',
+        'Can you ask someone about their daily routine?',
+        'Can you make Present Simple questions?',
+        'Can you use frequency adverbs correctly?',
+      ],
     ),
   ],
 );
