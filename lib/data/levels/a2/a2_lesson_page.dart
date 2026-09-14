@@ -425,6 +425,9 @@ class _A2LessonDetailPageState
 
   Future<void> _speak(String text) async {
     await _tts.stop();
+
+    await _tts.awaitSpeakCompletion(true);
+
     await _tts.speak(text);
   }
 
@@ -518,7 +521,7 @@ class _A2LessonDetailPageState
               _fillBlankAnswers[index] =
                   answer;
             }
-          });
+          }
         }
       }
 
@@ -806,6 +809,17 @@ class _A2LessonDetailPageState
   }
 
   bool _canGoNext() {
+    if (_currentStage == 9) {
+      final total =
+          widget.lesson.sentences.length;
+
+      if (total == 0) {
+        return true;
+      }
+
+      return _listenedItems.length >= total;
+    }
+
     if (_completedStages.contains(
       _currentStage,
     )) {
@@ -822,14 +836,6 @@ class _A2LessonDetailPageState
 
     if (_currentStage == 4) {
       return _fillBlankAnswers.isNotEmpty;
-    }
-
-    if (_currentStage == 9) {
-      final total =
-          widget.lesson.sentences.length;
-
-      return total == 0 ||
-          _listenedItems.length >= total;
     }
 
     if (_currentStage == 10) {
@@ -2049,14 +2055,17 @@ class _A2LessonDetailPageState
                               .play_arrow_rounded,
                     ),
                     onPressed: () async {
+                      await _speak(
+                        sentence.english,
+                      );
+
+                      if (!mounted) return;
+
                       setState(() {
                         _listenedItems.add(index);
                       });
 
                       await _saveProgress();
-                      await _speak(
-                        sentence.english,
-                      );
                     },
                   ),
                 ],
