@@ -29,12 +29,16 @@ class A2Sentence {
 class A2Grammar {
   final String title;
   final String explanation;
+  final String explanationTranslation;
   final List<String> examples;
+  final List<String> exampleTranslations;
 
   const A2Grammar({
     required this.title,
     required this.explanation,
+    this.explanationTranslation = '',
     required this.examples,
+    this.exampleTranslations = const [],
   });
 }
 
