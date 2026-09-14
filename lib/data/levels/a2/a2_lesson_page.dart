@@ -1000,9 +1000,6 @@ class _A2LessonDetailPageState
   }
 
   bool _canGoNext() {
-    // هر مرحله‌ای که چند سؤال/تمرین دارد
-    // باید تمام آیتم‌های خودش کامل شوند.
-
     if (_currentStage == 3) {
       return _allQuestionsAnswered();
     }
@@ -1056,35 +1053,65 @@ class _A2LessonDetailPageState
 
     _completedStages.add(_currentStage);
 
-    if (_currentStage <
-        totalStages - 1) {
+    // رفتن به مرحله بعد
+    if (_currentStage < totalStages - 1) {
       setState(() {
         _currentStage++;
       });
 
       await _saveProgress();
-    } else {
-      await _saveProgress();
-
-      final prefs =
-          await SharedPreferences.getInstance();
-
-      await prefs.setBool(
-        'a2_lesson_completed_${widget.lesson.id}',
-        true,
-      );
-
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(
-          const SnackBar(
-            content: Text(
-              '🎉 این درس را کامل کردی! 😼💜',
-            ),
-          ),
-        );
-      }
+      return;
     }
+
+    // ==============================
+    // اتمام کامل درس
+    // ==============================
+
+    // آخرین مرحله هم ثبت شود
+    await _saveProgress();
+
+    final prefs =
+        await SharedPreferences.getInstance();
+
+    // ثبت کامل شدن درس
+    await prefs.setBool(
+      'a2_lesson_completed_${widget.lesson.id}',
+      true,
+    );
+
+    // اطمینان از ذخیره آخرین مرحله
+    await prefs.setInt(
+      _stageKey,
+      totalStages - 1,
+    );
+
+    if (!mounted) return;
+
+    final lang =
+        MeowLocalizations.of(context);
+
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
+      SnackBar(
+        content: Text(
+          lang.isPersian
+              ? '🎉 درس کامل شد! 😼💜'
+              : '🎉 Lesson completed! 😼💜',
+        ),
+        duration:
+            const Duration(seconds: 1),
+      ),
+    );
+
+    // کمی فرصت برای نمایش پیام موفقیت
+    await Future.delayed(
+      const Duration(milliseconds: 900),
+    );
+
+    if (!mounted) return;
+
+    // برگشت به لیست درس‌ها
+    Navigator.pop(context, true);
   }
 
   Future<void> _goPrevious() async {
