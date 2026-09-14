@@ -33,12 +33,28 @@ jobs:
       - name: Generate app icons
         run: dart run flutter_launcher_icons
 
+      - name: Setup Release Signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/meow-upload-key.jks
+
+          cat > android/key.properties <<EOF
+          storePassword=$STORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=meow-upload-key.jks
+          EOF
+
       - name: Build APK
         id: build_apk
         continue-on-error: true
         run: |
           set -o pipefail
-          flutter build apk --debug --verbose 2>&1 | tee build.log
+          flutter build apk --release --verbose 2>&1 | tee build.log
           exit ${PIPESTATUS[0]}
 
       - name: Upload Build Log
@@ -54,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: meow-ai-apk
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Fail if APK build failed
         if: steps.build_apk.outcome != 'success'
