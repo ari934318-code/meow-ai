@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/levels/b1/b1_lessons.dart';
-import '../data/levels/b1/b1_lesson_01_data.dart';
 import '../localization.dart';
+import 'b1_lesson_detail_page.dart';
 
 class B1Page extends StatefulWidget {
   const B1Page({super.key});
@@ -15,8 +15,7 @@ class B1Page extends StatefulWidget {
 class _B1PageState extends State<B1Page> {
   static const Color lavender = Color(0xFFB9A7E8);
 
-  static const String _completedKey =
-      'b1_completed_lessons';
+  static const String _completedKey = 'b1_completed_lessons';
 
   Set<String> completedLessons = {};
   bool isLoading = true;
@@ -30,8 +29,7 @@ class _B1PageState extends State<B1Page> {
   Future<void> _loadProgress() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final completed =
-        prefs.getStringList(_completedKey) ?? [];
+    final completed = prefs.getStringList(_completedKey) ?? [];
 
     if (!mounted) return;
 
@@ -51,14 +49,12 @@ class _B1PageState extends State<B1Page> {
     );
   }
 
-  Future<void> _openLesson(
-    B1Lesson lesson,
-  ) async {
+  Future<void> _openLesson(B1Lesson lesson) async {
     if (lesson.id == 1) {
       await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => const B1Lesson01PreviewPage(),
+          builder: (_) => const B1LessonDetailPage(),
         ),
       );
 
@@ -78,19 +74,15 @@ class _B1PageState extends State<B1Page> {
 
     final lang = MeowLocalizations.of(context);
 
-    final completedCount =
-        completedLessons.length;
-
-    final totalCount =
-        b1Lessons.length;
+    final completedCount = completedLessons.length;
+    final totalCount = b1Lessons.length;
 
     final progress = totalCount == 0
         ? 0.0
         : completedCount / totalCount;
 
     return Scaffold(
-      backgroundColor:
-          Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
         title: Text(
@@ -138,23 +130,17 @@ class _B1PageState extends State<B1Page> {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Theme.of(context)
-            .colorScheme
-            .surface,
-        borderRadius:
-            BorderRadius.circular(24),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: lavender.withAlpha(36),
         ),
       ),
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            lang.isPersian
-                ? 'سطح B1 🐱'
-                : 'B1 Level 🐱',
+            lang.isPersian ? 'سطح B1 🐱' : 'B1 Level 🐱',
             style: const TextStyle(
               fontSize: 27,
               fontWeight: FontWeight.w900,
@@ -174,13 +160,10 @@ class _B1PageState extends State<B1Page> {
           ),
           const SizedBox(height: 18),
           Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                lang.isPersian
-                    ? 'پیشرفت'
-                    : 'Progress',
+                lang.isPersian ? 'پیشرفت' : 'Progress',
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
@@ -196,15 +179,12 @@ class _B1PageState extends State<B1Page> {
           ),
           const SizedBox(height: 9),
           ClipRRect(
-            borderRadius:
-                BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(20),
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 9,
-              backgroundColor:
-                  lavender.withAlpha(31),
-              valueColor:
-                  const AlwaysStoppedAnimation(
+              backgroundColor: lavender.withAlpha(31),
+              valueColor: const AlwaysStoppedAnimation(
                 lavender,
               ),
             ),
@@ -214,21 +194,16 @@ class _B1PageState extends State<B1Page> {
     );
   }
 
-  Widget _buildLessons(
-    MeowLocalizations lang,
-  ) {
+  Widget _buildLessons(MeowLocalizations lang) {
     return Column(
       children: List.generate(
         b1Lessons.length,
         (index) {
-          final lesson =
-              b1Lessons[index];
+          final lesson = b1Lessons[index];
 
-          final unlocked =
-              _isLessonUnlocked(index);
+          final unlocked = _isLessonUnlocked(index);
 
-          final completed =
-              completedLessons.contains(
+          final completed = completedLessons.contains(
             lesson.id.toString(),
           );
 
@@ -251,8 +226,7 @@ class _B1PageState extends State<B1Page> {
     required bool unlocked,
     required bool completed,
   }) {
-    final lessonNumber =
-        index + 1;
+    final lessonNumber = index + 1;
 
     final label = lang.isPersian
         ? 'درس $lessonNumber'
@@ -267,28 +241,20 @@ class _B1PageState extends State<B1Page> {
         : lesson.topicEn;
 
     return Padding(
-      padding:
-          const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(bottom: 14),
       child: InkWell(
-        borderRadius:
-            BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24),
         onTap: unlocked
             ? () => _openLesson(lesson)
             : null,
         child: AnimatedOpacity(
-          duration:
-              const Duration(milliseconds: 200),
-          opacity:
-              unlocked ? 1.0 : 0.55,
+          duration: const Duration(milliseconds: 200),
+          opacity: unlocked ? 1.0 : 0.55,
           child: Container(
-            padding:
-                const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: Theme.of(context)
-                  .colorScheme
-                  .surface,
-              borderRadius:
-                  BorderRadius.circular(24),
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: completed
                     ? Colors.green.withAlpha(56)
@@ -300,24 +266,18 @@ class _B1PageState extends State<B1Page> {
                 Container(
                   width: 50,
                   height: 50,
-                  decoration:
-                      BoxDecoration(
+                  decoration: BoxDecoration(
                     color: completed
-                        ? Colors.green
-                            .withAlpha(28)
-                        : lavender
-                            .withAlpha(31),
+                        ? Colors.green.withAlpha(28)
+                        : lavender.withAlpha(31),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     completed
-                        ? Icons
-                            .check_circle_rounded
+                        ? Icons.check_circle_rounded
                         : unlocked
-                            ? Icons
-                                .menu_book_rounded
-                            : Icons
-                                .lock_rounded,
+                            ? Icons.menu_book_rounded
+                            : Icons.lock_rounded,
                     color: completed
                         ? Colors.green
                         : unlocked
@@ -329,27 +289,22 @@ class _B1PageState extends State<B1Page> {
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         label,
-                        style:
-                            const TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
-                          fontWeight:
-                              FontWeight.w700,
+                          fontWeight: FontWeight.w700,
                           color: lavender,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         title,
-                        style:
-                            const TextStyle(
+                        style: const TextStyle(
                           fontSize: 17,
-                          fontWeight:
-                              FontWeight.w700,
+                          fontWeight: FontWeight.w700,
                           letterSpacing: -0.2,
                         ),
                       ),
@@ -357,10 +312,8 @@ class _B1PageState extends State<B1Page> {
                       Text(
                         topic,
                         maxLines: 2,
-                        overflow:
-                            TextOverflow.ellipsis,
-                        style:
-                            const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
                           fontSize: 12,
                           height: 1.35,
                           color: Colors.grey,
@@ -372,16 +325,11 @@ class _B1PageState extends State<B1Page> {
                 const SizedBox(width: 8),
                 Icon(
                   completed
-                      ? Icons
-                          .check_circle_rounded
+                      ? Icons.check_circle_rounded
                       : unlocked
-                          ? Icons
-                              .arrow_forward_ios_rounded
-                          : Icons
-                              .lock_outline_rounded,
-                  size: completed
-                      ? 23
-                      : 17,
+                          ? Icons.arrow_forward_ios_rounded
+                          : Icons.lock_outline_rounded,
+                  size: completed ? 23 : 17,
                   color: completed
                       ? Colors.green
                       : unlocked
@@ -396,13 +344,9 @@ class _B1PageState extends State<B1Page> {
     );
   }
 
-  Widget _buildFinalTestCard(
-    MeowLocalizations lang,
-  ) {
-    final allCompleted =
-        b1Lessons.every(
-      (lesson) =>
-          completedLessons.contains(
+  Widget _buildFinalTestCard(MeowLocalizations lang) {
+    final allCompleted = b1Lessons.every(
+      (lesson) => completedLessons.contains(
         lesson.id.toString(),
       ),
     );
@@ -410,11 +354,8 @@ class _B1PageState extends State<B1Page> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Theme.of(context)
-            .colorScheme
-            .surface,
-        borderRadius:
-            BorderRadius.circular(24),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: allCompleted
               ? lavender.withAlpha(64)
@@ -445,8 +386,7 @@ class _B1PageState extends State<B1Page> {
           const SizedBox(width: 14),
           Expanded(
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   lang.isPersian
@@ -454,8 +394,7 @@ class _B1PageState extends State<B1Page> {
                       : 'B1 Final Level Test',
                   style: const TextStyle(
                     fontSize: 17,
-                    fontWeight:
-                        FontWeight.w700,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 5),
@@ -480,79 +419,6 @@ class _B1PageState extends State<B1Page> {
                 ? lavender
                 : Colors.grey,
             size: 17,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-///
-/// موقتاً فقط برای اینکه Lesson 01 را تست کنیم.
-/// بعداً این صفحه را با صفحه اصلی B1 Lesson
-/// که ساختار کامل Vocabulary / Grammar /
-/// Listening / Reading / Speaking / Writing دارد
-/// جایگزین می‌کنیم.
-///
-class B1Lesson01PreviewPage
-    extends StatelessWidget {
-  const B1Lesson01PreviewPage({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final lang =
-        MeowLocalizations.of(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          lang.isPersian
-              ? B1Lesson01Data.titleFa
-              : B1Lesson01Data.titleEn,
-        ),
-      ),
-      body: ListView(
-        padding:
-            const EdgeInsets.all(20),
-        children: [
-          Text(
-            lang.isPersian
-                ? B1Lesson01Data.topicFa
-                : B1Lesson01Data.topicEn,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            lang.isPersian
-                ? B1Lesson01Data
-                    .grammar
-                    .titleFa
-                : B1Lesson01Data
-                    .grammar
-                    .titleEn,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            lang.isPersian
-                ? B1Lesson01Data
-                    .grammar
-                    .explanationFa
-                : B1Lesson01Data
-                    .grammar
-                    .explanationEn,
-            style: const TextStyle(
-              fontSize: 15,
-              height: 1.6,
-            ),
           ),
         ],
       ),
