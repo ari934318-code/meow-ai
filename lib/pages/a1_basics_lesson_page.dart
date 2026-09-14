@@ -937,7 +937,7 @@ class _A1BasicsLessonPageState
           }
         }
       },
-      onError: () {
+      onError: (error) {
         if (mounted) {
           setState(() {
             _isListening = false;
@@ -1236,10 +1236,10 @@ class _A1BasicsLessonPageState
         await SharedPreferences.getInstance();
 
     final oldStage =
-        prefs.getInt(_stageKey) ?? 0;
+        prefs.getInt(stageKey) ?? 0;
 
     final raw =
-        prefs.getString(_progressKey);
+        prefs.getString(progressKey);
 
     if (raw == null || raw.isEmpty) {
       if (!mounted) {
@@ -2810,10 +2810,6 @@ class _A1BasicsLessonPageState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildDialogueLabel(
-            _isPersian ? 'میو' : 'Meow',
-          ),
-          const SizedBox(height: 6),
           Text(
             'How are you?',
             style: Theme.of(context)
@@ -2828,31 +2824,23 @@ class _A1BasicsLessonPageState
             const Text('حالت چطوره؟'),
           ],
           const SizedBox(height: 16),
-          _buildDialogueLabel(
-            _isPersian ? 'دانش‌آموز' : 'Student',
-          ),
-          const SizedBox(height: 6),
           Text(
             _isPersian
-                ? 'ممکن است زبان‌آموز این‌طور جواب بدهد:'
-                : 'A learner might reply like this:',
+                ? 'یک جواب رایج که ممکن است بشنوی:'
+                : 'A common reply you may hear:',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 8),
           _buildMistakeLine(
             "I'm fine, thanks. How are you?",
             _isPersian
-                ? 'قابل فهم است، اما برای برگرداندن سؤال در گفت‌وگوی طبیعی، بهتر است بگوییم:'
-                : 'It is understandable, but a more natural way to return the question is:',
+                ? 'قابل فهم است، اما در گفت‌وگوی طبیعی معمولاً بهتر است سؤال را این‌طور برگردانیم:'
+                : 'It is understandable, but in natural conversation, a more natural way to return the question is:',
             isMistake: true,
           ),
           const SizedBox(height: 12),
-          _buildDialogueLabel(
-            _isPersian ? 'جواب طبیعی' : 'Natural reply',
-          ),
-          const SizedBox(height: 6),
           _buildMistakeLine(
-            'I'm fine, thanks. How about you?',
+            "I'm fine, thanks. How about you?",
             _isPersian
                 ? 'این عبارت طبیعی‌تر و رایج‌تر است.'
                 : 'This is the more natural and common choice here.',
@@ -2872,15 +2860,6 @@ class _A1BasicsLessonPageState
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildDialogueLabel(String label) {
-    return Text(
-      label,
-      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-        fontWeight: FontWeight.w700,
       ),
     );
   }
