@@ -14,6 +14,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'What Is the Present Simple?',
       titleFa: 'Present Simple چیست؟',
+      explanationFa: "از زمان حال ساده برای عادت‌ها، کارهای روزمره، اتفاق‌های تکراری، واقعیت‌ها و چیزهایی که معمولاً درست هستند استفاده می‌کنیم.",
+
       explanation:
           'We use the Present Simple for things that happen regularly, habits, routines, '
           'facts, and things that are generally true.',
@@ -40,6 +42,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'I, You, We, They',
       titleFa: 'I, You, We, They',
+      explanationFa: "با I، you، we و they از شکل پایه فعل استفاده می‌کنیم و به فعل s یا es اضافه نمی‌کنیم؛ مثل I work و They play.",
+
       explanation:
           'With I, you, we, and they, use the base form of the verb.',
       examples: [
@@ -65,6 +69,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'He, She, It',
       titleFa: 'He, She, It',
+      explanationFa: "با he، she و it معمولاً شکل فعل تغییر می‌کند و s، es یا در بعضی فعل‌ها ies می‌گیرد؛ مثل works، watches و studies.",
+
       explanation:
           'With he, she, and it, the verb usually takes s, es, or ies.',
       examples: [
@@ -90,6 +96,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Adding -s',
       titleFa: 'اضافه کردن s',
+      explanationFa: "برای بسیاری از فعل‌ها، وقتی فاعل he، she یا it باشد، فقط s به انتهای فعل اضافه می‌کنیم؛ مثل work → works و play → plays.",
+
       explanation:
           'For many verbs, simply add s with he, she, and it.',
       examples: [
@@ -119,6 +127,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Adding -es',
       titleFa: 'اضافه کردن es',
+      explanationFa: "بعضی فعل‌ها با he، she و it به جای s، پسوند es می‌گیرند. این حالت در فعل‌هایی مانند watch، wash، fix و go دیده می‌شود.",
+
       explanation:
           'Some verbs ending in sounds such as s, sh, ch, x, or o take es with he, she, and it.',
       examples: [
@@ -144,6 +154,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'The -y to -ies Rule',
       titleFa: 'قانون تبدیل y به ies',
+      explanationFa: "وقتی فعل به یک صامت + y ختم شود، در حالت he، she و it معمولاً y به ies تبدیل می‌شود؛ مثل study → studies و try → tries.",
+
       explanation:
           'When a verb ends in a consonant + y, y usually changes to ies with he, she, and it.',
       examples: [
@@ -169,6 +181,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Positive Sentences',
       titleFa: 'جمله‌های مثبت',
+      explanationFa: "ساختار اصلی جمله مثبت در زمان حال ساده معمولاً فاعل + فعل + ادامه جمله است. فقط باید تفاوت شکل فعل با he، she و it را رعایت کنیم.",
+
       explanation:
           'The basic structure is subject + verb + the rest of the sentence.',
       examples: [
@@ -194,6 +208,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Negative Sentences',
       titleFa: 'جمله‌های منفی',
+      explanationFa: "برای منفی کردن جمله، با I، you، we و they از do not یا don't و با he، she و it از does not یا doesn't استفاده می‌کنیم. بعد از doesn't فعل به شکل پایه برمی‌گردد.",
+
       explanation:
           'Use do not (don’t) with I, you, we, and they. '
           'Use does not (doesn’t) with he, she, and it. '
@@ -221,6 +237,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Do and Does in Questions',
       titleFa: 'سؤال با Do و Does',
+      explanationFa: "برای ساختن سؤال در زمان حال ساده، با I، you، we و they از Do و با he، she و it از Does استفاده می‌کنیم. فعل اصلی بعد از آن‌ها همیشه به شکل پایه می‌آید.",
+
       explanation:
           'Use Do with I, you, we, and they. Use Does with he, she, and it. '
           'The main verb stays in its base form.',
@@ -247,6 +265,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Short Answers',
       titleFa: 'جواب‌های کوتاه',
+      explanationFa: "در جواب کوتاه سؤال‌های حال ساده از do یا does استفاده می‌کنیم. مثلاً Do you like tea? با Yes, I do جواب داده می‌شود و Does she study? با Yes, she does.",
+
       explanation:
           'Use do or does in short answers.',
       examples: [
@@ -272,6 +292,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Do as a Main Verb',
       titleFa: 'Do به‌عنوان فعل اصلی',
+      explanationFa: "do گاهی فعل کمکی است و برای سؤال و منفی کردن استفاده می‌شود، اما گاهی خودش فعل اصلی به معنی انجام دادن است؛ مثل I do my homework.",
+
       explanation:
           'Do can be a helping verb in questions and negatives, but it can also be the main verb meaning "perform" or "do".',
       examples: [
@@ -297,6 +319,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Adverbs of Frequency',
       titleFa: 'قیدهای تکرار',
+      explanationFa: "قیدهای تکرار مانند always، usually، often، sometimes و never نشان می‌دهند یک کار با چه میزان تکراری انجام می‌شود و در صحبت درباره عادت‌ها بسیار کاربردی هستند.",
+
       explanation:
           'Words such as always, usually, often, sometimes, and never show how often something happens.',
       examples: [
@@ -326,6 +350,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Daily Routines',
       titleFa: 'کارهای روزمره',
+      explanationFa: "زمان حال ساده برای صحبت درباره کارهای روزمره بسیار رایج است؛ مثل بیدار شدن، صبحانه خوردن، سر کار رفتن، به خانه آمدن و درس خواندن.",
+
       explanation:
           'The Present Simple is very common when talking about daily routines.',
       examples: [
@@ -355,6 +381,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Common Mistakes',
       titleFa: 'اشتباهات رایج',
+      explanationFa: "اشتباه‌های رایج شامل فراموش کردن s با he، she و it و اضافه کردن دوباره s بعد از does یا doesn't است. بعد از does و doesn't همیشه شکل پایه فعل می‌آید.",
+
       explanation:
           'The most common mistakes are forgetting s with he, she, and it, '
           'and adding s after does or doesn’t.',
@@ -397,6 +425,8 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
     A1BasicSection(
       title: 'Real-Life Present Simple',
       titleFa: 'Present Simple در انگلیسی واقعی',
+      explanationFa: "حال ساده در مکالمات واقعی دائماً برای صحبت درباره زندگی، عادت‌ها، کار، علایق و برنامه‌های روزمره استفاده می‌شود؛ مثل I live with my family و What time do you wake up?",
+
       explanation:
           'People use the Present Simple constantly when talking about themselves, '
           'their habits, jobs, preferences, routines, and everyday life.',

@@ -18,6 +18,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
           'Irregular verbs are verbs that do not always follow regular patterns when their form changes. '
           'Many very common English verbs are irregular. '
           'For A1, it is important to recognize and use these verbs naturally.',
+      explanationFa:
+          'افعال بی‌قاعده فعل‌هایی هستند که همیشه از الگوهای معمول تغییر شکل فعل‌ها پیروی نمی‌کنند. بسیاری از فعل‌های بسیار پرکاربرد انگلیسی بی‌قاعده هستند، بنابراین باید شکل و کاربرد آن‌ها را به‌صورت جداگانه یاد بگیری.',
       examples: [
         A1BasicExample(
           english: 'go',
@@ -53,6 +55,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
           'Regular verbs usually follow predictable spelling patterns. '
           'Irregular verbs may have different forms, so they need to be learned individually. '
           'However, in the present simple, many common irregular verbs are easy to use once you know their forms.',
+      explanationFa:
+          'فعل‌های باقاعده معمولاً از الگوهای قابل پیش‌بینی پیروی می‌کنند، اما بعضی فعل‌ها شکل متفاوتی دارند. با این حال، در زمان حال ساده بسیاری از افعال بی‌قاعده فقط در حالت he، she و it تغییر مشخصی دارند و با شناخت این الگوها استفاده از آن‌ها آسان‌تر می‌شود.',
       examples: [
         A1BasicExample(
           english: 'work → works',
@@ -84,6 +88,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
           'Go is very common in everyday English. '
           'Use go with I, you, we, and they. '
           'Use goes with he, she, and it.',
+      explanationFa:
+          'go یکی از فعل‌های بسیار پرکاربرد در انگلیسی روزمره است. با I، you، we و they از go استفاده می‌کنیم و با he، she و it شکل آن به goes تغییر می‌کند.',
       examples: [
         A1BasicExample(
           english: 'I go to school.',
@@ -118,6 +124,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       explanation:
           'Have means داشتن. Use have with I, you, we, and they. '
           'Use has with he, she, and it.',
+      explanationFa:
+          'have برای بیان داشتن و مالکیت بسیار رایج است. با I، you، we و they از have و با he، she و it از has استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I have a car.',
@@ -152,6 +160,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       explanation:
           'Do can be a main verb meaning انجام دادن, and it can also be a helping verb for questions and negatives. '
           'With he, she, and it, the main verb do becomes does.',
+      explanationFa:
+          'do می‌تواند به‌عنوان فعل اصلی به معنی «انجام دادن» استفاده شود و همچنین می‌تواند فعل کمکی برای ساختن سؤال و جمله منفی باشد. وقتی do با he، she و it به‌عنوان فعل اصلی استفاده شود، به does تبدیل می‌شود.',
       examples: [
         A1BasicExample(
           english: 'I do my homework.',
@@ -186,6 +196,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       explanation:
           'Get has many meanings in English. It can mean گرفتن، دریافت کردن، رسیدن، یا به دست آوردن. '
           'The exact meaning depends on the sentence.',
+      explanationFa:
+          'get یکی از فعل‌های بسیار پرکاربرد انگلیسی است و معنی آن با توجه به جمله تغییر می‌کند. می‌تواند معنی گرفتن، دریافت کردن، رسیدن یا به دست آوردن داشته باشد و در عبارت‌های روزمره زیادی استفاده می‌شود.',
       examples: [
         A1BasicExample(
           english: 'I get emails every day.',
@@ -211,6 +223,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       titleFa: 'Make و Makes',
       explanation:
           'Make often means ساختن or درست کردن. It is also common in many everyday expressions.',
+      explanationFa:
+          'make معمولاً به معنی ساختن یا درست کردن است و در بسیاری از عبارت‌های روزمره استفاده می‌شود. با I، you، we و they از make و با he، she و it از makes استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I make breakfast.',
@@ -236,6 +250,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       titleFa: 'Take و Takes',
       explanation:
           'Take has several meanings. It can mean برداشتن، گرفتن، بردن، یا سوار شدن depending on the context.',
+      explanationFa:
+          'take معانی مختلفی دارد و معنی دقیق آن به موقعیت بستگی دارد. می‌تواند به معنی برداشتن، گرفتن، بردن یا استفاده از وسیله‌ای برای رفت‌وآمد باشد و در عبارت‌های روزمره بسیار رایج است.',
       examples: [
         A1BasicExample(
           english: 'I take the bus.',
@@ -261,6 +277,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       titleFa: 'Give و Gives',
       explanation:
           'Give means دادن. Use give with I, you, we, and they, and gives with he, she, and it.',
+      explanationFa:
+          'give به معنی «دادن» است. با I، you، we و they از give و با he، she و it از gives استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I give my friend a gift.',
@@ -286,6 +304,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       titleFa: 'See و Sees',
       explanation:
           'See means دیدن. It is commonly used for people, places, movies, and things.',
+      explanationFa:
+          'see به معنی «دیدن» است و برای صحبت درباره دیدن افراد، مکان‌ها، فیلم‌ها و چیزهای مختلف استفاده می‌شود. با he، she و it شکل فعل به sees تغییر می‌کند.',
       examples: [
         A1BasicExample(
           english: 'I see my friends every weekend.',
@@ -311,6 +331,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       titleFa: 'Know و Knows',
       explanation:
           'Know means دانستن or شناختن. Use know with I, you, we, and they, and knows with he, she, and it.',
+      explanationFa:
+          'know می‌تواند به معنی «دانستن» یا «شناختن» باشد. با I، you، we و they از know و با he، she و it از knows استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I know the answer.',
@@ -336,6 +358,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       titleFa: 'Say و Says',
       explanation:
           'Say means گفتن. With he, she, and it, say changes to says.',
+      explanationFa:
+          'say به معنی «گفتن» است. با I، you، we و they از say و با he، she و it از says استفاده می‌کنیم. توجه کن که شکل says از نظر نوشتاری و تلفظی با اضافه کردن ساده s به say متفاوت است.',
       examples: [
         A1BasicExample(
           english: 'I say hello.',
@@ -362,6 +386,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       explanation:
           'With don’t and doesn’t, use the base form of the main verb. '
           'Do not use the third-person form after doesn’t.',
+      explanationFa:
+          'وقتی جمله منفی را با don’t یا doesn’t می‌سازیم، فعل اصلی باید به شکل پایه برگردد. بنابراین می‌گوییم She doesn’t have و He doesn’t go، نه She doesn’t has یا He doesn’t goes.',
       examples: [
         A1BasicExample(
           english: 'I don’t have a car.',
@@ -396,6 +422,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       explanation:
           'Use do or does to make present simple questions. '
           'After does, always use the base form of the main verb.',
+      explanationFa:
+          'برای ساختن سؤال در زمان حال ساده از do یا does استفاده می‌کنیم. بعد از does، فعل اصلی همیشه به شکل پایه می‌آید؛ بنابراین می‌گوییم Does she have؟ و Does he go؟، نه Does she has؟ یا Does he goes؟',
       examples: [
         A1BasicExample(
           english: 'Do you have a car?',
@@ -430,6 +458,8 @@ const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
       explanation:
           'A common mistake is adding s after does or doesn’t. '
           'Another common mistake is using have with he, she, and it in a positive sentence.',
+      explanationFa:
+          'چند اشتباه در این درس بسیار رایج هستند؛ مثل استفاده از have با he، she و it در جمله مثبت، یا اضافه کردن s به فعل بعد از does و doesn’t. همیشه فاعل و وجود do، does، don’t یا doesn’t را بررسی کن.',
       examples: [
         A1BasicExample(
           english: 'She has a car. ✓',

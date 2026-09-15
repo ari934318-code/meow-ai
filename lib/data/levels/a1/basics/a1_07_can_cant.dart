@@ -15,6 +15,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'What Is Can?',
       titleFa: 'Can چیست؟',
       explanation:
+      explanationFa: "can یکی از فعل‌های کمکی بسیار پرکاربرد در انگلیسی است. از آن برای صحبت درباره توانایی، امکان، اجازه و درخواست‌های ساده استفاده می‌کنیم.",
           'Can is a very common modal verb. We use it to talk about what someone '
           'is able to do, what is possible, permission, and simple requests.',
       examples: [
@@ -43,6 +44,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Can for Ability',
       titleFa: 'Can برای توانایی',
       explanation:
+      explanationFa: "از can برای گفتن توانایی انجام یک کار استفاده می‌کنیم. مثلاً وقتی می‌گوییم I can swim، یعنی «من توانایی شنا کردن دارم».",
           'We often use can to say that someone has the ability to do something.',
       examples: [
         A1BasicExample(
@@ -72,6 +74,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Can + Base Verb',
       titleFa: 'Can + شکل پایه فعل',
       explanation:
+      explanationFa: "بعد از can همیشه شکل پایه فعل می‌آید. بعد از can نباید به فعل s، es یا ing اضافه کنیم و همچنین از to قبل از فعل استفاده نمی‌کنیم.",
           'After can, always use the base form of the verb. '
           'Do not add s, es, or ing after can.',
       examples: [
@@ -102,6 +105,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Can with Different Subjects',
       titleFa: 'Can با فاعل‌های مختلف',
       explanation:
+      explanationFa: "can با فاعل تغییر نمی‌کند. با I، you، he، she، it، we و they همیشه خود can را استفاده می‌کنیم.",
           'Can does not change with the subject. We use can with I, you, he, she, it, we, and they.',
       examples: [
         A1BasicExample(
@@ -135,6 +139,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Can’t and Cannot',
       titleFa: 'Can’t و Cannot',
       explanation:
+      explanationFa: "can’t شکل کوتاه cannot است و برای بیان ناتوانی یا در بعضی موقعیت‌ها برای گفتن اینکه کاری اجازه ندارد استفاده می‌شود.",
           'Can’t is the short form of cannot. Both forms mean that someone is not able to do something or something is not allowed.',
       examples: [
         A1BasicExample(
@@ -164,6 +169,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Questions with Can',
       titleFa: 'سؤال با Can',
       explanation:
+      explanationFa: "برای ساختن سؤال با can، خود can را قبل از فاعل قرار می‌دهیم. بعد از فاعل نیز فعل اصلی به شکل پایه می‌آید.",
           'To make a question with can, put can before the subject. '
           'The main verb stays in the base form.',
       examples: [
@@ -194,6 +200,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Short Answers',
       titleFa: 'جواب‌های کوتاه',
       explanation:
+      explanationFa: "در جواب کوتاه سؤال‌های can، از can یا can’t استفاده می‌کنیم و معمولاً فعل اصلی را تکرار نمی‌کنیم. مثلاً به Can you swim? می‌توانیم بگوییم Yes, I can یا No, I can’t.",
           'Short answers use can or can’t. We do not normally repeat the main verb.',
       examples: [
         A1BasicExample(
@@ -219,6 +226,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Can for Permission',
       titleFa: 'Can برای اجازه گرفتن',
       explanation:
+      explanationFa: "can در انگلیسی روزمره برای درخواست اجازه بسیار رایج است. ساختار Can I...? برای پرسیدن اینکه اجازه انجام کاری را داریم یا نه استفاده می‌شود.",
           'Can is commonly used in everyday English to ask for permission.',
       examples: [
         A1BasicExample(
@@ -248,6 +256,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Can for Requests',
       titleFa: 'Can برای درخواست',
       explanation:
+      explanationFa: "ساختار Can you...? یکی از روش‌های بسیار رایج و ساده برای درخواست از دیگران است. بسته به موقعیت می‌تواند معنای «می‌توانی...؟» یا «لطفاً می‌شود...؟» داشته باشد.",
           'Can you...? is a very common way to make a simple and friendly request.',
       examples: [
         A1BasicExample(
@@ -277,6 +286,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Can’t for Inability',
       titleFa: 'Can’t برای ناتوانی',
       explanation:
+      explanationFa: "وقتی کسی توانایی انجام کاری را ندارد، از can’t استفاده می‌کنیم. مثلاً I can’t swim یعنی «من نمی‌توانم شنا کنم».",
           'Use can’t when someone is not able to do something.',
       examples: [
         A1BasicExample(
@@ -306,6 +316,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Can’t for Something Not Allowed',
       titleFa: 'Can’t برای چیزی که اجازه ندارد',
       explanation:
+      explanationFa: "can’t همیشه فقط به معنی ناتوانی نیست. گاهی برای گفتن اینکه انجام کاری مجاز نیست نیز استفاده می‌شود؛ مثلاً You can’t park here یعنی «اینجا اجازه پارک کردن نداری».",
           'Can’t can also mean that something is not allowed.',
       examples: [
         A1BasicExample(
@@ -331,6 +342,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Common Mistakes',
       titleFa: 'اشتباهات رایج',
       explanation:
+      explanationFa: "مهم‌ترین قانون can این است که بعد از can و can’t همیشه شکل پایه فعل می‌آید. بنابراین می‌گوییم She can swim و She can’t drive، نه She can swims یا She can’t drives.",
           'The most important rule is simple: after can or can’t, use the base form. '
           'Do not add s, es, or ing.',
       examples: [
@@ -373,6 +385,7 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       title: 'Everyday Can Expressions',
       titleFa: 'عبارت‌های روزمره با Can',
       explanation:
+      explanationFa: "این عبارت‌ها در مکالمات واقعی بسیار کاربردی هستند. جمله‌هایی مثل Can you help me?، Can I ask a question? و I can’t understand را مرتب در موقعیت‌های روزمره می‌شنوی و استفاده می‌کنی.",
           'These expressions are very useful in real conversations.',
       examples: [
         A1BasicExample(

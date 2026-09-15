@@ -16,6 +16,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       explanation:
           'Have and has can mean داشتن. We use them to talk about things, '
           'people, relationships, or characteristics that belong to someone.',
+      explanationFa:
+          'have و has در بسیاری از جمله‌های پایه به معنی «داشتن» هستند. از آن‌ها برای صحبت درباره چیزهایی که کسی دارد، اعضای خانواده، روابط، ویژگی‌ها و بعضی موقعیت‌های روزمره استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I have a phone.',
@@ -40,6 +42,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'Have',
       explanation:
           'We use have with I, you, we, and they.',
+      explanationFa:
+          'از have با I، you، we و they استفاده می‌کنیم. یعنی با این فاعل‌ها می‌گوییم I have، you have، we have و they have.',
       examples: [
         A1BasicExample(
           english: 'I have a sister.',
@@ -69,6 +73,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'Has',
       explanation:
           'We use has with he, she, and it. We also use has with one person or one thing.',
+      explanationFa:
+          'از has با he، she و it استفاده می‌کنیم. همچنین وقتی فاعل یک نفر یا یک چیز مفرد باشد، معمولاً از has استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'He has a new phone.',
@@ -98,6 +104,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'جدول Have و Has',
       explanation:
           'Remember this pattern. It is one of the most important patterns in beginner English.',
+      explanationFa:
+          'این الگو را خوب یاد بگیر: I، you، we و they با have می‌آیند و he، she و it با has. این یکی از مهم‌ترین الگوهای پایه برای ساخت جمله با have است.',
       examples: [
         A1BasicExample(
           english: 'I → have',
@@ -135,6 +143,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'Have برای مالکیت و داشتن',
       explanation:
           'One of the most common uses of have is to say that someone owns or has something.',
+      explanationFa:
+          'یکی از رایج‌ترین کاربردهای have این است که بگوییم کسی چیزی دارد یا مالک آن است. می‌توانیم درباره وسایل، خانه، ماشین، لباس و چیزهای مختلفی که افراد دارند صحبت کنیم.',
       examples: [
         A1BasicExample(
           english: 'I have a laptop.',
@@ -168,6 +178,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'Have برای خانواده و روابط',
       explanation:
           'Have and has can also describe family members and relationships.',
+      explanationFa:
+          'از have و has برای صحبت درباره اعضای خانواده و روابط هم استفاده می‌کنیم. می‌توانیم بگوییم کسی خواهر، برادر، فرزند، دوست یا اعضای دیگری از خانواده دارد.',
       examples: [
         A1BasicExample(
           english: 'I have two brothers.',
@@ -197,6 +209,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'Have برای ویژگی‌ها و مشخصات',
       explanation:
           'Have can describe physical features or characteristics.',
+      explanationFa:
+          'have و has می‌توانند برای بیان ویژگی‌های ظاهری و مشخصات یک شخص یا چیز استفاده شوند؛ مثلاً رنگ چشم، مو یا تعداد اتاق‌های یک خانه.',
       examples: [
         A1BasicExample(
           english: 'I have brown eyes.',
@@ -222,6 +236,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'منفی: Don’t Have',
       explanation:
           'For I, you, we, and they, use do not or the contraction don’t before have.',
+      explanationFa:
+          'برای منفی کردن have با I، you، we و they از do not یا شکل کوتاه آن یعنی don’t استفاده می‌کنیم. بعد از don’t همیشه شکل پایه have می‌آید.',
       examples: [
         A1BasicExample(
           english: 'I don’t have a car.',
@@ -252,6 +268,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       explanation:
           'For he, she, and it, use does not or doesn’t. '
           'Notice that after doesn’t, we use have, not has.',
+      explanationFa:
+          'برای منفی کردن have با he، she و it از does not یا شکل کوتاه آن یعنی doesn’t استفاده می‌کنیم. بعد از doesn’t باید have بیاید، نه has.',
       examples: [
         A1BasicExample(
           english: 'He doesn’t have a car.',
@@ -276,6 +294,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'نکته مهم: Doesn’t + Have',
       explanation:
           'This is a very common beginner mistake. After doesn’t, the main verb goes back to its base form.',
+      explanationFa:
+          'این نکته بسیار مهم است: وقتی از doesn’t استفاده می‌کنیم، فعل اصلی به شکل پایه برمی‌گردد. بنابراین می‌گوییم She doesn’t have، نه She doesn’t has.',
       examples: [
         A1BasicExample(
           english: 'She has a car. ✓',
@@ -305,6 +325,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'سوالی کردن با Have',
       explanation:
           'For basic present simple questions about having something, use do or does at the beginning.',
+      explanationFa:
+          'برای ساختن سؤال‌های پایه درباره داشتن چیزی در زمان حال ساده، از do یا does در ابتدای جمله استفاده می‌کنیم. بعد از do یا does، فعل اصلی به شکل پایه یعنی have می‌آید.',
       examples: [
         A1BasicExample(
           english: 'Do you have a car?',
@@ -334,6 +356,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'Do یا Does؟',
       explanation:
           'Use do with I, you, we, and they. Use does with he, she, and it.',
+      explanationFa:
+          'از do با I، you، we و they استفاده می‌کنیم و از does با he، she و it. این تفاوت را در سؤال‌ها خوب یاد بگیر.',
       examples: [
         A1BasicExample(
           english: 'Do I have...?',
@@ -367,6 +391,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'نکته مهم: Does + Have',
       explanation:
           'Just like with doesn’t, after does we use have, not has.',
+      explanationFa:
+          'بعد از does نیز مانند doesn’t از شکل پایه have استفاده می‌کنیم. بنابراین می‌گوییم Does she have...؟ و نمی‌گوییم Does she has...؟',
       examples: [
         A1BasicExample(
           english: 'Does she have a car? ✓',
@@ -392,6 +418,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'جواب‌های کوتاه',
       explanation:
           'Questions with do and does usually have short answers with do, does, don’t, or doesn’t.',
+      explanationFa:
+          'سؤال‌هایی که با do و does ساخته می‌شوند، معمولاً جواب کوتاه دارند. در جواب مثبت از do یا does و در جواب منفی از don’t یا doesn’t استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'Do you have a car? — Yes, I do.',
@@ -421,6 +449,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'عبارت‌های روزمره',
       explanation:
           'Have is used in many useful everyday expressions.',
+      explanationFa:
+          'have در انگلیسی روزمره فقط برای مالکیت استفاده نمی‌شود. عبارت‌هایی مثل I have a question، I have an idea و I have a problem بسیار رایج هستند و باید آن‌ها را به عنوان انگلیسی واقعی بشناسی.',
       examples: [
         A1BasicExample(
           english: 'I have a question.',
@@ -458,6 +488,8 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       titleFa: 'اشتباهات رایج',
       explanation:
           'Watch the subject and remember that does and doesn’t take the final s away from have.',
+      explanationFa:
+          'در این اشتباهات رایج، باید هم فاعل را بررسی کنی و هم به یاد داشته باشی که بعد از do، does، don’t و doesn’t، فعل اصلی به شکل پایه می‌آید؛ بنابراین بعد از این کلمات از have استفاده می‌کنیم، نه has.',
       examples: [
         A1BasicExample(
           english: 'She has a car. ✓',

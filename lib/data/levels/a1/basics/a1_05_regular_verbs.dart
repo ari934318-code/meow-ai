@@ -18,6 +18,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
           'A regular verb follows a predictable pattern. '
           'In the present simple, the base verb is used with I, you, we, and they. '
           'With he, she, and it, the verb usually changes.',
+      explanationFa:
+          'فعل باقاعده فعلی است که در زمان حال ساده از الگوی قابل پیش‌بینی پیروی می‌کند. با I، you، we و they معمولاً شکل پایه فعل را استفاده می‌کنیم و با he، she و it معمولاً به فعل s، es اضافه می‌کنیم یا در بعضی حالت‌ها y را به ies تغییر می‌دهیم.',
       examples: [
         A1BasicExample(
           english: 'I work every day.',
@@ -45,6 +47,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'شکل پایه فعل',
       explanation:
           'The base form is the simple dictionary form of a verb, such as work, play, live, like, and study.',
+      explanationFa:
+          'شکل پایه همان شکل ساده فعل است که معمولاً در فرهنگ لغت می‌بینی؛ مثل work، play، live، like و study. این شکل بعد از I، you، we، they و همچنین بعد از do، does، don’t و doesn’t استفاده می‌شود.',
       examples: [
         A1BasicExample(
           english: 'work',
@@ -78,6 +82,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'I، You، We، They',
       explanation:
           'With I, you, we, and they, use the base form of the verb.',
+      explanationFa:
+          'با I، you، we و they از شکل پایه فعل استفاده می‌کنیم. در این حالت معمولاً هیچ s یا es به پایان فعل اضافه نمی‌شود.',
       examples: [
         A1BasicExample(
           english: 'I work here.',
@@ -111,6 +117,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'He، She، It',
       explanation:
           'With he, she, and it, the verb usually takes an ending.',
+      explanationFa:
+          'با he، she و it در جمله مثبت زمان حال ساده، فعل معمولاً یک پسوند می‌گیرد. بسته به پایان فعل، این تغییر می‌تواند s، es یا تغییر y به ies باشد.',
       examples: [
         A1BasicExample(
           english: 'He works here.',
@@ -140,6 +148,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'اضافه کردن S',
       explanation:
           'For many regular verbs, simply add s with he, she, and it.',
+      explanationFa:
+          'برای بسیاری از فعل‌های باقاعده، فقط کافی است با he، she و it حرف s را به انتهای فعل اضافه کنیم؛ مثل work → works و play → plays.',
       examples: [
         A1BasicExample(
           english: 'work → works',
@@ -173,6 +183,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'اضافه کردن ES',
       explanation:
           'Some verbs ending in s, sh, ch, x, or o usually take es with he, she, and it.',
+      explanationFa:
+          'بعضی فعل‌ها که به s، sh، ch، x یا o ختم می‌شوند، با he، she و it معمولاً es می‌گیرند. بنابراین watch به watches و go به goes تبدیل می‌شود.',
       examples: [
         A1BasicExample(
           english: 'watch → watches',
@@ -206,6 +218,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'فعل‌هایی که به Y ختم می‌شوند',
       explanation:
           'When a verb ends in consonant + y, y usually changes to ies with he, she, and it.',
+      explanationFa:
+          'اگر فعل به صامت + y ختم شود، در حالت he، she و it معمولاً y به ies تبدیل می‌شود؛ مثل study → studies و try → tries.',
       examples: [
         A1BasicExample(
           english: 'study → studies',
@@ -231,6 +245,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'حالت مصوت + Y',
       explanation:
           'If a verb ends in a vowel + y, we normally just add s.',
+      explanationFa:
+          'اگر قبل از y یک حرف صدادار باشد، معمولاً y تغییر نمی‌کند و فقط s اضافه می‌کنیم؛ مثل play → plays و enjoy → enjoys.',
       examples: [
         A1BasicExample(
           english: 'play → plays',
@@ -252,6 +268,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'جمله‌های مثبت',
       explanation:
           'A basic positive sentence usually follows subject + verb + object or extra information.',
+      explanationFa:
+          'جمله مثبت پایه معمولاً از فاعل، فعل و در صورت نیاز مفعول یا اطلاعات تکمیلی تشکیل می‌شود. در جمله مثبت با he، she و it باید شکل مناسب فعل را به کار ببریم.',
       examples: [
         A1BasicExample(
           english: 'I play football.',
@@ -278,6 +296,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       explanation:
           'Use don’t with I, you, we, and they. Use doesn’t with he, she, and it. '
           'After don’t and doesn’t, use the base form of the verb.',
+      explanationFa:
+          'برای ساختن جمله منفی در زمان حال ساده، با I، you، we و they از don’t و با he، she و it از doesn’t استفاده می‌کنیم. بعد از don’t و doesn’t، فعل اصلی همیشه به شکل پایه برمی‌گردد.',
       examples: [
         A1BasicExample(
           english: 'I don’t work here.',
@@ -304,6 +324,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       explanation:
           'Use do with I, you, we, and they. Use does with he, she, and it. '
           'The main verb stays in the base form.',
+      explanationFa:
+          'برای ساختن سؤال در زمان حال ساده، با I، you، we و they از do و با he، she و it از does استفاده می‌کنیم. بعد از do یا does، فعل اصلی به شکل پایه می‌آید.',
       examples: [
         A1BasicExample(
           english: 'Do you work here?',
@@ -329,6 +351,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'مثبت، منفی و سوالی',
       explanation:
           'Compare all three forms. Notice how the verb changes only in the positive sentence with he, she, or it.',
+      explanationFa:
+          'این سه شکل را کنار هم مقایسه کن: در جمله مثبت با he، she و it فعل تغییر می‌کند، اما در جمله منفی و سؤال به دلیل وجود doesn’t یا does، فعل اصلی به شکل پایه برمی‌گردد.',
       examples: [
         A1BasicExample(
           english: 'She works here.',
@@ -362,6 +386,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       titleFa: 'افعال باقاعده روزمره',
       explanation:
           'These verbs are very common in everyday English.',
+      explanationFa:
+          'این فعل‌ها در مکالمات روزمره بسیار رایج هستند. کلماتی مثل work، study، watch، walk، play، like، need و want را مرتب در انگلیسی واقعی می‌شنوی.',
       examples: [
         A1BasicExample(
           english: 'I work every day.',
@@ -404,6 +430,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       explanation:
           'The most common mistakes are forgetting s with he, she, and it, '
           'or keeping s after does or doesn’t.',
+      explanationFa:
+          'اشتباه‌های رایج این بخش معمولاً شامل فراموش کردن s با he، she و it یا نگه داشتن s بعد از does و doesn’t هستند. همیشه بررسی کن فاعل چیست و آیا do، does، don’t یا doesn’t در جمله وجود دارد یا نه.',
       examples: [
         A1BasicExample(
           english: 'She works here. ✓',

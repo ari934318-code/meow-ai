@@ -18,6 +18,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       explanation:
           'To be is a basic English verb. In the present tense, it changes depending '
           'on the subject. The three forms are am, is, and are.',
+      explanationFa:
+          'فعل to be یکی از مهم‌ترین فعل‌های پایه در انگلیسی است. در زمان حال، بسته به فاعل به سه شکل am، is و are استفاده می‌شود. در این درس یاد می‌گیری چه زمانی از هرکدام استفاده کنی.',
       examples: [
         A1BasicExample(
           english: 'I am a student.',
@@ -43,6 +45,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       explanation:
           'We use am only with the subject I. '
           'Never use am with he, she, it, we, you, or they.',
+      explanationFa:
+          'از am فقط با فاعل I استفاده می‌کنیم. یعنی می‌گوییم I am، اما با he، she، it، we، you و they از am استفاده نمی‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I am happy.',
@@ -78,6 +82,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       explanation:
           'We use is with he, she, and it. '
           'We also use is with one person, one thing, or one name.',
+      explanationFa:
+          'از is با he، she و it استفاده می‌کنیم. همچنین وقتی درباره یک نفر، یک چیز یا یک اسم مفرد صحبت می‌کنیم، معمولاً از is استفاده می‌شود.',
       examples: [
         A1BasicExample(
           english: 'He is tall.',
@@ -113,6 +119,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       explanation:
           'We use are with you, we, and they. '
           'We also use are with plural nouns, meaning two or more people or things.',
+      explanationFa:
+          'از are با you، we و they استفاده می‌کنیم. همچنین برای اسم‌های جمع، یعنی دو یا چند نفر یا چیز، از are استفاده می‌شود.',
       examples: [
         A1BasicExample(
           english: 'You are nice.',
@@ -147,6 +155,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'جدول Am، Is و Are',
       explanation:
           'Memorize this basic pattern. It will help you build many English sentences.',
+      explanationFa:
+          'این الگوی پایه را خوب یاد بگیر، چون یکی از مهم‌ترین الگوهای ساخت جمله در انگلیسی است. با یاد گرفتن ارتباط فاعل و am، is و are می‌توانی جمله‌های زیادی بسازی.',
       examples: [
         A1BasicExample(
           english: 'I → am',
@@ -184,6 +194,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'To Be + اسم',
       explanation:
           'We can use am, is, or are before a noun to say who someone is or what something is.',
+      explanationFa:
+          'می‌توانیم am، is یا are را قبل از اسم بیاوریم تا بگوییم یک نفر چه کسی است یا یک چیز چیست. در این ساختار، اسم بعد از فعل to be اطلاعاتی درباره فاعل می‌دهد.',
       examples: [
         A1BasicExample(
           english: 'I am a student.',
@@ -213,6 +225,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'To Be + صفت',
       explanation:
           'We use to be before an adjective to describe a person, thing, or situation.',
+      explanationFa:
+          'وقتی می‌خواهیم یک شخص، چیز یا موقعیت را توصیف کنیم، می‌توانیم از to be قبل از صفت استفاده کنیم؛ مثل happy، tired، tall یا expensive.',
       examples: [
         A1BasicExample(
           english: 'I am tired.',
@@ -250,6 +264,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'To Be + مکان',
       explanation:
           'We use am, is, and are to say where someone or something is.',
+      explanationFa:
+          'از am، is و are می‌توانیم برای گفتن محل قرار داشتن یک شخص یا چیز استفاده کنیم. بعد از to be معمولاً اطلاعات مربوط به مکان می‌آید.',
       examples: [
         A1BasicExample(
           english: 'I am at home.',
@@ -279,6 +295,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'جمله‌های منفی',
       explanation:
           'To make a negative sentence with to be, put "not" after am, is, or are.',
+      explanationFa:
+          'برای منفی کردن جمله با to be، کلمه not را بعد از am، is یا are قرار می‌دهیم. مثلاً I am not tired یعنی «من خسته نیستم».',
       examples: [
         A1BasicExample(
           english: 'I am not tired.',
@@ -313,6 +331,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'شکل کوتاه جمله‌های منفی',
       explanation:
           'In everyday English, native speakers often use contractions.',
+      explanationFa:
+          'در انگلیسی روزمره، شکل‌های کوتاه بسیار رایج هستند. مثلاً is not به isn’t و are not به aren’t تبدیل می‌شود. این شکل‌ها مخصوصاً در مکالمه زیاد استفاده می‌شوند.',
       examples: [
         A1BasicExample(
           english: 'I am not → I’m not',
@@ -357,6 +377,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'سوالی کردن با To Be',
       explanation:
           'To make a question with am, is, or are, move the verb before the subject.',
+      explanationFa:
+          'برای ساختن سؤال با to be، am، is یا are را قبل از فاعل می‌آوریم. مثلاً You are okay به Are you okay? تبدیل می‌شود.',
       examples: [
         A1BasicExample(
           english: 'Am I late?',
@@ -395,6 +417,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       explanation:
           'Questions with to be often have short answers. '
           'Remember that positive and negative answers use different forms.',
+      explanationFa:
+          'سؤال‌هایی که با to be ساخته می‌شوند، معمولاً جواب کوتاه دارند. در جواب مثبت و منفی باید شکل مناسب فعل to be را حفظ کنیم؛ مثلاً Yes, I am و No, I’m not.',
       examples: [
         A1BasicExample(
           english: 'Are you tired? — Yes, I am.',
@@ -428,6 +452,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'شکل‌های کوتاه رایج',
       explanation:
           'Contractions are very common in spoken English and informal writing.',
+      explanationFa:
+          'شکل‌های کوتاه در مکالمه انگلیسی و نوشتار غیررسمی بسیار رایج هستند. یادگیری آن‌ها باعث می‌شود انگلیسی واقعی و روزمره را بهتر بفهمی و طبیعی‌تر صحبت کنی.',
       examples: [
         A1BasicExample(
           english: 'I am → I’m',
@@ -473,6 +499,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       explanation:
           'These mistakes are especially common for beginners. '
           'Always check which subject you are using.',
+      explanationFa:
+          'این اشتباهات برای زبان‌آموزان مبتدی بسیار رایج هستند. هر بار قبل از انتخاب am، is یا are بررسی کن فاعل جمله چیست.',
       examples: [
         A1BasicExample(
           english: 'I am happy. ✓',
@@ -522,6 +550,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       titleFa: 'مثال‌های واقعی روزمره',
       explanation:
           'These sentences are useful in everyday conversations.',
+      explanationFa:
+          'این جمله‌ها نمونه‌هایی از کاربرد واقعی to be در مکالمات روزمره هستند. عبارت‌هایی مثل I’m hungry، I’m tired و Are you okay? را زیاد در زندگی واقعی می‌شنوی و استفاده می‌کنی.',
       examples: [
         A1BasicExample(
           english: 'I’m hungry.',

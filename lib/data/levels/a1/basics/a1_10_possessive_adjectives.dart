@@ -13,6 +13,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'What Are Possessive Adjectives?',
       titleFa: 'صفت‌های ملکی چیستند؟',
+      explanationFa: "صفت‌های ملکی نشان می‌دهند یک چیز متعلق به چه کسی است یا چه رابطه‌ای با یک شخص دارد. صفت ملکی معمولاً قبل از اسم می‌آید؛ مثل my phone و her name.",
+
       explanation:
           'Possessive adjectives show ownership or a relationship between a person and a thing. '
           'They come before a noun.',
@@ -39,6 +41,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'The Possessive Adjective Table',
       titleFa: 'جدول صفت‌های ملکی',
+      explanationFa: "هر ضمیر فاعلی یک صفت ملکی مرتبط دارد. برای I از my، برای you از your، برای he از his، برای she از her، برای it از its، برای we از our و برای they از their استفاده می‌کنیم.",
+
       explanation:
           'Each subject pronoun has a possessive adjective.',
       examples: [
@@ -76,6 +80,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'My',
       titleFa: 'My',
+      explanationFa: "my نشان می‌دهد چیزی متعلق به گوینده است. my همیشه قبل از اسم می‌آید؛ مثل my name، my phone و my room.",
+
       explanation:
           'My shows that something belongs to me. My comes before a noun.',
       examples: [
@@ -101,6 +107,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Your',
       titleFa: 'Your',
+      explanationFa: "your نشان می‌دهد چیزی متعلق به مخاطب است. your هم برای یک نفر و هم برای چند نفر استفاده می‌شود و قبل از اسم قرار می‌گیرد.",
+
       explanation:
           'Your shows that something belongs to you. It can be used for one person or more than one person.',
       examples: [
@@ -126,6 +134,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'His',
       titleFa: 'His',
+      explanationFa: "his نشان می‌دهد چیزی متعلق به یک فرد مذکر است. his قبل از اسم می‌آید؛ مثل his name، his phone و his car.",
+
       explanation:
           'His shows that something belongs to a male person.',
       examples: [
@@ -151,6 +161,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Her',
       titleFa: 'Her',
+      explanationFa: "her نشان می‌دهد چیزی متعلق به یک فرد مؤنث است. her قبل از اسم می‌آید؛ مثل her name، her phone و her bag.",
+
       explanation:
           'Her shows that something belongs to a female person.',
       examples: [
@@ -176,6 +188,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Its',
       titleFa: 'Its',
+      explanationFa: "its برای نشان دادن مالکیت یک حیوان، چیز یا سازمان استفاده می‌شود. باید its را با it’s اشتباه نگیریم؛ it’s کوتاه‌شده it is یا it has است.",
+
       explanation:
           'Its shows that something belongs to an animal, thing, or organization. '
           'Do not confuse its with it’s. It’s means it is or it has.',
@@ -198,6 +212,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Our',
       titleFa: 'Our',
+      explanationFa: "our نشان می‌دهد چیزی متعلق به ماست. our قبل از اسم قرار می‌گیرد؛ مثل our house، our teacher و our school.",
+
       explanation:
           'Our shows that something belongs to us.',
       examples: [
@@ -223,6 +239,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Their',
       titleFa: 'Their',
+      explanationFa: "their نشان می‌دهد چیزی متعلق به آن‌هاست. their قبل از اسم می‌آید؛ مثل their house، their car و their children.",
+
       explanation:
           'Their shows that something belongs to them.',
       examples: [
@@ -248,6 +266,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Possessive Adjective + Noun',
       titleFa: 'صفت ملکی + اسم',
+      explanationFa: "صفت ملکی معمولاً مستقیماً قبل از اسم قرار می‌گیرد. بنابراین می‌گوییم my book، your friend، his sister و their parents.",
+
       explanation:
           'A possessive adjective normally comes directly before a noun.',
       examples: [
@@ -281,6 +301,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'My vs Mine',
       titleFa: 'تفاوت My و Mine',
+      explanationFa: "my قبل از اسم استفاده می‌شود، اما mine معمولاً بدون اسم می‌آید. مثلاً می‌گوییم This is my phone و This phone is mine.",
+
       explanation:
           'My comes before a noun. Mine is used without the noun.',
       examples: [
@@ -306,6 +328,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'His vs Her',
       titleFa: 'تفاوت His و Her',
+      explanationFa: "his برای اشاره به مالکیت یک فرد مذکر و her برای اشاره به مالکیت یک فرد مؤنث استفاده می‌شود. جنسیت صاحب وسیله یا چیز تعیین می‌کند از کدام‌یک استفاده کنیم.",
+
       explanation:
           'His refers to a male person. Her refers to a female person.',
       examples: [
@@ -331,6 +355,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Its vs It’s',
       titleFa: 'تفاوت Its و It’s',
+      explanationFa: "its برای نشان دادن مالکیت است، در حالی که it’s شکل کوتاه it is یا it has است. این دو کلمه تلفظ مشابهی دارند اما معنی و کاربردشان متفاوت است.",
+
       explanation:
           'Its shows possession. It’s is a contraction of it is or it has.',
       examples: [
@@ -356,6 +382,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Common Mistakes',
       titleFa: 'اشتباهات رایج',
+      explanationFa: "یکی از اشتباه‌های رایج این است که صفت ملکی را با ضمیر ملکی یا شکل کوتاه کلمات اشتباه بگیریم. مثلاً my phone درست است، اما mine phone و you’re bag نادرست هستند.",
+
       explanation:
           'Remember that possessive adjectives come before nouns. Also remember that your and you’re, their and they’re, and its and it’s have different meanings.',
       examples: [
@@ -397,6 +425,8 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
     A1BasicSection(
       title: 'Real-Life Examples',
       titleFa: 'مثال‌های واقعی و روزمره',
+      explanationFa: "صفت‌های ملکی در مکالمات روزمره بسیار رایج هستند. جمله‌هایی مثل What’s your name?، Where is my phone? و Is this your phone? را مرتب در موقعیت‌های واقعی می‌شنوی و استفاده می‌کنی.",
+
       explanation:
           'Possessive adjectives are everywhere in everyday English.',
       examples: [

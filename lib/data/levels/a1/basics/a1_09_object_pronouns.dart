@@ -14,6 +14,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'What Are Object Pronouns?',
       titleFa: 'ضمیرهای مفعولی چیستند؟',
+            explanationFa: "ضمیرهای مفعولی جای شخص یا چیزی را می‌گیرند که عمل فعل روی آن انجام می‌شود. ضمیرهای مفعولی اصلی عبارت‌اند از me، you، him، her، it، us و them.",
       explanation:
           'Object pronouns replace the person or thing that receives an action. '
           'For example, instead of saying "I see Sara", we can say "I see her".',
@@ -40,6 +41,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Subject vs Object Pronouns',
       titleFa: 'ضمیرهای فاعلی و مفعولی',
+            explanationFa: "ضمیر فاعلی معمولاً انجام‌دهنده عمل است، اما ضمیر مفعولی شخص یا چیزی را نشان می‌دهد که عمل روی آن انجام می‌شود. مثلاً I فاعل است و me شکل مفعولی آن است.",
       explanation:
           'Subject pronouns usually do the action. Object pronouns receive the action.',
       examples: [
@@ -77,6 +79,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Me',
       titleFa: 'Me',
+            explanationFa: "me شکل مفعولی I است. وقتی عمل فعل روی خود گوینده انجام می‌شود، از me استفاده می‌کنیم؛ مثل She called me.",
       explanation:
           'Me is the object form of I. Use me when I receive the action.',
       examples: [
@@ -102,6 +105,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'You',
       titleFa: 'You',
+            explanationFa: "you هم می‌تواند ضمیر فاعلی باشد و هم مفعولی. این کلمه برای یک نفر یا چند نفر استفاده می‌شود و شکل آن در حالت مفعولی تغییر نمی‌کند.",
       explanation:
           'You is used as both a subject and an object. It can mean one person or more than one person.',
       examples: [
@@ -127,6 +131,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Him',
       titleFa: 'Him',
+            explanationFa: "him شکل مفعولی he است. وقتی یک فرد مذکر دریافت‌کننده عمل باشد، از him استفاده می‌کنیم.",
       explanation:
           'Him is the object form of he. Use him when a male person receives the action.',
       examples: [
@@ -152,6 +157,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Her',
       titleFa: 'Her',
+            explanationFa: "her شکل مفعولی she است. وقتی یک فرد مؤنث دریافت‌کننده عمل باشد، از her استفاده می‌کنیم.",
       explanation:
           'Her is the object form of she. Use her when a female person receives the action.',
       examples: [
@@ -177,6 +183,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'It',
       titleFa: 'It',
+            explanationFa: "it می‌تواند به‌عنوان ضمیر مفعولی برای یک چیز، حیوان یا موقعیت استفاده شود. مثلاً I like it یعنی «من آن را دوست دارم».",
       explanation:
           'It can be used as an object for a thing, animal, or situation.',
       examples: [
@@ -202,6 +209,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Us',
       titleFa: 'Us',
+            explanationFa: "us شکل مفعولی we است. وقتی عمل روی گوینده و افراد همراه او انجام می‌شود، از us استفاده می‌کنیم.",
       explanation:
           'Us is the object form of we. Use us when we receive the action.',
       examples: [
@@ -227,6 +235,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Them',
       titleFa: 'Them',
+            explanationFa: "them شکل مفعولی they است. وقتی دو یا چند نفر یا چیز دریافت‌کننده عمل باشند، از them استفاده می‌کنیم.",
       explanation:
           'Them is the object form of they. Use them when two or more people or things receive the action.',
       examples: [
@@ -252,6 +261,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Object Pronouns After Verbs',
       titleFa: 'ضمیرهای مفعولی بعد از فعل',
+            explanationFa: "ضمیرهای مفعولی معمولاً مستقیماً بعد از فعل می‌آیند. مثلاً در I like her، کلمه her مفعول فعل like است.",
       explanation:
           'Object pronouns commonly come directly after a verb.',
       examples: [
@@ -281,6 +291,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Object Pronouns After Prepositions',
       titleFa: 'ضمیرهای مفعولی بعد از حروف اضافه',
+            explanationFa: "ضمیرهای مفعولی بعد از حروف اضافه‌ای مثل for، with، to و from نیز استفاده می‌شوند. بنابراین می‌گوییم for me، with us، to him و from her.",
       explanation:
           'Object pronouns are also used after prepositions such as for, with, to, and from.',
       examples: [
@@ -310,6 +321,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Common Everyday Verbs',
       titleFa: 'افعال روزمره با ضمیر مفعولی',
+            explanationFa: "بسیاری از فعل‌های پرکاربرد روزمره می‌توانند با ضمیرهای مفعولی بیایند؛ مثل help me، call me، see him، know her، like it، help us و call them.",
       explanation:
           'Many common verbs are followed by object pronouns.',
       examples: [
@@ -347,6 +359,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     A1BasicSection(
       title: 'Common Mistakes',
       titleFa: 'اشتباهات رایج',
+            explanationFa: "یکی از اشتباه‌های رایج این است که به جای ضمیر مفعولی از ضمیر فاعلی استفاده کنیم. بعد از فعل یا حرف اضافه باید شکل مفعولی مناسب را انتخاب کنیم؛ مثلاً She called me درست است، نه She called I.",
       explanation:
           'Do not use subject pronouns where object pronouns are needed.',
       examples: [
@@ -443,7 +456,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       question: 'She called ___.',
       options: ['me', 'I', 'my', 'mine'],
       answer: 'me',
-      explanation: 'Me is the object form of I.',
+    explanation: 'Me is the object form of I.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',

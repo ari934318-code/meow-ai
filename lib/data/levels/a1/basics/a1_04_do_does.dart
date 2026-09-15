@@ -17,6 +17,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       explanation:
           'Do and does can be helping verbs. They help us make questions and '
           'negative sentences in the present simple.',
+      explanationFa:
+          'do و does در زمان حال ساده بیشتر به عنوان فعل کمکی استفاده می‌شوند. از آن‌ها برای ساختن سؤال و جمله منفی استفاده می‌کنیم. همچنین do می‌تواند خودش یک فعل اصلی به معنی «انجام دادن» باشد.',
       examples: [
         A1BasicExample(
           english: 'Do you like coffee?',
@@ -46,6 +48,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'Do',
       explanation:
           'Use do with I, you, we, and they.',
+      explanationFa:
+          'از do با I، you، we و they استفاده می‌کنیم. این الگو هم در سؤال‌ها و هم در جمله‌های منفی کاربرد دارد.',
       examples: [
         A1BasicExample(
           english: 'I do my homework.',
@@ -71,6 +75,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'Does',
       explanation:
           'Use does with he, she, and it.',
+      explanationFa:
+          'از does با he، she و it استفاده می‌کنیم. همچنین وقتی فاعل یک نفر یا یک چیز مفرد باشد، معمولاً از does استفاده می‌شود.',
       examples: [
         A1BasicExample(
           english: 'Does he work here?',
@@ -96,6 +102,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'جدول Do و Does',
       explanation:
           'Remember which subjects use do and which subjects use does.',
+      explanationFa:
+          'این الگو را خوب حفظ کن: I، you، we و they با do می‌آیند و he، she و it با does. این یکی از پایه‌های مهم ساخت سؤال و منفی در زمان حال ساده است.',
       examples: [
         A1BasicExample(
           english: 'I → do',
@@ -133,6 +141,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'سؤال با Do',
       explanation:
           'For questions with I, you, we, and they, put do before the subject.',
+      explanationFa:
+          'برای ساختن سؤال با I، you، we و they، do را قبل از فاعل قرار می‌دهیم. بعد از فاعل، فعل اصلی به شکل ساده می‌آید.',
       examples: [
         A1BasicExample(
           english: 'Do you like pizza?',
@@ -162,6 +172,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'سؤال با Does',
       explanation:
           'For questions with he, she, and it, use does before the subject.',
+      explanationFa:
+          'برای ساختن سؤال با he، she و it، از does در ابتدای جمله استفاده می‌کنیم. بعد از فاعل، فعل اصلی باید به شکل ساده باشد و دیگر s نمی‌گیرد.',
       examples: [
         A1BasicExample(
           english: 'Does he like football?',
@@ -187,6 +199,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'نکته مهم: Does + شکل ساده فعل',
       explanation:
           'After does, the main verb returns to its base form. Do not add s to the main verb.',
+      explanationFa:
+          'این نکته خیلی مهم است: بعد از does، فعل اصلی به شکل پایه برمی‌گردد. بنابراین می‌گوییم Does she like coffee؟ نه Does she likes coffee؟',
       examples: [
         A1BasicExample(
           english: 'She likes coffee.',
@@ -220,6 +234,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'منفی با Don’t',
       explanation:
           'Don’t means do not. Use don’t with I, you, we, and they.',
+      explanationFa:
+          'don’t شکل کوتاه do not است. از don’t با I، you، we و they برای ساختن جمله‌های منفی در زمان حال ساده استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I don’t like coffee.',
@@ -245,6 +261,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'منفی با Doesn’t',
       explanation:
           'Doesn’t means does not. Use doesn’t with he, she, and it.',
+      explanationFa:
+          'doesn’t شکل کوتاه does not است. از doesn’t با he، she و it برای ساختن جمله‌های منفی استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'He doesn’t like tea.',
@@ -270,6 +288,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'نکته مهم: Doesn’t + شکل ساده فعل',
       explanation:
           'After doesn’t, the main verb also returns to its base form.',
+      explanationFa:
+          'بعد از doesn’t نیز فعل اصلی باید به شکل پایه بیاید و s نگیرد. بنابراین می‌گوییم She doesn’t like cats، نه She doesn’t likes cats.',
       examples: [
         A1BasicExample(
           english: 'She likes cats.',
@@ -303,6 +323,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'جواب‌های کوتاه',
       explanation:
           'Questions with do and does usually have short answers using do, does, don’t, or doesn’t.',
+      explanationFa:
+          'در جواب کوتاه، معمولاً همان do یا does را نگه می‌داریم. برای جواب مثبت از do یا does و برای جواب منفی از don’t یا doesn’t استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'Do you like coffee? — Yes, I do.',
@@ -333,6 +355,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       explanation:
           'Do can also be a normal verb. In this case, it can mean انجام دادن. '
           'The same word can be both a helping verb and a main verb.',
+      explanationFa:
+          'do همیشه فعل کمکی نیست. وقتی do به عنوان فعل اصلی استفاده شود، معمولاً معنی «انجام دادن» دارد؛ مثل انجام دادن تکالیف یا کارهای روزمره.',
       examples: [
         A1BasicExample(
           english: 'I do my homework.',
@@ -358,6 +382,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'Do به‌عنوان فعل کمکی',
       explanation:
           'When do is a helping verb, it helps us make questions or negative sentences.',
+      explanationFa:
+          'وقتی do یا does نقش فعل کمکی داشته باشند، خودشان معنی اصلی جمله را نمی‌سازند، بلکه برای ساختن سؤال یا جمله منفی به فعل اصلی کمک می‌کنند.',
       examples: [
         A1BasicExample(
           english: 'Do you like music?',
@@ -383,6 +409,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       titleFa: 'سؤال‌های روزمره',
       explanation:
           'These structures are extremely common in everyday English.',
+      explanationFa:
+          'ساختارهای do و does در سؤال‌های روزمره بسیار رایج هستند. عبارت‌هایی مثل Do you understand؟ و Do you need help؟ را در مکالمات واقعی زیاد می‌شنوی.',
       examples: [
         A1BasicExample(
           english: 'Do you understand?',
@@ -417,6 +445,8 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       explanation:
           'The biggest mistake is using does with a verb that still has s, '
           'or using do with he and she.',
+      explanationFa:
+          'این اشتباهات رایج بیشتر به دو دلیل اتفاق می‌افتند: انتخاب اشتباه do و does، یا استفاده از s روی فعل اصلی بعد از does و doesn’t. بعد از این کلمات، فعل اصلی را به شکل پایه استفاده کن.',
       examples: [
         A1BasicExample(
           english: 'Does she like coffee? ✓',
