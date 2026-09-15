@@ -1,5 +1,5 @@
 import '../data/levels/a1/a1_data.dart';
-import '../models/vocabulary_practice_models.dart';
+import 'vocabulary_practice_models.dart';
 
 class A1VocabularyPracticeData {
   static List<VocabularyPracticeItem> get all {
