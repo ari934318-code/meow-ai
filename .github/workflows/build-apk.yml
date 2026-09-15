@@ -55,7 +55,7 @@ jobs:
           storeFile=meow-upload-key.jks
           EOF
 
-            - name: Verify Release Signing
+      - name: Verify Release Signing
         env:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
