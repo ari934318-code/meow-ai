@@ -9,14 +9,14 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
       'Must is used to talk about something that is necessary or required. '
       'Mustn’t is used to say that something is not allowed or is forbidden. '
       'After must and mustn’t, always use the base form of the verb.',
-
   sections: [
     A1BasicSection(
       title: 'What Is Must?',
       titleFa: 'Must چیست؟',
       explanation:
-      explanationFa: "must یکی از فعل‌های کمکی مهم در انگلیسی است. از آن برای صحبت درباره چیزی که ضروری، لازم یا بسیار مهم است استفاده می‌کنیم.",
           'Must is a modal verb. We use it when something is necessary, required, or very important to do.',
+      explanationFa:
+          'must یکی از فعل‌های کمکی مهم در انگلیسی است. از آن برای صحبت درباره چیزی که ضروری، لازم یا بسیار مهم است استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I must study.',
@@ -37,13 +37,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Must for Necessity',
       titleFa: 'Must برای ضرورت',
       explanation:
-      explanationFa: "از must وقتی استفاده می‌کنیم که انجام کاری ضروری باشد یا گوینده آن را بسیار مهم بداند. در فارسی معمولاً معنی «باید» می‌دهد.",
           'Use must when something is necessary or you feel it is very important to do it.',
+      explanationFa:
+          'از must وقتی استفاده می‌کنیم که انجام کاری ضروری باشد یا گوینده آن را بسیار مهم بداند. در فارسی معمولاً معنی «باید» می‌دهد.',
       examples: [
         A1BasicExample(
           english: 'I must finish my homework.',
@@ -67,14 +67,14 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Must + Base Verb',
       titleFa: 'Must + شکل پایه فعل',
       explanation:
-      explanationFa: "بعد از must همیشه شکل پایه فعل می‌آید. بعد از must نباید به فعل s، es یا ing اضافه کنیم و همچنین از to قبل از فعل استفاده نمی‌کنیم.",
           'After must, always use the base form of the verb. '
           'Do not add s, es, ing, or to after must.',
+      explanationFa:
+          'بعد از must همیشه شکل پایه فعل می‌آید. بعد از must نباید به فعل s، es یا ing اضافه کنیم و همچنین از to قبل از فعل استفاده نمی‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I must go.',
@@ -98,13 +98,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Must with Different Subjects',
       titleFa: 'Must با فاعل‌های مختلف',
       explanation:
-      explanationFa: "must با فاعل تغییر نمی‌کند. با I، you، he، she، it، we و they همیشه خود must را استفاده می‌کنیم.",
           'Must does not change with the subject. We use must with I, you, he, she, it, we, and they.',
+      explanationFa:
+          'must با فاعل تغییر نمی‌کند. با I، you، he، she، it، we و they همیشه خود must را استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
           english: 'I must study.',
@@ -132,13 +132,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Mustn’t',
       titleFa: 'Mustn’t چیست؟',
       explanation:
-      explanationFa: "mustn’t شکل کوتاه must not است و برای گفتن اینکه انجام کاری مجاز نیست یا ممنوع است استفاده می‌شود. در فارسی معمولاً معنی «نباید» می‌دهد.",
           'Mustn’t is the short form of must not. It means something is not allowed or is forbidden.',
+      explanationFa:
+          'mustn’t شکل کوتاه must not است و برای گفتن اینکه انجام کاری مجاز نیست یا ممنوع است استفاده می‌شود. در فارسی معمولاً معنی «نباید» می‌دهد.',
       examples: [
         A1BasicExample(
           english: 'You mustn’t smoke here.',
@@ -162,13 +162,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Mustn’t Means Not Allowed',
       titleFa: 'Mustn’t برای ممنوعیت',
       explanation:
-      explanationFa: "mustn’t در قوانین و موقعیت‌هایی که انجام کاری ممنوع است بسیار رایج است. وقتی کاری اجازه ندارد، می‌توانیم از mustn’t استفاده کنیم.",
           'Mustn’t is commonly used for rules and things that are forbidden.',
+      explanationFa:
+          'mustn’t در قوانین و موقعیت‌هایی که انجام کاری ممنوع است بسیار رایج است. وقتی کاری اجازه ندارد، می‌توانیم از mustn’t استفاده کنیم.',
       examples: [
         A1BasicExample(
           english: 'You mustn’t enter this room.',
@@ -188,13 +188,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Must in Rules',
       titleFa: 'Must در قوانین',
       explanation:
-      explanationFa: "must در تابلوها، دستورالعمل‌ها، قوانین مدرسه و محل کار و بسیاری از موقعیت‌های روزمره برای بیان یک الزام یا قانون استفاده می‌شود.",
           'Must is often used in signs, instructions, school rules, work rules, and everyday situations.',
+      explanationFa:
+          'must در تابلوها، دستورالعمل‌ها، قوانین مدرسه و محل کار و بسیاری از موقعیت‌های روزمره برای بیان یک الزام یا قانون استفاده می‌شود.',
       examples: [
         A1BasicExample(
           english: 'You must wear a seat belt.',
@@ -218,13 +218,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Must in Everyday Life',
       titleFa: 'Must در زندگی روزمره',
       explanation:
-      explanationFa: "در زندگی روزمره می‌توانیم از must برای صحبت درباره کارهای مهمی که لازم است انجام دهیم استفاده کنیم؛ مثل رفتن سر کار، خرید غذا یا شارژ کردن گوشی.",
           'Must can be used when talking about important things we need to do in everyday life.',
+      explanationFa:
+          'در زندگی روزمره می‌توانیم از must برای صحبت درباره کارهای مهمی که لازم است انجام دهیم استفاده کنیم؛ مثل رفتن سر کار، خرید غذا یا شارژ کردن گوشی.',
       examples: [
         A1BasicExample(
           english: 'I must go to work.',
@@ -248,13 +248,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Questions with Must',
       titleFa: 'سؤال با Must',
       explanation:
-      explanationFa: "برای ساختن سؤال با must، خود must را قبل از فاعل قرار می‌دهیم. بنابراین می‌گوییم Must I go? و نیازی به do یا does نداریم.",
           'To make a question with must, put must before the subject.',
+      explanationFa:
+          'برای ساختن سؤال با must، خود must را قبل از فاعل قرار می‌دهیم. بنابراین می‌گوییم Must I go? و نیازی به do یا does نداریم.',
       examples: [
         A1BasicExample(
           english: 'Must I go now?',
@@ -274,13 +274,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Must vs Mustn’t',
       titleFa: 'تفاوت Must و Mustn’t',
       explanation:
-      explanationFa: "must به معنی «باید» و mustn’t به معنی «نباید» است. must انجام یک کار را ضروری می‌داند، اما mustn’t انجام یک کار را ممنوع می‌کند.",
           'Must means something is necessary or required. Mustn’t means something is not allowed.',
+      explanationFa:
+          'must به معنی «باید» و mustn’t به معنی «نباید» است. must انجام یک کار را ضروری می‌داند، اما mustn’t انجام یک کار را ممنوع می‌کند.',
       examples: [
         A1BasicExample(
           english: 'You must study.',
@@ -300,14 +300,14 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Common Mistakes',
       titleFa: 'اشتباهات رایج',
       explanation:
-      explanationFa: "بعد از must و mustn’t همیشه شکل پایه فعل می‌آید. بنابراین نباید بعد از آن‌ها s، es، ing یا to اضافه کنیم.",
           'After must and mustn’t, use the base form of the verb. '
           'Do not add s, es, ing, or to.',
+      explanationFa:
+          'بعد از must و mustn’t همیشه شکل پایه فعل می‌آید. بنابراین نباید بعد از آن‌ها s، es، ing یا to اضافه کنیم.',
       examples: [
         A1BasicExample(
           english: 'She must study. ✓',
@@ -343,13 +343,13 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
         ),
       ],
     ),
-
     A1BasicSection(
       title: 'Must in Real Conversations',
       titleFa: 'Must در مکالمه‌های واقعی',
       explanation:
-      explanationFa: "این جمله‌ها نمونه‌هایی از کاربرد واقعی must و mustn’t در مکالمات روزمره و دستورهای ساده هستند. عبارت‌هایی مثل I must go now، You must be careful و You mustn’t touch that را در موقعیت‌های واقعی زیاد می‌شنوی.",
           'These sentences are useful in everyday conversations and simple instructions.',
+      explanationFa:
+          'این جمله‌ها نمونه‌هایی از کاربرد واقعی must و mustn’t در مکالمات روزمره و دستورهای ساده هستند. عبارت‌هایی مثل I must go now، You must be careful و You mustn’t touch that را در موقعیت‌های واقعی زیاد می‌شنوی.',
       examples: [
         A1BasicExample(
           english: 'I must go now.',
