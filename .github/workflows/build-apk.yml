@@ -55,6 +55,18 @@ jobs:
           storeFile=meow-upload-key.jks
           EOF
 
+      - name: Verify Release Signing
+        env:
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          echo "Checking keystore..."
+          keytool -list \
+            -keystore android/app/meow-upload-key.jks \
+            -storepass "$STORE_PASSWORD" \
+            -alias "$KEY_ALIAS" \
+            -v | grep -E "Alias name:|Entry type:"
+
       - name: Build APK
         id: build_apk
         continue-on-error: true
