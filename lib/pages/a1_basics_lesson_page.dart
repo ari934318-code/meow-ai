@@ -908,7 +908,7 @@ class _A1BasicsLessonPageState
           }
         }
       },
-      onError: () {
+      onError: (error) {
         if (mounted) {
           setState(() {
             _isListening = false;
