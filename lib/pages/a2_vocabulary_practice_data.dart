@@ -1,4 +1,4 @@
-import 'a2_lessons.dart';
+import '../data/levels/a2/a2_data.dart';
 import 'vocabulary_practice_models.dart';
 
 class A2VocabularyPracticeData {
