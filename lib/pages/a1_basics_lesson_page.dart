@@ -26,6 +26,8 @@ class A1BasicsLessonPage extends StatefulWidget {
 
 class _A1BasicsLessonPageState
     extends State<A1BasicsLessonPage> {
+  String get _stageKey => 'a1_basics_stage_${widget.lesson.id}';
+
   static const Color lavender = Color(0xFFB9A7E8);
 
   static const String _completedLessonsKey =
