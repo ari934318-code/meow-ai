@@ -46,7 +46,7 @@ jobs:
           wc -c /tmp/keystore.b64
 
           echo "Base64 validation:"
-          base64 --decode /tmp/keystore.b64 > android/meow-upload-key.jks
+          base64 --decode /tmp/keystore.b64 > android/app/meow-upload-key.jks
 
           cat > android/key.properties <<EOF
           storePassword=$STORE_PASSWORD
