@@ -50,35 +50,6 @@ class _A1BasicsLessonPageState
   late List<A1BasicQuestion> _questions;
   late final List<_A1Stage> _stages;
 
-  // Display options are reordered so the correct answer is not
-  // always the first choice. The pattern is deterministic per question.
-  final Map<int, List<String>> _displayOptions = {};
-
-  List<String> _optionsFor(int index, A1BasicQuestion question) {
-    return _displayOptions.putIfAbsent(index, () {
-      final options = List<String>.from(question.options);
-      if (options.length <= 1) {
-        return options;
-      }
-
-      final answerIndex = options.indexWhere(
-        (option) => _normalize(option) == _normalize(question.answer),
-      );
-
-      if (answerIndex < 0) {
-        return options;
-      }
-
-      final correct = options.removeAt(answerIndex);
-
-      // Rotate the correct answer through positions 0, 1, 2, 3...
-      // so a learner cannot simply guess the first option.
-      final targetIndex = index % (options.length + 1);
-      options.insert(targetIndex, correct);
-      return options;
-    });
-  }
-
   bool _speechAvailable = false;
   bool _isListening = false;
 
@@ -937,7 +908,7 @@ class _A1BasicsLessonPageState
           }
         }
       },
-      onError: (error) {
+      onError: () {
         if (mounted) {
           setState(() {
             _isListening = false;
@@ -1236,10 +1207,10 @@ class _A1BasicsLessonPageState
         await SharedPreferences.getInstance();
 
     final oldStage =
-        prefs.getInt(stageKey) ?? 0;
+        prefs.getInt(_stageKey) ?? 0;
 
     final raw =
-        prefs.getString(progressKey);
+        prefs.getString(_progressKey);
 
     if (raw == null || raw.isEmpty) {
       if (!mounted) {
@@ -1549,6 +1520,26 @@ class _A1BasicsLessonPageState
   // LEARNING
   // =========================================================
 
+  String _localizedSectionDescription(
+    A1BasicSection? section,
+  ) {
+    if (!_isPersian) {
+      return section?.explanation ??
+          _stages[_currentStage].description;
+    }
+
+    final title = _normalizeTitle(
+      section?.title ?? _stages[_currentStage].title,
+    );
+
+    if (title == 'i') {
+      return 'از I وقتی استفاده می‌کنیم که درباره‌ی خودمان صحبت می‌کنیم. '
+          'I همیشه با حرف بزرگ نوشته می‌شود، حتی وقتی وسط جمله قرار داشته باشد.';
+    }
+
+    return _stages[_currentStage].descriptionFa;
+  }
+
   Widget _buildLearningContent() {
     final section =
         _getCurrentSection();
@@ -1573,12 +1564,7 @@ class _A1BasicsLessonPageState
                 : section.title);
 
     final sectionDescription =
-        section?.explanation ??
-            (_isPersian
-                ? _stages[_currentStage]
-                    .descriptionFa
-                : _stages[_currentStage]
-                    .description);
+        _localizedSectionDescription(section);
 
     return Column(
       crossAxisAlignment:
@@ -1613,12 +1599,9 @@ class _A1BasicsLessonPageState
                 A1BasicsUIConfig
                     .cardSpacing,
           ),
-          if (_isLessonOneCommonMistakes(sectionTitle))
-            _buildLessonOneHowAreYouMistake()
-          else
-            ...examples.map(
-              _buildExample,
-            ),
+          ...examples.map(
+            _buildExample,
+          ),
           SizedBox(
             height:
                 A1BasicsUIConfig
@@ -1858,7 +1841,31 @@ class _A1BasicsLessonPageState
                 A1BasicsUIConfig
                     .cardSpacing,
           ),
-          ..._optionsFor(index, question).map(
+          if (question.hint != null &&
+              question.hint!.trim().isNotEmpty) ...[
+            Text(
+              _isPersian ? 'معنی' : 'Meaning',
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge
+                  ?.copyWith(
+                    color: lavender,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              question.hint!,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(height: 1.45),
+            ),
+            SizedBox(
+              height: A1BasicsUIConfig.cardSpacing,
+            ),
+          ],
+          ...question.options.map(
             (option) {
               final selectedThis =
                   selected == option;
@@ -1884,9 +1891,9 @@ class _A1BasicsLessonPageState
                 ),
                 child:
                     OutlinedButton(
+                  // اولین انتخاب نهایی است، چه درست باشد چه غلط.
                   onPressed:
-                      answered &&
-                              isCorrect
+                      answered
                           ? null
                           : () =>
                               _answerQuestion(
@@ -2004,12 +2011,6 @@ class _A1BasicsLessonPageState
                     .textTheme
                     .bodyMedium,
               ),
-            ),
-          if (answered &&
-              !isCorrect &&
-              A1BasicsUIConfig.allowRetry)
-            _buildRetryButton(
-              index,
             ),
         ],
       ),
@@ -2780,133 +2781,6 @@ class _A1BasicsLessonPageState
   // EXAMPLES
   // =========================================================
 
-  bool _isLessonOneCommonMistakes(String title) {
-    if (widget.lesson.id != 'a1_01' &&
-        widget.lesson.id != 'lesson_1' &&
-        widget.lesson.id != '1') {
-      return false;
-    }
-
-    final normalized = _normalizeTitle(title);
-    return normalized.contains('commonmistakes') ||
-        normalized.contains('اشتباهات رایج');
-  }
-
-  Widget _buildLessonOneHowAreYouMistake() {
-    return Container(
-      margin: EdgeInsets.only(
-        bottom: A1BasicsUIConfig.cardSpacing,
-      ),
-      padding: EdgeInsets.all(
-        A1BasicsUIConfig.pagePadding,
-      ),
-      decoration: BoxDecoration(
-        color: _surface,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: _outline,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'How are you?',
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium
-                ?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          if (_isPersian) ...[
-            const SizedBox(height: 6),
-            const Text('حالت چطوره؟'),
-          ],
-          const SizedBox(height: 16),
-          Text(
-            _isPersian
-                ? 'یک جواب رایج که ممکن است بشنوی:'
-                : 'A common reply you may hear:',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: 8),
-          _buildMistakeLine(
-            "I'm fine, thanks. How are you?",
-            _isPersian
-                ? 'قابل فهم است، اما در گفت‌وگوی طبیعی معمولاً بهتر است سؤال را این‌طور برگردانیم:'
-                : 'It is understandable, but in natural conversation, a more natural way to return the question is:',
-            isMistake: true,
-          ),
-          const SizedBox(height: 12),
-          _buildMistakeLine(
-            "I'm fine, thanks. How about you?",
-            _isPersian
-                ? 'این عبارت طبیعی‌تر و رایج‌تر است.'
-                : 'This is the more natural and common choice here.',
-            isMistake: false,
-          ),
-          const SizedBox(height: 16),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: OutlinedButton.icon(
-              onPressed: () => _speak(
-                "I'm fine, thanks. How about you?",
-              ),
-              icon: const Icon(Icons.volume_up_outlined),
-              label: Text(
-                _isPersian ? 'گوش دادن به جواب درست' : 'Listen to the natural reply',
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMistakeLine(
-    String english,
-    String explanation, {
-    required bool isMistake,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: isMistake
-            ? Theme.of(context).colorScheme.errorContainer.withAlpha(90)
-            : lavender.withAlpha(45),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                isMistake ? Icons.close_rounded : Icons.check_rounded,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  english,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            explanation,
-            style: const TextStyle(height: 1.4),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildExample(
     A1BasicExample example,
   ) {
@@ -3058,6 +2932,28 @@ class _A1BasicsLessonPageState
 
     return questionsComplete &&
         speakingComplete;
+  }
+
+  Future<void> _goPreviousStage() async {
+    if (_currentStage <= 0) return;
+
+    if (_isListening) {
+      await _stopListening();
+    }
+
+    setState(() {
+      _currentStage--;
+      _learningMode = A1BasicsUIConfig.teachBeforePractice;
+      _currentSpeakingIndex = null;
+      _recognizedText = '';
+      _isListening = false;
+    });
+
+    await _saveProgress();
+  }
+
+  Future<void> _goNextStage() async {
+    await _finishCurrentStage();
   }
 
   Future<void> _finishCurrentStage() async {
@@ -3522,6 +3418,53 @@ class _A1BasicsLessonPageState
               const SizedBox(height: 16),
               _buildProgressHeader(),
               _buildCurrentStage(),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          child: Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _currentStage > 0 ? _goPreviousStage : null,
+                  icon: const Icon(Icons.arrow_back_rounded),
+                  label: Text(_isPersian ? 'قبلی' : 'Previous'),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(0, 52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 2,
+                child: ElevatedButton.icon(
+                  onPressed: _goNextStage,
+                  icon: Icon(
+                    _currentStage == _stages.length - 1
+                        ? Icons.check_rounded
+                        : Icons.arrow_forward_rounded,
+                  ),
+                  label: Text(
+                    _currentStage == _stages.length - 1
+                        ? (_isPersian ? 'اتمام درس' : 'Finish Lesson')
+                        : (_isPersian ? 'بعدی' : 'Next'),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: lavender,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(0, 52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
