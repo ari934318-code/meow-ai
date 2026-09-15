@@ -27,12 +27,14 @@ class A1BasicSection {
   final String title;
   final String titleFa;
   final String explanation;
+  final String explanationFa;
   final List<A1BasicExample> examples;
 
   const A1BasicSection({
     required this.title,
     required this.titleFa,
     required this.explanation,
+    required this.explanationFa,
     required this.examples,
   });
 }
