@@ -127,23 +127,113 @@ class VocabularyPracticeService {
   }
 
   /// Creates a shuffled practice session.
+  ///
+  /// A1 Basics uses a weighted question distribution:
+  /// - 60% Persian -> English
+  /// - 20% English -> Persian
+  /// - 10% Example -> Word
+  /// - 10% Word -> Example
+  ///
+  /// Other levels keep the original fully-random question type behavior.
   static List<VocabularyPracticeQuestion> createSession({
     required List<VocabularyPracticeItem> items,
     int questionCount = 10,
   }) {
-    if (items.isEmpty) {
+    if (items.isEmpty || questionCount <= 0) {
       return [];
     }
 
     final shuffledItems = [...items]..shuffle(_random);
-
     final count = min(questionCount, shuffledItems.length);
+
+    final isBasics = shuffledItems.every(
+      (item) => item.level.trim().toUpperCase() == 'A1',
+    );
+
+    if (!isBasics) {
+      return List.generate(count, (index) {
+        return createQuestion(
+          item: shuffledItems[index],
+          allItems: items,
+        );
+      });
+    }
+
+    final types = _createBasicsQuestionTypes(count);
+    types.shuffle(_random);
 
     return List.generate(count, (index) {
       return createQuestion(
         item: shuffledItems[index],
         allItems: items,
+        type: types[index],
       );
     });
+  }
+
+  /// Creates the closest possible Basics distribution for the requested
+  /// number of questions.
+  ///
+  /// For 10 questions this is exactly:
+  /// 6 Persian -> English
+  /// 2 English -> Persian
+  /// 1 Example -> Word
+  /// 1 Word -> Example
+  static List<VocabularyPracticeType> _createBasicsQuestionTypes(
+    int count,
+  ) {
+    if (count <= 0) {
+      return [];
+    }
+
+    const weights = <VocabularyPracticeType, double>{
+      VocabularyPracticeType.persianToEnglish: 0.60,
+      VocabularyPracticeType.englishToPersian: 0.20,
+      VocabularyPracticeType.exampleToWord: 0.10,
+      VocabularyPracticeType.wordToExample: 0.10,
+    };
+
+    final counts = <VocabularyPracticeType, int>{
+      for (final type in weights.keys) type: 0,
+    };
+
+    final exactTargets = <VocabularyPracticeType, double>{
+      for (final entry in weights.entries) entry.key: count * entry.value,
+    };
+
+    var assigned = 0;
+
+    // First assign the integer parts.
+    for (final entry in exactTargets.entries) {
+      final whole = entry.value.floor();
+      counts[entry.key] = whole;
+      assigned += whole;
+    }
+
+    // Give remaining questions to the largest fractional parts.
+    final fractionalTypes = exactTargets.entries.toList()
+      ..sort((a, b) {
+        final aFraction = a.value - a.value.floor();
+        final bFraction = b.value - b.value.floor();
+        return bFraction.compareTo(aFraction);
+      });
+
+    var index = 0;
+    while (assigned < count) {
+      final type = fractionalTypes[index % fractionalTypes.length].key;
+      counts[type] = counts[type]! + 1;
+      assigned++;
+      index++;
+    }
+
+    final result = <VocabularyPracticeType>[];
+
+    for (final entry in counts.entries) {
+      for (var i = 0; i < entry.value; i++) {
+        result.add(entry.key);
+      }
+    }
+
+    return result;
   }
 }
