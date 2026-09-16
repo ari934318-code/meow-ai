@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data/levels/a1/basics/a1_basics_models.dart';
 import '../data/levels/a1/basics/a1_basics_ui_config.dart';
 import '../localization.dart';
-import 'vocabulary_practice_page.dart';
 
 class A1BasicsLessonPage extends StatefulWidget {
   final A1BasicLesson lesson;
@@ -44,6 +43,7 @@ class _A1BasicsLessonPageState
   final Set<int> _listenedExamples = {};
 
   final Map<int, String> _selectedAnswers = {};
+  final Map<int, List<String>> _shuffledOptions = {};
   final Map<int, String> _typedAnswers = {};
   final Map<int, bool> _typingResults = {};
   final Map<int, bool> _speakingResults = {};
@@ -90,11 +90,105 @@ class _A1BasicsLessonPageState
       widget.lesson.questions,
     );
 
+    _initializeShuffledOptions();
+
     _stages = _buildStages();
 
     _initSpeech();
     _initTts();
     _loadProgress();
+  }
+
+  // =========================================================
+  // MULTIPLE-CHOICE OPTIONS
+  // =========================================================
+
+  bool _shouldShuffleOptions() {
+    switch (widget.lesson.id) {
+      case 'a1_02':
+      case 'lesson_2':
+      case '2':
+      case 'a1_03':
+      case 'lesson_3':
+      case '3':
+      case 'a1_04':
+      case 'lesson_4':
+      case '4':
+      case 'a1_05':
+      case 'lesson_5':
+      case '5':
+      case 'a1_06':
+      case 'lesson_6':
+      case '6':
+      case 'a1_07':
+      case 'lesson_7':
+      case '7':
+      case 'a1_08':
+      case 'lesson_8':
+      case '8':
+      case 'a1_09':
+      case 'lesson_9':
+      case '9':
+      case 'a1_10':
+      case 'lesson_10':
+      case '10':
+      case 'a1_11':
+      case 'lesson_11':
+      case '11':
+        return true;
+      default:
+        // مبانی ۱ عمداً بدون تغییر باقی می‌ماند.
+        return false;
+    }
+  }
+
+  void _initializeShuffledOptions() {
+    _shuffledOptions.clear();
+
+    if (!_shouldShuffleOptions()) {
+      return;
+    }
+
+    final random = Random();
+
+    for (int index = 0; index < _questions.length; index++) {
+      final question = _questions[index];
+
+      if (question.type != 'multipleChoice' ||
+          question.options.length < 2) {
+        continue;
+      }
+
+      final options = List<String>.from(question.options);
+      options.shuffle(random);
+      _shuffledOptions[index] = options;
+    }
+  }
+
+  List<String> _optionsForQuestion(
+    int index,
+    A1BasicQuestion question,
+  ) {
+    return _shuffledOptions[index] ??
+        List<String>.from(question.options);
+  }
+
+  String _localizedOption(String option) {
+    final normalized = _normalize(option);
+
+    if (normalized == 'true' || normalized == 'درست') {
+      return _isPersian ? 'درست' : 'True';
+    }
+
+    if (normalized == 'false' || normalized == 'غلط') {
+      return _isPersian ? 'غلط' : 'False';
+    }
+
+    return option;
+  }
+
+  String _localizedCorrectAnswer(String answer) {
+    return _localizedOption(answer);
   }
 
   // =========================================================
@@ -1545,103 +1639,95 @@ class _A1BasicsLessonPageState
   }
 
   Widget _buildLearningContent() {
-    final section =
-        _getCurrentSection();
+    final section = _getCurrentSection();
 
     final examples =
-        section != null &&
-                section.examples.isNotEmpty
+        section != null && section.examples.isNotEmpty
             ? section.examples
-            : widget.lesson.examples
-                .take(5)
-                .toList();
+            : widget.lesson.examples.take(5).toList();
 
-    final sectionTitle =
+    final rawSectionTitle =
         section == null
             ? (_isPersian
-                ? _stages[_currentStage]
-                    .titleFa
-                : _stages[_currentStage]
-                    .title)
+                ? _stages[_currentStage].titleFa
+                : _stages[_currentStage].title)
             : (_isPersian
                 ? section.titleFa
                 : section.title);
+
+    // معرفی همیشه اولین بخش آموزش است.
+    final sectionTitle =
+        _normalizeTitle(rawSectionTitle) == 'i'
+            ? (_isPersian ? 'I = من' : 'I = Me')
+            : rawSectionTitle;
 
     final sectionDescription =
         _localizedSectionDescription(section);
 
     return Column(
-      crossAxisAlignment:
-          CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // ۱) معرفی درس/بخش
         _buildSectionTitle(
           sectionTitle,
-          sectionDescription,
+          _isPersian
+              ? 'معرفی این بخش'
+              : 'Introduction',
         ),
         SizedBox(
-          height:
-              A1BasicsUIConfig
-                  .sectionSpacing,
+          height: A1BasicsUIConfig.sectionSpacing,
         ),
-        if (A1BasicsUIConfig
-                .showExamplesBeforeQuestions &&
+
+        // ۲) مثال‌ها
+        if (A1BasicsUIConfig.showExamplesBeforeQuestions &&
             examples.isNotEmpty) ...[
           Text(
-            _isPersian
-                ? 'مثال‌ها'
-                : 'Examples',
+            _isPersian ? 'مثال‌ها' : 'Examples',
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
                 ?.copyWith(
-                  fontWeight:
-                      FontWeight.bold,
+                  fontWeight: FontWeight.bold,
                 ),
           ),
           SizedBox(
-            height:
-                A1BasicsUIConfig
-                    .cardSpacing,
+            height: A1BasicsUIConfig.cardSpacing,
           ),
-          ...examples.map(
-            _buildExample,
-          ),
+          ...examples.map(_buildExample),
           SizedBox(
-            height:
-                A1BasicsUIConfig
-                    .sectionSpacing,
+            height: A1BasicsUIConfig.sectionSpacing,
           ),
         ],
-        if (A1BasicsUIConfig
-            .showFeedbackAfterAnswer)
-          _buildInfoCard(),
-        SizedBox(
-          height:
-              A1BasicsUIConfig
-                  .sectionSpacing,
+
+        // ۳) مفهوم
+        _buildSectionTitle(
+          _isPersian ? 'مفهوم' : 'Concept',
+          sectionDescription,
         ),
+        SizedBox(
+          height: A1BasicsUIConfig.sectionSpacing,
+        ),
+
+        if (A1BasicsUIConfig.showFeedbackAfterAnswer)
+          _buildInfoCard(),
+
+        SizedBox(
+          height: A1BasicsUIConfig.sectionSpacing,
+        ),
+
         FilledButton(
-          onPressed:
-              _startPractice,
-          style:
-              FilledButton.styleFrom(
-            backgroundColor:
-                lavender,
-            foregroundColor:
-                Colors.black87,
-            shape:
-                RoundedRectangleBorder(
-              borderRadius:
-                  BorderRadius.circular(
-                A1BasicsUIConfig
-                    .buttonRadius,
+          onPressed: _startPractice,
+          style: FilledButton.styleFrom(
+            backgroundColor: lavender,
+            foregroundColor: Colors.black87,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                A1BasicsUIConfig.buttonRadius,
               ),
             ),
           ),
           child: Text(
-            _isPersian
-                ? 'شروع تمرین'
-                : 'Start Practice',
+            _isPersian ? 'شروع تمرین' : 'Start Practice',
           ),
         ),
       ],
@@ -1869,7 +1955,7 @@ class _A1BasicsLessonPageState
               height: A1BasicsUIConfig.cardSpacing,
             ),
           ],
-          ...question.options.map(
+          ..._optionsForQuestion(index, question).map(
             (option) {
               final selectedThis =
                   selected == option;
@@ -1942,7 +2028,7 @@ class _A1BasicsLessonPageState
                     children: [
                       Expanded(
                         child: Text(
-                          option,
+                          _localizedOption(option),
                         ),
                       ),
                       if (showCorrect)
@@ -1985,8 +2071,8 @@ class _A1BasicsLessonPageState
                         ? 'درست! 😼✨'
                         : 'Correct! 😼✨')
                     : (_isPersian
-                        ? 'جواب صحیح: ${question.answer}'
-                        : 'Correct answer: ${question.answer}'),
+                        ? 'جواب صحیح: ${_localizedCorrectAnswer(question.answer)}'
+                        : 'Correct answer: ${_localizedCorrectAnswer(question.answer)}'),
                 style: TextStyle(
                   fontWeight:
                       FontWeight.bold,
@@ -2054,8 +2140,8 @@ class _A1BasicsLessonPageState
         SnackBar(
           content: Text(
             _isPersian
-                ? 'جواب صحیح: ${question.answer}'
-                : 'Correct answer: ${question.answer}',
+                ? 'جواب صحیح: ${_localizedCorrectAnswer(question.answer)}'
+                : 'Correct answer: ${_localizedCorrectAnswer(question.answer)}',
           ),
           behavior:
               SnackBarBehavior.floating,
@@ -2277,8 +2363,8 @@ class _A1BasicsLessonPageState
         SnackBar(
           content: Text(
             _isPersian
-                ? 'جواب درست: ${question.answer}'
-                : 'Correct answer: ${question.answer}',
+                ? 'جواب درست: ${_localizedCorrectAnswer(question.answer)}'
+                : 'Correct answer: ${_localizedCorrectAnswer(question.answer)}',
           ),
           behavior:
               SnackBarBehavior.floating,
@@ -3113,13 +3199,7 @@ class _A1BasicsLessonPageState
     );
 
     if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => VocabularyPracticePage(
-            lessonId: widget.lesson.id,
-          ),
-        ),
-      );
+      Navigator.of(context).pop();
     }
   }
 
@@ -3226,58 +3306,56 @@ class _A1BasicsLessonPageState
       crossAxisAlignment:
           CrossAxisAlignment.stretch,
       children: [
-        Container(
-          padding:
-              const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: _surface,
-            borderRadius:
-                BorderRadius.circular(
-              24,
-            ),
-            border: Border.all(
-              color: _outline,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
-            children: [
-              Text(
-                _isPersian
-                    ? stage.titleFa
-                    : stage.title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall
-                    ?.copyWith(
-                      fontWeight:
-                          FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                _isPersian
-                    ? stage.descriptionFa
-                    : stage.description,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(
-                      height: 1.45,
-                    ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height:
-              A1BasicsUIConfig
-                  .sectionSpacing,
-        ),
         if (_learningMode)
           _buildLearningContent()
         else ...[
+          Container(
+            padding:
+                const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: _surface,
+              borderRadius:
+                  BorderRadius.circular(24),
+              border: Border.all(
+                color: _outline,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isPersian
+                      ? stage.titleFa
+                      : stage.title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  _isPersian
+                      ? stage.descriptionFa
+                      : stage.description,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(
+                        height: 1.45,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height:
+                A1BasicsUIConfig
+                    .sectionSpacing,
+          ),
           ...stage.questionIndices.map(
             _buildQuestion,
           ),
