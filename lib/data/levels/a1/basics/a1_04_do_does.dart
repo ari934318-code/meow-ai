@@ -10,6 +10,120 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       'in the present simple. Do is used with I, you, we, and they. Does is '
       'used with he, she, and it.',
 
+  vocabulary: [
+    A1BasicVocabulary(
+      english: 'homework',
+      persian: 'تکلیف / تکالیف',
+      example: 'I do my homework.',
+    ),
+    A1BasicVocabulary(
+      english: 'music',
+      persian: 'موسیقی',
+      example: 'Do you like music?',
+    ),
+    A1BasicVocabulary(
+      english: 'coffee',
+      persian: 'قهوه',
+      pronunciation: 'کافی',
+      example: 'Do you like coffee?',
+    ),
+    A1BasicVocabulary(
+      english: 'speak English',
+      persian: 'انگلیسی صحبت کردن',
+      example: 'Do you speak English?',
+    ),
+    A1BasicVocabulary(
+      english: 'work',
+      persian: 'کار کردن',
+      example: 'Does he work here?',
+    ),
+    A1BasicVocabulary(
+      english: 'here',
+      persian: 'اینجا',
+      example: 'Does she work here?',
+    ),
+    A1BasicVocabulary(
+      english: 'like',
+      persian: 'دوست داشتن',
+      example: 'Do you like pizza?',
+    ),
+    A1BasicVocabulary(
+      english: 'pizza',
+      persian: 'پیتزا',
+      example: 'Do you like pizza?',
+    ),
+    A1BasicVocabulary(
+      english: 'class',
+      persian: 'کلاس',
+      example: 'Do we have class today?',
+    ),
+    A1BasicVocabulary(
+      english: 'live',
+      persian: 'زندگی کردن',
+      example: 'Do they live here?',
+    ),
+    A1BasicVocabulary(
+      english: 'need',
+      persian: 'نیاز داشتن',
+      example: 'Do I need a ticket?',
+    ),
+    A1BasicVocabulary(
+      english: 'ticket',
+      persian: 'بلیت',
+      example: 'Do I need a ticket?',
+    ),
+    A1BasicVocabulary(
+      english: 'football',
+      persian: 'فوتبال',
+      example: 'Does he like football?',
+    ),
+    A1BasicVocabulary(
+      english: 'drive',
+      persian: 'رانندگی کردن',
+      example: 'Does your brother drive?',
+    ),
+    A1BasicVocabulary(
+      english: 'tea',
+      persian: 'چای',
+      example: 'He doesn’t like tea.',
+    ),
+    A1BasicVocabulary(
+      english: 'understand',
+      persian: 'متوجه شدن / فهمیدن',
+      example: 'I don’t understand.',
+    ),
+    A1BasicVocabulary(
+      english: 'know',
+      persian: 'دانستن / شناختن',
+      example: 'We don’t know.',
+    ),
+    A1BasicVocabulary(
+      english: 'help',
+      persian: 'کمک',
+      example: 'Do you need help?',
+    ),
+    A1BasicVocabulary(
+      english: 'want',
+      persian: 'خواستن',
+      example: 'Do you want coffee?',
+    ),
+    A1BasicVocabulary(
+      english: 'exercise',
+      persian: 'ورزش',
+      example: 'They do exercise every morning.',
+    ),
+    A1BasicVocabulary(
+      english: 'dishes',
+      persian: 'ظرف‌ها',
+      example: 'I do the dishes.',
+    ),
+    A1BasicVocabulary(
+      english: 'nearby',
+      persian: 'نزدیک / در نزدیکی',
+      example: 'Does he live nearby?',
+    ),
+  ],
+
   sections: [
     A1BasicSection(
       title: 'What are Do and Does?',
