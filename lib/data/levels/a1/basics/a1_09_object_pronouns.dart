@@ -9,6 +9,142 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       'Object pronouns are used when a person or thing receives the action of a verb. '
       'The main object pronouns are me, you, him, her, it, us, and them. '
       'They usually come after a verb or after a preposition.',
+
+  vocabulary: [
+    A1BasicVocabulary(
+      english: 'me',
+      persian: 'من را / به من',
+      pronunciation: 'می',
+      example: 'She called me.',
+    ),
+    A1BasicVocabulary(
+      english: 'you',
+      persian: 'تو را / شما را',
+      pronunciation: 'یو',
+      example: 'I know you.',
+    ),
+    A1BasicVocabulary(
+      english: 'him',
+      persian: 'او را / به او (مذکر)',
+      pronunciation: 'هِم',
+      example: 'I know him.',
+    ),
+    A1BasicVocabulary(
+      english: 'her',
+      persian: 'او را / به او (مؤنث)',
+      pronunciation: 'هِر',
+      example: 'I like her.',
+    ),
+    A1BasicVocabulary(
+      english: 'it',
+      persian: 'آن را',
+      pronunciation: 'اِت',
+      example: 'I like it.',
+    ),
+    A1BasicVocabulary(
+      english: 'us',
+      persian: 'ما را / به ما',
+      pronunciation: 'اَس',
+      example: 'They helped us.',
+    ),
+    A1BasicVocabulary(
+      english: 'them',
+      persian: 'آنها را / به آنها',
+      pronunciation: 'ذِم',
+      example: 'I know them.',
+    ),
+    A1BasicVocabulary(
+      english: 'help',
+      persian: 'کمک کردن',
+      pronunciation: 'هِلپ',
+      example: 'Can you help me?',
+    ),
+    A1BasicVocabulary(
+      english: 'call',
+      persian: 'تماس گرفتن',
+      pronunciation: 'کال',
+      example: 'Please call me later.',
+    ),
+    A1BasicVocabulary(
+      english: 'know',
+      persian: 'شناختن / دانستن',
+      pronunciation: 'نو',
+      example: 'I know him.',
+    ),
+    A1BasicVocabulary(
+      english: 'like',
+      persian: 'دوست داشتن',
+      pronunciation: 'لایک',
+      example: 'I like her.',
+    ),
+    A1BasicVocabulary(
+      english: 'see',
+      persian: 'دیدن',
+      pronunciation: 'سی',
+      example: 'I can see him.',
+    ),
+    A1BasicVocabulary(
+      english: 'hear',
+      persian: 'شنیدن',
+      pronunciation: 'هِیر',
+      example: 'Can you hear me?',
+    ),
+    A1BasicVocabulary(
+      english: 'need',
+      persian: 'نیاز داشتن',
+      pronunciation: 'نید',
+      example: 'I need it.',
+    ),
+    A1BasicVocabulary(
+      english: 'open',
+      persian: 'باز کردن',
+      pronunciation: 'اوپِن',
+      example: 'Please open it.',
+    ),
+    A1BasicVocabulary(
+      english: 'wait',
+      persian: 'صبر کردن / منتظر ماندن',
+      pronunciation: 'وِیت',
+      example: 'Please wait for us.',
+    ),
+    A1BasicVocabulary(
+      english: 'give',
+      persian: 'دادن',
+      pronunciation: 'گیو',
+      example: 'Give it to him.',
+    ),
+    A1BasicVocabulary(
+      english: 'talk',
+      persian: 'صحبت کردن',
+      pronunciation: 'تاک',
+      example: 'I am talking to her.',
+    ),
+    A1BasicVocabulary(
+      english: 'message',
+      persian: 'پیام',
+      pronunciation: 'مِسِج',
+      example: 'This message is from her.',
+    ),
+    A1BasicVocabulary(
+      english: 'friend',
+      persian: 'دوست',
+      pronunciation: 'فِرِند',
+      example: 'I see my friends.',
+    ),
+    A1BasicVocabulary(
+      english: 'Sara',
+      persian: 'سارا',
+      pronunciation: 'سارا',
+      example: 'I see Sara. → I see her.',
+    ),
+    A1BasicVocabulary(
+      english: 'Ali',
+      persian: 'علی',
+      pronunciation: 'علی',
+      example: 'I called Ali. → I called him.',
+    ),
+  ],
+
   sections: [
     A1BasicSection(
       title: 'What Are Object Pronouns?',
