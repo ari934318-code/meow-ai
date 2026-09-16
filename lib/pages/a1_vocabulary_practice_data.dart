@@ -1,23 +1,24 @@
-import '../data/levels/a1/a1_data.dart';
+import '../data/levels/a1/basics/a1_basics_data.dart';
+import '../data/levels/a1/basics/a1_basics_models.dart';
 import 'vocabulary_practice_models.dart';
 
-class A1VocabularyPracticeData {
+class A1BasicsVocabularyPracticeData {
   static List<VocabularyPracticeItem> get all {
     final result = <VocabularyPracticeItem>[];
 
-    for (final lesson in a1Lessons) {
-      for (var index = 0; index < lesson.words.length; index++) {
-        final word = lesson.words[index];
+    for (final lesson in a1BasicsLessons) {
+      for (var index = 0; index < lesson.vocabulary.length; index++) {
+        final word = lesson.vocabulary[index];
 
         result.add(
           VocabularyPracticeItem(
-            id: '${lesson.id}_word_${index + 1}',
+            id: '${lesson.id}_vocab_${index + 1}',
             level: 'A1',
             lessonId: lesson.id,
             lessonTitle: lesson.title,
             english: word.english,
             persian: word.persian,
-            pronunciation: word.pronunciation,
+            pronunciation: word.pronunciation ?? '',
             example: word.example,
           ),
         );
@@ -25,5 +26,9 @@ class A1VocabularyPracticeData {
     }
 
     return result;
+  }
+
+  static List<VocabularyPracticeItem> forLesson(String lessonId) {
+    return all.where((item) => item.lessonId == lessonId).toList();
   }
 }
