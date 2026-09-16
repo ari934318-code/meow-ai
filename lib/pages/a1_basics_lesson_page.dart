@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data/levels/a1/basics/a1_basics_models.dart';
 import '../data/levels/a1/basics/a1_basics_ui_config.dart';
 import '../localization.dart';
+import 'vocabulary_practice_page.dart';
 
 class A1BasicsLessonPage extends StatefulWidget {
   final A1BasicLesson lesson;
@@ -3112,7 +3113,13 @@ class _A1BasicsLessonPageState
     );
 
     if (mounted) {
-      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => VocabularyPracticePage(
+            lessonTitle: widget.lesson.title,
+          ),
+        ),
+      );
     }
   }
 
