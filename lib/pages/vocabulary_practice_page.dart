@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'a1_vocabulary_practice_data.dart';
 import 'a2_vocabulary_practice_data.dart';
 import 'vocabulary_practice_models.dart';
 import 'vocabulary_practice_service.dart';
@@ -10,7 +9,7 @@ class VocabularyPracticePage extends StatefulWidget {
   /// If provided, only vocabulary belonging to this lesson is used.
   ///
   /// The lesson ID is the stable connection between the lesson
-  /// and its vocabulary. Keep it null for the global A1 + A2 practice.
+  /// and its vocabulary. Keep it null for the global A1 Basics + A2 practice.
   final String? lessonId;
 
   const VocabularyPracticePage({
@@ -44,19 +43,19 @@ class _VocabularyPracticePageState
   void initState() {
     super.initState();
 
+    final basicsItems = A1BasicsVocabularyPracticeData.all;
+    final a2Items = A2VocabularyPracticeData.all;
+
     final allItems = <VocabularyPracticeItem>[
-      ...A1VocabularyPracticeData.all,
-      ...A1BasicsVocabularyPracticeData.all,
-      ...A2VocabularyPracticeData.all,
+      ...basicsItems,
+      ...a2Items,
     ];
 
-    // When no lesson ID is supplied, use global A1 + A2 practice.
+    // When no lesson ID is supplied, use global
+    // A1 Basics + A2 practice.
     if (widget.lessonId == null ||
         widget.lessonId!.trim().isEmpty) {
-      _items = [
-        ...A1VocabularyPracticeData.all,
-        ...A2VocabularyPracticeData.all,
-      ];
+      _items = allItems;
     } else {
       final targetLessonId = widget.lessonId!.trim();
 
@@ -66,7 +65,7 @@ class _VocabularyPracticePageState
           targetLessonId,
         );
       } else {
-        // Other lessons keep using the existing A1 + A2 data.
+        // Other lessons keep using the available A2 data.
         _items = allItems
             .where(
               (item) => item.lessonId.trim() == targetLessonId,
@@ -93,12 +92,14 @@ class _VocabularyPracticePageState
       return [];
     }
 
-    // Global practice keeps the normal behavior.
+    // Global practice and non-Basics lessons
+    // keep the normal behavior.
     if (!isBasicsLesson) {
       return generated.take(_totalQuestions).toList();
     }
 
-    // Basics practice focuses mainly on Persian → English.
+    // Basics practice:
+    // mainly Persian → English, with some other question types.
     const preferredCounts = <VocabularyPracticeType, int>{
       VocabularyPracticeType.persianToEnglish: 6,
       VocabularyPracticeType.englishToPersian: 2,
@@ -124,7 +125,7 @@ class _VocabularyPracticePageState
       remaining.removeWhere(matches.contains);
     }
 
-    // If there are not enough questions of one type,
+    // If one question type does not have enough questions,
     // fill the remaining slots with other generated questions.
     for (final question in remaining) {
       if (selected.length >= _totalQuestions) {
