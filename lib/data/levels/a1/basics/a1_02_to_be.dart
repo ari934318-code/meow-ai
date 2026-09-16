@@ -11,6 +11,159 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       'We use them to talk about identity, age, feelings, locations, descriptions, '
       'and many other basic situations.',
 
+  vocabulary: [
+    A1BasicVocabulary(
+      english: 'happy',
+      persian: 'خوشحال',
+      pronunciation: 'هَپی',
+      example: 'I am happy.',
+    ),
+    A1BasicVocabulary(
+      english: 'tired',
+      persian: 'خسته',
+      pronunciation: 'تایِرد',
+      example: 'I am tired.',
+    ),
+    A1BasicVocabulary(
+      english: 'student',
+      persian: 'دانش‌آموز / دانشجو',
+      pronunciation: 'اِستودِنت',
+      example: 'I am a student.',
+    ),
+    A1BasicVocabulary(
+      english: 'home',
+      persian: 'خانه',
+      pronunciation: 'هوم',
+      example: 'I am at home.',
+    ),
+    A1BasicVocabulary(
+      english: 'Iran',
+      persian: 'ایران',
+      pronunciation: 'ایران',
+      example: 'I am from Iran.',
+    ),
+    A1BasicVocabulary(
+      english: 'tall',
+      persian: 'قدبلند',
+      pronunciation: 'تال',
+      example: 'He is tall.',
+    ),
+    A1BasicVocabulary(
+      english: 'doctor',
+      persian: 'پزشک',
+      pronunciation: 'داکتِر',
+      example: 'He is a doctor.',
+    ),
+    A1BasicVocabulary(
+      english: 'phone',
+      persian: 'گوشی / تلفن',
+      pronunciation: 'فون',
+      example: 'The phone is new.',
+    ),
+    A1BasicVocabulary(
+      english: 'new',
+      persian: 'جدید',
+      pronunciation: 'نیو',
+      example: 'The phone is new.',
+    ),
+    A1BasicVocabulary(
+      english: 'nice',
+      persian: 'مهربان / خوب',
+      pronunciation: 'نایس',
+      example: 'You are nice.',
+    ),
+    A1BasicVocabulary(
+      english: 'friends',
+      persian: 'دوستان',
+      pronunciation: 'فِرِندز',
+      example: 'We are friends.',
+    ),
+    A1BasicVocabulary(
+      english: 'busy',
+      persian: 'مشغول / سرشلوغ',
+      pronunciation: 'بیزی',
+      example: 'They are busy.',
+    ),
+    A1BasicVocabulary(
+      english: 'late',
+      persian: 'دیر',
+      pronunciation: 'لِیت',
+      example: 'You are late.',
+    ),
+    A1BasicVocabulary(
+      english: 'ready',
+      persian: 'آماده',
+      pronunciation: 'رِدی',
+      example: 'We are ready.',
+    ),
+    A1BasicVocabulary(
+      english: 'teacher',
+      persian: 'معلم',
+      pronunciation: 'تیچِر',
+      example: 'She is a teacher.',
+    ),
+    A1BasicVocabulary(
+      english: 'sister',
+      persian: 'خواهر',
+      pronunciation: 'سیستِر',
+      example: 'She is my sister.',
+    ),
+    A1BasicVocabulary(
+      english: 'beautiful',
+      persian: 'زیبا',
+      pronunciation: 'بیوتیفُل',
+      example: 'She is beautiful.',
+    ),
+    A1BasicVocabulary(
+      english: 'expensive',
+      persian: 'گران',
+      pronunciation: 'اِکسپِنسیو',
+      example: 'It is expensive.',
+    ),
+    A1BasicVocabulary(
+      english: 'school',
+      persian: 'مدرسه',
+      pronunciation: 'اسکول',
+      example: 'He is at school.',
+    ),
+    A1BasicVocabulary(
+      english: 'work',
+      persian: 'محل کار / کار',
+      pronunciation: 'وِرک',
+      example: 'She is at work.',
+    ),
+    A1BasicVocabulary(
+      english: 'kitchen',
+      persian: 'آشپزخانه',
+      pronunciation: 'کیچِن',
+      example: 'We are in the kitchen.',
+    ),
+    A1BasicVocabulary(
+      english: 'outside',
+      persian: 'بیرون',
+      pronunciation: 'اَوتساید',
+      example: 'They are outside.',
+    ),
+    A1BasicVocabulary(
+      english: 'hungry',
+      persian: 'گرسنه',
+      pronunciation: 'هانگری',
+      example: 'I’m hungry.',
+    ),
+    A1BasicVocabulary(
+      english: 'okay',
+      persian: 'خوب / اوکی',
+      pronunciation: 'اوکِی',
+      example: 'Are you okay?',
+    ),
+    A1BasicVocabulary(
+      english: 'fine',
+      persian: 'خوب',
+      pronunciation: 'فاین',
+      example: 'I’m fine.',
+    ),
+  ],
+
   sections: [
     A1BasicSection(
       title: 'What is To Be?',
