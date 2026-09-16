@@ -3116,7 +3116,7 @@ class _A1BasicsLessonPageState
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => VocabularyPracticePage(
-            lessonTitle: widget.lesson.title,
+            lessonId: widget.lesson.id,
           ),
         ),
       );
