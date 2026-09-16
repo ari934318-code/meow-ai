@@ -128,16 +128,17 @@ class VocabularyPracticeService {
 
   /// Creates a shuffled practice session.
   ///
-  /// A1 Basics uses a weighted question distribution:
+  /// When [basicsMode] is true, A1 Basics uses:
   /// - 60% Persian -> English
   /// - 20% English -> Persian
   /// - 10% Example -> Word
   /// - 10% Word -> Example
   ///
-  /// Other levels keep the original fully-random question type behavior.
+  /// When [basicsMode] is false, question types remain fully random.
   static List<VocabularyPracticeQuestion> createSession({
     required List<VocabularyPracticeItem> items,
     int questionCount = 10,
+    bool basicsMode = false,
   }) {
     if (items.isEmpty || questionCount <= 0) {
       return [];
@@ -146,11 +147,7 @@ class VocabularyPracticeService {
     final shuffledItems = [...items]..shuffle(_random);
     final count = min(questionCount, shuffledItems.length);
 
-    final isBasics = shuffledItems.every(
-      (item) => item.level.trim().toUpperCase() == 'A1',
-    );
-
-    if (!isBasics) {
+    if (!basicsMode) {
       return List.generate(count, (index) {
         return createQuestion(
           item: shuffledItems[index],
@@ -174,11 +171,11 @@ class VocabularyPracticeService {
   /// Creates the closest possible Basics distribution for the requested
   /// number of questions.
   ///
-  /// For 10 questions this is exactly:
-  /// 6 Persian -> English
-  /// 2 English -> Persian
-  /// 1 Example -> Word
-  /// 1 Word -> Example
+  /// For 10 questions:
+  /// - 6 Persian -> English
+  /// - 2 English -> Persian
+  /// - 1 Example -> Word
+  /// - 1 Word -> Example
   static List<VocabularyPracticeType> _createBasicsQuestionTypes(
     int count,
   ) {
@@ -198,7 +195,8 @@ class VocabularyPracticeService {
     };
 
     final exactTargets = <VocabularyPracticeType, double>{
-      for (final entry in weights.entries) entry.key: count * entry.value,
+      for (final entry in weights.entries)
+        entry.key: count * entry.value,
     };
 
     var assigned = 0;
@@ -206,6 +204,7 @@ class VocabularyPracticeService {
     // First assign the integer parts.
     for (final entry in exactTargets.entries) {
       final whole = entry.value.floor();
+
       counts[entry.key] = whole;
       assigned += whole;
     }
@@ -215,13 +214,17 @@ class VocabularyPracticeService {
       ..sort((a, b) {
         final aFraction = a.value - a.value.floor();
         final bFraction = b.value - b.value.floor();
+
         return bFraction.compareTo(aFraction);
       });
 
     var index = 0;
+
     while (assigned < count) {
       final type = fractionalTypes[index % fractionalTypes.length].key;
+
       counts[type] = counts[type]! + 1;
+
       assigned++;
       index++;
     }
