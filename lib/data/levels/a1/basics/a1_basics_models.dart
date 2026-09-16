@@ -1,3 +1,17 @@
+class A1BasicVocabulary {
+  final String english;
+  final String persian;
+  final String? pronunciation;
+  final String example;
+
+  const A1BasicVocabulary({
+    required this.english,
+    required this.persian,
+    this.pronunciation,
+    required this.example,
+  });
+}
+
 class A1BasicLesson {
   final String id;
   final String title;
@@ -10,6 +24,9 @@ class A1BasicLesson {
   final List<A1BasicQuestion> questions;
   final List<A1BasicSpeakingQuestion> speakingQuestions;
 
+  // Vocabulary مخصوص همین درس
+  final List<A1BasicVocabulary> vocabulary;
+
   const A1BasicLesson({
     required this.id,
     required this.title,
@@ -20,6 +37,7 @@ class A1BasicLesson {
     required this.examples,
     required this.questions,
     required this.speakingQuestions,
+    this.vocabulary = const [],
   });
 }
 
@@ -52,62 +70,12 @@ class A1BasicExample {
 }
 
 class A1BasicQuestion {
-  /// Supported types:
-  ///
-  /// multipleChoice
-  /// typing
-  /// fillInTheBlank
-  ///
-  /// Multiple choice can freely mix:
-  /// English → English
-  /// English → Persian
-  /// Persian → English
-  /// Persian → Persian
-  ///
-  /// The page simply displays the data exactly as authored.
   final String type;
-
-  /// Main question/prompt shown to the learner.
-  ///
-  /// Examples:
-  /// "What does 'tired' mean?"
-  /// "خسته به انگلیسی چیست؟"
-  /// "I ___ tired."
   final String question;
-
-  /// Options used by multiple-choice questions.
-  ///
-  /// For typing and fillInTheBlank this can be an empty list.
   final List<String> options;
-
-  /// Primary correct answer.
-  ///
-  /// For multiple choice:
-  /// the correct option.
-  ///
-  /// For typing:
-  /// the main accepted answer.
-  ///
-  /// For fillInTheBlank:
-  /// the word that fills the blank.
   final String answer;
-
-  /// Additional accepted answers for typing/fill-in-the-blank.
-  ///
-  /// This allows more than one valid answer.
-  ///
-  /// Example:
-  /// answer: "mom"
-  /// acceptableAnswers: ["mom", "mum", "mother"]
   final List<String> acceptableAnswers;
-
-  /// Optional explanation shown after answering.
   final String? explanation;
-
-  /// Optional hint shown for typing/fill-in-the-blank.
-  ///
-  /// Example:
-  /// "Think about the verb 'to be'."
   final String? hint;
 
   const A1BasicQuestion({
@@ -120,7 +88,6 @@ class A1BasicQuestion {
     this.hint,
   });
 
-  /// Returns all valid answers for this question.
   List<String> get allAcceptedAnswers {
     final answers = <String>[
       answer,
