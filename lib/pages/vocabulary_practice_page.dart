@@ -6,7 +6,15 @@ import 'vocabulary_practice_models.dart';
 import 'vocabulary_practice_service.dart';
 
 class VocabularyPracticePage extends StatefulWidget {
-  const VocabularyPracticePage({super.key});
+  /// If provided, only vocabulary belonging to this lesson is used.
+  ///
+  /// Keep it null when you want the old global A1 + A2 practice.
+  final String? lessonTitle;
+
+  const VocabularyPracticePage({
+    super.key,
+    this.lessonTitle,
+  });
 
   @override
   State<VocabularyPracticePage> createState() =>
@@ -34,10 +42,33 @@ class _VocabularyPracticePageState
   void initState() {
     super.initState();
 
-    _items = [
+    final allItems = <VocabularyPracticeItem>[
       ...A1VocabularyPracticeData.all,
       ...A2VocabularyPracticeData.all,
     ];
+
+    // When a lesson title is supplied, practice only that lesson's
+    // vocabulary. When it is null, keep the original global behavior.
+    if (widget.lessonTitle == null ||
+        widget.lessonTitle!.trim().isEmpty) {
+      _items = allItems;
+    } else {
+      final targetTitle = widget.lessonTitle!.trim();
+
+      _items = allItems
+          .where(
+            (item) =>
+                item.lessonTitle.trim().toLowerCase() ==
+                targetTitle.toLowerCase(),
+          )
+          .toList();
+
+      // Safe fallback: if the lesson title does not exactly match
+      // the vocabulary data, do not show an empty practice page.
+      if (_items.isEmpty) {
+        _items = allItems;
+      }
+    }
 
     _startSession();
   }
@@ -47,9 +78,13 @@ class _VocabularyPracticePageState
       return;
     }
 
+    final questionCount = _items.length < _totalQuestions
+        ? _items.length
+        : _totalQuestions;
+
     final session = VocabularyPracticeService.createSession(
       items: _items,
-      questionCount: _totalQuestions,
+      questionCount: questionCount,
     );
 
     if (session.isEmpty) {
@@ -186,7 +221,12 @@ class _VocabularyPracticePageState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Vocabulary Practice'),
+        title: Text(
+          widget.lessonTitle == null ||
+                  widget.lessonTitle!.trim().isEmpty
+              ? 'Vocabulary Practice'
+              : 'Vocabulary Practice',
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
