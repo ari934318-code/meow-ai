@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'a1_vocabulary_practice_data.dart';
+import 'a1_basics_vocabulary_practice_data.dart';
 import 'a2_vocabulary_practice_data.dart';
 import 'vocabulary_practice_models.dart';
 import 'vocabulary_practice_service.dart';
@@ -45,46 +46,59 @@ class _VocabularyPracticePageState
 
     final allItems = <VocabularyPracticeItem>[
       ...A1VocabularyPracticeData.all,
+      ...A1BasicsVocabularyPracticeData.all,
       ...A2VocabularyPracticeData.all,
     ];
 
-    // When a lesson ID is supplied, practice only that lesson's
-    // vocabulary. The lesson ID is used instead of the title because
-    // it is the stable identifier shared by the lesson and vocabulary data.
+    // When no lesson ID is supplied, use global A1 + A2 practice.
     if (widget.lessonId == null ||
         widget.lessonId!.trim().isEmpty) {
-      _items = allItems;
+      _items = [
+        ...A1VocabularyPracticeData.all,
+        ...A2VocabularyPracticeData.all,
+      ];
     } else {
       final targetLessonId = widget.lessonId!.trim();
 
-      _items = allItems
-          .where(
-            (item) => item.lessonId.trim() == targetLessonId,
-          )
-          .toList();
+      // Basics lessons use their own vocabulary source.
+      if (targetLessonId.startsWith('a1_basic_')) {
+        _items = A1BasicsVocabularyPracticeData.forLesson(
+          targetLessonId,
+        );
+      } else {
+        // Other lessons keep using the existing A1 + A2 data.
+        _items = allItems
+            .where(
+              (item) => item.lessonId.trim() == targetLessonId,
+            )
+            .toList();
+      }
     }
 
     _startSession();
   }
 
   List<VocabularyPracticeQuestion> _createSession() {
+    final isBasicsLesson =
+        widget.lessonId != null &&
+        widget.lessonId!.trim().startsWith('a1_basic_');
+
     final generated = VocabularyPracticeService.createSession(
       items: _items,
       questionCount: _items.length,
+      basicsMode: isBasicsLesson,
     );
 
     if (generated.isEmpty) {
       return [];
     }
 
-    // Basics should focus mainly on recognizing the English word
-    // from its Persian meaning. Keep the old random behavior for
-    // global practice and other levels.
-    if (widget.lessonId == null ||
-        widget.lessonId!.trim().isEmpty) {
+    // Global practice keeps the normal behavior.
+    if (!isBasicsLesson) {
       return generated.take(_totalQuestions).toList();
     }
 
+    // Basics practice focuses mainly on Persian → English.
     const preferredCounts = <VocabularyPracticeType, int>{
       VocabularyPracticeType.persianToEnglish: 6,
       VocabularyPracticeType.englishToPersian: 2,
@@ -92,12 +106,17 @@ class _VocabularyPracticePageState
       VocabularyPracticeType.wordToExample: 1,
     };
 
-    final remaining = <VocabularyPracticeQuestion>[...generated];
+    final remaining = <VocabularyPracticeQuestion>[
+      ...generated,
+    ];
+
     final selected = <VocabularyPracticeQuestion>[];
 
     for (final entry in preferredCounts.entries) {
       final matches = remaining
-          .where((question) => question.type == entry.key)
+          .where(
+            (question) => question.type == entry.key,
+          )
           .take(entry.value)
           .toList();
 
@@ -105,12 +124,13 @@ class _VocabularyPracticePageState
       remaining.removeWhere(matches.contains);
     }
 
-    // If a lesson does not have enough questions of one type, fill
-    // the remaining slots with the other generated question types.
+    // If there are not enough questions of one type,
+    // fill the remaining slots with other generated questions.
     for (final question in remaining) {
       if (selected.length >= _totalQuestions) {
         break;
       }
+
       if (!selected.contains(question)) {
         selected.add(question);
       }
@@ -260,7 +280,7 @@ class _VocabularyPracticePageState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Vocabulary Practice',
         ),
         centerTitle: true,
@@ -272,7 +292,8 @@ class _VocabularyPracticePageState
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Question ${_questionNumber + 1} / $total',
@@ -296,7 +317,8 @@ class _VocabularyPracticePageState
                 minHeight: 6,
                 borderRadius: BorderRadius.circular(20),
                 backgroundColor: Colors.grey.shade200,
-                valueColor: const AlwaysStoppedAnimation<Color>(
+                valueColor:
+                    const AlwaysStoppedAnimation<Color>(
                   lavender,
                 ),
               ),
@@ -389,13 +411,15 @@ class _VocabularyPracticePageState
                           horizontal: 18,
                           vertical: 17,
                         ),
-                        backgroundColor: _optionColor(option),
+                        backgroundColor:
+                            _optionColor(option),
                         side: BorderSide(
                           color: _borderColor(option),
                           width: 1.3,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius:
+                              BorderRadius.circular(16),
                         ),
                       ),
                       child: Row(
@@ -411,7 +435,8 @@ class _VocabularyPracticePageState
                           ),
 
                           if (_answered &&
-                              option == question.correctAnswer)
+                              option ==
+                                  question.correctAnswer)
                             const Icon(
                               Icons.check_circle,
                               color: Colors.green,
@@ -419,7 +444,8 @@ class _VocabularyPracticePageState
 
                           if (_answered &&
                               option == _selectedAnswer &&
-                              option != question.correctAnswer)
+                              option !=
+                                  question.correctAnswer)
                             const Icon(
                               Icons.cancel,
                               color: Colors.red,
@@ -441,12 +467,15 @@ class _VocabularyPracticePageState
                             question.correctAnswer
                         ? Colors.green.withValues(alpha: 0.10)
                         : Colors.red.withValues(alpha: 0.10),
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius:
+                        BorderRadius.circular(14),
                   ),
                   child: Text(
-                    _selectedAnswer == question.correctAnswer
+                    _selectedAnswer ==
+                            question.correctAnswer
                         ? 'Correct! 🎉'
-                        : 'Correct answer: ${question.correctAnswer}',
+                        : 'Correct answer: '
+                            '${question.correctAnswer}',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
@@ -464,7 +493,8 @@ class _VocabularyPracticePageState
                       backgroundColor: lavender,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius:
+                            BorderRadius.circular(16),
                       ),
                     ),
                     child: Text(
