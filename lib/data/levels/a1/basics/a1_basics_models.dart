@@ -3,12 +3,14 @@ class A1BasicVocabulary {
   final String persian;
   final String? pronunciation;
   final String example;
+  final List<A1BasicVocabulary> vocabulary;
 
   const A1BasicVocabulary({
     required this.english,
     required this.persian,
     this.pronunciation,
     required this.example,
+    this.vocabulary = const [],
   });
 }
 
