@@ -9,6 +9,177 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       'Have and has are commonly used to talk about possession, relationships, '
       'features, and things that someone has. The form changes depending on the subject.',
 
+  vocabulary: [
+    A1BasicVocabulary(
+      english: 'phone',
+      persian: 'گوشی / تلفن',
+      pronunciation: 'فون',
+      example: 'I have a phone.',
+    ),
+    A1BasicVocabulary(
+      english: 'sister',
+      persian: 'خواهر',
+      pronunciation: 'سیستِر',
+      example: 'I have a sister.',
+    ),
+    A1BasicVocabulary(
+      english: 'house',
+      persian: 'خانه',
+      pronunciation: 'هاوس',
+      example: 'You have a nice house.',
+    ),
+    A1BasicVocabulary(
+      english: 'problem',
+      persian: 'مشکل',
+      pronunciation: 'پرابْلِم',
+      example: 'We have a problem.',
+    ),
+    A1BasicVocabulary(
+      english: 'dog',
+      persian: 'سگ',
+      pronunciation: 'داگ',
+      example: 'They have a dog.',
+    ),
+    A1BasicVocabulary(
+      english: 'car',
+      persian: 'ماشین',
+      pronunciation: 'کار',
+      example: 'She has a car.',
+    ),
+    A1BasicVocabulary(
+      english: 'cat',
+      persian: 'گربه',
+      pronunciation: 'کَت',
+      example: 'She has a cat.',
+    ),
+    A1BasicVocabulary(
+      english: 'legs',
+      persian: 'پاها',
+      pronunciation: 'لِگز',
+      example: 'It has four legs.',
+    ),
+    A1BasicVocabulary(
+      english: 'brother',
+      persian: 'برادر',
+      pronunciation: 'برادِر',
+      example: 'Ali has a brother.',
+    ),
+    A1BasicVocabulary(
+      english: 'laptop',
+      persian: 'لپ‌تاپ',
+      pronunciation: 'لَپ‌تاپ',
+      example: 'I have a laptop.',
+    ),
+    A1BasicVocabulary(
+      english: 'bag',
+      persian: 'کیف',
+      pronunciation: 'بَگ',
+      example: 'You have a beautiful bag.',
+    ),
+    A1BasicVocabulary(
+      english: 'dress',
+      persian: 'لباس',
+      pronunciation: 'دِرِس',
+      example: 'She has a new dress.',
+    ),
+    A1BasicVocabulary(
+      english: 'garden',
+      persian: 'باغ',
+      pronunciation: 'گاردِن',
+      example: 'They have a big garden.',
+    ),
+    A1BasicVocabulary(
+      english: 'children',
+      persian: 'فرزندان / بچه‌ها',
+      pronunciation: 'چیلدرِن',
+      example: 'They have two children.',
+    ),
+    A1BasicVocabulary(
+      english: 'baby',
+      persian: 'نوزاد',
+      pronunciation: 'بِیبی',
+      example: 'They have a new baby.',
+    ),
+    A1BasicVocabulary(
+      english: 'eyes',
+      persian: 'چشم‌ها',
+      pronunciation: 'آیز',
+      example: 'I have brown eyes.',
+    ),
+    A1BasicVocabulary(
+      english: 'hair',
+      persian: 'مو',
+      pronunciation: 'هِر',
+      example: 'She has long hair.',
+    ),
+    A1BasicVocabulary(
+      english: 'bedrooms',
+      persian: 'اتاق‌خواب‌ها',
+      pronunciation: 'بِدرومز',
+      example: 'The house has three bedrooms.',
+    ),
+    A1BasicVocabulary(
+      english: 'time',
+      persian: 'وقت / زمان',
+      pronunciation: 'تایم',
+      example: 'You don’t have time.',
+    ),
+    A1BasicVocabulary(
+      english: 'money',
+      persian: 'پول',
+      pronunciation: 'مانی',
+      example: 'We don’t have money.',
+    ),
+    A1BasicVocabulary(
+      english: 'name',
+      persian: 'اسم / نام',
+      pronunciation: 'نِیم',
+      example: 'It doesn’t have a name.',
+    ),
+    A1BasicVocabulary(
+      english: 'question',
+      persian: 'سؤال',
+      pronunciation: 'کوِسچِن',
+      example: 'I have a question.',
+    ),
+    A1BasicVocabulary(
+      english: 'idea',
+      persian: 'ایده',
+      pronunciation: 'آیدیا',
+      example: 'I have an idea.',
+    ),
+    A1BasicVocabulary(
+      english: 'minute',
+      persian: 'دقیقه',
+      pronunciation: 'مِنیت',
+      example: 'Do you have a minute?',
+    ),
+    A1BasicVocabulary(
+      english: 'pen',
+      persian: 'خودکار',
+      pronunciation: 'پِن',
+      example: 'Do you have a pen?',
+    ),
+    A1BasicVocabulary(
+      english: 'headache',
+      persian: 'سردرد',
+      pronunciation: 'هِدِیک',
+      example: 'She has a headache.',
+    ),
+    A1BasicVocabulary(
+      english: 'job',
+      persian: 'شغل',
+      pronunciation: 'جاب',
+      example: 'He has a new job.',
+    ),
+    A1BasicVocabulary(
+      english: 'smile',
+      persian: 'لبخند',
+      pronunciation: 'اِسمایل',
+      example: 'You have a nice smile.',
+    ),
+  ],
+
   sections: [
     A1BasicSection(
       title: 'What are Have and Has?',
