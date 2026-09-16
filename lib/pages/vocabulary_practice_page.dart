@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../data/vocabulary/a1_basics_vocabulary_practice_data.dart';
 import 'a1_vocabulary_practice_data.dart';
 import 'a2_vocabulary_practice_data.dart';
 import 'vocabulary_practice_models.dart';
 import 'vocabulary_practice_service.dart';
+import '../data/vocabulary/a1_basics_vocabulary_practice_data.dart';
 
 class VocabularyPracticePage extends StatefulWidget {
   /// If provided, only vocabulary belonging to this lesson is used.
