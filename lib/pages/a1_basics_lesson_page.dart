@@ -1618,12 +1618,11 @@ class _A1BasicsLessonPageState
   // LEARNING
   // =========================================================
 
-  String _localizedSectionDescription(
+  String _localizedSectionIntro(
     A1BasicSection? section,
   ) {
     if (!_isPersian) {
-      return section?.explanation ??
-          _stages[_currentStage].description;
+      return 'Learn this item first, then review the examples and concept.';
     }
 
     final title = _normalizeTitle(
@@ -1631,11 +1630,40 @@ class _A1BasicsLessonPageState
     );
 
     if (title == 'i') {
-      return 'از I وقتی استفاده می‌کنیم که درباره‌ی خودمان صحبت می‌کنیم. '
-          'I همیشه با حرف بزرگ نوشته می‌شود، حتی وقتی وسط جمله قرار داشته باشد.';
+      return 'I یعنی «من» و وقتی استفاده می‌شود که درباره‌ی خودت صحبت می‌کنی '
+          'یا چیزی را به خودت نسبت می‌دهی؛ مثلاً برای معرفی خودت یا گفتن '
+          'نظر و احساس خودت. I همیشه با حرف بزرگ نوشته می‌شود.';
     }
 
-    return _stages[_currentStage].descriptionFa;
+    // برای بقیه‌ی کارت‌ها از توضیح اختصاصی خود بخش استفاده می‌کنیم
+    // تا هر کارت توضیح مرتبط با همان موضوع داشته باشد.
+    final explanation = section?.explanation?.trim();
+    if (explanation != null && explanation.isNotEmpty) {
+      return explanation;
+    }
+
+    return _isPersian
+        ? 'این بخش را اول یاد بگیر، سپس مثال‌ها و مفهوم آن را مرور کن.'
+        : 'Learn this item first, then review its examples and concept.';
+  }
+
+  String _localizedSectionDescription(
+    A1BasicSection? section,
+  ) {
+    // توضیح اختصاصی خودِ هر بخش را برای فارسی و انگلیسی استفاده می‌کنیم.
+    // قبلاً در حالت فارسی فقط برای I توضیح اختصاصی نمایش داده می‌شد
+    // و بقیه‌ی درس‌ها به توضیح عمومی مرحله برمی‌گشتند.
+    final explanation = section?.explanation?.trim();
+
+    if (explanation != null && explanation.isNotEmpty) {
+      return explanation;
+    }
+
+    // اگر یک بخش explanation نداشته باشد، توضیح عمومی همان مرحله
+    // به‌عنوان fallback نمایش داده می‌شود.
+    return _isPersian
+        ? _stages[_currentStage].descriptionFa
+        : _stages[_currentStage].description;
   }
 
   Widget _buildLearningContent() {
@@ -1664,15 +1692,16 @@ class _A1BasicsLessonPageState
     final sectionDescription =
         _localizedSectionDescription(section);
 
+    final sectionIntro =
+        _localizedSectionIntro(section);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // ۱) معرفی درس/بخش
         _buildSectionTitle(
           sectionTitle,
-          _isPersian
-              ? 'معرفی این بخش'
-              : 'Introduction',
+          sectionIntro,
         ),
         SizedBox(
           height: A1BasicsUIConfig.sectionSpacing,
