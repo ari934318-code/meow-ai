@@ -7,6 +7,52 @@ const A1BasicLesson a1BasicPronouns = A1BasicLesson(
   topic: 'Pronouns',
   explanation:
       'Subject pronouns are words we use instead of names or nouns when they are the subject of a sentence.',
+  
+  vocabulary: [
+    A1BasicVocabulary(
+      english: 'I',
+      persian: 'من',
+      pronunciation: 'آی',
+      example: 'I am a student.',
+    ),
+    A1BasicVocabulary(
+      english: 'you',
+      persian: 'تو / شما',
+      pronunciation: 'یو',
+      example: 'You are my friend.',
+    ),
+    A1BasicVocabulary(
+      english: 'he',
+      persian: 'او، مذکر',
+      pronunciation: 'هی',
+      example: 'He is a teacher.',
+    ),
+    A1BasicVocabulary(
+      english: 'she',
+      persian: 'او، مؤنث',
+      pronunciation: 'شی',
+      example: 'She is my sister.',
+    ),
+    A1BasicVocabulary(
+      english: 'it',
+      persian: 'آن / این',
+      pronunciation: 'اِت',
+      example: 'It is a book.',
+    ),
+    A1BasicVocabulary(
+      english: 'we',
+      persian: 'ما',
+      pronunciation: 'وی',
+      example: 'We are ready.',
+    ),
+    A1BasicVocabulary(
+      english: 'they',
+      persian: 'آن‌ها',
+      pronunciation: 'ذِی',
+      example: 'They are students.',
+    ),
+  ],
+
   sections: [
     A1BasicSection(
       title: 'The 7 Subject Pronouns',
