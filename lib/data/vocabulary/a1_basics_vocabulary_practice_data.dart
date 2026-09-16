@@ -1,6 +1,6 @@
 import '../levels/a1/basics/a1_basics_data.dart';
 import '../levels/a1/basics/a1_basics_models.dart';
-import 'vocabulary_practice_models.dart';
+import '../../pages/vocabulary_practice_models.dart';
 
 class A1BasicsVocabularyPracticeData {
   static List<VocabularyPracticeItem> get all {
