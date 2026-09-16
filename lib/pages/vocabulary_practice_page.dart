@@ -67,19 +67,64 @@ class _VocabularyPracticePageState
     _startSession();
   }
 
+  List<VocabularyPracticeQuestion> _createSession() {
+    final generated = VocabularyPracticeService.createSession(
+      items: _items,
+      questionCount: _items.length,
+    );
+
+    if (generated.isEmpty) {
+      return [];
+    }
+
+    // Basics should focus mainly on recognizing the English word
+    // from its Persian meaning. Keep the old random behavior for
+    // global practice and other levels.
+    if (widget.lessonId == null ||
+        widget.lessonId!.trim().isEmpty) {
+      return generated.take(_totalQuestions).toList();
+    }
+
+    const preferredCounts = <VocabularyPracticeType, int>{
+      VocabularyPracticeType.persianToEnglish: 6,
+      VocabularyPracticeType.englishToPersian: 2,
+      VocabularyPracticeType.exampleToWord: 1,
+      VocabularyPracticeType.wordToExample: 1,
+    };
+
+    final remaining = <VocabularyPracticeQuestion>[...generated];
+    final selected = <VocabularyPracticeQuestion>[];
+
+    for (final entry in preferredCounts.entries) {
+      final matches = remaining
+          .where((question) => question.type == entry.key)
+          .take(entry.value)
+          .toList();
+
+      selected.addAll(matches);
+      remaining.removeWhere(matches.contains);
+    }
+
+    // If a lesson does not have enough questions of one type, fill
+    // the remaining slots with the other generated question types.
+    for (final question in remaining) {
+      if (selected.length >= _totalQuestions) {
+        break;
+      }
+      if (!selected.contains(question)) {
+        selected.add(question);
+      }
+    }
+
+    return selected.take(_totalQuestions).toList();
+  }
+
   void _startSession() {
     if (_items.isEmpty) {
       return;
     }
 
-    final questionCount = _items.length < _totalQuestions
-        ? _items.length
-        : _totalQuestions;
-
-    final session = VocabularyPracticeService.createSession(
-      items: _items,
-      questionCount: questionCount,
-    );
+    final session = _createSession();
 
     if (session.isEmpty) {
       return;
