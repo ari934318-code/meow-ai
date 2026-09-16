@@ -9,7 +9,209 @@ const A1BasicLesson a1BasicCanCant = A1BasicLesson(
       'Can is a modal verb used to talk about ability, possibility, permission, '
       'and simple requests. Cannot and can’t are used for negative sentences. '
       'After can or can’t, always use the base form of the verb.',
-  sections: [
+  
+  vocabulary: [
+    A1BasicVocabulary(
+      english: 'swim',
+      persian: 'شنا کردن',
+      pronunciation: 'سویم',
+      example: 'I can swim.',
+    ),
+    A1BasicVocabulary(
+      english: 'drive',
+      persian: 'رانندگی کردن',
+      pronunciation: 'درایو',
+      example: 'She can drive.',
+    ),
+    A1BasicVocabulary(
+      english: 'help',
+      persian: 'کمک کردن',
+      pronunciation: 'هِلپ',
+      example: 'We can help you.',
+    ),
+    A1BasicVocabulary(
+      english: 'run',
+      persian: 'دویدن',
+      pronunciation: 'ران',
+      example: 'He can run fast.',
+    ),
+    A1BasicVocabulary(
+      english: 'speak English',
+      persian: 'انگلیسی صحبت کردن',
+      pronunciation: 'اِسپیک اِنگلیش',
+      example: 'She can speak English.',
+    ),
+    A1BasicVocabulary(
+      english: 'play football',
+      persian: 'فوتبال بازی کردن',
+      pronunciation: 'پِلِی فوتبال',
+      example: 'They can play football.',
+    ),
+    A1BasicVocabulary(
+      english: 'cook',
+      persian: 'آشپزی کردن',
+      pronunciation: 'کوک',
+      example: 'My brother can cook.',
+    ),
+    A1BasicVocabulary(
+      english: 'stay',
+      persian: 'ماندن',
+      pronunciation: 'اِستِی',
+      example: 'We can’t stay here.',
+    ),
+    A1BasicVocabulary(
+      english: 'come',
+      persian: 'آمدن',
+      pronunciation: 'کام',
+      example: 'He cannot come today.',
+    ),
+    A1BasicVocabulary(
+      english: 'sit',
+      persian: 'نشستن',
+      pronunciation: 'سیت',
+      example: 'Can I sit here?',
+    ),
+    A1BasicVocabulary(
+      english: 'use',
+      persian: 'استفاده کردن',
+      pronunciation: 'یوز',
+      example: 'Can I use your phone?',
+    ),
+    A1BasicVocabulary(
+      english: 'phone',
+      persian: 'گوشی / تلفن',
+      pronunciation: 'فون',
+      example: 'Can I use your phone?',
+    ),
+    A1BasicVocabulary(
+      english: 'open',
+      persian: 'باز کردن',
+      pronunciation: 'اوپِن',
+      example: 'Can you open the door?',
+    ),
+    A1BasicVocabulary(
+      english: 'window',
+      persian: 'پنجره',
+      pronunciation: 'ویندو',
+      example: 'Can I open the window?',
+    ),
+    A1BasicVocabulary(
+      english: 'come in',
+      persian: 'داخل آمدن',
+      pronunciation: 'کام اِن',
+      example: 'Can I come in?',
+    ),
+    A1BasicVocabulary(
+      english: 'water',
+      persian: 'آب',
+      pronunciation: 'واتِر',
+      example: 'Can I have some water?',
+    ),
+    A1BasicVocabulary(
+      english: 'door',
+      persian: 'در',
+      pronunciation: 'دور',
+      example: 'Can you open the door?',
+    ),
+    A1BasicVocabulary(
+      english: 'call',
+      persian: 'تماس گرفتن',
+      pronunciation: 'کال',
+      example: 'Can you call me later?',
+    ),
+    A1BasicVocabulary(
+      english: 'later',
+      persian: 'بعداً',
+      pronunciation: 'لِیتِر',
+      example: 'Can you call me later?',
+    ),
+    A1BasicVocabulary(
+      english: 'slowly',
+      persian: 'آرام / آهسته',
+      pronunciation: 'اِسلولی',
+      example: 'Can you speak slowly?',
+    ),
+    A1BasicVocabulary(
+      english: 'repeat',
+      persian: 'تکرار کردن',
+      pronunciation: 'ریپیت',
+      example: 'Can you repeat that?',
+    ),
+    A1BasicVocabulary(
+      english: 'hear',
+      persian: 'شنیدن',
+      pronunciation: 'هِیر',
+      example: 'I can’t hear you.',
+    ),
+    A1BasicVocabulary(
+      english: 'understand',
+      persian: 'فهمیدن / متوجه شدن',
+      pronunciation: 'آندِرستَند',
+      example: 'I can’t understand.',
+    ),
+    A1BasicVocabulary(
+      english: 'say',
+      persian: 'گفتن',
+      pronunciation: 'سِی',
+      example: 'Can you say that again?',
+    ),
+    A1BasicVocabulary(
+      english: 'again',
+      persian: 'دوباره',
+      pronunciation: 'اِگِن',
+      example: 'Can you say that again?',
+    ),
+    A1BasicVocabulary(
+      english: 'park',
+      persian: 'پارک کردن',
+      pronunciation: 'پارک',
+      example: 'You can’t park here.',
+    ),
+    A1BasicVocabulary(
+      english: 'smoke',
+      persian: 'سیگار کشیدن',
+      pronunciation: 'اِسموک',
+      example: 'You can’t smoke here.',
+    ),
+    A1BasicVocabulary(
+      english: 'enter',
+      persian: 'وارد شدن',
+      pronunciation: 'اِنتِر',
+      example: 'We can’t enter this room.',
+    ),
+    A1BasicVocabulary(
+      english: 'room',
+      persian: 'اتاق',
+      pronunciation: 'روم',
+      example: 'We can’t enter this room.',
+    ),
+    A1BasicVocabulary(
+      english: 'ask',
+      persian: 'پرسیدن',
+      pronunciation: 'اَسک',
+      example: 'Can I ask a question?',
+    ),
+    A1BasicVocabulary(
+      english: 'question',
+      persian: 'سؤال',
+      pronunciation: 'کوِسچِن',
+      example: 'Can I ask a question?',
+    ),
+    A1BasicVocabulary(
+      english: 'wait',
+      persian: 'صبر کردن',
+      pronunciation: 'وِیت',
+      example: 'Can you wait a minute?',
+    ),
+    A1BasicVocabulary(
+      english: 'minute',
+      persian: 'دقیقه',
+      pronunciation: 'مِنیت',
+      example: 'Can you wait a minute?',
+    ),
+  ],
+
+sections: [
     A1BasicSection(
       title: 'What Is Can?',
       titleFa: 'Can چیست؟',
