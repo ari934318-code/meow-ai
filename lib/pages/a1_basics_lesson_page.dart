@@ -225,7 +225,12 @@ class _A1BasicsLessonPageState
           _stage(
             'What are Have and Has?',
             'Have و Has یعنی چه؟',
-            [0, 2, 4, 6, 7, 9],
+            [0],
+          ),
+          _stage(
+            'Have',
+            'Have',
+            [2, 4, 6, 7, 9],
           ),
           _stage(
             'Has',
@@ -233,19 +238,49 @@ class _A1BasicsLessonPageState
             [1, 3, 5, 8],
           ),
           _stage(
-            'Have and Has Review',
-            'مرور Have و Has',
-            [15, 16, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42, 43, 49, 50, 51],
+            'Have and Has Chart',
+            'جدول Have و Has',
+            [15, 16],
           ),
           _stage(
-            'Negative: Don’t / Doesn’t Have',
-            'منفی: Don’t / Doesn’t Have',
-            [10, 11, 17, 18, 44, 45],
+            'Have for Possession',
+            'Have برای مالکیت و داشتن',
+            [29, 31, 33],
+          ),
+          _stage(
+            'Have for Family and Relationships',
+            'Have برای خانواده و روابط',
+            [40, 41, 51],
+          ),
+          _stage(
+            'Have for Features and Characteristics',
+            'Have برای ویژگی‌ها و مشخصات',
+            [30, 32, 39, 42, 43, 50],
+          ),
+          _stage(
+            'Negative: Don’t Have',
+            'منفی: Don’t Have',
+            [10, 17, 44],
+          ),
+          _stage(
+            'Negative: Doesn’t Have',
+            'منفی: Doesn’t Have',
+            [11, 45],
+          ),
+          _stage(
+            'Important: Doesn’t + Have',
+            'نکته مهم: Doesn’t + Have',
+            [18],
           ),
           _stage(
             'Questions with Have',
-            'سؤال با Have',
-            [12, 13, 14, 19, 20, 21, 22, 23, 24, 46, 47, 48],
+            'سوالی کردن با Have',
+            [12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48],
+          ),
+          _stage(
+            'Important: Does + Have',
+            'نکته مهم: Does + Have',
+            [20],
           ),
           _stage(
             'Short Answers',
@@ -253,9 +288,9 @@ class _A1BasicsLessonPageState
             [25, 26, 27, 28],
           ),
           _stage(
-            'Translation and Review',
-            'ترجمه و مرور',
-            [34, 35, 36, 37],
+            'Real-Life Expressions',
+            'عبارت‌های واقعی و کاربردی',
+            [34, 35, 36, 37, 38, 49],
           ),
           _speakingStage(
             'Speaking',
