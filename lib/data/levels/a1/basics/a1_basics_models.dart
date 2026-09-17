@@ -103,10 +103,10 @@ class A1BasicQuestion {
   final String? _explanation;
   final String? explanationFa;
   final String? hint;
-  final String type;
+  final String _type;
 
   const A1BasicQuestion({
-    required this.type,
+    required String type,
     required String question,
     this.questionFa,
     required List<String> options,
@@ -115,9 +115,30 @@ class A1BasicQuestion {
     String? explanation,
     this.explanationFa,
     this.hint,
-  })  : _question = question,
+  })  : _type = type,
+        _question = question,
         _options = options,
         _explanation = explanation;
+
+  String get type {
+    switch (_type.trim()) {
+      case 'fill_blank':
+      case 'fillInTheBlank':
+        return 'fillInTheBlank';
+      case 'multiple_choice':
+      case 'multipleChoice':
+      case 'true_false':
+      case 'trueFalse':
+      case 'translation':
+      case 'word_order':
+      case 'wordOrder':
+        return 'multipleChoice';
+      case 'typing':
+        return 'typing';
+      default:
+        return 'multipleChoice';
+    }
+  }
 
   String get question =>
       MeowLocalizations.isPersianGlobal &&
