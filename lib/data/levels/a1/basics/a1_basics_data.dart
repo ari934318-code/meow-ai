@@ -9,6 +9,7 @@ import 'a1_05_regular_verbs.dart';
 import 'a1_06_irregular_verbs.dart';
 import 'a1_06_irregular_verbs_questions_localized.dart';
 import 'a1_07_can_cant.dart';
+import 'a1_07_can_cant_questions_localized.dart';
 import 'a1_08_must_mustnt.dart';
 import 'a1_09_object_pronouns.dart';
 import 'a1_10_possessive_adjectives.dart';
@@ -24,7 +25,7 @@ final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicDoDoes,
   a1BasicRegularVerbs,
   a1BasicIrregularVerbs.copyWithQuestions(a1IrregularVerbsQuestions),
-  a1BasicCanCant,
+  a1BasicCanCant.copyWithQuestions(a1CanCantQuestions),
   a1BasicMustMustnt,
   a1BasicObjectPronouns,
   a1BasicPossessiveAdjectives,
