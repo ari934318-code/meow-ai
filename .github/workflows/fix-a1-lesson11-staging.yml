@@ -47,12 +47,12 @@ jobs:
               _stage(
                 'He, She, It',
                 'He, She, It',
-                [2, 4, 8],
+                [2, 4],
               ),
               _stage(
                 'Adding -s',
                 'اضافه کردن s',
-                [2, 4, 8],
+                [8],
               ),
               _stage(
                 'Adding -es',
@@ -67,7 +67,7 @@ jobs:
               _stage(
                 'Positive Sentences',
                 'جمله‌های مثبت',
-                [24, 27, 34],
+                [24, 34],
               ),
               _stage(
                 'Negative Sentences',
@@ -82,7 +82,7 @@ jobs:
               _stage(
                 'Common Mistakes',
                 'اشتباهات رایج',
-                [20, 21, 22, 23, 25, 26, 27, 35, 36, 37],
+                [20, 21, 22, 23, 25, 35, 36],
               ),
               _stage(
                 'Adverbs of Frequency',
