@@ -1,0 +1,51 @@
+name: Fix A1 Lesson 6 Staging
+on:
+  push:
+    branches: [main]
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Update Lesson 6 stage mapping
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('lib/pages/a1_basics_lesson_page.dart')
+          s = p.read_text()
+          start = s.index("      case 'a1_06':")
+          end = s.index("      case 'a1_07':", start)
+          new_block = '''      case 'a1_06':
+      case 'lesson_6':
+      case '6':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 1]),
+          _stage('Stage 2', 'مرحله ۲', [2, 3]),
+          _stage('Stage 3', 'مرحله ۳', [4, 5]),
+          _stage('Stage 4', 'مرحله ۴', [6, 7]),
+          _stage('Stage 5', 'مرحله ۵', [8, 9]),
+          _stage('Stage 6', 'مرحله ۶', [10, 11, 12, 13]),
+          _stage('Stage 7', 'مرحله ۷', [14, 15, 16, 17, 18, 19]),
+          _stage('Stage 8', 'مرحله ۸', [20, 21, 22, 23, 24]),
+          _stage('Stage 9', 'مرحله ۹', [25, 26, 27, 28]),
+          _stage('Stage 10', 'مرحله ۱۰', [29, 30, 31, 32, 33, 34]),
+          _stage('Stage 11', 'مرحله ۱۱', [35, 36, 37, 38]),
+          _stage('Stage 12', 'مرحله ۱۲', [39, 40, 41, 42, 43]),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+'''
+          p.write_text(s[:start] + new_block + s[end:])
+      - name: Commit and clean up
+        run: |
+          rm -f .github/workflows/fix-a1-lesson6-staging.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib/pages/a1_basics_lesson_page.dart .github/workflows/fix-a1-lesson6-staging.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix A1 Lesson 6 learning stages"
+          git push
