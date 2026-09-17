@@ -5,35 +5,35 @@ publish_to: 'none'
 version: 1.8.2+19
 
 environment:
-sdk: ^3.13.3
+  sdk: ^3.13.3
 
 dependencies:
-flutter:
-sdk: flutter
+  flutter:
+    sdk: flutter
 
-shared_preferences: ^2.5.3
+  shared_preferences: ^2.5.3
 
-flutter_localizations:
-sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
-cupertino_icons: ^1.0.8
-flutter_tts: ^4.2.3
-speech_to_text: ^7.3.0
+  cupertino_icons: ^1.0.8
+  flutter_tts: ^4.2.3
+  speech_to_text: ^7.3.0
 
 dev_dependencies:
-flutter_test:
-sdk: flutter
+  flutter_test:
+    sdk: flutter
 
-flutter_lints: ^6.0.0
-flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
-uses-material-design: true
+  uses-material-design: true
 
-assets:
-- meow_icon.png
+  assets:
+    - meow_icon.png
 
 flutter_launcher_icons:
-android: true
-ios: false
-image_path: "meow_icon.png"
+  android: true
+  ios: false
+  image_path: "meow_icon.png"
