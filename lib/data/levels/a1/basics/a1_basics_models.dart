@@ -21,7 +21,7 @@ class A1BasicLesson {
   final String topic;
   final String explanation;
 
-  final List<A1BasicSection> _sections;
+  final List<A1BasicSection> sections;
   final List<A1BasicExample> examples;
   final List<A1BasicQuestion> questions;
   final List<A1BasicSpeakingQuestion> speakingQuestions;
@@ -34,47 +34,12 @@ class A1BasicLesson {
     required this.titleFa,
     required this.topic,
     required this.explanation,
-    required List<A1BasicSection> sections,
+    required this.sections,
     required this.examples,
     required this.questions,
     required this.speakingQuestions,
     this.vocabulary = const [],
-  }) : _sections = sections;
-
-  List<A1BasicSection> get sections {
-    if (_sections.length < 2) {
-      return _sections;
-    }
-
-    final first = _sections.first;
-    final second = _sections[1];
-
-    // Basics lessons 2–11 traditionally introduced the abstract concept
-    // before showing the concrete grammar item. For A1, teach the concrete
-    // item first, then let the existing concept questions reinforce it.
-    // Basics 1 is already in the desired order, so it remains unchanged.
-    if (_isConceptSection(first) && !_isConceptSection(second)) {
-      return <A1BasicSection>[
-        second,
-        first,
-        ..._sections.skip(2),
-      ];
-    }
-
-    return _sections;
-  }
-
-  static bool _isConceptSection(A1BasicSection section) {
-    final title = section.title.trim().toLowerCase();
-    final titleFa = section.titleFa.trim();
-
-    return title.startsWith('what is ') ||
-        title.startsWith('what are ') ||
-        title.startsWith('what is') ||
-        title.startsWith('what are') ||
-        titleFa.contains('چیست') ||
-        titleFa.contains('چه هستند');
-  }
+  });
 }
 
 class A1BasicSection {
