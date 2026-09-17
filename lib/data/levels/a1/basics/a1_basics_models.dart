@@ -20,12 +20,10 @@ class A1BasicLesson {
   final String titleFa;
   final String topic;
   final String explanation;
-
   final List<A1BasicSection> _sections;
   final List<A1BasicExample> examples;
   final List<A1BasicQuestion> questions;
   final List<A1BasicSpeakingQuestion> speakingQuestions;
-
   final List<A1BasicVocabulary> vocabulary;
 
   const A1BasicLesson({
@@ -41,9 +39,6 @@ class A1BasicLesson {
     this.vocabulary = const [],
   }) : _sections = sections;
 
-  /// Presents concept-first lesson data in a more beginner-friendly order:
-  /// concrete item -> meaning -> examples -> concept -> practice.
-  /// Question indices and the original question/stage data remain unchanged.
   List<A1BasicSection> get sections {
     if (_sections.length < 2 || !_isConceptSection(_sections.first)) {
       return _sections;
@@ -51,7 +46,6 @@ class A1BasicLesson {
 
     final concept = _sections.first;
     final concrete = _sections[1];
-
     final conceptExample = A1BasicExample(
       english: concept.title,
       persian: '${concept.titleFa}\n${concept.explanationFa}',
@@ -72,10 +66,24 @@ class A1BasicLesson {
     ];
   }
 
+  A1BasicLesson copyWithQuestions(List<A1BasicQuestion> newQuestions) {
+    return A1BasicLesson(
+      id: id,
+      title: title,
+      titleFa: titleFa,
+      topic: topic,
+      explanation: explanation,
+      sections: _sections,
+      examples: examples,
+      questions: newQuestions,
+      speakingQuestions: speakingQuestions,
+      vocabulary: vocabulary,
+    );
+  }
+
   static bool _isConceptSection(A1BasicSection section) {
     final title = section.title.trim().toLowerCase();
     final titleFa = section.titleFa.trim();
-
     return title.startsWith('what is ') ||
         title.startsWith('what are ') ||
         titleFa.contains('چیست') ||
@@ -135,23 +143,13 @@ class A1BasicQuestion {
   });
 
   List<String> get allAcceptedAnswers {
-    final answers = <String>[
-      answer,
-      ...acceptableAnswers,
-    ];
-
+    final answers = <String>[answer, ...acceptableAnswers];
     final result = <String>[];
-
     for (final item in answers) {
       final normalized = item.trim();
-
       if (normalized.isEmpty) continue;
-
-      if (!result.contains(normalized)) {
-        result.add(normalized);
-      }
+      if (!result.contains(normalized)) result.add(normalized);
     }
-
     return result;
   }
 }
