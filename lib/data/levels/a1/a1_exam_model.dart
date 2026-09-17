@@ -3,6 +3,7 @@ class A1ExamQuestion {
   final String lessonId;
   final String category;
   final String question;
+  final String? questionFa;
   final List<String> options;
   final String correctAnswer;
 
@@ -11,6 +12,7 @@ class A1ExamQuestion {
     required this.lessonId,
     required this.category,
     required this.question,
+    this.questionFa,
     required this.options,
     required this.correctAnswer,
   });
