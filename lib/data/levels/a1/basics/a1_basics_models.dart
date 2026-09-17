@@ -26,7 +26,6 @@ class A1BasicLesson {
   final List<A1BasicQuestion> questions;
   final List<A1BasicSpeakingQuestion> speakingQuestions;
 
-  // Vocabulary مخصوص همین درس
   final List<A1BasicVocabulary> vocabulary;
 
   const A1BasicLesson({
@@ -74,19 +73,23 @@ class A1BasicExample {
 class A1BasicQuestion {
   final String type;
   final String question;
+  final String? questionFa;
   final List<String> options;
   final String answer;
   final List<String> acceptableAnswers;
   final String? explanation;
+  final String? explanationFa;
   final String? hint;
 
   const A1BasicQuestion({
     required this.type,
     required this.question,
+    this.questionFa,
     required this.options,
     required this.answer,
     this.acceptableAnswers = const [],
     this.explanation,
+    this.explanationFa,
     this.hint,
   });
 
