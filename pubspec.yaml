@@ -12,13 +12,12 @@ dependencies:
     sdk: flutter
 
   shared_preferences: ^2.5.3
-
   flutter_localizations:
     sdk: flutter
-
   cupertino_icons: ^1.0.8
   flutter_tts: ^4.2.3
   speech_to_text: ^7.3.0
+  image_picker: ^1.2.3
 
 dev_dependencies:
   flutter_test:
