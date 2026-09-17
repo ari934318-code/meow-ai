@@ -1,0 +1,28 @@
+name: Repair A1 basics page
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  repair:
+    if: github.actor == 'ari934318-code'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore known-good page
+        run: |
+          git show ffe7455b255447943eb0393e3b909de669c54bd3:lib/pages/a1_basics_lesson_page.dart > lib/pages/a1_basics_lesson_page.dart
+      - name: Remove temporary repair workflow
+        run: |
+          rm -f .github/workflows/repair-a1-lesson5.yml
+          rm -f .github/workflows/repair-a1-page-now.yml
+      - name: Commit restoration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib/pages/a1_basics_lesson_page.dart .github/workflows/repair-a1-lesson5.yml .github/workflows/repair-a1-page-now.yml
+          git commit -m "fix: restore A1 basics lesson page"
+          git push
