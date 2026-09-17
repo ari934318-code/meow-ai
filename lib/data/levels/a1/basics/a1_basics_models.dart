@@ -1,4 +1,4 @@
-import '../../../localization.dart';
+import '../../../../localization.dart';
 
 class A1BasicVocabulary {
   final String english;
