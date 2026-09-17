@@ -17,6 +17,7 @@ import 'a1_09_object_pronouns_questions_localized.dart';
 import 'a1_10_possessive_adjectives.dart';
 import 'a1_10_possessive_adjectives_questions_localized.dart';
 import 'a1_11_present_simple.dart';
+import 'a1_11_present_simple_questions_localized.dart';
 
 final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicPronouns.copyWithQuestions([
@@ -34,5 +35,5 @@ final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicPossessiveAdjectives.copyWithQuestions(
     a1PossessiveAdjectivesQuestions,
   ),
-  a1BasicPresentSimple,
+  a1BasicPresentSimple.copyWithQuestions(a1PresentSimpleQuestions),
 ];
