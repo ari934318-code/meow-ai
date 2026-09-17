@@ -1,38 +1,32 @@
-name: Fix A1 Lesson 11 Staging
+name: Apply A1 Lesson 11 staging fix
 
 on:
-  workflow_dispatch:
-
-permissions:
-  contents: write
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-a1-lesson11-staging.yml'
 
 jobs:
   fix:
+    if: github.event.head_commit.message != 'Apply A1 lesson 11 staging and remove temporary workflow'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Fix lesson 11 staging
-        shell: bash
+      - name: Replace only lesson 11 staging block
         run: |
           python3 - <<'PY'
           from pathlib import Path
-
-          path = Path('lib/pages/a1_basics_lesson_page.dart')
-          text = path.read_text()
-
-          start_marker = "case 'a1_11':"
-          end_marker = "_speakingStage('Speaking','تمرین مکالمه'),"
-
-          start = text.index(start_marker)
-          end = text.index(end_marker, start) + len(end_marker)
-
-          replacement = '''case 'a1_11':
-          case 'lesson_11':
-          case '11':
+          p = Path('lib/pages/a1_basics_lesson_page.dart')
+          text = p.read_text()
+          start = text.index("case 'a1_11':")
+          end = text.index("_speakingStage('Speaking', 'تمرین مکالمه'),", start)
+          replacement = """case 'a1_11':
             return [
               _stage(
                 'What Is the Present Simple?',
@@ -94,30 +88,16 @@ jobs:
                 'Present Simple در انگلیسی واقعی',
                 [38, 39, 40, 41, 42, 43, 44, 45, 46],
               ),
-              _speakingStage('Speaking','تمرین مکالمه'),
-            ];'''
-
-          text = text[:start] + replacement + text[end:]
-          path.write_text(text)
+            ];
+          """
+          p.write_text(text[:start] + replacement + text[end:])
           PY
 
-      - name: Verify
+      - name: Commit staging fix and remove temporary workflow
         run: |
-          grep -n -A95 "case 'a1_11':" lib/pages/a1_basics_lesson_page.dart
-
-      - name: Commit and push
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add lib/pages/a1_basics_lesson_page.dart
-          git diff --cached --check
-          git commit -m "Fix A1 lesson 11 progressive staging"
-          git push origin main
-
-      - name: Remove temporary workflow
-        shell: bash
-        run: |
-          git rm .github/workflows/fix-a1-lesson11-staging.yml
-          git commit -m "Remove temporary lesson 11 fix workflow"
-          git push origin main
+          rm -f .github/workflows/fix-a1-lesson11-staging.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add lib/pages/a1_basics_lesson_page.dart .github/workflows/fix-a1-lesson11-staging.yml
+          git commit -m 'Apply A1 lesson 11 staging and remove temporary workflow'
+          git push
