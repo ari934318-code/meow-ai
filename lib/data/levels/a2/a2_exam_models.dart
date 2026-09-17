@@ -1,14 +1,18 @@
 class A2ExamQuestion {
   final String question;
+  final String? questionFa;
   final List<String> options;
   final int correctIndex;
   final String explanation;
+  final String? explanationFa;
 
   const A2ExamQuestion({
     required this.question,
+    this.questionFa,
     required this.options,
     required this.correctIndex,
     required this.explanation,
+    this.explanationFa,
   });
 }
 
