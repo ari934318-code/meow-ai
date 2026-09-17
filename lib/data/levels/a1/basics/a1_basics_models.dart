@@ -122,25 +122,30 @@ class A1BasicExample {
 }
 
 class A1BasicQuestion {
+  static final Map<String, List<String>> _shuffledOptionsCache = {};
+
   final String _question;
   final String? questionFa;
-  final List<String> options;
+  final List<String> _options;
   final String answer;
   final List<String> acceptableAnswers;
   final String? _explanation;
   final String? explanationFa;
   final String? hint;
+  final String type;
 
   const A1BasicQuestion({
+    required this.type,
     required String question,
     this.questionFa,
-    required this.options,
+    required List<String> options,
     required this.answer,
     this.acceptableAnswers = const [],
     String? explanation,
     this.explanationFa,
     this.hint,
   })  : _question = question,
+        _options = options,
         _explanation = explanation;
 
   String get question =>
@@ -149,6 +154,20 @@ class A1BasicQuestion {
               questionFa!.trim().isNotEmpty
           ? questionFa!
           : _question;
+
+  List<String> get options {
+    if (_options.length < 2) {
+      return _options;
+    }
+
+    return _shuffledOptionsCache.putIfAbsent(
+      _question,
+      () {
+        final shuffled = List<String>.from(_options)..shuffle();
+        return List.unmodifiable(shuffled);
+      },
+    );
+  }
 
   String? get explanation =>
       MeowLocalizations.isPersianGlobal &&
