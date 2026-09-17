@@ -1,0 +1,90 @@
+name: One-off A1 Pronouns staging fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor == 'ari934318-code'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fix lesson 1 staging and remove one-off workflow
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          path = Path('lib/pages/a1_basics_lesson_page.dart')
+          text = path.read_text(encoding='utf-8')
+
+          pattern = re.compile(
+              r"      case 'a1_01':.*?\n      case 'a1_02':",
+              re.S,
+          )
+
+          replacement = """      case 'a1_01':
+      case 'lesson_1':
+      case '1':
+        return [
+          _stage('Stage 1', 'مرحله ۱', [0, 16, 24]),
+          _stage('Stage 2', 'مرحله ۲', [22, 31]),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [2, 6, 11, 18, 33, 37],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [1, 7, 12, 17, 32, 38],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [3, 8, 13, 19, 28, 34, 40, 43, 46],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [5, 10, 14, 21, 29, 36, 41, 45],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [4, 9, 15, 20, 23, 30, 35, 39, 42, 44],
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_02':"""
+
+          new_text, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              raise SystemExit('Lesson 1 stage block not found exactly once')
+          path.write_text(new_text, encoding='utf-8')
+
+          workflow = Path('.github/workflows/fix-a1-pronouns-staging.yml')
+          if workflow.exists():
+              workflow.unlink()
+        
+      - name: Commit and push
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib/pages/a1_basics_lesson_page.dart .github/workflows/fix-a1-pronouns-staging.yml
+          if git diff --cached --quiet; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git commit -m "fix: stage A1 pronouns by taught concept"
+          git push
