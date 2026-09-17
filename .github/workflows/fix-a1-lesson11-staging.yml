@@ -22,74 +22,31 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p = Path('lib/pages/a1_basics_lesson_page.dart')
           text = p.read_text()
-          start = text.index("case 'a1_11':")
-          end = text.index("_speakingStage('Speaking', 'تمرین مکالمه'),", start)
-          replacement = """case 'a1_11':
-            return [
-              _stage(
-                'What Is the Present Simple?',
-                'Present Simple چیست؟',
-                [33],
-              ),
-              _stage(
-                'I, You, We, They',
-                'I, You, We, They',
-                [0, 3, 5, 7, 10],
-              ),
-              _stage(
-                'He, She, It',
-                'He, She, It',
-                [2, 4],
-              ),
-              _stage(
-                'Adding -s',
-                'اضافه کردن s',
-                [8],
-              ),
-              _stage(
-                'Adding -es',
-                'اضافه کردن es',
-                [6, 9, 11],
-              ),
-              _stage(
-                'The -y to -ies Rule',
-                'قانون تبدیل y به ies',
-                [1, 27],
-              ),
-              _stage(
-                'Positive Sentences',
-                'جمله‌های مثبت',
-                [24, 34],
-              ),
-              _stage(
-                'Negative Sentences',
-                'جمله‌های منفی',
-                [12, 13, 14, 15, 26, 37],
-              ),
-              _stage(
-                'Do and Does in Questions',
-                'سؤال با Do و Does',
-                [16, 17, 18, 19],
-              ),
-              _stage(
-                'Common Mistakes',
-                'اشتباهات رایج',
-                [20, 21, 22, 23, 25, 35, 36],
-              ),
-              _stage(
-                'Adverbs of Frequency',
-                'قیدهای تکرار',
-                [28, 29, 30, 31, 32],
-              ),
-              _stage(
-                'Real-Life Present Simple',
-                'Present Simple در انگلیسی واقعی',
-                [38, 39, 40, 41, 42, 43, 44, 45, 46],
-              ),
-            ];
-          """
+          start = text.index("      case 'a1_11':")
+          end = text.index("      default:", start)
+          replacement = '''      case 'a1_11':
+      case 'lesson_11':
+      case '11':
+        return [
+          _stage('What Is the Present Simple?', 'Present Simple چیست؟', [33]),
+          _stage('I, You, We, They', 'I, You, We, They', [0, 3, 5, 7, 10]),
+          _stage('He, She, It', 'He, She, It', [2, 4]),
+          _stage('Adding -s', 'اضافه کردن s', [8]),
+          _stage('Adding -es', 'اضافه کردن es', [6, 9, 11]),
+          _stage('The -y to -ies Rule', 'قانون تبدیل y به ies', [1, 27]),
+          _stage('Positive Sentences', 'جمله‌های مثبت', [24, 34]),
+          _stage('Negative Sentences', 'جمله‌های منفی', [12, 13, 14, 15, 26, 37]),
+          _stage('Do and Does in Questions', 'سؤال با Do و Does', [16, 17, 18, 19]),
+          _stage('Common Mistakes', 'اشتباهات رایج', [20, 21, 22, 23, 25, 35, 36]),
+          _stage('Adverbs of Frequency', 'قیدهای تکرار', [28, 29, 30, 31, 32]),
+          _stage('Real-Life Present Simple', 'Present Simple در انگلیسی واقعی', [38, 39, 40, 41, 42, 43, 44, 45, 46]),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+'''
           p.write_text(text[:start] + replacement + text[end:])
           PY
 
