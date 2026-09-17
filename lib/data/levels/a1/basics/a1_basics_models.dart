@@ -1,3 +1,5 @@
+import '../../../localization.dart';
+
 class A1BasicVocabulary {
   final String english;
   final String persian;
@@ -120,27 +122,40 @@ class A1BasicExample {
 }
 
 class A1BasicQuestion {
-  final String type;
-  final String question;
+  final String _question;
   final String? questionFa;
   final List<String> options;
   final String answer;
   final List<String> acceptableAnswers;
-  final String? explanation;
+  final String? _explanation;
   final String? explanationFa;
   final String? hint;
 
   const A1BasicQuestion({
-    required this.type,
-    required this.question,
+    required String question,
     this.questionFa,
     required this.options,
     required this.answer,
     this.acceptableAnswers = const [],
-    this.explanation,
+    String? explanation,
     this.explanationFa,
     this.hint,
-  });
+  })  : _question = question,
+        _explanation = explanation;
+
+  String get question =>
+      MeowLocalizations.isPersianGlobal &&
+              questionFa != null &&
+              questionFa!.trim().isNotEmpty
+          ? questionFa!
+          : _question;
+
+  String? get explanation =>
+      MeowLocalizations.isPersianGlobal &&
+              explanationFa != null &&
+              explanationFa!.trim().isNotEmpty
+          ? explanationFa
+          : _explanation;
 
   List<String> get allAcceptedAnswers {
     final answers = <String>[answer, ...acceptableAnswers];
