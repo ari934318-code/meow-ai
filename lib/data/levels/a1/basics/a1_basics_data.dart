@@ -5,6 +5,7 @@ import 'a1_01_pronouns_extra.dart';
 import 'a1_02_to_be.dart';
 import 'a1_02_to_be_questions_localized.dart';
 import 'a1_03_have_has.dart';
+import 'a1_03_have_has_questions_localized.dart';
 import 'a1_04_do_does.dart';
 import 'a1_05_regular_verbs.dart';
 import 'a1_06_irregular_verbs.dart';
@@ -26,7 +27,7 @@ final List<A1BasicLesson> a1BasicsLessons = [
     ...a1PronounExtraQuestions,
   ]),
   a1BasicToBe.copyWithQuestions(a1ToBeQuestions),
-  a1BasicHaveHas,
+  a1BasicHaveHas.copyWithQuestions(a1HaveHasQuestions),
   a1BasicDoDoes,
   a1BasicRegularVerbs,
   a1BasicIrregularVerbs.copyWithQuestions(a1IrregularVerbsQuestions),
