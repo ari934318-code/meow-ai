@@ -44,15 +44,19 @@ class A2Grammar {
 
 class A2Question {
   final String question;
+  final String? questionFa;
   final List<String> options;
   final int correctIndex;
   final String explanation;
+  final String? explanationFa;
 
   const A2Question({
     required this.question,
+    this.questionFa,
     required this.options,
     required this.correctIndex,
     required this.explanation,
+    this.explanationFa,
   });
 }
 
