@@ -21,7 +21,7 @@ class A1BasicLesson {
   final String topic;
   final String explanation;
 
-  final List<A1BasicSection> sections;
+  final List<A1BasicSection> _sections;
   final List<A1BasicExample> examples;
   final List<A1BasicQuestion> questions;
   final List<A1BasicSpeakingQuestion> speakingQuestions;
@@ -34,12 +34,53 @@ class A1BasicLesson {
     required this.titleFa,
     required this.topic,
     required this.explanation,
-    required this.sections,
+    required List<A1BasicSection> sections,
     required this.examples,
     required this.questions,
     required this.speakingQuestions,
     this.vocabulary = const [],
-  });
+  }) : _sections = sections;
+
+  /// Presents concept-first lesson data in a more beginner-friendly order:
+  /// concrete item -> meaning -> examples -> concept -> practice.
+  /// Question indices and the original question/stage data remain unchanged.
+  List<A1BasicSection> get sections {
+    if (_sections.length < 2 || !_isConceptSection(_sections.first)) {
+      return _sections;
+    }
+
+    final concept = _sections.first;
+    final concrete = _sections[1];
+
+    final conceptExample = A1BasicExample(
+      english: concept.title,
+      persian: '${concept.titleFa}\n${concept.explanationFa}',
+    );
+
+    return <A1BasicSection>[
+      A1BasicSection(
+        title: concrete.title,
+        titleFa: concrete.titleFa,
+        explanation: concrete.explanation,
+        explanationFa: concrete.explanationFa,
+        examples: <A1BasicExample>[
+          ...concrete.examples,
+          conceptExample,
+        ],
+      ),
+      ..._sections.skip(2),
+    ];
+  }
+
+  static bool _isConceptSection(A1BasicSection section) {
+    final title = section.title.trim().toLowerCase();
+    final titleFa = section.titleFa.trim();
+
+    return title.startsWith('what is ') ||
+        title.startsWith('what are ') ||
+        titleFa.contains('چیست') ||
+        titleFa.contains('چه هستند');
+  }
 }
 
 class A1BasicSection {
