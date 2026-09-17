@@ -1,7 +1,6 @@
 import 'a1_basics_models.dart';
 
 import 'a1_01_pronouns.dart';
-import 'a1_01_pronouns_extra.dart';
 import 'a1_02_to_be.dart';
 import 'a1_02_to_be_questions_localized.dart';
 import 'a1_03_have_has.dart';
@@ -24,10 +23,7 @@ import 'a1_11_present_simple.dart';
 import 'a1_11_present_simple_questions_localized.dart';
 
 final List<A1BasicLesson> a1BasicsLessons = [
-  a1BasicPronouns.copyWithQuestions([
-    ...a1BasicPronouns.questions,
-    ...a1PronounExtraQuestions,
-  ]),
+  a1BasicPronouns,
   a1BasicToBe.copyWithQuestions(a1ToBeQuestions),
   a1BasicHaveHas.copyWithQuestions(a1HaveHasQuestions),
   a1BasicDoDoes.copyWithQuestions(a1DoDoesQuestions),
