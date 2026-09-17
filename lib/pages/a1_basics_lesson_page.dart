@@ -157,49 +157,60 @@ class _A1BasicsLessonPageState
       case 'lesson_2':
       case '2':
         return [
-          _stage('Stage 1', 'مرحله ۱', [0, 7]),
           _stage(
-            'Stage 2',
-            'مرحله ۲',
-            [1, 4, 6, 8],
+            'What is To Be?',
+            'To Be یعنی چه؟',
+            [0],
           ),
           _stage(
-            'Stage 3',
-            'مرحله ۳',
-            [2, 3, 5, 9],
+            'Am',
+            'Am',
+            [7, 23],
           ),
           _stage(
-            'Stage 4',
-            'مرحله ۴',
+            'Is',
+            'Is',
+            [1, 4, 6, 8, 24],
+          ),
+          _stage(
+            'Are',
+            'Are',
+            [2, 3, 5, 9, 25],
+          ),
+          _stage(
+            'Am, Is, Are Review',
+            'مرور Am، Is و Are',
+            [26, 27],
+          ),
+          _stage(
+            'Negative Sentences',
+            'جمله‌های منفی',
             [10, 11, 12],
           ),
           _stage(
-            'Stage 5',
-            'مرحله ۵',
+            'Negative Contractions',
+            'شکل کوتاه جمله‌های منفی',
             [13, 14, 15],
           ),
           _stage(
-            'Stage 6',
-            'مرحله ۶',
+            'Questions with To Be',
+            'سؤال با To Be',
             [16, 17, 18],
           ),
           _stage(
-            'Stage 7',
-            'مرحله ۷',
+            'Short Answers',
+            'جواب‌های کوتاه',
             [19, 20, 21, 22],
           ),
           _stage(
-            'Stage 8',
-            'مرحله ۸',
-            [23, 24, 25, 26, 27],
+            'Translation and Word Order',
+            'ترجمه و مرتب کردن جمله',
+            [28, 29, 30, 31, 32, 33, 34, 35],
           ),
           _stage(
-            'Stage 9',
-            'مرحله ۹',
-            List.generate(
-              11,
-              (i) => i + 28,
-            ),
+            'Common Contractions and Final Review',
+            'شکل‌های کوتاه و مرور نهایی',
+            [36, 37, 38, 39],
           ),
           _speakingStage(
             'Speaking',
