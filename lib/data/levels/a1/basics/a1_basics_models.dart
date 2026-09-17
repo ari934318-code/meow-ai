@@ -41,32 +41,12 @@ class A1BasicLesson {
     this.vocabulary = const [],
   }) : _sections = sections;
 
-  List<A1BasicSection> get sections {
-    if (_sections.length < 2 || !_isConceptSection(_sections.first)) {
-      return _sections;
-    }
-
-    final concept = _sections.first;
-    final concrete = _sections[1];
-    final conceptExample = A1BasicExample(
-      english: concept.title,
-      persian: '${concept.titleFa}\n${concept.explanationFa}',
-    );
-
-    return <A1BasicSection>[
-      A1BasicSection(
-        title: concrete.title,
-        titleFa: concrete.titleFa,
-        explanation: concrete.explanation,
-        explanationFa: concrete.explanationFa,
-        examples: <A1BasicExample>[
-          ...concrete.examples,
-          conceptExample,
-        ],
-      ),
-      ..._sections.skip(2),
-    ];
-  }
+  /// Returns the lesson sections exactly as authored in the data files.
+  ///
+  /// The first "What is ...?" section is a real teaching section, not an
+  /// example. Keeping it intact lets the page display its localized title,
+  /// explanation, and examples without silently rewriting the lesson data.
+  List<A1BasicSection> get sections => _sections;
 
   A1BasicLesson copyWithQuestions(List<A1BasicQuestion> newQuestions) {
     return A1BasicLesson(
@@ -81,15 +61,6 @@ class A1BasicLesson {
       speakingQuestions: speakingQuestions,
       vocabulary: vocabulary,
     );
-  }
-
-  static bool _isConceptSection(A1BasicSection section) {
-    final title = section.title.trim().toLowerCase();
-    final titleFa = section.titleFa.trim();
-    return title.startsWith('what is ') ||
-        title.startsWith('what are ') ||
-        titleFa.contains('چیست') ||
-        titleFa.contains('چه هستند');
   }
 }
 
@@ -160,8 +131,12 @@ class A1BasicQuestion {
       return _options;
     }
 
+    // Include the answer in the cache key so two different questions with
+    // identical wording cannot accidentally share one shuffled order.
+    final cacheKey = '$_question\u0000${_options.join('\u0000')}';
+
     return _shuffledOptionsCache.putIfAbsent(
-      _question,
+      cacheKey,
       () {
         final shuffled = List<String>.from(_options)..shuffle();
         return List.unmodifiable(shuffled);
