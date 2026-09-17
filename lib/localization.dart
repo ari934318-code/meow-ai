@@ -5,12 +5,17 @@ class MeowLocalizations {
 
   MeowLocalizations(this.locale);
 
+  static Locale? _currentLocale;
+
+  static bool get isPersianGlobal =>
+      _currentLocale?.languageCode == 'fa';
+
   bool get isPersian => locale.languageCode == 'fa';
 
   static MeowLocalizations of(BuildContext context) {
-    return MeowLocalizations(
-      Localizations.localeOf(context),
-    );
+    final locale = Localizations.localeOf(context);
+    _currentLocale = locale;
+    return MeowLocalizations(locale);
   }
 
   String get home => isPersian ? 'خانه' : 'Home';
