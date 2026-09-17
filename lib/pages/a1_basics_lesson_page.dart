@@ -213,47 +213,39 @@ class _A1BasicsLessonPageState
       case '3':
         return [
           _stage(
-            'Stage 1',
-            'مرحله ۱',
+            'What are Have and Has?',
+            'Have و Has یعنی چه؟',
             [0, 2, 4, 6, 7, 9],
           ),
           _stage(
-            'Stage 2',
-            'مرحله ۲',
+            'Has',
+            'Has',
             [1, 3, 5, 8],
           ),
           _stage(
-            'Stage 3',
-            'مرحله ۳',
-            [10, 11],
+            'Have and Has Review',
+            'مرور Have و Has',
+            [15, 16, 29, 30, 31, 32, 33, 38, 39, 40, 41, 42, 43, 49, 50, 51],
           ),
           _stage(
-            'Stage 4',
-            'مرحله ۴',
-            [12, 13, 14],
+            'Negative: Don’t / Doesn’t Have',
+            'منفی: Don’t / Doesn’t Have',
+            [10, 11, 17, 18, 44, 45],
           ),
           _stage(
-            'Stage 5',
-            'مرحله ۵',
-            [15, 16, 17, 18],
+            'Questions with Have',
+            'سؤال با Have',
+            [12, 13, 14, 19, 20, 21, 22, 23, 24, 46, 47, 48],
           ),
           _stage(
-            'Stage 6',
-            'مرحله ۶',
-            [19, 20, 21, 22, 23],
+            'Short Answers',
+            'جواب‌های کوتاه',
+            [25, 26, 27, 28],
           ),
           _stage(
-            'Stage 7',
-            'مرحله ۷',
-            [24, 25, 26, 27],
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(
-              10,
-              (i) => i + 28,
-            ),
+            'Translation and Review',
+            'ترجمه و مرور',
+            [34, 35, 36, 37],
           ),
           _speakingStage(
             'Speaking',
