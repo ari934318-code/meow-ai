@@ -1225,16 +1225,19 @@ class _A1BasicsLessonPageState
         return [
           _stage('Think First', 'اول فکر کن', const []),
           _stage('Wh-Questions', 'سؤال‌های Wh', const []),
-          _stage('Wh-Words', 'کلمه‌های Wh', List.generate(7, (i) => i)),
-          _stage('Present Simple Wh', 'Wh در Present Simple', List.generate(9, (i) => i)),
-          _stage('Present Continuous Wh', 'Wh در Present Continuous', List.generate(10, (i) => i)),
-          _stage('Past Wh with Did', 'Wh در گذشته با Did', List.generate(12, (i) => i)),
-          _stage('Can, Must, Will and Going to', 'Can، Must، Will و Going to', List.generate(15, (i) => i)),
-          _stage('Who: Subject or Object?', 'Who: فاعل یا مفعول؟', List.generate(20, (i) => i)),
-          _stage('Translation and Guided Practice', 'ترجمه و تمرین هدایت‌شده', List.generate(24, (i) => i)),
-          _stage('Independent and Real-World Practice', 'تمرین مستقل و کاربرد واقعی', List.generate(28, (i) => i)),
+          _stage('Wh-words', 'کلمه‌های Wh', [0, 1, 2, 3, 4, 5, 6]),
+          _stage('General Structure', 'ساختار کلی', List.generate(10, (i) => i)),
+          _stage('Examples for Each Structure', 'مثال برای هر ساختار', List.generate(16, (i) => i)),
+          _stage('The Important Did Rule', 'نکته مهم درباره Did', List.generate(21, (i) => i)),
+          _stage('Who: Subject or Object?', 'Who: فاعل یا مفعول؟', List.generate(25, (i) => i)),
+          _stage('What + Noun', 'What + اسم', List.generate(28, (i) => i)),
+          _stage('More Examples', 'مثال‌های بیشتر', List.generate(28, (i) => i)),
+          _stage('Recognition Practice', 'تمرین تشخیص', List.generate(28, (i) => i)),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', List.generate(28, (i) => i)),
+          _stage('Independent Production', 'تولید مستقل', List.generate(28, (i) => i)),
+          _stage('Real-World Use', 'کاربرد واقعی', List.generate(28, (i) => i)),
           _listeningStage('Listening', 'گوش دادن'),
-          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
+          _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
         ];
 
       default:
