@@ -12,7 +12,7 @@ const List<A1BasicQuestion> a1ArticlesPluralsQuestions = [
   ),
   A1BasicQuestion(
     type: 'multiple_choice',
-    question: 'She ate ___ apple.',
+    question: 'She has ___ apple.',
     questionFa: 'او ___ سیب خورد. کدام گزینه درست است؟',
     options: ['a', 'an', 'the', 'books'],
     answer: 'an',
@@ -48,7 +48,7 @@ const List<A1BasicQuestion> a1ArticlesPluralsQuestions = [
   ),
   A1BasicQuestion(
     type: 'multiple_choice',
-    question: 'He ate ___ orange.',
+    question: 'He has ___ orange.',
     questionFa: 'او ___ پرتقال خورد. کدام گزینه درست است؟',
     options: ['a', 'an', 'the', 'books'],
     answer: 'an',
@@ -84,7 +84,7 @@ const List<A1BasicQuestion> a1ArticlesPluralsQuestions = [
   ),
   A1BasicQuestion(
     type: 'multiple_choice',
-    question: 'I saw a dog. ___ dog was big.',
+    question: 'I have a dog. ___ dog is big.',
     questionFa: 'یک سگ دیدم. ___ سگ بزرگ بود.',
     options: ['A', 'An', 'The', 'no article'],
     answer: 'The',
