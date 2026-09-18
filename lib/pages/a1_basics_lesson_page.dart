@@ -524,60 +524,48 @@ class _A1BasicsLessonPageState
       case 'lesson_8':
       case '8':
         return [
+          // Must/Mustn't is cumulative: every stage keeps all material
+          // introduced earlier in this lesson. Later structures must never
+          // leak into an earlier stage.
           _stage(
             'Stage 1',
             'مرحله ۱',
-            List.generate(
-              6,
-              (i) => i,
-            ),
+            List.generate(6, (i) => i),
           ),
           _stage(
             'Stage 2',
             'مرحله ۲',
-            [6, 7],
+            List.generate(8, (i) => i),
           ),
           _stage(
             'Stage 3',
             'مرحله ۳',
-            [8, 9],
+            List.generate(10, (i) => i),
           ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            List.generate(
-              9,
-              (i) => i + 10,
-            ),
+            List.generate(19, (i) => i),
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            List.generate(
-              6,
-              (i) => i + 19,
-            ),
+            List.generate(25, (i) => i),
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(
-              5,
-              (i) => i + 25,
-            ),
+            List.generate(30, (i) => i),
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            [30, 31, 32, 33],
+            List.generate(34, (i) => i),
           ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(
-              6,
-              (i) => i + 34,
-            ),
+            List.generate(40, (i) => i),
           ),
           _speakingStage(
             'Speaking',
@@ -2230,6 +2218,92 @@ class _A1BasicsLessonPageState
         'school', 'home', 'work', 'car', 'phone',
         'homework', 'breakfast', 'bus', 'gift', 'answer',
       ];
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer && !used.contains(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+
+      return result;
+    }
+
+    // Must/Mustn't lesson: keep distractors inside the concepts already
+    // taught at the current stage. Earlier A1 grammar remains valid because
+    // the course is cumulative across lessons.
+    if (widget.lesson.id == 'a1_basic_08' ||
+        widget.lesson.id == 'a1_08' ||
+        widget.lesson.id == 'lesson_8' ||
+        widget.lesson.id == '8') {
+      final allowNegative = _currentStage >= 1;
+      final allowQuestions = _currentStage >= 2;
+      final allowShortAnswers = _currentStage >= 3;
+      final allowTrueFalse = _currentStage >= 4;
+
+      bool isFutureConcept(String value) {
+        final v = value.toLowerCase().trim();
+
+        if ((v == 'true' || v == 'false') && !allowTrueFalse) {
+          return true;
+        }
+
+        // Mustn't is first introduced in Stage 2.
+        if (!allowNegative &&
+            (v.contains('mustn’t') ||
+                v.contains("mustn't") ||
+                v.contains('must not'))) {
+          return true;
+        }
+
+        // Must-questions are first introduced in Stage 3.
+        if (!allowQuestions &&
+            RegExp(r'^(must|do must|does must|are must|am must)\\b')
+                .hasMatch(v)) {
+          return true;
+        }
+
+        // Short answers are first introduced in Stage 4.
+        if (!allowShortAnswers &&
+            RegExp(r'^(yes|no),\\s+.*\\bmust(n’t|not)?\\b')
+                .hasMatch(v)) {
+          return true;
+        }
+
+        return false;
+      }
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (isFutureConcept(value)) continue;
+        result.add(value);
+        used.add(value);
+      }
+
+      // Never remove the correct answer. This also protects an item if its
+      // content is edited later without updating the stage filter.
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      const safeWords = [
+        'study',
+        'listen',
+        'work',
+        'school',
+        'home',
+        'water',
+        'rules',
+        'phone',
+        'careful',
+        'hurry',
+      ];
+
       for (final candidate in safeWords) {
         if (result.length >= 4) break;
         if (candidate != question.answer && !used.contains(candidate)) {
