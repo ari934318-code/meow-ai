@@ -1,7 +1,7 @@
 import 'a1_basics_models.dart';
 
 const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
-  id: 'a1_basic_05',
+  id: 'a1_basic_08',
   title: 'Present Simple Verbs',
   titleFa: 'فعل‌ها در زمان حال ساده',
   topic: 'Present simple: base form and third-person forms',
