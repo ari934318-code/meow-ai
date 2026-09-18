@@ -73,7 +73,7 @@ const A1BasicLesson a1BasicArticlesPlurals = A1BasicLesson(
           'وقتی منظورمان یک چیز یا شخص مشخص است و شنونده می‌تواند آن را تشخیص دهد، از the استفاده می‌کنیم. مثلاً اول می‌گوییم a book و بعد که همان کتاب مشخص شد، می‌گوییم the book.',
       examples: [
         A1BasicExample(
-          english: 'I bought a book. The book is good.',
+          english: 'I have a book. The book is good.',
           persian: 'من یک کتاب خریدم. آن کتاب خوب است.',
         ),
         A1BasicExample(
@@ -161,7 +161,7 @@ const A1BasicLesson a1BasicArticlesPlurals = A1BasicLesson(
       examples: [
         A1BasicExample(english: 'The car is red.', persian: 'آن ماشین مشخص قرمز است.'),
         A1BasicExample(
-          english: 'I saw a dog. The dog was big.',
+          english: 'I have a dog. The dog is big.',
           persian: 'یک سگ دیدم. آن سگ بزرگ بود.',
         ),
         A1BasicExample(english: 'The sun is hot.', persian: 'خورشید داغ است.'),
@@ -198,7 +198,7 @@ const A1BasicLesson a1BasicArticlesPlurals = A1BasicLesson(
           'دقت کن که حرف تعریف چطور معنی جمله را تغییر می‌دهد: از یک چیز نامشخص به یک چیز مشخص، یا در جمع کلی حذف می‌شود.',
       examples: [
         A1BasicExample(english: 'I have a car.', persian: 'من یک ماشین دارم.'),
-        A1BasicExample(english: 'She ate an orange.', persian: 'او یک پرتقال خورد.'),
+        A1BasicExample(english: 'She has an orange.', persian: 'او یک پرتقال خورد.'),
         A1BasicExample(english: 'The book is on the table.', persian: 'آن کتاب روی میز است.'),
         A1BasicExample(english: 'Books are useful.', persian: 'کتاب‌ها به طور کلی مفیدند.'),
         A1BasicExample(
@@ -233,7 +233,7 @@ const A1BasicLesson a1BasicArticlesPlurals = A1BasicLesson(
           'حرف تعریف مناسب را بر اساس اسم و معنی انتخاب کن. اول از مثال‌های ساده شروع کن و بعد تفاوت جمع کلی و جمع مشخص را تشخیص بده.',
       examples: [
         A1BasicExample(english: 'I have ___ dog. → a', persian: 'من یک سگ دارم. → a'),
-        A1BasicExample(english: 'She ate ___ apple. → an', persian: 'او یک سیب خورد. → an'),
+        A1BasicExample(english: 'She has ___ apple. → an', persian: 'او یک سیب خورد. → an'),
         A1BasicExample(english: '___ sun is hot. → The', persian: 'خورشید داغ است. → The'),
       ],
     ),
@@ -429,7 +429,7 @@ const A1BasicLesson a1BasicArticlesPlurals = A1BasicLesson(
           'وقتی منظورمان چیز مشخصی است که شنونده می‌تواند آن را تشخیص دهد، از the استفاده می‌کنیم؛ از جمله چیزی که قبلاً معرفی شده است.',
       examples: [
         A1BasicExample(
-          english: 'I saw a dog. The dog was big.',
+          english: 'I have a dog. The dog is big.',
           persian: 'یک سگ دیدم. آن سگ بزرگ بود.',
         ),
         A1BasicExample(english: 'The sun is hot.', persian: 'خورشید داغ است.'),
