@@ -8,7 +8,6 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/levels/a1/basics/a1_basics_models.dart';
-import '../data/levels/a1/basics/a1_basics_listening_data.dart';
 import '../data/levels/a1/basics/a1_basics_ui_config.dart';
 import '../localization.dart';
 
@@ -38,9 +37,7 @@ class _A1BasicsLessonPageState
 
   final Set<int> _answeredQuestions = {};
   final Set<int> _completedSpeaking = {};
-  final Set<int> _listeningAnswered = {};
   final Set<int> _listenedExamples = {};
-  final Map<int, String> _selectedListeningAnswers = {};
 
   final Map<int, String> _selectedAnswers = {};
   final Map<int, String> _typedAnswers = {};
@@ -81,9 +78,6 @@ class _A1BasicsLessonPageState
   String get stageKey =>
       'a1_basics_stage${widget.lesson.id}';
 
-  List<A1BasicListeningQuestion> get _listeningQuestions =>
-      a1BasicsListeningQuestionsFor(widget.lesson.id);
-
   @override
   void initState() {
     super.initState();
@@ -105,155 +99,90 @@ class _A1BasicsLessonPageState
 
   List<_A1Stage> _buildStages() {
     switch (widget.lesson.id) {
-      case 'a1_basic_01':
+      case 'a1_01':
       case 'lesson_1':
       case '1':
         return [
-          // Stage 1 is explanation-first. Practice begins only after
-          // the learner has seen what pronouns are.
+          _stage('Stage 1', 'مرحله ۱', [0, 1, 12]),
           _stage(
-            'What Are Pronouns?',
-            'ضمیر چیست؟',
-            const [],
+            'Stage 2',
+            'مرحله ۲',
+            [2, 3, 7, 8, 17, 18, 22],
+          ),
+          _stage('Stage 3', 'مرحله ۳', [4, 9]),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [5, 6, 10, 11, 19, 20, 41, 42],
           ),
           _stage(
-            'Pronoun Chart',
-            'جدول ضمیرها',
-            const [],
-          ),
-          // Pronouns are cumulative: a stage may test only concepts
-          // introduced in this stage or in earlier stages.
-          _stage(
-            'I',
-            'I — من',
-            [0, 16, 24],
+            'Stage 5',
+            'مرحله ۵',
+            [21, 23, 24, 25, 26, 27, 28, 29],
           ),
           _stage(
-            'You',
-            'You — تو / شما',
-            [0, 16, 24, 22, 25, 31],
+            'Stage 6',
+            'مرحله ۶',
+            [13, 14, 15, 16, 30, 31, 32, 33, 34],
           ),
           _stage(
-            'He',
-            'He — او، مذکر',
-            [0, 16, 24, 22, 25, 31, 2, 6, 11, 18, 26, 33, 38],
-          ),
-          _stage(
-            'She',
-            'She — او، مؤنث',
-            [
-              0, 16, 24, 22, 25, 31,
-              2, 6, 11, 18, 26, 33, 38,
-              1, 7, 12, 17, 27, 32, 39,
-            ],
-          ),
-          _stage(
-            'It',
-            'It — آن / این',
-            [
-              0, 16, 24, 22, 25, 31,
-              2, 6, 11, 18, 26, 33, 38,
-              1, 7, 12, 17, 27, 32, 39,
-              3, 8, 13, 19, 28, 34, 41, 44,
-            ],
-          ),
-          _stage(
-            'We',
-            'We — ما',
-            [
-              0, 16, 24, 22, 25, 31,
-              2, 6, 11, 18, 26, 33, 38,
-              1, 7, 12, 17, 27, 32, 39,
-              3, 8, 13, 19, 28, 34, 41, 44,
-              5, 10, 14, 21, 29, 36, 42,
-            ],
-          ),
-          _stage(
-            'They',
-            'They — آن‌ها',
-            [
-              0, 16, 24, 22, 25, 31,
-              2, 6, 11, 18, 26, 33, 38,
-              1, 7, 12, 17, 27, 32, 39,
-              3, 8, 13, 19, 28, 34, 41, 44,
-              5, 10, 14, 21, 29, 36, 42,
-              4, 9, 15, 20, 23, 30, 35, 37, 40, 43,
-            ],
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
+            'Stage 7',
+            'مرحله ۷',
+            [35, 36, 37, 38, 39, 40],
           ),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
           ),
         ];
-      case 'a1_basic_02':
+
+      case 'a1_02':
       case 'lesson_2':
       case '2':
         return [
-          // To Be is cumulative: every stage keeps everything learned
-          // in the previous stages. A later concept must never appear
-          // in an earlier stage, even as a distractor.
+          _stage('Stage 1', 'مرحله ۱', [0, 7]),
           _stage(
-            'What is To Be?',
-            'To Be یعنی چه؟',
-            [0],
+            'Stage 2',
+            'مرحله ۲',
+            [1, 4, 6, 8],
           ),
           _stage(
-            'Am',
-            'Am',
-            [0, 7, 23],
+            'Stage 3',
+            'مرحله ۳',
+            [2, 3, 5, 9],
           ),
           _stage(
-            'Is',
-            'Is',
-            [0, 7, 23, 1, 4, 6, 8, 24],
+            'Stage 4',
+            'مرحله ۴',
+            [10, 11, 12],
           ),
           _stage(
-            'Are',
-            'Are',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25],
+            'Stage 5',
+            'مرحله ۵',
+            [13, 14, 15],
           ),
           _stage(
-            'Am, Is, Are Review',
-            'مرور Am، Is و Are',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27],
+            'Stage 6',
+            'مرحله ۶',
+            [16, 17, 18],
           ),
           _stage(
-            'Negative Sentences',
-            'جمله‌های منفی',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12],
+            'Stage 7',
+            'مرحله ۷',
+            [19, 20, 21, 22],
           ),
           _stage(
-            'Negative Contractions',
-            'شکل کوتاه جمله‌های منفی',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15],
+            'Stage 8',
+            'مرحله ۸',
+            [23, 24, 25, 26, 27],
           ),
           _stage(
-            'Questions with To Be',
-            'سؤال با To Be',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18],
-          ),
-          _stage(
-            'Short Answers',
-            'جواب‌های کوتاه',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
-          ),
-          _stage(
-            'Translation and Word Order',
-            'ترجمه و مرتب کردن جمله',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 34, 35],
-          ),
-          _stage(
-            'Common Contractions and Final Review',
-            'شکل‌های کوتاه و مرور نهایی',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
+            'Stage 9',
+            'مرحله ۹',
+            List.generate(
+              11,
+              (i) => i + 28,
+            ),
           ),
           _speakingStage(
             'Speaking',
@@ -261,85 +190,52 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_basic_03':
+      case 'a1_03':
       case 'lesson_3':
       case '3':
         return [
-          // Have/Has is cumulative: each stage keeps everything already
-          // taught. Later grammar must never leak into earlier stages.
           _stage(
-            'What are Have and Has?',
-            'Have و Has یعنی چه؟',
-            [0],
-          ),
-          _stage(
-            'Have',
-            'Have',
+            'Stage 1',
+            'مرحله ۱',
             [0, 2, 4, 6, 7, 9],
           ),
           _stage(
-            'Has',
-            'Has',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8],
+            'Stage 2',
+            'مرحله ۲',
+            [1, 3, 5, 8],
           ),
           _stage(
-            'Have and Has Chart',
-            'جدول Have و Has',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16],
+            'Stage 3',
+            'مرحله ۳',
+            [10, 11],
           ),
           _stage(
-            'Have for Possession',
-            'Have برای مالکیت و داشتن',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33],
+            'Stage 4',
+            'مرحله ۴',
+            [12, 13, 14],
           ),
           _stage(
-            'Have for Family and Relationships',
-            'Have برای خانواده و روابط',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51],
+            'Stage 5',
+            'مرحله ۵',
+            [15, 16, 17, 18],
           ),
           _stage(
-            'Have for Features and Characteristics',
-            'Have برای ویژگی‌ها و مشخصات',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50],
+            'Stage 6',
+            'مرحله ۶',
+            [19, 20, 21, 22, 23],
           ),
           _stage(
-            'Negative: Don’t Have',
-            'منفی: Don’t Have',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44],
+            'Stage 7',
+            'مرحله ۷',
+            [24, 25, 26, 27],
           ),
           _stage(
-            'Negative: Doesn’t Have',
-            'منفی: Doesn’t Have',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45],
-          ),
-          _stage(
-            'Important: Doesn’t + Have',
-            'نکته مهم: Doesn’t + Have',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18],
-          ),
-          _stage(
-            'Questions with Have',
-            'سوالی کردن با Have',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48],
-          ),
-          _stage(
-            'Important: Does + Have',
-            'نکته مهم: Does + Have',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48, 20],
-          ),
-          _stage(
-            'Short Answers',
-            'جواب‌های کوتاه',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48, 20, 25, 26, 27, 28],
-          ),
-          _stage(
-            'Real-Life Expressions',
-            'عبارت‌های واقعی و کاربردی',
-            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48, 20, 25, 26, 27, 28, 34, 35, 36, 37, 38, 49],
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(
+              10,
+              (i) => i + 28,
+            ),
           ),
           _speakingStage(
             'Speaking',
@@ -347,63 +243,52 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_basic_04':
+      case 'a1_04':
       case 'lesson_4':
       case '4':
         return [
           _stage(
-            'What are Do and Does?',
-            'Do و Does چیستند؟',
-            [0, 18, 19],
+            'Stage 1',
+            'مرحله ۱',
+            [0, 2, 4],
           ),
           _stage(
-            'Do',
-            'Do',
-            [0, 18, 19, 2, 4, 12, 24, 28],
+            'Stage 2',
+            'مرحله ۲',
+            [1, 3, 5],
           ),
           _stage(
-            'Does',
-            'Does',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35],
+            'Stage 3',
+            'مرحله ۳',
+            [6, 7, 8, 9],
           ),
           _stage(
-            'Does + Base Verb',
-            'Does + شکل ساده فعل',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22],
+            'Stage 4',
+            'مرحله ۴',
+            [10, 11, 12, 13],
           ),
           _stage(
-            'Negative: Don’t',
-            'منفی: Don’t',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32],
+            'Stage 5',
+            'مرحله ۵',
+            [14, 15, 16, 17],
           ),
           _stage(
-            'Negative: Doesn’t',
-            'منفی: Doesn’t',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33],
+            'Stage 6',
+            'مرحله ۶',
+            [18, 19, 20, 21, 22, 23],
           ),
           _stage(
-            'Don’t / Doesn’t + Base Verb',
-            'Don’t / Doesn’t + شکل ساده فعل',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23],
+            'Stage 7',
+            'مرحله ۷',
+            [24, 25, 26, 27],
           ),
           _stage(
-            'Short Answers',
-            'جواب‌های کوتاه',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17],
-          ),
-          _stage(
-            'Do as a Main Verb',
-            'Do به‌عنوان فعل اصلی',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17, 34, 36],
-          ),
-          _stage(
-            'Everyday Questions and Review',
-            'سؤال‌های روزمره و مرور نهایی',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17, 34, 36, 37],
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(
+              11,
+              (i) => i + 28,
+            ),
           ),
           _speakingStage(
             'Speaking',
@@ -411,126 +296,248 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_basic_12':
-      case 'lesson_12':
-      case '12':
+      case 'a1_05':
+      case 'lesson_5':
+      case '5':
         return [
-          _stage('What Is a Regular Verb?', 'فعل باقاعده چیست؟', [0, 18, 19, 20]),
-          _stage('Base Form: I/You/We/They', 'شکل پایه: I/You/We/They', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28]),
-          _stage('He/She/It + S', 'He/She/It + S', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32]),
-          _stage('Adding ES', 'اضافه کردن ES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29]),
-          _stage('Y → IES', 'تبدیل Y به IES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33]),
-          _stage('Positive Sentences', 'جمله‌های مثبت', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13]),
-          _stage('Negative Sentences', 'جمله‌های منفی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23]),
-          _stage('Questions', 'سؤال‌ها', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34]),
-          _stage('Positive vs Negative vs Question', 'مثبت، منفی و سوالی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34, 21, 22, 35]),
-          _stage('Everyday Verbs and Review', 'افعال روزمره و مرور نهایی', List.generate(37, (i) => i)),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 2, 7],
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 3, 5, 9],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [4, 6, 8],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [10, 11, 12],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [13, 14, 15, 16, 17],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [18, 19, 20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [24, 25, 26, 27, 28],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(
+              10,
+              (i) => i + 29,
+            ),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
         ];
 
-      case 'a1_basic_13':
-      case 'lesson_13':
-      case '13':
+      case 'a1_06':
+      case 'lesson_6':
+      case '6':
         return [
-          // Each stage keeps all previously taught material.
-          _stage('Go and Goes', 'Go و Goes', [0, 1]),
-          _stage('Have and Has', 'Have و Has', [0, 1, 2, 3]),
-          _stage('Do and Does', 'Do و Does', [0, 1, 2, 3, 4, 5]),
           _stage(
-            'Get and Gets',
-            'Get و Gets',
-            [0, 1, 2, 3, 4, 5, 6, 7],
+            'Stage 1',
+            'مرحله ۱',
+            [0, 1, 2, 3],
           ),
           _stage(
-            'Make and Makes',
-            'Make و Makes',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            'Stage 2',
+            'مرحله ۲',
+            [4, 5, 6, 7],
           ),
           _stage(
-            'Take and Takes',
-            'Take و Takes',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20],
+            'Stage 3',
+            'مرحله ۳',
+            [8, 9, 10, 11],
           ),
           _stage(
-            'Give and Gives',
-            'Give و Gives',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13],
+            'Stage 4',
+            'مرحله ۴',
+            [12, 13, 14, 15],
           ),
           _stage(
-            'See and Sees',
-            'See و Sees',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15],
+            'Stage 5',
+            'مرحله ۵',
+            [16, 17, 18, 19, 20],
           ),
           _stage(
-            'Know and Knows',
-            'Know و Knows',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17],
+            'Stage 6',
+            'مرحله ۶',
+            [21, 22, 23, 24, 25],
           ),
           _stage(
-            'Say and Says',
-            'Say و Says',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19],
+            'Stage 7',
+            'مرحله ۷',
+            [26, 27, 28, 29],
           ),
           _stage(
-            'Questions with Irregular Verbs',
-            'سؤال با افعال بی‌قاعده',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25],
+            'Stage 8',
+            'مرحله ۸',
+            [30, 31, 32, 33, 34, 35],
           ),
           _stage(
-            'Negative Sentences',
-            'جمله‌های منفی',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+            'Stage 9',
+            'مرحله ۹',
+            [36, 37, 38, 39, 40, 41, 42, 43],
           ),
-          _stage(
-            'Common Mistakes',
-            'اشتباهات رایج',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35],
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
           ),
-          _stage(
-            'Translation and Word Order',
-            'ترجمه و مرتب کردن جمله',
-            List.generate(44, (i) => i),
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
-          ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
-      case 'a1_basic_06':
-      case 'a1_06_simple_wh':
-        return [
-          _stage('Think First', 'اول فکر کن', []),
-          _stage('Introduction', 'معرفی', []),
-          _stage('Simple Examples', 'مثال‌های ساده', [0, 1, 2]),
-          _stage('What Are Wh-Questions?', 'Wh-Questions چیست؟', [0, 1, 2, 3, 4, 5]),
-          _stage('Question Words', 'کلمه‌های پرسشی', [0, 1, 2, 3, 4, 5]),
-          _stage('Wh + To Be', 'Wh + To Be', [6, 7, 12, 17]),
-          _stage('Wh + Do / Does', 'Wh + Do / Does', [8, 9, 10, 11]),
-          _stage('Important Who Rule', 'نکته مهم درباره Who', [13]),
-          _stage('More Examples', 'مثال‌های بیشتر', [6, 8, 9, 13]),
-          _stage('Recognition Practice', 'تمرین تشخیص', [6, 8, 9, 10]),
-          _stage('Guided Practice', 'تمرین هدایت‌شده', [10, 11, 12, 13]),
-          _stage('Translation Practice', 'تمرین ترجمه', [14, 15, 16, 17]),
-          _stage('Real-World Use', 'کاربرد واقعی', [0, 1, 2, 8]),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
-          ),
-          _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
-        ];
-
-      case 'a1_basic_07':
+      case 'a1_07':
       case 'lesson_7':
       case '7':
         return [
-          // Object pronouns are cumulative: each stage keeps everything
-          // introduced before it. Later pronouns must never appear early.
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(
+              6,
+              (i) => i,
+            ),
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [6, 7],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            List.generate(
+              6,
+              (i) => i + 8,
+            ),
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(
+              9,
+              (i) => i + 14,
+            ),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(
+              6,
+              (i) => i + 23,
+            ),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(
+              5,
+              (i) => i + 29,
+            ),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [34, 35, 36],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            [37, 38, 39],
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_08':
+      case 'lesson_8':
+      case '8':
+        return [
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(
+              6,
+              (i) => i,
+            ),
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [6, 7],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [8, 9],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(
+              9,
+              (i) => i + 10,
+            ),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(
+              6,
+              (i) => i + 19,
+            ),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(
+              5,
+              (i) => i + 25,
+            ),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [30, 31, 32, 33],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(
+              6,
+              (i) => i + 34,
+            ),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_09':
+      case 'lesson_9':
+      case '9':
+        return [
           _stage(
             'Stage 1',
             'مرحله ۱',
@@ -539,41 +546,44 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 2',
             'مرحله ۲',
-            [0, 5, 10, 1, 6, 11],
+            [1, 2, 6, 7, 11],
           ),
           _stage(
             'Stage 3',
             'مرحله ۳',
-            [0, 5, 10, 1, 6, 11, 2, 7, 12],
+            [3, 4, 8, 9, 12, 13],
           ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13],
+            List.generate(
+              5,
+              (i) => i + 14,
+            ),
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18],
+            List.generate(
+              5,
+              (i) => i + 19,
+            ),
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+            List.generate(
+              6,
+              (i) => i + 24,
+            ),
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            List.generate(30, (i) => i),
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(40, (i) => i),
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
+            List.generate(
+              10,
+              (i) => i + 30,
+            ),
           ),
           _speakingStage(
             'Speaking',
@@ -581,13 +591,10 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_basic_08':
-      case 'lesson_8':
-      case '8':
+      case 'a1_10':
+      case 'lesson_10':
+      case '10':
         return [
-          // Possessive adjectives are cumulative: every stage keeps
-          // everything taught before it. Later forms must never leak
-          // into an earlier stage.
           _stage(
             'Stage 1',
             'مرحله ۱',
@@ -596,37 +603,22 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 2',
             'مرحله ۲',
-            [0, 1, 7, 8, 2, 3, 11, 12],
+            [2, 3, 11, 12],
           ),
           _stage(
             'Stage 3',
             'مرحله ۳',
-            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18],
+            [4, 5, 13, 14, 18],
           ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18, 6, 15],
+            [6, 15],
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
             [
-              0,
-              1,
-              7,
-              8,
-              2,
-              3,
-              11,
-              12,
-              4,
-              5,
-              13,
-              14,
-              18,
-              6,
-              15,
               9,
               10,
               16,
@@ -642,21 +634,26 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(30, (i) => i),
+            List.generate(
+              5,
+              (i) => i + 25,
+            ),
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            List.generate(35, (i) => i),
+            List.generate(
+              5,
+              (i) => i + 30,
+            ),
           ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(40, (i) => i),
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
+            List.generate(
+              5,
+              (i) => i + 35,
+            ),
           ),
           _speakingStage(
             'Speaking',
@@ -664,275 +661,69 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_basic_09':
-      case 'lesson_9':
-      case '9':
-        return [
-          _stage('Think First', 'اول فکر کن', const []),
-          _stage('A / An / The', 'A / An / The', [0, 1, 2]),
-          _stage(
-            'A vs An',
-            'تفاوت A و An',
-            [0, 1, 2, 6, 14, 18, 19],
-          ),
-          _stage(
-            'The for Specific Things',
-            'The برای چیزهای مشخص',
-            [0, 1, 2, 6, 14, 18, 19, 4, 8, 9, 11],
-          ),
-          _stage(
-            'Plural Nouns',
-            'اسم‌های جمع',
-            [0, 1, 2, 6, 14, 18, 19, 4, 8, 9, 11, 12, 13],
-          ),
-          _stage(
-            'General vs Specific',
-            'کلی یا مشخص؟',
-            [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20],
-          ),
-          _stage(
-            'Guided Practice',
-            'تمرین هدایت‌شده',
-            List.generate(21, (i) => i),
-          ),
-          _stage(
-            'Translation and Final Review',
-            'ترجمه و مرور نهایی',
-            List.generate(25, (i) => i),
-          ),
-          _listeningStage('Listening', 'گوش دادن'),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
-        ];
-
-      case 'a1_basic_10':
-      case 'lesson_10':
-      case '10':
-        return [
-          _stage('Think First', 'اول فکر کن', const []),
-          _stage('What Is Can?', 'Can چیست؟', [0, 1, 2, 3, 4, 5]),
-          _stage(
-            'Can + Base Verb',
-            'Can + شکل ساده فعل',
-            List.generate(14, (i) => i),
-          ),
-          _stage(
-            'Can’t / Cannot',
-            'Can’t / Cannot',
-            List.generate(18, (i) => i),
-          ),
-          _stage(
-            'Questions and Short Answers',
-            'سؤال‌ها و جواب‌های کوتاه',
-            List.generate(23, (i) => i),
-          ),
-          _stage(
-            'Recognition Practice',
-            'تمرین تشخیص',
-            List.generate(29, (i) => i),
-          ),
-          _stage(
-            'Translation and Word Order',
-            'ترجمه و مرتب کردن جمله',
-            List.generate(37, (i) => i),
-          ),
-          _stage(
-            'Permission, Requests and Inability',
-            'اجازه، درخواست و ناتوانی',
-            List.generate(40, (i) => i),
-          ),
-          _listeningStage('Listening', 'گوش دادن'),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
-        ];
-
-      case 'a1_basic_11':
-      case 'lesson_11':
-      case '11':
-
-      case 'a1_basic_11':
+      case 'a1_11':
       case 'lesson_11':
       case '11':
         return [
-          // Must/Mustn't is cumulative: every stage keeps all material
-          // introduced earlier in this lesson. Later structures must never
-          // leak into an earlier stage.
           _stage(
             'Stage 1',
             'مرحله ۱',
-            List.generate(6, (i) => i),
+            [0, 3, 5, 7, 10],
           ),
           _stage(
             'Stage 2',
             'مرحله ۲',
-            List.generate(8, (i) => i),
+            [1, 2, 4, 6, 8, 9, 11],
           ),
           _stage(
             'Stage 3',
             'مرحله ۳',
-            List.generate(10, (i) => i),
+            [12, 13, 14, 15],
           ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            List.generate(19, (i) => i),
+            [16, 17, 18, 19],
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            List.generate(25, (i) => i),
+            [20, 21, 22, 23],
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(30, (i) => i),
+            [
+              24,
+              25,
+              26,
+              27,
+              33,
+              34,
+              35,
+              36,
+              37,
+            ],
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            List.generate(34, (i) => i),
+            [28, 29, 30, 31, 32],
           ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(40, (i) => i),
+            [38, 39, 40, 41, 42],
           ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
+          _stage(
+            'Stage 9',
+            'مرحله ۹',
+            [43, 44, 45, 46],
           ),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
           ),
-        ];
-
-      case 'a1_basic_05':
-      case 'lesson_5':
-      case '5':
-        return [
-          // Present Simple is cumulative: each stage keeps every concept
-          // taught earlier. A later grammar point must never appear in an
-          // earlier stage, even as a multiple-choice distractor.
-          _stage(
-            'What Is the Present Simple?',
-            'Present Simple چیست؟',
-            [33],
-          ),
-          _stage(
-            'I, You, We, They',
-            'I, You, We, They',
-            [33, 0, 3, 5, 7, 10],
-          ),
-          _stage(
-            'He, She, It',
-            'He, She, It',
-            [33, 0, 3, 5, 7, 10, 2, 4],
-          ),
-          _stage(
-            'Adding -s',
-            'اضافه کردن s',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8],
-          ),
-          _stage(
-            'Adding -es',
-            'اضافه کردن es',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11],
-          ),
-          _stage(
-            'The -y to -ies Rule',
-            'قانون تبدیل y به ies',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27],
-          ),
-          _stage(
-            'Positive Sentences',
-            'جمله‌های مثبت',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34],
-          ),
-          _stage(
-            'Negative Sentences',
-            'جمله‌های منفی',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37],
-          ),
-          _stage(
-            'Do and Does in Questions',
-            'سؤال با Do و Does',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19],
-          ),
-          _stage(
-            'Common Mistakes',
-            'اشتباهات رایج',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19, 20, 21, 22, 23, 25, 35, 36],
-          ),
-          _stage(
-            'Adverbs of Frequency',
-            'قیدهای تکرار',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19, 20, 21, 22, 23, 25, 35, 36, 28, 29, 30, 31, 32],
-          ),
-          _stage(
-            'Real-Life Present Simple',
-            'Present Simple در انگلیسی واقعی',
-            List.generate(47, (i) => i),
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
-          ),
-          _speakingStage(
-            'Speaking',
-            'تمرین مکالمه',
-          ),
-        ];
-
-      case 'a1_basic_14':
-      case 'lesson_14':
-      case '14':
-        return [
-          _stage('Think First', 'اول فکر کن', const []),
-          _stage('What Is the Present Continuous?', 'Present Continuous چیست؟', const []),
-          _stage('Basic Structure', 'ساختار پایه', List.generate(10, (i) => i)),
-          _stage('Positive Sentences', 'جمله‌های مثبت', List.generate(10, (i) => i)),
-          _stage('Negative Sentences', 'جمله‌های منفی', List.generate(11, (i) => i)),
-          _stage('Questions and Short Answers', 'سؤال‌ها و جواب‌های کوتاه', List.generate(14, (i) => i)),
-          _stage('When Do We Use It?', 'چه زمانی از آن استفاده می‌کنیم؟', List.generate(22, (i) => i)),
-          _stage('Translation and Recognition', 'ترجمه و تشخیص', List.generate(27, (i) => i)),
-          _stage('Accuracy Practice', 'تمرین دقت', List.generate(32, (i) => i)),
-          _stage('Independent Practice and Review', 'تمرین مستقل و مرور', List.generate(37, (i) => i)),
-          _listeningStage('Listening', 'گوش دادن'),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
-        ];
-
-      case 'a1_basic_15':
-      case 'lesson_15':
-      case '15':
-        return [
-          _stage('Think First', 'اول فکر کن', const []),
-          _stage('Will / Going to', 'Will / Going to', const []),
-          _stage('Will', 'Will', List.generate(5, (i) => i)),
-          _stage('Will: Forms', 'شکل‌های Will', List.generate(10, (i) => i)),
-          _stage('Going to', 'Going to', List.generate(15, (i) => i)),
-          _stage('Will vs Going to', 'تفاوت Will و Going to', List.generate(19, (i) => i)),
-          _stage('Translation Practice', 'تمرین ترجمه', List.generate(23, (i) => i)),
-          _stage('Accuracy and Word Order', 'دقت و ترتیب کلمات', List.generate(31, (i) => i)),
-          _stage('Real-World Future Review', 'مرور کاربردی آینده', List.generate(35, (i) => i)),
-          _listeningStage('Listening', 'گوش دادن'),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
-        ];
-
-      case 'a1_basic_16':
-      case 'lesson_16':
-      case '16':
-        return [
-          _stage('Think First', 'اول فکر کن', const []),
-          _stage('Wh-Questions', 'سؤال‌های Wh', const []),
-          _stage('Wh-Words', 'کلمه‌های Wh', List.generate(7, (i) => i)),
-          _stage('Present Simple Wh', 'Wh در Present Simple', List.generate(9, (i) => i)),
-          _stage('Present Continuous Wh', 'Wh در Present Continuous', List.generate(10, (i) => i)),
-          _stage('Past Wh with Did', 'Wh در گذشته با Did', List.generate(12, (i) => i)),
-          _stage('Can, Must, Will and Going to', 'Can، Must، Will و Going to', List.generate(15, (i) => i)),
-          _stage('Who: Subject or Object?', 'Who: فاعل یا مفعول؟', List.generate(20, (i) => i)),
-          _stage('Translation and Guided Practice', 'ترجمه و تمرین هدایت‌شده', List.generate(24, (i) => i)),
-          _stage('Independent and Real-World Practice', 'تمرین مستقل و کاربرد واقعی', List.generate(28, (i) => i)),
-          _listeningStage('Listening', 'گوش دادن'),
-          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
         ];
 
       default:
@@ -982,28 +773,10 @@ class _A1BasicsLessonPageState
     int totalSpeaking,
   ) {
     if (totalQuestions == 0 && totalSpeaking == 0) {
-      if (_listeningQuestions.isEmpty) {
-        return [];
-      }
-      return [
-        _listeningStage(
-          'Listening',
-          'گوش دادن',
-        ),
-      ];
+      return [];
     }
 
-    final stages = <_A1Stage>[
-      _A1Stage(
-        title: 'Introduction',
-        titleFa: 'معرفی و یادگیری',
-        description:
-            'Learn the main idea before starting the exercises.',
-        descriptionFa:
-            'اول مفهوم اصلی را یاد بگیر، سپس تمرین‌ها را شروع کن.',
-        questionIndices: const [],
-      ),
-    ];
+    final stages = <_A1Stage>[];
 
     const stageCount = 5;
 
@@ -1031,15 +804,6 @@ class _A1BasicsLessonPageState
             end - start,
             (index) => start + index,
           ),
-        ),
-      );
-    }
-
-    if (_listeningQuestions.isNotEmpty) {
-      stages.add(
-        _listeningStage(
-          'Listening',
-          'گوش دادن',
         ),
       );
     }
@@ -1091,8 +855,11 @@ class _A1BasicsLessonPageState
       }
     }
 
-    // Stages and sections are different structures. Never guess a section
-    // from the stage number because that can show the wrong explanation.
+    if (_currentStage <
+        widget.lesson.sections.length) {
+      return widget.lesson.sections[_currentStage];
+    }
+
     return null;
   }
 
@@ -1500,12 +1267,6 @@ class _A1BasicsLessonPageState
       final listenedExamples =
           data['listenedExamples'];
 
-      final listeningAnswered =
-          data['listeningAnswered'];
-
-      final selectedListeningAnswers =
-          data['selectedListeningAnswers'];
-
       if (!mounted) {
         return;
       }
@@ -1644,27 +1405,6 @@ class _A1BasicsLessonPageState
           );
         }
 
-        _listeningAnswered.clear();
-
-        if (listeningAnswered is List) {
-          for (final value in listeningAnswered) {
-            if (value is num) {
-              _listeningAnswered.add(value.toInt());
-            }
-          }
-        }
-
-        _selectedListeningAnswers.clear();
-
-        if (selectedListeningAnswers is Map) {
-          selectedListeningAnswers.forEach((key, value) {
-            final index = int.tryParse(key.toString());
-            if (index != null && value is String) {
-              _selectedListeningAnswers[index] = value;
-            }
-          });
-        }
-
         _listenedExamples.clear();
 
         if (listenedExamples is List) {
@@ -1741,14 +1481,6 @@ class _A1BasicsLessonPageState
 
       'completedSpeaking':
           _completedSpeaking.toList(),
-
-      'listeningAnswered':
-          _listeningAnswered.toList(),
-
-      'selectedListeningAnswers':
-          _selectedListeningAnswers.map(
-        (key, value) => MapEntry(key.toString(), value),
-      ),
 
       'speakingResults':
           _speakingResults.map(
@@ -2022,288 +1754,1754 @@ class _A1BasicsLessonPageState
   // =========================================================
   // MULTIPLE CHOICE
   // =========================================================
-  // Keep multiple-choice distractors inside the learner's current
-  // knowledge scope. A question can be reused cumulatively, but it must
-  // never reveal a pronoun that has not been taught yet.
-  List<String> _safeOptionsForQuestion(
+
+  Widget _buildMultipleChoiceQuestion(
+    int index,
     A1BasicQuestion question,
   ) {
-    // Pronoun lesson: only show pronouns already introduced.
-    if (widget.lesson.id == 'a1_basic_01' ||
-        widget.lesson.id == 'lesson_1' ||
-        widget.lesson.id == '1') {
-      final learnedPronouns = <String>[
-        'I', 'You', 'He', 'She', 'It', 'We', 'They',
-      ].take(_currentStage + 1).toSet();
+    final answered =
+        _answeredQuestions.contains(index);
 
-      final pronouns = <String>{
-        'i', 'you', 'he', 'she', 'it', 'we', 'they',
-      };
+    final selected =
+        _selectedAnswers[index];
 
-      bool containsFuturePronoun(String value) {
-        final words = value.toLowerCase()
-            .split(RegExp(r'[^a-z]+'))
-            .where((word) => word.isNotEmpty)
-            .toSet();
-        return words.any((word) =>
-            pronouns.contains(word) &&
-            !learnedPronouns.map((p) => p.toLowerCase()).contains(word));
-      }
+    final isCorrect =
+        selected != null &&
+        _isAnswerCorrect(
+          question,
+          selected,
+        );
 
-      final sentenceLike = question.options.any((o) => o.trim().contains(' '));
-      final sentencePool = <String>[
-        'I am a student.', 'You are my friend.', 'He is a teacher.',
-        'She is my sister.', 'It is a book.', 'We are ready.',
-        'They are students.',
-      ];
-      final wordPool = <String>[
-        'student', 'teacher', 'friend', 'book', 'happy', 'ready', 'name',
-      ];
+    return Container(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig
+                .cardSpacing,
+      ),
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: answered
+              ? (isCorrect
+                  ? Colors.green
+                      .withAlpha(55)
+                  : Colors.red
+                      .withAlpha(45))
+              : _outline,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  question.question,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                ),
+              ),
+              if (A1BasicsUIConfig
+                  .enableTextToSpeech)
+                IconButton(
+                  tooltip: _isPersian
+                      ? 'تلفظ'
+                      : 'Listen',
+                  onPressed: () =>
+                      _speak(
+                    question.question,
+                  ),
+                  icon: const Icon(
+                    Icons
+                        .volume_up_rounded,
+                  ),
+                ),
+            ],
+          ),
+          SizedBox(
+            height:
+                A1BasicsUIConfig
+                    .cardSpacing,
+          ),
+          if (question.hint != null &&
+              question.hint!.trim().isNotEmpty) ...[
+            Text(
+              _isPersian ? 'معنی' : 'Meaning',
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge
+                  ?.copyWith(
+                    color: lavender,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              question.hint!,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(height: 1.45),
+            ),
+            SizedBox(
+              height: A1BasicsUIConfig.cardSpacing,
+            ),
+          ],
+          ...(List<String>.from(question.options)..shuffle()).map(
+            (option) {
+              final selectedThis =
+                  selected == option;
 
-      final result = <String>[];
-      final used = <String>{};
-      for (final option in question.options) {
-        final value = option.trim();
-        if (value.isEmpty || used.contains(value)) continue;
-        if (!containsFuturePronoun(value)) {
-          result.add(value);
-          used.add(value);
-        } else {
-          final pool = sentenceLike ? sentencePool : wordPool;
-          final replacement = pool.firstWhere(
-            (candidate) => candidate != question.answer &&
-                !used.contains(candidate) &&
-                !containsFuturePronoun(candidate),
-            orElse: () => '',
-          );
-          if (replacement.isNotEmpty) {
-            result.add(replacement);
-            used.add(replacement);
-          }
-        }
-      }
-      if (!result.contains(question.answer)) {
-        result.insert(0, question.answer);
-        used.add(question.answer);
-      }
-      final pool = sentenceLike ? sentencePool : wordPool;
-      for (final candidate in pool) {
-        if (result.length >= 4) break;
-        if (candidate != question.answer && !used.contains(candidate) &&
-            !containsFuturePronoun(candidate)) {
-          result.add(candidate);
-          used.add(candidate);
-        }
-      }
-      return result;
+              final correctOption =
+                  _isAnswerCorrect(
+                question,
+                option,
+              );
+
+              final showCorrect =
+                  answered &&
+                      A1BasicsUIConfig
+                          .showCorrectAnswerAfterMistake &&
+                      correctOption;
+
+              return Padding(
+                padding:
+                    EdgeInsets.only(
+                  bottom:
+                      A1BasicsUIConfig
+                          .cardSpacing,
+                ),
+                child:
+                    OutlinedButton(
+                  // اولین انتخاب نهایی است، چه درست باشد چه غلط.
+                  onPressed:
+                      answered
+                          ? null
+                          : () =>
+                              _answerQuestion(
+                                index,
+                                option,
+                              ),
+                  style:
+                      OutlinedButton
+                          .styleFrom(
+                    alignment:
+                        AlignmentDirectional
+                            .centerStart,
+                    padding:
+                        const EdgeInsets
+                            .symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    side: BorderSide(
+                      color:
+                          showCorrect
+                              ? Colors
+                                  .green
+                              : selectedThis
+                                  ? lavender
+                                  : Theme.of(
+                                      context,
+                                    )
+                                      .colorScheme
+                                      .outline,
+                    ),
+                    shape:
+                        RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius
+                              .circular(
+                        16,
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          option,
+                        ),
+                      ),
+                      if (showCorrect)
+                        const Icon(
+                          Icons
+                              .check_circle,
+                          color:
+                              Colors.green,
+                        )
+                      else if (selectedThis)
+                        Icon(
+                          isCorrect
+                              ? Icons
+                                  .check_circle
+                              : Icons.cancel,
+                          color:
+                              isCorrect
+                                  ? Colors
+                                      .green
+                                  : Colors
+                                      .red,
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          if (answered &&
+              A1BasicsUIConfig
+                  .showFeedbackAfterAnswer)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 4,
+              ),
+              child: Text(
+                isCorrect
+                    ? (_isPersian
+                        ? 'درست! 😼✨'
+                        : 'Correct! 😼✨')
+                    : (_isPersian
+                        ? 'جواب صحیح: ${question.answer}'
+                        : 'Correct answer: ${question.answer}'),
+                style: TextStyle(
+                  fontWeight:
+                      FontWeight.bold,
+                  color: isCorrect
+                      ? Colors.green
+                      : Colors.red,
+                ),
+              ),
+            ),
+          if (answered &&
+              A1BasicsUIConfig
+                  .showQuestionExplanation &&
+              question.explanation !=
+                  null &&
+              question.explanation!
+                  .trim()
+                  .isNotEmpty)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 12,
+              ),
+              child: Text(
+                question.explanation!,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _answerQuestion(
+    int index,
+    String answer,
+  ) async {
+    final question =
+        _questions[index];
+
+    final correct =
+        _isAnswerCorrect(
+      question,
+      answer,
+    );
+
+    setState(() {
+      _selectedAnswers[index] =
+          answer;
+
+      _answeredQuestions.add(index);
+    });
+
+    await _saveProgress();
+
+    if (!correct &&
+        A1BasicsUIConfig
+            .showCorrectAnswerAfterMistake) {
+      ScaffoldMessenger.of(context)
+          .hideCurrentSnackBar();
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content: Text(
+            _isPersian
+                ? 'جواب صحیح: ${question.answer}'
+                : 'Correct answer: ${question.answer}',
+          ),
+          behavior:
+              SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  // =========================================================
+  // TYPING
+  // =========================================================
+
+  Widget _buildTypingQuestion(
+    int index,
+    A1BasicQuestion question,
+  ) {
+    final answered =
+        _answeredQuestions.contains(index);
+
+    final result =
+        _typingResults[index];
+
+    final controller =
+        _controllerFor(index);
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig
+                .cardSpacing,
+      ),
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: !answered
+              ? _outline
+              : result == true
+                  ? Colors.green
+                      .withAlpha(55)
+                  : Colors.red
+                      .withAlpha(45),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          _buildQuestionHeader(
+            question.question,
+            allowTts: true,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: controller,
+            enabled: !answered ||
+                (result == false &&
+                    A1BasicsUIConfig
+                        .allowRetry),
+            textInputAction:
+                TextInputAction.done,
+            onChanged: (value) {
+              _typedAnswers[index] =
+                  value;
+            },
+            onSubmitted: (_) =>
+                _submitTypedAnswer(
+              index,
+            ),
+            decoration:
+                InputDecoration(
+              hintText: _isPersian
+                  ? 'جوابت را بنویس...'
+                  : 'Type your answer...',
+              border:
+                  OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  16,
+                ),
+              ),
+              focusedBorder:
+                  OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  16,
+                ),
+                borderSide:
+                    const BorderSide(
+                  color: lavender,
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+          if (question.hint != null &&
+              question.hint!
+                  .trim()
+                  .isNotEmpty &&
+              !answered)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 10,
+              ),
+              child: Text(
+                question.hint!,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall,
+              ),
+            ),
+          const SizedBox(height: 14),
+          if (!answered ||
+              (result == false &&
+                  A1BasicsUIConfig
+                      .allowRetry))
+            FilledButton.icon(
+              onPressed: () =>
+                  _submitTypedAnswer(
+                index,
+              ),
+              icon: const Icon(
+                Icons.check_rounded,
+              ),
+              label: Text(
+                _isPersian
+                    ? 'بررسی جواب'
+                    : 'Check Answer',
+              ),
+              style:
+                  FilledButton.styleFrom(
+                backgroundColor:
+                    lavender,
+                foregroundColor:
+                    Colors.black87,
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                    A1BasicsUIConfig
+                        .buttonRadius,
+                  ),
+                ),
+              ),
+            ),
+          if (answered)
+            _buildTypingFeedback(
+              question,
+              result == true,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submitTypedAnswer(
+    int index,
+  ) async {
+    final question =
+        _questions[index];
+
+    final controller =
+        _controllerFor(index);
+
+    final answer =
+        controller.text.trim();
+
+    if (answer.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .hideCurrentSnackBar();
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content: Text(
+            _isPersian
+                ? 'اول جوابت رو بنویس 😼'
+                : 'Type an answer first 😼',
+          ),
+          behavior:
+              SnackBarBehavior.floating,
+        ),
+      );
+
+      return;
     }
 
-    // Object Pronouns lesson: only object pronouns introduced by the
-    // current stage may appear. Possessive and reflexive pronouns are
-    // intentionally excluded because they are taught later.
-    if (widget.lesson.id == 'a1_basic_07' ||
-        widget.lesson.id == 'lesson_7' ||
-        widget.lesson.id == '7') {
-      final learnedObjects = <String>{
-        'me',
-        'you',
-        if (_currentStage >= 1) 'him',
-        if (_currentStage >= 2) 'her',
-        if (_currentStage >= 3) ...['it', 'us', 'them'],
-      };
+    final correct =
+        _isAnswerCorrect(
+      question,
+      answer,
+    );
 
-      const possessive = <String>{
-        'my', 'mine', 'his', 'hers', 'our', 'ours',
-        'their', 'theirs', 'your', 'yours', 'its',
-      };
-      const reflexive = <String>{
-        'myself', 'yourself', 'himself', 'herself',
-        'itself', 'ourselves', 'yourselves', 'themselves',
-      };
-      const objectPronouns = <String>{
-        'me', 'you', 'him', 'her', 'it', 'us', 'them',
-      };
+    setState(() {
+      _typedAnswers[index] =
+          answer;
 
-      bool isAllowedOption(String value) {
-        final words = value
-            .toLowerCase()
-            .split(RegExp(r'[^a-z]+'))
-            .where((word) => word.isNotEmpty)
-            .toSet();
+      _typingResults[index] =
+          correct;
 
-        if (words.any(possessive.contains) ||
-            words.any(reflexive.contains)) {
-          return false;
-        }
+      _answeredQuestions.add(index);
+    });
 
-        for (final pronoun in objectPronouns) {
-          if (words.contains(pronoun) &&
-              !learnedObjects.contains(pronoun)) {
-            return false;
-          }
-        }
-        return true;
-      }
+    await _saveProgress();
 
-      final result = <String>[];
-      final used = <String>{};
+    if (!correct &&
+        A1BasicsUIConfig
+            .showCorrectAnswerAfterMistake) {
+      ScaffoldMessenger.of(context)
+          .hideCurrentSnackBar();
 
-      for (final option in question.options) {
-        final value = option.trim();
-        if (value.isEmpty || used.contains(value)) continue;
-        if (!isAllowedOption(value)) continue;
-        result.add(value);
-        used.add(value);
-      }
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content: Text(
+            _isPersian
+                ? 'جواب درست: ${question.answer}'
+                : 'Correct answer: ${question.answer}',
+          ),
+          behavior:
+              SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
 
-      if (!result.contains(question.answer)) {
-        result.insert(0, question.answer);
-        used.add(question.answer);
-      }
+  Widget _buildTypingFeedback(
+    A1BasicQuestion question,
+    bool correct,
+  ) {
+    return Padding(
+      padding:
+          const EdgeInsets.only(
+        top: 14,
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            correct
+                ? (_isPersian
+                    ? 'درست! 😼✨'
+                    : 'Correct! 😼✨')
+                : (_isPersian
+                    ? 'جوابت درست نبود.'
+                    : 'Your answer was not correct.'),
+            style: TextStyle(
+              fontWeight:
+                  FontWeight.bold,
+              color: correct
+                  ? Colors.green
+                  : Colors.red,
+            ),
+          ),
+          if (!correct)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 6,
+              ),
+              child: Text(
+                _isPersian
+                    ? 'جواب صحیح: ${question.answer}'
+                    : 'Correct answer: ${question.answer}',
+              ),
+            ),
+          if (A1BasicsUIConfig
+                  .showQuestionExplanation &&
+              question.explanation !=
+                  null &&
+              question.explanation!
+                  .trim()
+                  .isNotEmpty)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 10,
+              ),
+              child: Text(
+                question.explanation!,
+              ),
+            ),
+          if (!correct &&
+              A1BasicsUIConfig.allowRetry)
+            _buildRetryButton(
+              _questions.indexOf(
+                question,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 
-      // Use already-known subject pronouns as neutral fallback distractors
-      // instead of leaking future possessive/reflexive grammar.
-      const safeWords = [
-        'I', 'he', 'she', 'we', 'they',
-        'student', 'friend', 'teacher', 'book',
-      ];
-      for (final candidate in safeWords) {
-        if (result.length >= 4) break;
-        if (candidate != question.answer &&
-            !used.contains(candidate) &&
-            isAllowedOption(candidate)) {
-          result.add(candidate);
-          used.add(candidate);
-        }
-      }
-      return result;
+  // =========================================================
+  // FILL IN THE BLANK
+  // =========================================================
+
+  Widget _buildFillInTheBlankQuestion(
+    int index,
+    A1BasicQuestion question,
+  ) {
+    final answered =
+        _answeredQuestions.contains(index);
+
+    final result =
+        _typingResults[index];
+
+    final controller =
+        _controllerFor(index);
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig
+                .cardSpacing,
+      ),
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: !answered
+              ? _outline
+              : result == true
+                  ? Colors.green
+                      .withAlpha(55)
+                  : Colors.red
+                      .withAlpha(45),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            _isPersian
+                ? 'جای خالی را کامل کن'
+                : 'Fill in the blank',
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(
+                  color: lavender,
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 10),
+          _buildQuestionHeader(
+            question.question,
+            allowTts: true,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: controller,
+            enabled: !answered ||
+                (result == false &&
+                    A1BasicsUIConfig
+                        .allowRetry),
+            textInputAction:
+                TextInputAction.done,
+            onChanged: (value) {
+              _typedAnswers[index] =
+                  value;
+            },
+            onSubmitted: (_) =>
+                _submitTypedAnswer(
+              index,
+            ),
+            decoration:
+                InputDecoration(
+              hintText: _isPersian
+                  ? 'کلمه مناسب را بنویس...'
+                  : 'Type the missing word...',
+              border:
+                  OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  16,
+                ),
+              ),
+              focusedBorder:
+                  OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  16,
+                ),
+                borderSide:
+                    const BorderSide(
+                  color: lavender,
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+          if (question.hint != null &&
+              question.hint!
+                  .trim()
+                  .isNotEmpty &&
+              !answered)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 10,
+              ),
+              child: Text(
+                question.hint!,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall,
+              ),
+            ),
+          const SizedBox(height: 14),
+          if (!answered ||
+              (result == false &&
+                  A1BasicsUIConfig
+                      .allowRetry))
+            FilledButton.icon(
+              onPressed: () =>
+                  _submitTypedAnswer(
+                index,
+              ),
+              icon: const Icon(
+                Icons.check_rounded,
+              ),
+              label: Text(
+                _isPersian
+                    ? 'بررسی جواب'
+                    : 'Check Answer',
+              ),
+              style:
+                  FilledButton.styleFrom(
+                backgroundColor:
+                    lavender,
+                foregroundColor:
+                    Colors.black87,
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                    A1BasicsUIConfig
+                        .buttonRadius,
+                  ),
+                ),
+              ),
+            ),
+          if (answered)
+            _buildTypingFeedback(
+              question,
+              result == true,
+            ),
+        ],
+      ),
+    );
+  }
+
+  // =========================================================
+  // QUESTION HEADER
+  // =========================================================
+
+  Widget _buildQuestionHeader(
+    String questionText, {
+    bool allowTts = false,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            questionText,
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+          ),
+        ),
+        if (allowTts &&
+            A1BasicsUIConfig
+                .enableTextToSpeech)
+          IconButton(
+            tooltip: _isPersian
+                ? 'تلفظ'
+                : 'Listen',
+            onPressed: () =>
+                _speak(questionText),
+            icon: const Icon(
+              Icons
+                  .volume_up_rounded,
+            ),
+          ),
+      ],
+    );
+  }
+
+  // =========================================================
+  // RETRY
+  // =========================================================
+
+  Widget _buildRetryButton(
+    int index,
+  ) {
+    return Padding(
+      padding:
+          const EdgeInsets.only(
+        top: 8,
+      ),
+      child: TextButton.icon(
+        onPressed: () async {
+          setState(() {
+            _selectedAnswers
+                .remove(index);
+
+            _typedAnswers
+                .remove(index);
+
+            _typingResults
+                .remove(index);
+
+            _answeredQuestions
+                .remove(index);
+
+            final controller =
+                _answerControllers[
+                    index];
+
+            controller?.clear();
+          });
+
+          await _saveProgress();
+        },
+        icon: const Icon(
+          Icons.refresh_rounded,
+        ),
+        label: Text(
+          _isPersian
+              ? 'دوباره امتحان کن'
+              : 'Try Again',
+        ),
+      ),
+    );
+  }
+
+  // =========================================================
+  // SPEAKING
+  // =========================================================
+
+  Widget _buildSpeakingQuestion(
+    int index,
+  ) {
+    final speaking =
+        widget.lesson
+            .speakingQuestions[index];
+
+    final completed =
+        _completedSpeaking
+            .contains(index);
+
+    final result =
+        _speakingResults[index];
+
+    final active =
+        _isListening &&
+            _currentSpeakingIndex ==
+                index;
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig
+                .cardSpacing,
+      ),
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: completed
+              ? Colors.green
+                  .withAlpha(55)
+              : _outline,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            speaking.question,
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+          ),
+          if (_isPersian &&
+              speaking.persian
+                  .trim()
+                  .isNotEmpty)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 8,
+              ),
+              child: Text(
+                speaking.persian,
+              ),
+            ),
+          if (A1BasicsUIConfig
+                  .showRecognizedText &&
+              _recognizedText
+                  .isNotEmpty &&
+              _currentSpeakingIndex ==
+                  index)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 12,
+              ),
+              child: Text(
+                _isPersian
+                    ? 'شنیده شد: $_recognizedText'
+                    : 'Recognized: $_recognizedText',
+                style: const TextStyle(
+                  fontWeight:
+                      FontWeight.bold,
+                ),
+              ),
+            ),
+          if (A1BasicsUIConfig
+                  .showSpeakingResult &&
+              completed &&
+              result != null)
+            Padding(
+              padding:
+                  const EdgeInsets.only(
+                top: 12,
+              ),
+              child: Text(
+                result
+                    ? (_isPersian
+                        ? 'تلفظت قابل قبول بود 😼✨'
+                        : 'Your pronunciation was acceptable 😼✨')
+                    : (_isPersian
+                        ? 'تلاش ثبت شد. جواب پیشنهادی: '
+                            '${speaking.acceptableAnswers.first}'
+                        : 'Attempt recorded. Suggested answer: '
+                            '${speaking.acceptableAnswers.first}'),
+                style: TextStyle(
+                  fontWeight:
+                      FontWeight.bold,
+                  color: result
+                      ? Colors.green
+                      : Colors.orange,
+                ),
+              ),
+            ),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed:
+                completed &&
+                        !A1BasicsUIConfig
+                            .allowSpeakingRetry
+                    ? null
+                    : active
+                        ? _stopListening
+                        : () =>
+                            _startListening(
+                              index,
+                            ),
+            icon: Icon(
+              active
+                  ? Icons.stop_rounded
+                  : Icons.mic_rounded,
+            ),
+            label: Text(
+              active
+                  ? (_isPersian
+                      ? 'توقف'
+                      : 'Stop')
+                  : completed
+                      ? (_isPersian
+                          ? 'دوباره بگو'
+                          : 'Try Again')
+                      : (_isPersian
+                          ? 'پاسخ بده'
+                          : 'Answer'),
+            ),
+            style:
+                FilledButton.styleFrom(
+              backgroundColor:
+                  lavender,
+              foregroundColor:
+                  Colors.black87,
+              shape:
+                  RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  A1BasicsUIConfig
+                      .buttonRadius,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // =========================================================
+  // EXAMPLES
+  // =========================================================
+
+  Widget _buildExample(
+    A1BasicExample example,
+  ) {
+    final key =
+        _exampleKey(example);
+
+    final listened =
+        _listenedExamples.contains(key);
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig
+                .cardSpacing,
+      ),
+      padding: EdgeInsets.all(
+        A1BasicsUIConfig.pagePadding,
+      ),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: _outline,
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment:
+                  CrossAxisAlignment.start,
+              children: [
+                Text(
+                  example.english,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                ),
+                if (_isPersian &&
+                    example.persian
+                        .trim()
+                        .isNotEmpty)
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(
+                      top: 6,
+                    ),
+                    child: Text(
+                      example.persian,
+                    ),
+                  ),
+                if (example.pronunciation !=
+                    null)
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(
+                      top: 6,
+                    ),
+                    child: Text(
+                      example.pronunciation!,
+                      style: Theme.of(
+                        context,
+                      )
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(
+                            color:
+                                Colors.grey,
+                          ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          if (A1BasicsUIConfig
+                  .showPronunciationButton &&
+              A1BasicsUIConfig
+                  .enableTextToSpeech)
+            IconButton(
+              tooltip: _isPersian
+                  ? 'تلفظ'
+                  : 'Listen',
+              onPressed: () async {
+                await _speak(
+                  example.english,
+                );
+
+                if (mounted) {
+                  setState(() {
+                    _listenedExamples
+                        .add(key);
+                  });
+
+                  await _saveProgress();
+                }
+              },
+              icon: Icon(
+                listened
+                    ? Icons
+                        .check_circle_rounded
+                    : Icons
+                        .volume_up_rounded,
+                color: listened
+                    ? Colors.green
+                    : lavender,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  int _exampleKey(
+    A1BasicExample example,
+  ) {
+    return Object.hash(
+      example.english,
+      example.persian,
+      example.pronunciation,
+    );
+  }
+
+  // =========================================================
+  // STAGE COMPLETION
+  // =========================================================
+
+  bool _isCurrentStageComplete() {
+    final stage =
+        _stages[_currentStage];
+
+    final questionsComplete =
+        stage.questionIndices.every(
+      (index) =>
+          _answeredQuestions
+              .contains(index),
+    );
+
+    final speakingComplete =
+        stage.speakingIndices.every(
+      (index) =>
+          _completedSpeaking
+              .contains(index),
+    );
+
+    return questionsComplete &&
+        speakingComplete;
+  }
+
+  Future<void> _goPreviousStage() async {
+    if (_currentStage <= 0) return;
+
+    if (_isListening) {
+      await _stopListening();
     }
 
-    // Possessive Adjectives lesson: only forms introduced by the
-    // current stage may appear as distractors. Possessive pronouns
-    // such as yours/hers/ours/theirs are not taught here, so they
-    // must never leak into this lesson's choices.
-    if (widget.lesson.id == 'a1_basic_08' ||
-        widget.lesson.id == 'lesson_8' ||
-        widget.lesson.id == '8') {
-      final allowedAdjectives = <String>{
-        'my',
-        'your',
-        if (_currentStage >= 1) ...['his', 'her'],
-        if (_currentStage >= 2) ...['our', 'their'],
-        if (_currentStage >= 3) 'its',
-      };
+    setState(() {
+      _currentStage--;
+      _learningMode = A1BasicsUIConfig.teachBeforePractice;
+      _currentSpeakingIndex = null;
+      _recognizedText = '';
+      _isListening = false;
+    });
 
-      const allowedSpecial = <String>{
-        'mine',
-      };
+    await _saveProgress();
+  }
 
-      const possessiveAdjectives = <String>{
-        'my', 'your', 'his', 'her', 'its', 'our', 'their',
-      };
+  Future<void> _goNextStage() async {
+    await _finishCurrentStage();
+  }
 
-      const possessivePronouns = <String>{
-        'mine', 'yours', 'hers', 'ours', 'theirs',
-      };
+  Future<void> _finishCurrentStage() async {
+    if (A1BasicsUIConfig
+            .requireStageCompletion &&
+        !_isCurrentStageComplete()) {
+      ScaffoldMessenger.of(context)
+          .hideCurrentSnackBar();
 
-      bool isAllowedOption(String value) {
-        final words = value
-            .toLowerCase()
-            .split(RegExp(r'[^a-z]+'))
-            .where((word) => word.isNotEmpty)
-            .toSet();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        SnackBar(
+          content: Text(
+            _isPersian
+                ? 'اول تمرین‌های این مرحله را کامل کن 😼'
+                : 'Complete the exercises in this stage first 😼',
+          ),
+          behavior:
+              SnackBarBehavior.floating,
+        ),
+      );
 
-        for (final word in possessivePronouns) {
-          if (words.contains(word)) {
-            if (word == 'mine' &&
-                _currentStage >= 4 &&
-                allowedSpecial.contains(word)) {
-              continue;
-            }
-            return false;
-          }
-        }
-
-        for (final adjective in possessiveAdjectives) {
-          if (words.contains(adjective) &&
-              !allowedAdjectives.contains(adjective)) {
-            return false;
-          }
-        }
-
-        // "it's" is explicitly taught together with its. Do not expose
-        // the contraction before the Its / It's stage.
-        if (words.contains('it') &&
-            value.toLowerCase().contains("it's") &&
-            _currentStage < 3) {
-          return false;
-        }
-
-        return true;
-      }
-
-      final result = <String>[];
-      final used = <String>{};
-
-      for (final option in question.options) {
-        final value = option.trim();
-        if (value.isEmpty || used.contains(value)) continue;
-        if (!isAllowedOption(value)) continue;
-        result.add(value);
-        used.add(value);
-      }
-
-      if (!result.contains(question.answer)) {
-        result.insert(0, question.answer);
-        used.add(question.answer);
-      }
-
-      // Already-taught pronouns/words are safe fallback distractors.
-      // They prevent future possessive forms from being used just to
-      // fill the four-option requirement.
-      const safeWords = [
-        'I', 'you', 'he', 'she', 'we', 'they',
-        'me', 'him', 'her', 'us', 'them',
-        'student', 'friend', 'teacher', 'book',
-      ];
-
-      for (final candidate in safeWords) {
-        if (result.length >= 4) break;
-        if (candidate != question.answer &&
-            !used.contains(candidate) &&
-            isAllowedOption(candidate)) {
-          result.add(candidate);
-          used.add(candidate);
-        }
-      }
-
-      return result;
+      return;
     }
 
-    // Present Simple lesson: keep verb forms, negatives, questions, and
-    // frequency adverbs inside the current teaching scope. A question may
-    // be reused cumulatively, but future forms must not leak in early.
-    if (widget.lesson.id == 'a1_basic_05' ||
-        widget.lesson.id == 'lesson_11' ||
-        widget.lesson.id == '11') {
-      const thirdPersonForms = <String>{
-        'studies', 'drinks', 'lives', 'watches', 'likes', 'goes',
-        'studys', 'drinkes', 'livies', 'watchs', 'likees', 'gos',
-      };
-      const esForms = <String>{
-        'watches', 'goes', 'watchs', 'gos',
-        'drinkes', 'likees',
-      };
-      const yToIesForms = <String>{
-        'studies', 'studys', 'livies',
-      };
-      const frequencyAdverbs = <String>{
-        'always', 'usually', 'often', 'sometimes', 'never',
-      };
+    if (_currentStage <
+        _stages.length - 1) {
+      final nextStage =
+          _currentStage + 1;
 
-      bool isAllowedOption(String value) {
-        final words = value
-            .toLowerCase()
-            .split(RegExp(r'[^a-z]+'))
-            .where((word) => word.isNotEmpty)
-            .toSet();
+      setState(() {
+        _currentStage =
+            nextStage;
+
+        _learningMode =
+            A1BasicsUIConfig
+                .teachBeforePractice;
+
+        _currentSpeakingIndex =
+            null;
+
+        _recognizedText = '';
+
+        _isListening = false;
+      });
+
+      await _saveProgress();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(
+          SnackBar(
+            content: Text(
+              _isPersian
+                  ? 'مرحله بعدی باز شد 😼✨'
+                  : 'Next stage unlocked 😼✨',
+            ),
+            behavior:
+                SnackBarBehavior
+                    .floating,
+          ),
+        );
+      }
+    } else {
+      await _completeLesson();
+    }
+  }
+
+  Future<void> _completeLesson() async {
+    if (A1BasicsUIConfig.saveProgress) {
+      final prefs =
+          await SharedPreferences
+              .getInstance();
+
+      final completed =
+          prefs.getStringList(
+                _completedLessonsKey,
+              ) ??
+              [];
+
+      if (!completed.contains(
+        widget.lesson.id,
+      )) {
+        completed.add(
+          widget.lesson.id,
+        );
+      }
+
+      await prefs.setStringList(
+        _completedLessonsKey,
+        completed,
+      );
+
+      await _saveProgress();
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(24),
+          ),
+          title: Text(
+            _isPersian
+                ? 'درس کامل شد 🎉'
+                : 'Lesson Completed 🎉',
+          ),
+          content: Text(
+            _isPersian
+                ? 'این درس را با موفقیت تمام کردی. '
+                    'یک قدم دیگر به انگلیسی بهتر نزدیک شدی 😼💜'
+                : 'You completed this lesson successfully. '
+                    'One more step toward better English 😼💜',
+          ),
+          actions: [
+            FilledButton(
+              style:
+                  FilledButton.styleFrom(
+                backgroundColor:
+                    lavender,
+                foregroundColor:
+                    Colors.black87,
+                shape:
+                    RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                    14,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).pop();
+              },
+              child: Text(
+                _isPersian
+                    ? 'باشه'
+                    : 'Done',
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
+  // =========================================================
+  // PROGRESS HEADER
+  // =========================================================
+
+  Widget _buildProgressHeader() {
+    if (_stages.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final progress =
+        (_currentStage + 1) /
+            _stages.length;
+
+    return Container(
+      margin: EdgeInsets.only(
+        bottom:
+            A1BasicsUIConfig
+                .sectionSpacing,
+      ),
+      padding:
+          const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius:
+            BorderRadius.circular(24),
+        border: Border.all(
+          color: _outline,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  _isPersian
+                      ? 'مرحله ${_currentStage + 1} از ${_stages.length}'
+                      : 'Stage ${_currentStage + 1} of ${_stages.length}',
+                  style:
+                      const TextStyle(
+                    fontWeight:
+                        FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                '${(progress * 100).round()}%',
+                style:
+                    const TextStyle(
+                  fontWeight:
+                      FontWeight.bold,
+                  color: lavender,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ClipRRect(
+            borderRadius:
+                BorderRadius.circular(
+              20,
+            ),
+            child:
+                LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              backgroundColor:
+                  lavender.withAlpha(31),
+              valueColor:
+                  const AlwaysStoppedAnimation(
+                lavender,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // =========================================================
+  // CURRENT STAGE
+  // =========================================================
+
+  Widget _buildCurrentStage() {
+    if (_stages.isEmpty) {
+      return Center(
+        child: Text(
+          _isPersian
+              ? 'این درس هنوز محتوایی ندارد.'
+              : 'This lesson has no content yet.',
+        ),
+      );
+    }
+
+    final stage =
+        _stages[_currentStage];
+
+    return Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding:
+              const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: _surface,
+            borderRadius:
+                BorderRadius.circular(
+              24,
+            ),
+            border: Border.all(
+              color: _outline,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
+              Text(
+                _isPersian
+                    ? stage.titleFa
+                    : stage.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(
+                      fontWeight:
+                          FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                _isPersian
+                    ? stage.descriptionFa
+                    : stage.description,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(
+                      height: 1.45,
+                    ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height:
+              A1BasicsUIConfig
+                  .sectionSpacing,
+        ),
+        if (_learningMode)
+          _buildLearningContent()
+        else ...[
+          ...stage.questionIndices.map(
+            _buildQuestion,
+          ),
+          ...stage.speakingIndices.map(
+            _buildSpeakingQuestion,
+          ),
+          SizedBox(
+            height:
+                A1BasicsUIConfig
+                    .sectionSpacing,
+          ),
+          FilledButton(
+            onPressed:
+                _finishCurrentStage,
+            style:
+                FilledButton.styleFrom(
+              backgroundColor:
+                  lavender,
+              foregroundColor:
+                  Colors.black87,
+              padding:
+                  const EdgeInsets.symmetric(
+                vertical: 14,
+              ),
+              shape:
+                  RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(
+                  A1BasicsUIConfig
+                      .buttonRadius,
+                ),
+              ),
+            ),
+            child: Text(
+              _currentStage ==
+                      _stages.length - 1
+                  ? (_isPersian
+                      ? 'پایان درس'
+                      : 'Finish Lesson')
+                  : (_isPersian
+                      ? 'تکمیل مرحله'
+                      : 'Complete Stage'),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  // =========================================================
+  // BUILD
+  // =========================================================
+
+  @override
+  Widget build(BuildContext context) {
+    final lessonTitle =
+        _isPersian
+            ? widget.lesson.titleFa
+            : widget.lesson.title;
+
+    return Scaffold(
+      backgroundColor:
+          Theme.of(context)
+              .scaffoldBackgroundColor,
+      appBar: AppBar(
+        elevation: 0,
+        title: Text(
+          lessonTitle,
+          style:
+              const TextStyle(
+            fontWeight:
+                FontWeight.bold,
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child:
+            SingleChildScrollView(
+          padding:
+              const EdgeInsets.fromLTRB(
+            20,
+            8,
+            20,
+            110,
+          ),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment
+                    .stretch,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.all(
+                  20,
+                ),
+                decoration:
+                    BoxDecoration(
+                  color: _surface,
+                  borderRadius:
+                      BorderRadius.circular(
+                    24,
+                  ),
+                  border:
+                      Border.all(
+                    color: _outline,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment
+                          .start,
+                  children: [
+                    Text(
+                      lessonTitle,
+                      style:
+                          const TextStyle(
+                        fontSize: 24,
+                        fontWeight:
+                            FontWeight.bold,
+                        letterSpacing:
+                            -0.5,
+                      ),
+                    ),
+                    if (widget.lesson.topic
+                        .trim()
+                        .isNotEmpty)
+                      Padding(
+                        padding:
+                            const EdgeInsets
+                                .only(
+                          top: 6,
+                        ),
+                        child: Text(
+                          widget.lesson
+                              .topic,
+                          style:
+                              const TextStyle(
+                            fontSize: 14,
+                            height: 1.4,
+                            color:
+                                Colors.grey,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              _buildProgressHeader(),
+              _buildCurrentStage(),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          child: Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: _currentStage > 0 ? _goPreviousStage : null,
+                  icon: const Icon(Icons.arrow_back_rounded),
+                  label: Text(_isPersian ? 'قبلی' : 'Previous'),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(0, 52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 2,
+                child: ElevatedButton.icon(
+                  onPressed: _goNextStage,
+                  icon: Icon(
+                    _currentStage == _stages.length - 1
+                        ? Icons.check_rounded
+                        : Icons.arrow_forward_rounded,
+                  ),
+                  label: Text(
+                    _currentStage == _stages.length - 1
+                        ? (_isPersian ? 'اتمام درس' : 'Finish Lesson')
+                        : (_isPersian ? 'بعدی' : 'Next'),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: lavender,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(0, 52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _tts.stop();
+    _speech.stop();
+
+    for (final controller
+        in _answerControllers.values) {
+      controller.dispose();
+    }
+
+    super.dispose();
+  }
+}
+
+// =========================================================
+// STAGE MODEL
+// =========================================================
+
+class _A1Stage {
+  final String title;
+  final String titleFa;
+
+  final String description;
+  final String descriptionFa;
+
+  final List<int> questionIndices;
+  final List<int> speakingIndices;
+
+  const _A1Stage({
+    required this.title,
+    required this.titleFa,
+    required this.description,
+    required this.descriptionFa,
+    this.questionIndices =
+        const [],
+    this.speakingIndices =
+        const [],
+  });
+}
