@@ -25,6 +25,8 @@ import 'a1_11_present_simple.dart';
 import 'a1_11_present_simple_questions_localized.dart';
 import 'a1_12_present_continuous.dart';
 import 'a1_12_present_continuous_questions_localized.dart';
+import 'a1_13_will_going_to.dart';
+import 'a1_13_will_going_to_questions_localized.dart';
 
 final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicPronouns,
@@ -42,4 +44,5 @@ final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicCanCant.copyWithQuestions(a1CanCantQuestions),
   a1BasicMustMustnt.copyWithQuestions(a1MustMustntQuestions),
   a1BasicPresentContinuous.copyWithQuestions(a1PresentContinuousQuestions),
+  a1BasicWillGoingTo.copyWithQuestions(a1WillGoingToQuestions),
 ];
