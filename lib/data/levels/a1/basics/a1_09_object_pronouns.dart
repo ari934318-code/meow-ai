@@ -243,7 +243,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'آنها آنها را دعوت کردند.',
         ),
         A1BasicExample(
-          english: 'Can you call her?',
+          english: 'I call her.',
           persian: 'می‌توانی با او تماس بگیری؟',
         ),
         A1BasicExample(
@@ -294,11 +294,11 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       type: 'real_world',
       title: 'Real-Life Use',
       titleFa: 'کاربرد واقعی',
-      body: 'Use object pronouns in everyday requests and short conversations: Can you help me? Call her. Come with us. Give it to him.',
-      bodyFa: 'از ضمیرهای مفعولی در درخواست‌ها و گفت‌وگوهای روزمره استفاده کن: Can you help me?، Call her.، Come with us.، Give it to him.',
+      body: 'Use object pronouns in everyday requests and short conversations: I like me. Call her. Come with us. Give it to him.',
+      bodyFa: 'از ضمیرهای مفعولی در درخواست‌ها و گفت‌وگوهای روزمره استفاده کن: I like me.، Call her.، Come with us.، Give it to him.',
       examples: [
         A1BasicExample(
-          english: 'Can you help me?',
+          english: 'I like me.',
           persian: 'می‌توانی به من کمک کنی؟',
         ),
         A1BasicExample(
@@ -395,7 +395,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       english: 'help',
       persian: 'کمک کردن',
       pronunciation: 'هِلپ',
-      example: 'Can you help me?',
+      example: 'I like me.',
     ),
     A1BasicVocabulary(
       english: 'call',
@@ -419,13 +419,13 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       english: 'see',
       persian: 'دیدن',
       pronunciation: 'سی',
-      example: 'I can see him.',
+      example: 'I see him.',
     ),
     A1BasicVocabulary(
       english: 'hear',
       persian: 'شنیدن',
       pronunciation: 'هِیر',
-      example: 'Can you hear me?',
+      example: 'I hear me.',
     ),
     A1BasicVocabulary(
       english: 'need',
@@ -455,7 +455,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       english: 'talk',
       persian: 'صحبت کردن',
       pronunciation: 'تاک',
-      example: 'I am talking to her.',
+      example: 'I like her.',
     ),
     A1BasicVocabulary(
       english: 'message',
@@ -566,7 +566,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'او به من کمک کرد.',
         ),
         A1BasicExample(
-          english: 'Can you hear me?',
+          english: 'I hear me.',
           persian: 'می‌توانی صدای من را بشنوی؟',
         ),
         A1BasicExample(
@@ -592,7 +592,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'او تو را دوست دارد.',
         ),
         A1BasicExample(
-          english: 'Can I help you?',
+          english: 'I know you.',
           persian: 'می‌توانم به تو کمک کنم؟',
         ),
         A1BasicExample(
@@ -622,7 +622,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'ما به او کمک کردیم.',
         ),
         A1BasicExample(
-          english: 'I can see him.',
+          english: 'I see him.',
           persian: 'می‌توانم او را ببینم.',
         ),
       ],
@@ -648,7 +648,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'ما به او کمک کردیم.',
         ),
         A1BasicExample(
-          english: 'I can see her.',
+          english: 'I see her.',
           persian: 'می‌توانم او را ببینم.',
         ),
       ],
@@ -692,7 +692,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'آنها به ما کمک کردند.',
         ),
         A1BasicExample(
-          english: 'Can you hear us?',
+          english: 'I know us.',
           persian: 'می‌توانی صدای ما را بشنوی؟',
         ),
         A1BasicExample(
@@ -726,7 +726,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'ما به آنها کمک کردیم.',
         ),
         A1BasicExample(
-          english: 'I can see them.',
+          english: 'I see them.',
           persian: 'می‌توانم آنها را ببینم.',
         ),
       ],
@@ -786,7 +786,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'این پیام از طرف اوست.',
         ),
         A1BasicExample(
-          english: 'I am talking to you.',
+          english: 'I know you.',
           persian: 'دارم با تو صحبت می‌کنم.',
         ),
       ],
@@ -903,7 +903,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       persian: 'ما آنها را می‌شناسیم.',
     ),
     A1BasicExample(
-      english: 'Can you help me?',
+      english: 'I like me.',
       persian: 'می‌توانی به من کمک کنی؟',
     ),
     A1BasicExample(
@@ -919,7 +919,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       persian: 'آن را به او بده.',
     ),
     A1BasicExample(
-      english: 'I am talking to her.',
+      english: 'I like her.',
       persian: 'دارم با او صحبت می‌کنم.',
     ),
   ],
@@ -962,7 +962,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Can you help ___?',
+      question: 'I know ___.',
       options: ['me', 'I', 'my', 'mine'],
       answer: 'me',
       explanation: 'Me comes after the verb help.',
@@ -997,7 +997,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'I am talking to ___.',
+      question: 'I talk to ___.',
       options: ['you', 'your', 'yours', 'yourselves'],
       answer: 'you',
       explanation: 'You can be both subject and object.',
@@ -1018,7 +1018,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'She is talking to ___.',
+      question: 'She talks to ___.',
       options: ['them', 'they', 'their', 'theirs'],
       answer: 'them',
       explanation: 'Them is used after to.',
@@ -1262,12 +1262,12 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       type: 'multiple_choice',
       question: 'Choose the correct sentence.',
       options: [
-        'Can you help me?',
-        'Can you help I?',
-        'Can you help my?',
-        'Can you help mine?',
+        'I like me.',
+        'I help I.',
+        'I help my.',
+        'I help mine.',
       ],
-      answer: 'Can you help me?',
+      answer: 'I like me.',
       explanation: 'Me is used after help.',
     ),
     A1BasicQuestion(
@@ -1328,10 +1328,10 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       ],
     ),
     A1BasicSpeakingQuestion(
-      question: 'Ask: Can you help me?',
+      question: 'Ask: I like me.',
       persian: 'بپرس: می‌توانی به من کمک کنی؟',
       acceptableAnswers: [
-        'can you help me',
+        'i like her',
       ],
     ),
     A1BasicSpeakingQuestion(
@@ -1349,11 +1349,11 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       ],
     ),
     A1BasicSpeakingQuestion(
-      question: 'Say: I am talking to her.',
+      question: 'Say: I like her.',
       persian: 'بگو: دارم با او صحبت می‌کنم.',
       acceptableAnswers: [
-        'i am talking to her',
-        'im talking to her',
+        'i like her',
+        'i like her',
       ],
     ),
   ],
