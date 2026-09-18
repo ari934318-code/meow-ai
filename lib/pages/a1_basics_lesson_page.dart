@@ -1070,11 +1070,9 @@ class _A1BasicsLessonPageState
       }
     }
 
-    if (_currentStage <
-        widget.lesson.sections.length) {
-      return widget.lesson.sections[_currentStage];
-    }
-
+    // Do not guess a section by stage number. Stage maps and sections
+    // intentionally have different lengths, so numeric fallback can
+    // silently display the wrong explanation.
     return null;
   }
 
