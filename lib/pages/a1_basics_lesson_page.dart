@@ -329,77 +329,25 @@ class _A1BasicsLessonPageState
       case 'lesson_10':
       case '10':
         return [
-          // Possessive adjectives are cumulative: every stage keeps
-          // everything taught before it. Later forms must never leak
-          // into an earlier stage.
+          // Basics 10 uses the complete structured teaching path first.
+          // Practice starts only after the possessive-adjective concepts
+          // have been taught. Speaking remains the final stage.
           _stage(
-            'Stage 1',
-            'مرحله ۱',
-            [0, 1, 7, 8],
+            'Learn',
+            'یادگیری',
+            const [],
           ),
           _stage(
-            'Stage 2',
-            'مرحله ۲',
-            [0, 1, 7, 8, 2, 3, 11, 12],
-          ),
-          _stage(
-            'Stage 3',
-            'مرحله ۳',
-            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18],
-          ),
-          _stage(
-            'Stage 4',
-            'مرحله ۴',
-            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18, 6, 15],
-          ),
-          _stage(
-            'Stage 5',
-            'مرحله ۵',
-            [
-              0,
-              1,
-              7,
-              8,
-              2,
-              3,
-              11,
-              12,
-              4,
-              5,
-              13,
-              14,
-              18,
-              6,
-              15,
-              9,
-              10,
-              16,
-              17,
-              19,
-              20,
-              21,
-              22,
-              23,
-              24,
-            ],
-          ),
-          _stage(
-            'Stage 6',
-            'مرحله ۶',
-            List.generate(30, (i) => i),
-          ),
-          _stage(
-            'Stage 7',
-            'مرحله ۷',
-            List.generate(35, (i) => i),
-          ),
-          _stage(
-            'Stage 8',            'مرحله ۸',
-            List.generate(40, (i) => i),
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
           ),
           _speakingStage(
             'Speaking',
-            'تمرین مکالمه',
+            'تمرین تلفظ و لهجه',
           ),
         ];
 
