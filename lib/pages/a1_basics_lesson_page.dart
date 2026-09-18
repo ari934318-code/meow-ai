@@ -408,80 +408,66 @@ class _A1BasicsLessonPageState
       case 'lesson_6':
       case '6':
         return [
-          _stage(
-            'Go and Goes',
-            'Go و Goes',
-            [0, 1],
-          ),
-          _stage(
-            'Have and Has',
-            'Have و Has',
-            [2, 3],
-          ),
-          _stage(
-            'Do and Does',
-            'Do و Does',
-            [4, 5],
-          ),
+          // Each stage keeps all previously taught material.
+          _stage('Go and Goes', 'Go و Goes', [0, 1]),
+          _stage('Have and Has', 'Have و Has', [0, 1, 2, 3]),
+          _stage('Do and Does', 'Do و Does', [0, 1, 2, 3, 4, 5]),
           _stage(
             'Get and Gets',
             'Get و Gets',
-            [6, 7],
+            [0, 1, 2, 3, 4, 5, 6, 7],
           ),
           _stage(
             'Make and Makes',
             'Make و Makes',
-            [8, 9],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
           ),
           _stage(
             'Take and Takes',
             'Take و Takes',
-            [10, 11, 20],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20],
           ),
           _stage(
             'Give and Gives',
             'Give و Gives',
-            [12, 13],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13],
           ),
           _stage(
             'See and Sees',
             'See و Sees',
-            [14, 15],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15],
           ),
           _stage(
             'Know and Knows',
             'Know و Knows',
-            [16, 17],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17],
           ),
           _stage(
             'Say and Says',
             'Say و Says',
-            [18, 19],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19],
           ),
           _stage(
             'Questions with Irregular Verbs',
             'سؤال با افعال بی‌قاعده',
-            [21, 22, 23, 24, 25],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25],
           ),
           _stage(
             'Negative Sentences',
             'جمله‌های منفی',
-            [26, 27, 28, 29],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29],
           ),
           _stage(
             'Common Mistakes',
             'اشتباهات رایج',
-            [30, 31, 32, 33, 34, 35],
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35],
           ),
           _stage(
             'Translation and Word Order',
             'ترجمه و مرتب کردن جمله',
-            [36, 37, 38, 39, 40, 41, 42, 43],
+            List.generate(44, (i) => i),
           ),
-          _speakingStage(
-            'Speaking',
-            'تمرین مکالمه',
-          ),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
       case 'a1_07':
@@ -2091,6 +2077,100 @@ class _A1BasicsLessonPageState
       for (final candidate in safeOptions) {
         if (result.length >= 4) break;
         if (!used.contains(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+
+      return result;
+    }
+
+    // Irregular Verbs lesson: only forms and structures introduced
+    // by the current stage may appear as distractors.
+    if (widget.lesson.id == 'a1_basic_06' ||
+        widget.lesson.id == 'a1_06' ||
+        widget.lesson.id == 'lesson_6' ||
+        widget.lesson.id == '6') {
+      final allowQuestions = _currentStage >= 10;
+      final allowNegative = _currentStage >= 11;
+
+      const learnedBaseVerbs = [
+        'go', 'have', 'do', 'get', 'make', 'take',
+        'give', 'see', 'know', 'say',
+      ];
+      const learnedThirdPerson = [
+        'goes', 'has', 'does', 'gets', 'makes',
+        'takes', 'gives', 'sees', 'knows', 'says',
+      ];
+
+      final learnedCount = _currentStage.clamp(1, 10);
+      final baseAllowed = learnedBaseVerbs.take(learnedCount).toSet();
+      final thirdAllowed = learnedThirdPerson.take(learnedCount).toSet();
+
+      bool isFutureConcept(String value) {
+        final v = value.toLowerCase().trim();
+
+        if (v == 'true' || v == 'false') return false;
+
+        // Later question/negative structures must not leak into earlier stages.
+        if (!allowNegative &&
+            (v.contains("doesn't") ||
+                v.contains("does not") ||
+                v.contains("don't") ||
+                v.contains("do not"))) {
+          return true;
+        }
+        if (!allowQuestions &&
+            (v.startsWith('does ') || v.startsWith('do '))) {
+          return true;
+        }
+
+        // Gerunds and malformed forms are never useful distractors here.
+        if (v == 'going' || v == 'having' || v == 'doing' ||
+            v == 'getting' || v == 'making' || v == 'taking' ||
+            v == 'giving' || v == 'seeing' || v == 'knowing' ||
+            v == 'saying') {
+          return true;
+        }
+
+        // Keep third-person forms locked until their verb has been taught.
+        if (learnedThirdPerson.contains(v)) return false;
+        if (learnedBaseVerbs.contains(v)) return !baseAllowed.contains(v);
+        if (learnedThirdPerson.contains(v)) return !thirdAllowed.contains(v);
+
+        // Common malformed distractors for verbs not yet taught.
+        const futureMalformed = {
+          'gos', 'haves', 'dos', 'getes', 'makees',
+          'taks', 'gived', 'seed', 'knowes', 'saies',
+        };
+        if (futureMalformed.contains(v)) return true;
+
+        return false;
+      }
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (isFutureConcept(value)) continue;
+        result.add(value);
+        used.add(value);
+      }
+
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      const safeWords = [
+        'school', 'home', 'work', 'car', 'phone',
+        'homework', 'breakfast', 'bus', 'gift', 'answer',
+      ];
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer && !used.contains(candidate)) {
           result.add(candidate);
           used.add(candidate);
         }
