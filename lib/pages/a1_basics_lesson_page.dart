@@ -26,11 +26,19 @@
       case 'lesson_6':
       case '6':
         return [
-          _stage('Question Words', 'کلمه‌های پرسشی', [0, 1, 2, 3, 4]),
-          _stage('To Be Questions', 'سؤال با To Be', [5, 6, 7, 8]),
-          _stage('Present Simple Questions', 'سؤال با Present Simple', [9, 10, 11, 12]),
-          _stage('Recognition and Word Order', 'تشخیص و ترتیب کلمات', [13, 14, 15]),
-          _stage('Real-Life Practice', 'تمرین کاربردی', List.generate(_questions.length, (i) => i)),
+          _stage('Think First', 'اول فکر کن', []),
+          _stage('Introduction', 'معرفی', []),
+          _stage('Simple Examples', 'مثال‌های ساده', [0, 1, 2]),
+          _stage('What Are Wh-Questions?', 'Wh-Questions چیست؟', [3, 4, 5]),
+          _stage('Question Words', 'کلمه‌های پرسشی', [0, 1, 2, 3, 4, 5]),
+          _stage('Wh + To Be', 'Wh + To Be', [6, 7, 12, 17]),
+          _stage('Wh + Do / Does', 'Wh + Do / Does', [8, 9, 10, 11]),
+          _stage('Important Who Rule', 'نکته مهم درباره Who', [13]),
+          _stage('More Examples', 'مثال‌های بیشتر', [6, 8, 9, 13]),
+          _stage('Recognition Practice', 'تمرین تشخیص', [6, 8, 9, 10]),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', [10, 11, 12, 13]),
+          _stage('Translation Practice', 'تمرین ترجمه', [14, 15, 16, 17]),
+          _stage('Real-World Use', 'کاربرد واقعی', [0, 1, 2, 8]),
           _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
         ];
 
