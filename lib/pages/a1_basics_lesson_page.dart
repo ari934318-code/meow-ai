@@ -1531,7 +1531,7 @@ class _A1BasicsLessonPageState
         : _stages[_currentStage].description;
   }
 
-  Widget _buildPronounsLearningPath() {
+  Widget _buildStructuredLearningPath() {
     final phases = widget.lesson.learningPhases;
 
     return Column(
@@ -1606,8 +1606,8 @@ class _A1BasicsLessonPageState
   }
 
   Widget _buildLearningContent() {
-    if (widget.lesson.id == 'a1_01' && widget.lesson.learningPhases.isNotEmpty) {
-      return _buildPronounsLearningPath();
+    if (widget.lesson.learningPhases.isNotEmpty) {
+      return _buildStructuredLearningPath();
     }
 
     final section =
