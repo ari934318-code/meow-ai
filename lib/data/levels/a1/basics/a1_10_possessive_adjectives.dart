@@ -1,7 +1,7 @@
 import 'a1_basics_models.dart';
 
 const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
-  id: 'a1_basic_10',
+  id: 'a1_basic_07',
   title: 'Possessive Adjectives',
   titleFa: 'صفت‌های ملکی',
   topic: 'my, your, his, her, its, our, their',
