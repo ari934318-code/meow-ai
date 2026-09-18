@@ -103,6 +103,8 @@ class _A1BasicsLessonPageState
       case 'lesson_1':
       case '1':
         return [
+          // Pronouns are cumulative: a stage may test only concepts
+          // introduced in this stage or in earlier stages.
           _stage(
             'I',
             'I — من',
@@ -111,32 +113,54 @@ class _A1BasicsLessonPageState
           _stage(
             'You',
             'You — تو / شما',
-            [22, 25, 31],
+            [0, 16, 24, 22, 25, 31],
           ),
           _stage(
             'He',
             'He — او، مذکر',
-            [2, 6, 11, 18, 26, 33, 38],
+            [0, 16, 24, 22, 25, 31, 2, 6, 11, 18, 26, 33, 38],
           ),
           _stage(
             'She',
             'She — او، مؤنث',
-            [1, 7, 12, 17, 27, 32, 39],
+            [
+              0, 16, 24, 22, 25, 31,
+              2, 6, 11, 18, 26, 33, 38,
+              1, 7, 12, 17, 27, 32, 39,
+            ],
           ),
           _stage(
             'It',
             'It — آن / این',
-            [3, 8, 13, 19, 28, 34, 41, 44],
+            [
+              0, 16, 24, 22, 25, 31,
+              2, 6, 11, 18, 26, 33, 38,
+              1, 7, 12, 17, 27, 32, 39,
+              3, 8, 13, 19, 28, 34, 41, 44,
+            ],
           ),
           _stage(
             'We',
             'We — ما',
-            [5, 10, 14, 21, 29, 36, 42],
+            [
+              0, 16, 24, 22, 25, 31,
+              2, 6, 11, 18, 26, 33, 38,
+              1, 7, 12, 17, 27, 32, 39,
+              3, 8, 13, 19, 28, 34, 41, 44,
+              5, 10, 14, 21, 29, 36, 42,
+            ],
           ),
           _stage(
             'They',
             'They — آن‌ها',
-            [4, 9, 15, 20, 23, 30, 35, 37, 40, 43],
+            [
+              0, 16, 24, 22, 25, 31,
+              2, 6, 11, 18, 26, 33, 38,
+              1, 7, 12, 17, 27, 32, 39,
+              3, 8, 13, 19, 28, 34, 41, 44,
+              5, 10, 14, 21, 29, 36, 42,
+              4, 9, 15, 20, 23, 30, 35, 37, 40, 43,
+            ],
           ),
           _stage(
             'What Are Pronouns?',
@@ -1839,6 +1863,129 @@ class _A1BasicsLessonPageState
   // =========================================================
   // MULTIPLE CHOICE
   // =========================================================
+  // Keep multiple-choice distractors inside the learner's current
+  // knowledge scope. A question can be reused cumulatively, but it must
+  // never reveal a pronoun that has not been taught yet.
+  List<String> _safeOptionsForQuestion(
+    A1BasicQuestion question,
+  ) {
+    final learnedPronouns = <String>[
+      'I',
+      'You',
+      'He',
+      'She',
+      'It',
+      'We',
+      'They',
+    ].take(_currentStage + 1).toSet();
+
+    final pronouns = <String>{
+      'i',
+      'you',
+      'he',
+      'she',
+      'it',
+      'we',
+      'they',
+    };
+
+    final isSentenceLike = question.options.any(
+      (option) => option.trim().contains(' '),
+    );
+
+    final safeSentenceDistractors = <String>[
+      'I am a student.',
+      'You are my friend.',
+      'He is a teacher.',
+      'She is my sister.',
+      'It is a book.',
+      'We are ready.',
+      'They are students.',
+    ];
+
+    final safeWordDistractors = <String>[
+      'student',
+      'teacher',
+      'friend',
+      'book',
+      'happy',
+      'ready',
+      'name',
+    ];
+
+    final used = <String>{};
+    final result = <String>[];
+
+    bool containsFuturePronoun(String value) {
+      final words = value
+          .toLowerCase()
+          .split(RegExp(r'[^a-z]+'))
+          .where((word) => word.isNotEmpty)
+          .toSet();
+
+      return words.any(
+        (word) =>
+            pronouns.contains(word) &&
+            !learnedPronouns
+                .map((p) => p.toLowerCase())
+                .contains(word),
+      );
+    }
+
+    for (final option in question.options) {
+      final trimmed = option.trim();
+      if (trimmed.isEmpty || used.contains(trimmed)) {
+        continue;
+      }
+
+      if (!containsFuturePronoun(trimmed)) {
+        result.add(trimmed);
+        used.add(trimmed);
+        continue;
+      }
+
+      final pool = isSentenceLike
+          ? safeSentenceDistractors
+          : safeWordDistractors;
+
+      final replacement = pool.firstWhere(
+        (candidate) =>
+            candidate != question.answer &&
+            !used.contains(candidate) &&
+            !containsFuturePronoun(candidate),
+        orElse: () => '',
+      );
+
+      if (replacement.isNotEmpty) {
+        result.add(replacement);
+        used.add(replacement);
+      }
+    }
+
+    // Keep the correct answer even if a legacy question contains a
+    // future-pronoun distractor set.
+    if (!result.contains(question.answer)) {
+      result.insert(0, question.answer);
+    }
+
+    // A four-option exercise should remain four-option whenever possible.
+    final fallbackPool = isSentenceLike
+        ? safeSentenceDistractors
+        : safeWordDistractors;
+
+    for (final candidate in fallbackPool) {
+      if (result.length >= 4) break;
+      if (!used.contains(candidate) &&
+          candidate != question.answer &&
+          !containsFuturePronoun(candidate)) {
+        result.add(candidate);
+        used.add(candidate);
+      }
+    }
+
+    return result;
+  }
+
 
   Widget _buildMultipleChoiceQuestion(
     int index,
@@ -1944,7 +2091,7 @@ class _A1BasicsLessonPageState
               height: A1BasicsUIConfig.cardSpacing,
             ),
           ],
-          ...(List<String>.from(question.options)..shuffle()).map(
+          ...(_safeOptionsForQuestion(question)..shuffle()).map(
             (option) {
               final selectedThis =
                   selected == option;
