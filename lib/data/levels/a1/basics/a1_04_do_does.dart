@@ -10,6 +10,344 @@ const A1BasicLesson a1BasicDoDoes = A1BasicLesson(
       'in the present simple. Do is used with I, you, we, and they. Does is '
       'used with he, she, and it.',
 
+
+  learningPhases: [
+    A1BasicLearningPhase(
+      type: 'curiosity',
+      title: 'Think First',
+      titleFa: 'اول فکر کن',
+      body: 'Before we learn the rule, try to guess how you would say: “I don’t play football.”',
+      bodyFa: 'قبل از اینکه قانون را یاد بگیریم، یک لحظه فکر کن: اگر بخواهی بگویی «من فوتبال بازی نمی‌کنم»، جمله انگلیسی چطور می‌شود؟ این فقط یک سؤال کنجکاوی است و نمره ندارد.',
+      examples: [
+        A1BasicExample(
+          english: 'I ___ play football.',
+          persian: 'من ___ فوتبال بازی نمی‌کنم.',
+        ),
+        A1BasicExample(
+          english: 'Do you like coffee?',
+          persian: 'قهوه دوست داری؟',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'introduction',
+      title: 'What Are Do and Does?',
+      titleFa: 'Do و Does چیستند؟',
+      body: 'Do and does are helping verbs in the present simple. They help us make questions and negative sentences. Do can also be a main verb meaning “to do”.',
+      bodyFa: 'do و does در زمان حال ساده می‌توانند فعل کمکی باشند. با آن‌ها سؤال و جمله منفی می‌سازیم. خودِ do گاهی هم فعل اصلی است و معنی «انجام دادن» می‌دهد.',
+      examples: [
+        A1BasicExample(
+          english: 'Do you like coffee?',
+          persian: 'قهوه دوست داری؟',
+        ),
+        A1BasicExample(
+          english: 'I don’t like coffee.',
+          persian: 'من قهوه دوست ندارم.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'examples',
+      title: 'Simple Examples',
+      titleFa: 'مثال‌های ساده',
+      body: 'Look at these question and negative patterns before learning the rule.',
+      bodyFa: 'قبل از حفظ کردن قانون، چند الگوی ساده را ببین.',
+      examples: [
+        A1BasicExample(
+          english: 'I don’t like coffee.',
+          persian: 'من قهوه دوست ندارم.',
+        ),
+        A1BasicExample(
+          english: 'He doesn’t like coffee.',
+          persian: 'او قهوه دوست ندارد.',
+        ),
+        A1BasicExample(
+          english: 'Do you like coffee?',
+          persian: 'قهوه دوست داری؟',
+        ),
+        A1BasicExample(
+          english: 'Does he like coffee?',
+          persian: 'او قهوه دوست دارد؟',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'concept',
+      title: 'The Concept',
+      titleFa: 'مفهوم اصلی',
+      body: 'Do and does do not usually carry the main meaning here. They help the main verb form a question or a negative sentence. Do goes with I, you, we, they. Does goes with he, she, it.',
+      bodyFa: 'اینجا do و does معمولاً معنی اصلی جمله را نمی‌سازند؛ آن‌ها به فعل اصلی کمک می‌کنند تا سؤال یا جمله منفی بسازیم. do با I، you، we و they می‌آید و does با he، she و it.',
+      examples: [
+        A1BasicExample(
+          english: 'You like music. → Do you like music?',
+          persian: 'تو موسیقی دوست داری. → موسیقی دوست داری؟',
+        ),
+        A1BasicExample(
+          english: 'She likes music. → Does she like music?',
+          persian: 'او موسیقی دوست دارد. → او موسیقی دوست دارد؟',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'positive_s',
+      title: 'Positive Sentences and -s',
+      titleFa: 'جمله مثبت و s',
+      body: 'Before we use does, notice the positive form: he, she, and it usually take -s on the main verb in the present simple.',
+      bodyFa: 'قبل از اینکه does را یاد بگیریم، شکل مثبت را ببین: در زمان حال ساده، با he، she و it معمولاً به فعل اصلی s اضافه می‌شود.',
+      examples: [
+        A1BasicExample(
+          english: 'I like coffee.',
+          persian: 'من قهوه دوست دارم.',
+        ),
+        A1BasicExample(
+          english: 'He likes coffee.',
+          persian: 'او قهوه دوست دارد.',
+        ),
+        A1BasicExample(
+          english: 'She works here.',
+          persian: 'او اینجا کار می‌کند.',
+        ),
+        A1BasicExample(
+          english: 'It works.',
+          persian: 'کار می‌کند.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'chart',
+      title: 'Do / Does Chart',
+      titleFa: 'جدول Do و Does',
+      body: 'Use do with I, you, we, they. Use does with he, she, it.',
+      bodyFa: 'do با I، you، we و they می‌آید. does با he، she و it می‌آید.',
+      tableRows: [
+        ['I', 'do', 'Do I like...?'],
+        ['You', 'do', 'Do you like...?'],
+        ['He', 'does', 'Does he like...?'],
+        ['She', 'does', 'Does she like...?'],
+        ['It', 'does', 'Does it work...?'],
+        ['We', 'do', 'Do we like...?'],
+        ['They', 'do', 'Do they like...?'],
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'rule',
+      title: 'The Big Rule: Does + Base Verb',
+      titleFa: 'قانون مهم: Does + شکل ساده فعل',
+      body: 'When does appears, it carries the third-person -s. The main verb goes back to its base form.',
+      bodyFa: 'وقتی does وارد جمله می‌شود، s مربوط به شخص سوم را خودش به دوش می‌کشد. پس فعل اصلی دوباره به شکل ساده برمی‌گردد.',
+      examples: [
+        A1BasicExample(
+          english: 'She likes coffee.',
+          persian: 'او قهوه دوست دارد.',
+        ),
+        A1BasicExample(
+          english: 'Does she like coffee? ✓',
+          persian: 'درست: بعد از does، like بدون s می‌آید.',
+        ),
+        A1BasicExample(
+          english: 'Does she likes coffee? ✗',
+          persian: 'غلط: بعد از does، likes نمی‌آید.',
+        ),
+        A1BasicExample(
+          english: 'He works here. → Does he work here?',
+          persian: 'او اینجا کار می‌کند. → آیا او اینجا کار می‌کند؟',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'negative',
+      title: 'Negative Sentences',
+      titleFa: 'جمله‌های منفی',
+      body: 'Use don’t with I, you, we, they. Use doesn’t with he, she, it. The main verb stays in its base form.',
+      bodyFa: 'برای منفی کردن جمله، با I، you، we و they از don’t و با he، she و it از doesn’t استفاده می‌کنیم. بعد از آن‌ها فعل اصلی شکل ساده دارد.',
+      examples: [
+        A1BasicExample(
+          english: 'I don’t like tea.',
+          persian: 'من چای دوست ندارم.',
+        ),
+        A1BasicExample(
+          english: 'They don’t live here.',
+          persian: 'آنها اینجا زندگی نمی‌کنند.',
+        ),
+        A1BasicExample(
+          english: 'She doesn’t speak English.',
+          persian: 'او انگلیسی صحبت نمی‌کند.',
+        ),
+        A1BasicExample(
+          english: 'He doesn’t eat meat.',
+          persian: 'او گوشت نمی‌خورد.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'compare_to_be',
+      title: 'Do / Does vs To Be',
+      titleFa: 'تفاوت Do / Does با To Be',
+      body: 'With to be, make the negative with not. With a normal main verb, use don’t or doesn’t.',
+      bodyFa: 'با to be، منفی را با not می‌سازیم. اما وقتی فعل اصلی یک فعل معمولی است، برای منفی کردن از don’t یا doesn’t استفاده می‌کنیم.',
+      examples: [
+        A1BasicExample(
+          english: 'I am not happy. ✓',
+          persian: 'من خوشحال نیستم.',
+        ),
+        A1BasicExample(
+          english: 'I don’t like coffee. ✓',
+          persian: 'من قهوه دوست ندارم.',
+        ),
+        A1BasicExample(
+          english: 'I don’t happy. ✗',
+          persian: 'غلط است.',
+        ),
+        A1BasicExample(
+          english: 'I am not like coffee. ✗',
+          persian: 'غلط است.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'short_answers',
+      title: 'Short Answers',
+      titleFa: 'جواب‌های کوتاه',
+      body: 'In short answers, keep do or does. Use don’t or doesn’t for a negative answer.',
+      bodyFa: 'در جواب کوتاه، do یا does را نگه می‌داریم. برای جواب منفی از don’t یا doesn’t استفاده می‌کنیم.',
+      examples: [
+        A1BasicExample(
+          english: 'Do you like music? — Yes, I do.',
+          persian: 'موسیقی دوست داری؟ — بله.',
+        ),
+        A1BasicExample(
+          english: 'Do you like music? — No, I don’t.',
+          persian: 'موسیقی دوست داری؟ — نه.',
+        ),
+        A1BasicExample(
+          english: 'Does she work here? — Yes, she does.',
+          persian: 'او اینجا کار می‌کند؟ — بله.',
+        ),
+        A1BasicExample(
+          english: 'Does he drive? — No, he doesn’t.',
+          persian: 'او رانندگی می‌کند؟ — نه.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'main_verb',
+      title: 'Do as a Main Verb',
+      titleFa: 'Do به‌عنوان فعل اصلی',
+      body: 'Do can also be the main verb and mean “to do”. This is different from helping do.',
+      bodyFa: 'do گاهی خودش فعل اصلی است و معنی «انجام دادن» می‌دهد. این با do کمکی که برای سؤال و منفی می‌آید فرق دارد.',
+      examples: [
+        A1BasicExample(
+          english: 'I do my homework.',
+          persian: 'من تکالیفم را انجام می‌دهم.',
+        ),
+        A1BasicExample(
+          english: 'She does her homework.',
+          persian: 'او تکالیفش را انجام می‌دهد.',
+        ),
+        A1BasicExample(
+          english: 'Do you like coffee?',
+          persian: 'قهوه دوست داری؟',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'more_examples',
+      title: 'More Examples',
+      titleFa: 'مثال‌های بیشتر',
+      body: 'Now see the same patterns with different everyday verbs.',
+      bodyFa: 'حالا همین الگوها را با چند فعل روزمره دیگر ببین.',
+      examples: [
+        A1BasicExample(
+          english: 'Do you have a car?',
+          persian: 'ماشین داری؟',
+        ),
+        A1BasicExample(
+          english: 'Does she speak English?',
+          persian: 'او انگلیسی صحبت می‌کند؟',
+        ),
+        A1BasicExample(
+          english: 'Do they go to school?',
+          persian: 'آنها به مدرسه می‌روند؟',
+        ),
+        A1BasicExample(
+          english: 'Does he eat meat?',
+          persian: 'او گوشت می‌خورد؟',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'guided_practice',
+      title: 'Guided Practice',
+      titleFa: 'تمرین هدایت‌شده',
+      body: 'Choose the correct helping verb. The pattern is now familiar, so focus on the subject.',
+      bodyFa: 'حالا با راهنمایی الگو را تمرین کن. به فاعل دقت کن و do، does، don’t یا doesn’t را انتخاب کن.',
+      examples: [
+        A1BasicExample(
+          english: 'I ___ like tea. → don’t',
+          persian: 'من چای دوست ندارم.',
+        ),
+        A1BasicExample(
+          english: 'She ___ have a dog. → doesn’t',
+          persian: 'او سگ ندارد.',
+        ),
+        A1BasicExample(
+          english: '___ you speak English? → Do',
+          persian: 'انگلیسی صحبت می‌کنی؟',
+        ),
+        A1BasicExample(
+          english: 'He ___ work here. → doesn’t',
+          persian: 'او اینجا کار نمی‌کند.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'independent',
+      title: 'Independent Production',
+      titleFa: 'تولید مستقل',
+      body: 'Build complete sentences without a model.',
+      bodyFa: 'حالا بدون کپی کردن از یک الگو، جمله کامل بساز.',
+      examples: [
+        A1BasicExample(
+          english: 'I don’t play football.',
+          persian: 'من فوتبال بازی نمی‌کنم.',
+        ),
+        A1BasicExample(
+          english: 'She doesn’t speak English.',
+          persian: 'او انگلیسی صحبت نمی‌کند.',
+        ),
+        A1BasicExample(
+          english: 'Do you have a book?',
+          persian: 'کتاب داری؟',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'real_world',
+      title: 'Real-Life Use',
+      titleFa: 'کاربرد واقعی',
+      body: 'These patterns appear constantly in everyday conversations.',
+      bodyFa: 'این ساختارها در مکالمه روزمره خیلی زیاد استفاده می‌شوند. سؤال بپرس، جواب کوتاه بده و درباره چیزهایی که دوست داری یا انجام می‌دهی صحبت کن.',
+      examples: [
+        A1BasicExample(
+          english: 'Do you understand?',
+          persian: 'متوجه می‌شی؟',
+        ),
+        A1BasicExample(
+          english: 'Do you need help?',
+          persian: 'کمک لازم داری؟',
+        ),
+        A1BasicExample(
+          english: 'Does he live nearby?',
+          persian: 'او نزدیک اینجا زندگی می‌کند؟',
+        ),
+        A1BasicExample(
+          english: 'I don’t know.',
+          persian: 'نمی‌دانم.',
+        ),
+      ],
+    ),
+  ],
+
   vocabulary: [
     A1BasicVocabulary(
       english: 'homework',
