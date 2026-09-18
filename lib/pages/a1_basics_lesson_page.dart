@@ -99,7 +99,7 @@ class _A1BasicsLessonPageState
 
   List<_A1Stage> _buildStages() {
     switch (widget.lesson.id) {
-      case 'a1_01':
+      case 'a1_basic_01':
       case 'lesson_1':
       case '1':
         return [
@@ -177,7 +177,7 @@ class _A1BasicsLessonPageState
             'تمرین مکالمه',
           ),
         ];
-      case 'a1_02':
+      case 'a1_basic_02':
       case 'lesson_2':
       case '2':
         return [
@@ -245,7 +245,7 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_03':
+      case 'a1_basic_03':
       case 'lesson_3':
       case '3':
         return [
@@ -327,7 +327,7 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_04':
+      case 'a1_basic_04':
       case 'lesson_4':
       case '4':
         return [
@@ -387,7 +387,7 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_05':
+      case 'a1_basic_05':
       case 'lesson_5':
       case '5':
         return [
@@ -404,7 +404,7 @@ class _A1BasicsLessonPageState
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
-      case 'a1_06':
+      case 'a1_basic_06':
       case 'lesson_6':
       case '6':
         return [
@@ -491,7 +491,7 @@ class _A1BasicsLessonPageState
           _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
         ];
 
-      case 'a1_07':
+      case 'a1_basic_07':
       case 'lesson_7':
       case '7':
         return [
@@ -541,7 +541,7 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_08':
+      case 'a1_basic_08':
       case 'lesson_8':
       case '8':
         return [
@@ -594,7 +594,7 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_09':
+      case 'a1_basic_09':
       case 'lesson_9':
       case '9':
         return [
@@ -646,7 +646,7 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_10':
+      case 'a1_basic_10':
       case 'lesson_10':
       case '10':
         return [
@@ -725,7 +725,7 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_11':
+      case 'a1_basic_11':
       case 'lesson_11':
       case '11':
         return [
