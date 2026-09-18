@@ -145,70 +145,60 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_009',
-    lessonId: 'a1_basic_08',
-    topic: 'Regular Verbs',
+    lessonId: 'a1_basic_05',
+    topic: 'Present Simple',
     category: 'Grammar',
     question: 'She ___ English every day.',
     options: ['study', 'studies', 'studying', 'studys'],
     correctAnswer: 'studies',
-    explanation: 'With he, she, and it, "study" changes to "studies".',
-    persian: 'او هر روز انگلیسی مطالعه می‌کند.',
+    explanation: 'With he, she, and it, study changes to studies in a positive present simple sentence.',
+    persian: 'او هر روز انگلیسی می‌خواند.',
     isSpeaking: false,
     acceptableAnswers: [],
   ),
 
   A1BasicsExamQuestion(
     id: 'basics_exam_010',
-    lessonId: 'a1_basic_08',
-    topic: 'Regular Verbs',
-    category: 'Sentence Building',
-    question: 'Choose the correct sentence.',
-    options: [
-      'He works here.',
-      'He work here.',
-      'He working here.',
-      'He works here?',
-    ],
-    correctAnswer: 'He works here.',
-    explanation: 'In a positive present simple sentence, a regular verb usually takes -s with he, she, or it.',
-    persian: 'او اینجا کار می‌کند.',
+    lessonId: 'a1_basic_05',
+    topic: 'Present Simple',
+    category: 'Grammar',
+    question: 'She ___ English every day.',
+    options: ['doesn’t study', 'doesn’t studies', 'don’t study', 'not study'],
+    correctAnswer: 'doesn’t study',
+    explanation: 'After doesn’t, use the base verb.',
+    persian: 'او هر روز انگلیسی نمی‌خواند.',
     isSpeaking: false,
     acceptableAnswers: [],
   ),
 
   // ============================================================
-  // IRREGULAR VERBS
+  // OBJECT PRONOUNS
   // ============================================================
 
   A1BasicsExamQuestion(
     id: 'basics_exam_011',
-    lessonId: 'a1_basic_09',
-    topic: 'Irregular Verbs',
-    category: 'Vocabulary',
-    question: 'What is the correct form of "go" with "she"?',
-    options: ['go', 'goes', 'gos', 'going'],
-    correctAnswer: 'goes',
-    explanation: 'The verb "go" becomes "goes" with he, she, and it.',
-    persian: 'شکل درست go با she چیست؟',
+    lessonId: 'a1_basic_07',
+    topic: 'Object Pronouns',
+    category: 'Grammar',
+    question: 'I see Sara every day. I see ___.',
+    options: ['she', 'her', 'hers', 'herself'],
+    correctAnswer: 'her',
+    explanation: 'Her is the object pronoun for she.',
+    persian: 'من هر روز سارا را می‌بینم. من او را می‌بینم.',
     isSpeaking: false,
     acceptableAnswers: [],
   ),
 
   A1BasicsExamQuestion(
     id: 'basics_exam_012',
-    lessonId: 'a1_basic_09',
-    topic: 'Irregular Verbs',
-    category: 'Vocabulary',
-    question: 'Which sentence is correct?',
-    options: [
-      'He has a car.',
-      'He have a car.',
-      'He haves a car.',
-      'He having a car.',
-    ],
-    correctAnswer: 'He has a car.',
-    explanation: 'The verb "have" changes to "has" with he, she, and it.',
-    persian: 'او ماشین دارد.',
+    lessonId: 'a1_basic_07',
+    topic: 'Object Pronouns',
+    category: 'Grammar',
+    question: 'Can you help ___?',
+    options: ['I', 'me', 'my', 'mine'],
+    correctAnswer: 'me',
+    explanation: 'Me is the object pronoun for I.',
+    persian: 'می‌توانی به من کمک کنی؟',
     isSpeaking: false,
     acceptableAnswers: [],
   ),
@@ -293,7 +283,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_017',
-    lessonId: 'a1_basic_06',
+    lessonId: 'a1_basic_07',
     topic: 'Object Pronouns',
     category: 'Grammar',
     question: 'Can you help ___?',
@@ -307,7 +297,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_018',
-    lessonId: 'a1_basic_06',
+    lessonId: 'a1_basic_07',
     topic: 'Object Pronouns',
     category: 'Grammar',
     question: 'I know Sara. I see ___ every day.',
@@ -325,7 +315,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_019',
-    lessonId: 'a1_basic_07',
+    lessonId: 'a1_basic_08',
     topic: 'Possessive Adjectives',
     category: 'Grammar',
     question: 'This is ___ book. I bought it yesterday.',
@@ -339,7 +329,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_020',
-    lessonId: 'a1_basic_07',
+    lessonId: 'a1_basic_08',
     topic: 'Possessive Adjectives',
     category: 'Grammar',
     question: 'They love ___ dog.',
