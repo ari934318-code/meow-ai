@@ -235,7 +235,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'من او را می‌شناسم.',
         ),
         A1BasicExample(
-          english: 'She saw us.',
+          english: 'She likes us.',
           persian: 'او ما را دید.',
         ),
         A1BasicExample(
