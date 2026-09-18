@@ -249,6 +249,8 @@ class _A1BasicsLessonPageState
       case 'lesson_3':
       case '3':
         return [
+          // Have/Has is cumulative: each stage keeps everything already
+          // taught. Later grammar must never leak into earlier stages.
           _stage(
             'What are Have and Has?',
             'Have و Has یعنی چه؟',
@@ -257,67 +259,67 @@ class _A1BasicsLessonPageState
           _stage(
             'Have',
             'Have',
-            [2, 4, 6, 7, 9],
+            [0, 2, 4, 6, 7, 9],
           ),
           _stage(
             'Has',
             'Has',
-            [1, 3, 5, 8],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8],
           ),
           _stage(
             'Have and Has Chart',
             'جدول Have و Has',
-            [15, 16],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16],
           ),
           _stage(
             'Have for Possession',
             'Have برای مالکیت و داشتن',
-            [29, 31, 33],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33],
           ),
           _stage(
             'Have for Family and Relationships',
             'Have برای خانواده و روابط',
-            [40, 41, 51],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51],
           ),
           _stage(
             'Have for Features and Characteristics',
             'Have برای ویژگی‌ها و مشخصات',
-            [30, 32, 39, 42, 43, 50],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50],
           ),
           _stage(
             'Negative: Don’t Have',
             'منفی: Don’t Have',
-            [10, 17, 44],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44],
           ),
           _stage(
             'Negative: Doesn’t Have',
             'منفی: Doesn’t Have',
-            [11, 45],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45],
           ),
           _stage(
             'Important: Doesn’t + Have',
             'نکته مهم: Doesn’t + Have',
-            [18],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18],
           ),
           _stage(
             'Questions with Have',
             'سوالی کردن با Have',
-            [12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48],
           ),
           _stage(
             'Important: Does + Have',
             'نکته مهم: Does + Have',
-            [20],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48, 20],
           ),
           _stage(
             'Short Answers',
             'جواب‌های کوتاه',
-            [25, 26, 27, 28],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48, 20, 25, 26, 27, 28],
           ),
           _stage(
             'Real-Life Expressions',
             'عبارت‌های واقعی و کاربردی',
-            [34, 35, 36, 37, 38, 49],
+            [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48, 20, 25, 26, 27, 28, 34, 35, 36, 37, 38, 49],
           ),
           _speakingStage(
             'Speaking',
@@ -1877,136 +1879,137 @@ class _A1BasicsLessonPageState
         widget.lesson.id == 'lesson_1' ||
         widget.lesson.id == '1') {
       final learnedPronouns = <String>[
-        'I',
-        'You',
-        'He',
-        'She',
-        'It',
-        'We',
-        'They',
+        'I', 'You', 'He', 'She', 'It', 'We', 'They',
       ].take(_currentStage + 1).toSet();
 
       final pronouns = <String>{
-        'i',
-        'you',
-        'he',
-        'she',
-        'it',
-        'we',
-        'they',
+        'i', 'you', 'he', 'she', 'it', 'we', 'they',
       };
 
       bool containsFuturePronoun(String value) {
-        final words = value
-            .toLowerCase()
+        final words = value.toLowerCase()
             .split(RegExp(r'[^a-z]+'))
             .where((word) => word.isNotEmpty)
             .toSet();
-
-        return words.any(
-          (word) =>
-              pronouns.contains(word) &&
-              !learnedPronouns
-                  .map((p) => p.toLowerCase())
-                  .contains(word),
-        );
+        return words.any((word) =>
+            pronouns.contains(word) &&
+            !learnedPronouns.map((p) => p.toLowerCase()).contains(word));
       }
 
-      final isSentenceLike = question.options.any(
-        (option) => option.trim().contains(' '),
-      );
-
+      final sentenceLike = question.options.any((o) => o.trim().contains(' '));
       final sentencePool = <String>[
-        'I am a student.',
-        'You are my friend.',
-        'He is a teacher.',
-        'She is my sister.',
-        'It is a book.',
-        'We are ready.',
+        'I am a student.', 'You are my friend.', 'He is a teacher.',
+        'She is my sister.', 'It is a book.', 'We are ready.',
         'They are students.',
       ];
-
       final wordPool = <String>[
-        'student',
-        'teacher',
-        'friend',
-        'book',
-        'happy',
-        'ready',
-        'name',
+        'student', 'teacher', 'friend', 'book', 'happy', 'ready', 'name',
       ];
 
       final result = <String>[];
       final used = <String>{};
-
       for (final option in question.options) {
         final value = option.trim();
         if (value.isEmpty || used.contains(value)) continue;
-
         if (!containsFuturePronoun(value)) {
           result.add(value);
           used.add(value);
-          continue;
-        }
-
-        final pool = isSentenceLike ? sentencePool : wordPool;
-        final replacement = pool.firstWhere(
-          (candidate) =>
-              candidate != question.answer &&
-              !used.contains(candidate) &&
-              !containsFuturePronoun(candidate),
-          orElse: () => '',
-        );
-
-        if (replacement.isNotEmpty) {
-          result.add(replacement);
-          used.add(replacement);
+        } else {
+          final pool = sentenceLike ? sentencePool : wordPool;
+          final replacement = pool.firstWhere(
+            (candidate) => candidate != question.answer &&
+                !used.contains(candidate) &&
+                !containsFuturePronoun(candidate),
+            orElse: () => '',
+          );
+          if (replacement.isNotEmpty) {
+            result.add(replacement);
+            used.add(replacement);
+          }
         }
       }
-
       if (!result.contains(question.answer)) {
         result.insert(0, question.answer);
+        used.add(question.answer);
       }
-
-      final pool = isSentenceLike ? sentencePool : wordPool;
+      final pool = sentenceLike ? sentencePool : wordPool;
       for (final candidate in pool) {
         if (result.length >= 4) break;
-        if (candidate != question.answer &&
-            !used.contains(candidate) &&
+        if (candidate != question.answer && !used.contains(candidate) &&
             !containsFuturePronoun(candidate)) {
           result.add(candidate);
           used.add(candidate);
         }
       }
-
       return result;
     }
 
     // To Be lesson: am/is/are are introduced one at a time.
-    // Earlier stages must not leak a later form as a distractor.
     if (widget.lesson.id == 'a1_02' ||
         widget.lesson.id == 'lesson_2' ||
         widget.lesson.id == '2') {
-      final allowedForms = <String>{
+      final allowed = <String>{
         if (_currentStage >= 1) 'am',
         if (_currentStage >= 2) 'is',
         if (_currentStage >= 3) 'are',
       };
-
-      final toBeForms = <String>{'am', 'is', 'are', 'be'};
+      final forms = {'am', 'is', 'are', 'be'};
       final result = <String>[];
       final used = <String>{};
-
       for (final option in question.options) {
         final value = option.trim();
         if (value.isEmpty || used.contains(value)) continue;
-
         final lower = value.toLowerCase();
-        if (toBeForms.contains(lower) &&
-            !allowedForms.contains(lower)) {
-          continue;
+        if (forms.contains(lower) && !allowed.contains(lower)) continue;
+        result.add(value);
+        used.add(value);
+      }
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+      const safeWords = [
+        'happy', 'tired', 'student', 'friend', 'ready', 'home', 'teacher', 'busy',
+      ];
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer && !used.contains(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
         }
+      }
+      return result;
+    }
 
+    // Have/Has lesson: only forms introduced so far are allowed.
+    if (widget.lesson.id == 'a1_basic_03' ||
+        widget.lesson.id == 'a1_03' ||
+        widget.lesson.id == 'lesson_3' ||
+        widget.lesson.id == '3') {
+      final allowHave = _currentStage >= 1;
+      final allowHas = _currentStage >= 2;
+      final allowNegative = _currentStage >= 7;
+      final allowQuestions = _currentStage >= 10;
+      final allowShortAnswers = _currentStage >= 12;
+
+      bool allowedGrammar(String value) {
+        final v = value.toLowerCase().trim();
+        if (v.contains("doesn't") || v.contains("does not")) return allowNegative && allowHas;
+        if (v.contains("don't") || v.contains("do not")) return allowNegative && allowHave;
+        if (v.contains("does ")) return allowQuestions && allowHas;
+        if (v.startsWith("do ") || v.contains(" do ")) return allowQuestions && allowHave;
+        if (v == 'has' || v.contains(' has ')) return allowHas;
+        if (v == 'have' || v.contains(' have ')) return allowHave;
+        if (v == 'haves' || v == 'having') return allowHave;
+        return true;
+      }
+
+      final result = <String>[];
+      final used = <String>{};
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (!allowedGrammar(value)) continue;
         result.add(value);
         used.add(value);
       }
@@ -2016,28 +2019,17 @@ class _A1BasicsLessonPageState
         used.add(question.answer);
       }
 
-      // When fewer than four safe options remain, use already introduced
-      // vocabulary instead of exposing future grammar forms.
-      const safeWords = <String>[
-        'happy',
-        'tired',
-        'student',
-        'friend',
-        'ready',
-        'home',
-        'teacher',
-        'busy',
+      const safeWords = [
+        'phone', 'sister', 'house', 'problem', 'dog',
+        'car', 'cat', 'book', 'friend', 'time',
       ];
-
       for (final candidate in safeWords) {
         if (result.length >= 4) break;
-        if (candidate != question.answer &&
-            !used.contains(candidate)) {
+        if (candidate != question.answer && !used.contains(candidate)) {
           result.add(candidate);
           used.add(candidate);
         }
       }
-
       return result;
     }
 
