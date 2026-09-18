@@ -252,49 +252,24 @@ class _A1BasicsLessonPageState
       case 'lesson_7':
       case '7':
         return [
+          // Basics 7 follows the structured learning path in the lesson data.
+          // Practice comes after all introduced concepts, and speaking stays last.
           _stage(
-            'Stage 1',
-            'مرحله ۱',
-            List.generate(6, (i) => i),
+            'Learn',
+            'یادگیری',
+            const [],
           ),
           _stage(
-            'Stage 2',
-            'مرحله ۲',
-            List.generate(8, (i) => i),
-          ),
-          _stage(
-            'Stage 3',
-            'مرحله ۳',
-            List.generate(14, (i) => i),
-          ),
-          _stage(
-            'Stage 4',
-            'مرحله ۴',
-            List.generate(23, (i) => i),
-          ),
-          _stage(
-            'Stage 5',
-            'مرحله ۵',
-            List.generate(29, (i) => i),
-          ),
-          _stage(
-            'Stage 6',
-            'مرحله ۶',
-            List.generate(34, (i) => i),
-          ),
-          _stage(
-            'Stage 7',
-            'مرحله ۷',
-            List.generate(37, (i) => i),
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(40, (i) => i),
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
           ),
           _speakingStage(
             'Speaking',
-            'تمرین مکالمه',
+            'تمرین تلفظ و لهجه',
           ),
         ];
 
