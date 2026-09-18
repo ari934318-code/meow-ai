@@ -708,6 +708,9 @@ class _A1BasicsLessonPageState
       case 'lesson_11':
       case '11':
         return [
+          // Present Simple is cumulative: each stage keeps every concept
+          // taught earlier. A later grammar point must never appear in an
+          // earlier stage, even as a multiple-choice distractor.
           _stage(
             'What Is the Present Simple?',
             'Present Simple چیست؟',
@@ -716,57 +719,57 @@ class _A1BasicsLessonPageState
           _stage(
             'I, You, We, They',
             'I, You, We, They',
-            [0, 3, 5, 7, 10],
+            [33, 0, 3, 5, 7, 10],
           ),
           _stage(
             'He, She, It',
             'He, She, It',
-            [2, 4],
+            [33, 0, 3, 5, 7, 10, 2, 4],
           ),
           _stage(
             'Adding -s',
             'اضافه کردن s',
-            [8],
+            [33, 0, 3, 5, 7, 10, 2, 4, 8],
           ),
           _stage(
             'Adding -es',
             'اضافه کردن es',
-            [6, 9, 11],
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11],
           ),
           _stage(
             'The -y to -ies Rule',
             'قانون تبدیل y به ies',
-            [1, 27],
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27],
           ),
           _stage(
             'Positive Sentences',
             'جمله‌های مثبت',
-            [24, 34],
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34],
           ),
           _stage(
             'Negative Sentences',
             'جمله‌های منفی',
-            [12, 13, 14, 15, 26, 37],
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37],
           ),
           _stage(
             'Do and Does in Questions',
             'سؤال با Do و Does',
-            [16, 17, 18, 19],
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19],
           ),
           _stage(
             'Common Mistakes',
             'اشتباهات رایج',
-            [20, 21, 22, 23, 25, 35, 36],
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19, 20, 21, 22, 23, 25, 35, 36],
           ),
           _stage(
             'Adverbs of Frequency',
             'قیدهای تکرار',
-            [28, 29, 30, 31, 32],
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19, 20, 21, 22, 23, 25, 35, 36, 28, 29, 30, 31, 32],
           ),
           _stage(
             'Real-Life Present Simple',
             'Present Simple در انگلیسی واقعی',
-            [38, 39, 40, 41, 42, 43, 44, 45, 46],
+            List.generate(47, (i) => i),
           ),
           _speakingStage(
             'Speaking',
@@ -2045,6 +2048,115 @@ class _A1BasicsLessonPageState
         'I', 'you', 'he', 'she', 'we', 'they',
         'me', 'him', 'her', 'us', 'them',
         'student', 'friend', 'teacher', 'book',
+      ];
+
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer &&
+            !used.contains(candidate) &&
+            isAllowedOption(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+
+      return result;
+    }
+
+    // Present Simple lesson: keep verb forms, negatives, questions, and
+    // frequency adverbs inside the current teaching scope. A question may
+    // be reused cumulatively, but future forms must not leak in early.
+    if (widget.lesson.id == 'a1_11' ||
+        widget.lesson.id == 'lesson_11' ||
+        widget.lesson.id == '11') {
+      const thirdPersonForms = <String>{
+        'studies', 'drinks', 'lives', 'watches', 'likes', 'goes',
+        'studys', 'drinkes', 'livies', 'watchs', 'likees', 'gos',
+      };
+      const esForms = <String>{
+        'watches', 'goes', 'watchs', 'gos',
+        'drinkes', 'likees',
+      };
+      const yToIesForms = <String>{
+        'studies', 'studys', 'livies',
+      };
+      const frequencyAdverbs = <String>{
+        'always', 'usually', 'often', 'sometimes', 'never',
+      };
+
+      bool isAllowedOption(String value) {
+        final words = value
+            .toLowerCase()
+            .split(RegExp(r'[^a-z]+'))
+            .where((word) => word.isNotEmpty)
+            .toSet();
+
+        if (_currentStage < 2 &&
+            words.any(thirdPersonForms.contains)) {
+          return false;
+        }
+
+        if (_currentStage < 3 &&
+            words.any(thirdPersonForms.contains)) {
+          return false;
+        }
+
+        if (_currentStage < 4 &&
+            words.any(esForms.contains)) {
+          return false;
+        }
+
+        if (_currentStage < 5 &&
+            words.any(yToIesForms.contains)) {
+          return false;
+        }
+
+        if (_currentStage < 7 &&
+            (words.contains("don't") ||
+                words.contains("doesn't"))) {
+          return false;
+        }
+
+        if (_currentStage < 8 &&
+            (words.contains('do') ||
+                words.contains('does'))) {
+          return false;
+        }
+
+        if (_currentStage < 10 &&
+            words.any(frequencyAdverbs.contains)) {
+          return false;
+        }
+
+        return true;
+      }
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (!isAllowedOption(value)) continue;
+        result.add(value);
+        used.add(value);
+      }
+
+      // Never remove the correct answer. It belongs to the current stage
+      // whenever this question is actually active.
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      // Fill filtered choices with neutral forms already safe for A1.
+      // This keeps the UI at four choices without teaching tomorrow's
+      // grammar by accident, because apparently even distractors need a
+      // curriculum now.
+      const safeWords = <String>[
+        'I', 'you', 'he', 'she', 'we', 'they',
+        'study', 'live', 'watch', 'like', 'work',
+        'read', 'play', 'student', 'teacher', 'friend',
       ];
 
       for (final candidate in safeWords) {
