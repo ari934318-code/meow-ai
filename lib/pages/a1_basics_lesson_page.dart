@@ -577,6 +577,8 @@ class _A1BasicsLessonPageState
       case 'lesson_9':
       case '9':
         return [
+          // Object pronouns are cumulative: each stage keeps everything
+          // introduced before it. Later pronouns must never appear early.
           _stage(
             'Stage 1',
             'مرحله ۱',
@@ -585,44 +587,37 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 2',
             'مرحله ۲',
-            [1, 2, 6, 7, 11],
+            [0, 5, 10, 1, 6, 11],
           ),
           _stage(
             'Stage 3',
             'مرحله ۳',
-            [3, 4, 8, 9, 12, 13],
+            [0, 5, 10, 1, 6, 11, 2, 7, 12],
           ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            List.generate(
-              5,
-              (i) => i + 14,
-            ),
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13],
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            List.generate(
-              5,
-              (i) => i + 19,
-            ),
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18],
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(
-              6,
-              (i) => i + 24,
-            ),
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            List.generate(
-              10,
-              (i) => i + 30,
-            ),
+            List.generate(30, (i) => i),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(40, (i) => i),
           ),
           _speakingStage(
             'Speaking',
@@ -1867,6 +1862,87 @@ class _A1BasicsLessonPageState
         if (result.length >= 4) break;
         if (candidate != question.answer && !used.contains(candidate) &&
             !containsFuturePronoun(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+      return result;
+    }
+
+    // Object Pronouns lesson: only object pronouns introduced by the
+    // current stage may appear. Possessive and reflexive pronouns are
+    // intentionally excluded because they are taught later.
+    if (widget.lesson.id == 'a1_09' ||
+        widget.lesson.id == 'lesson_9' ||
+        widget.lesson.id == '9') {
+      final learnedObjects = <String>{
+        'me',
+        'you',
+        if (_currentStage >= 1) 'him',
+        if (_currentStage >= 2) 'her',
+        if (_currentStage >= 3) ...['it', 'us', 'them'],
+      };
+
+      const possessive = <String>{
+        'my', 'mine', 'his', 'hers', 'our', 'ours',
+        'their', 'theirs', 'your', 'yours', 'its',
+      };
+      const reflexive = <String>{
+        'myself', 'yourself', 'himself', 'herself',
+        'itself', 'ourselves', 'yourselves', 'themselves',
+      };
+      const objectPronouns = <String>{
+        'me', 'you', 'him', 'her', 'it', 'us', 'them',
+      };
+
+      bool isAllowedOption(String value) {
+        final words = value
+            .toLowerCase()
+            .split(RegExp(r'[^a-z]+'))
+            .where((word) => word.isNotEmpty)
+            .toSet();
+
+        if (words.any(possessive.contains) ||
+            words.any(reflexive.contains)) {
+          return false;
+        }
+
+        for (final pronoun in objectPronouns) {
+          if (words.contains(pronoun) &&
+              !learnedObjects.contains(pronoun)) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (!isAllowedOption(value)) continue;
+        result.add(value);
+        used.add(value);
+      }
+
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      // Use already-known subject pronouns as neutral fallback distractors
+      // instead of leaking future possessive/reflexive grammar.
+      const safeWords = [
+        'I', 'he', 'she', 'we', 'they',
+        'student', 'friend', 'teacher', 'book',
+      ];
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer &&
+            !used.contains(candidate) &&
+            isAllowedOption(candidate)) {
           result.add(candidate);
           used.add(candidate);
         }
