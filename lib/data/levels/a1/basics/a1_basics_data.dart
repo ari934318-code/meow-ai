@@ -27,13 +27,13 @@ final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicToBe.copyWithQuestions(a1ToBeQuestions),
   a1BasicHaveHas.copyWithQuestions(a1HaveHasQuestions),
   a1BasicDoDoes.copyWithQuestions(a1DoDoesQuestions),
-  a1BasicRegularVerbs.copyWithQuestions(a1RegularVerbsQuestions),
-  a1BasicIrregularVerbs.copyWithQuestions(a1IrregularVerbsQuestions),
-  a1BasicCanCant.copyWithQuestions(a1CanCantQuestions),
-  a1BasicMustMustnt.copyWithQuestions(a1MustMustntQuestions),
+  a1BasicPresentSimple.copyWithQuestions(a1PresentSimpleQuestions),
   a1BasicObjectPronouns.copyWithQuestions(a1ObjectPronounsQuestions),
   a1BasicPossessiveAdjectives.copyWithQuestions(
     a1PossessiveAdjectivesQuestions,
   ),
-  a1BasicPresentSimple.copyWithQuestions(a1PresentSimpleQuestions),
+  a1BasicRegularVerbs.copyWithQuestions(a1RegularVerbsQuestions),
+  a1BasicIrregularVerbs.copyWithQuestions(a1IrregularVerbsQuestions),
+  a1BasicCanCant.copyWithQuestions(a1CanCantQuestions),
+  a1BasicMustMustnt.copyWithQuestions(a1MustMustntQuestions),
 ];
