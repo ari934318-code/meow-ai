@@ -391,53 +391,17 @@ class _A1BasicsLessonPageState
       case 'lesson_5':
       case '5':
         return [
-          _stage(
-            'Stage 1',
-            'مرحله ۱',
-            [0, 2, 7],
-          ),
-          _stage(
-            'Stage 2',
-            'مرحله ۲',
-            [1, 3, 5, 9],
-          ),
-          _stage(
-            'Stage 3',
-            'مرحله ۳',
-            [4, 6, 8],
-          ),
-          _stage(
-            'Stage 4',
-            'مرحله ۴',
-            [10, 11, 12],
-          ),
-          _stage(
-            'Stage 5',
-            'مرحله ۵',
-            [13, 14, 15, 16, 17],
-          ),
-          _stage(
-            'Stage 6',
-            'مرحله ۶',
-            [18, 19, 20, 21, 22, 23],
-          ),
-          _stage(
-            'Stage 7',
-            'مرحله ۷',
-            [24, 25, 26, 27, 28],
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(
-              10,
-              (i) => i + 29,
-            ),
-          ),
-          _speakingStage(
-            'Speaking',
-            'تمرین مکالمه',
-          ),
+          _stage('What Is a Regular Verb?', 'فعل باقاعده چیست؟', [0, 18, 19, 20]),
+          _stage('Base Form: I/You/We/They', 'شکل پایه: I/You/We/They', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28]),
+          _stage('He/She/It + S', 'He/She/It + S', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32]),
+          _stage('Adding ES', 'اضافه کردن ES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29]),
+          _stage('Y → IES', 'تبدیل Y به IES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33]),
+          _stage('Positive Sentences', 'جمله‌های مثبت', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13]),
+          _stage('Negative Sentences', 'جمله‌های منفی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23]),
+          _stage('Questions', 'سؤال‌ها', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34]),
+          _stage('Positive vs Negative vs Question', 'مثبت، منفی و سوالی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34, 21, 22, 35]),
+          _stage('Everyday Verbs and Review', 'افعال روزمره و مرور نهایی', List.generate(37, (i) => i)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
       case 'a1_06':
@@ -2037,6 +2001,101 @@ class _A1BasicsLessonPageState
           used.add(candidate);
         }
       }
+      return result;
+    }
+
+    // Regular Verbs lesson: keep distractors limited to concepts taught
+    // by the current stage. Previously learned grammar may remain available.
+    if (widget.lesson.id == 'a1_basic_05' ||
+        widget.lesson.id == 'a1_05' ||
+        widget.lesson.id == 'lesson_5' ||
+        widget.lesson.id == '5') {
+      final allowS = _currentStage >= 2;
+      final allowEs = _currentStage >= 3;
+      final allowYIes = _currentStage >= 4;
+      final allowPositive = _currentStage >= 5;
+      final allowNegative = _currentStage >= 6;
+      final allowQuestions = _currentStage >= 7;
+
+      bool isFutureConcept(String value) {
+        final v = value.toLowerCase().trim();
+
+        if (v == 'working' || v == 'playing' || v == 'watching' ||
+            v == 'studying' || v == 'workes' || v == 'plaies' ||
+            v == 'studys' || v == 'studyes' || v == 'watchs' ||
+            v == 'watchies' || v == 'cleanes') {
+          return true;
+        }
+
+        if ((v.contains("doesn't") || v.contains("does not") ||
+                v.contains("don't") || v.contains("do not")) &&
+            !allowNegative) {
+          return true;
+        }
+
+        if ((v.startsWith('does ') || v.startsWith('do ')) &&
+            !allowQuestions) {
+          return true;
+        }
+
+        if (v == 'works' || v == 'plays' || v == 'walks' ||
+            v == 'cleans' || v == 'likes' || v == 'reads' ||
+            v == 'eats' || v == 'drinks' || v == 'sleeps') {
+          return !allowS;
+        }
+
+        if (v == 'watches' || v == 'washes' || v == 'goes' ||
+            v == 'fixes' || v == 'passes' || v == 'teaches') {
+          return !allowEs;
+        }
+
+        if (v == 'studies' || v == 'tries' || v == 'cries' ||
+            v == 'carries') {
+          return !allowYIes;
+        }
+
+        return false;
+      }
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (isFutureConcept(value)) continue;
+        result.add(value);
+        used.add(value);
+      }
+
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      const safeOptions = [
+        'work',
+        'play',
+        'like',
+        'study',
+        'watch',
+        'clean',
+        'read',
+        'eat',
+        'drink',
+        'sleep',
+        'music',
+        'football',
+      ];
+
+      for (final candidate in safeOptions) {
+        if (result.length >= 4) break;
+        if (!used.contains(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+
       return result;
     }
 
