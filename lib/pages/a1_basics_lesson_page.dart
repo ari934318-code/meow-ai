@@ -203,16 +203,26 @@ class _A1BasicsLessonPageState
       case 'lesson_5':
       case '5':
         return [
-          _stage('What Is a Regular Verb?', 'فعل باقاعده چیست؟', [0, 18, 19, 20]),
-          _stage('Base Form: I/You/We/They', 'شکل پایه: I/You/We/They', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28]),
-          _stage('He/She/It + S', 'He/She/It + S', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32]),
-          _stage('Adding ES', 'اضافه کردن ES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29]),          _stage('Y → IES', 'تبدیل Y به IES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33]),
-          _stage('Positive Sentences', 'جمله‌های مثبت', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13]),
-          _stage('Negative Sentences', 'جمله‌های منفی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23]),
-          _stage('Questions', 'سؤال‌ها', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34]),
-          _stage('Positive vs Negative vs Question', 'مثبت، منفی و سوالی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34, 21, 22, 35]),
-          _stage('Everyday Verbs and Review', 'افعال روزمره و مرور نهایی', List.generate(37, (i) => i)),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          // Basics 5 teaches the complete Present Simple path first.
+          // Practice starts only after all concepts used by the questions
+          // have already been introduced in the learning phases.
+          _stage(
+            'Learn',
+            'یادگیری',
+            const [],
+          ),
+          _stage(
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین تلفظ و لهجه',
+          ),
         ];
 
       case 'a1_06':
