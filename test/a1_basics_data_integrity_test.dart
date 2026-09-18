@@ -73,6 +73,44 @@ void main() {
         }
       });
 
+
+
+      test(lesson.id + ': questions use supported types and complete localization', () {
+        const supportedTypes = {'multipleChoice', 'multiple_choice', 'typing', 'fillInTheBlank'};
+        for (final question in lesson.questions) {
+          expect(
+            supportedTypes.contains(question.type),
+            isTrue,
+            reason: 'Unsupported question type "' + question.type + '" in ' + lesson.id,
+          );
+          expect(question.answer.trim(), isNotEmpty);
+          expect(question.question.trim(), isNotEmpty);
+          if (question.type == 'multipleChoice' || question.type == 'multiple_choice') {
+            expect(question.options.length, greaterThanOrEqualTo(2));
+            expect(
+              question.options.contains(question.answer),
+              isTrue,
+              reason: 'Answer "' + question.answer + '" is not an option in ' + lesson.id,
+            );
+            expect(question.options.toSet().length, question.options.length);
+          }
+        }
+      });
+
+      test(lesson.id + ': learning phases are not duplicated and have localized content', () {
+        final phaseKeys = <String>{};
+        for (final phase in lesson.learningPhases) {
+          final key = phase.title.trim().toLowerCase();
+          expect(
+            phaseKeys.add(key),
+            isTrue,
+            reason: 'Duplicate learning phase in ' + lesson.id + ': ' + phase.title,
+          );
+          expect(phase.titleFa.trim(), isNotEmpty);
+          expect(phase.bodyFa.trim(), isNotEmpty);
+        }
+      });
+
       test(lesson.id + ': lesson metadata and Persian guidance are complete', () {
         expect(lesson.title.trim(), isNotEmpty);
         expect(lesson.titleFa.trim(), isNotEmpty);
