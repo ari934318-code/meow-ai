@@ -2416,6 +2416,36 @@ class _A1BasicsLessonPageState
 
         return false;
       }
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (isFutureConcept(value)) continue;
+        result.add(value);
+        used.add(value);
+      }
+
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      const safeWords = [
+        'school', 'home', 'work', 'car', 'phone',
+        'book', 'friend', 'time', 'food', 'coffee',
+      ];
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer && !used.contains(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+
+      return result;
     }
 
     if (widget.lesson.id == 'a1_basic_07' ||
