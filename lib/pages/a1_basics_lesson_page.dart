@@ -527,117 +527,6 @@ class _A1BasicsLessonPageState
       case 'lesson_7':
       case '7':
         return [
-          _stage(
-            'Stage 1',
-            'مرحله ۱',
-            List.generate(6, (i) => i),
-          ),
-          _stage(
-            'Stage 2',
-            'مرحله ۲',
-            List.generate(8, (i) => i),
-          ),
-          _stage(
-            'Stage 3',
-            'مرحله ۳',
-            List.generate(14, (i) => i),
-          ),
-          _stage(
-            'Stage 4',
-            'مرحله ۴',
-            List.generate(23, (i) => i),
-          ),
-          _stage(
-            'Stage 5',
-            'مرحله ۵',
-            List.generate(29, (i) => i),
-          ),
-          _stage(
-            'Stage 6',
-            'مرحله ۶',
-            List.generate(34, (i) => i),
-          ),
-          _stage(
-            'Stage 7',
-            'مرحله ۷',
-            List.generate(37, (i) => i),
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(40, (i) => i),
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
-          ),
-          _speakingStage(
-            'Speaking',
-            'تمرین مکالمه',
-          ),
-        ];
-
-      case 'a1_basic_08':
-      case 'lesson_8':
-      case '8':
-        return [
-          // Must/Mustn't is cumulative: every stage keeps all material
-          // introduced earlier in this lesson. Later structures must never
-          // leak into an earlier stage.
-          _stage(
-            'Stage 1',
-            'مرحله ۱',
-            List.generate(6, (i) => i),
-          ),
-          _stage(
-            'Stage 2',
-            'مرحله ۲',
-            List.generate(8, (i) => i),
-          ),
-          _stage(
-            'Stage 3',
-            'مرحله ۳',
-            List.generate(10, (i) => i),
-          ),
-          _stage(
-            'Stage 4',
-            'مرحله ۴',
-            List.generate(19, (i) => i),
-          ),
-          _stage(
-            'Stage 5',
-            'مرحله ۵',
-            List.generate(25, (i) => i),
-          ),
-          _stage(
-            'Stage 6',
-            'مرحله ۶',
-            List.generate(30, (i) => i),
-          ),
-          _stage(
-            'Stage 7',
-            'مرحله ۷',
-            List.generate(34, (i) => i),
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(40, (i) => i),
-          ),
-          _listeningStage(
-            'Listening',
-            'گوش دادن',
-          ),
-          _speakingStage(
-            'Speaking',
-            'تمرین مکالمه',
-          ),
-        ];
-
-      case 'a1_basic_09':
-      case 'lesson_9':
-      case '9':
-        return [
           // Object pronouns are cumulative: each stage keeps everything
           // introduced before it. Later pronouns must never appear early.
           _stage(
@@ -690,9 +579,9 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_basic_10':
-      case 'lesson_10':
-      case '10':
+      case 'a1_basic_08':
+      case 'lesson_8':
+      case '8':
         return [
           // Possessive adjectives are cumulative: every stage keeps
           // everything taught before it. Later forms must never leak
@@ -757,6 +646,74 @@ class _A1BasicsLessonPageState
             'Stage 7',
             'مرحله ۷',
             List.generate(35, (i) => i),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(40, (i) => i),
+          ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_09':
+      case 'lesson_9':
+      case '9':
+      case 'a1_basic_10':
+      case 'lesson_10':
+      case '10':
+        return _buildGenericStages(
+          _questions.length,
+          widget.lesson.speakingQuestions.length,
+        );
+
+      case 'a1_basic_11':
+      case 'lesson_11':
+      case '11':
+        return [
+          // Must/Mustn't is cumulative: every stage keeps all material
+          // introduced earlier in this lesson. Later structures must never
+          // leak into an earlier stage.
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(6, (i) => i),
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            List.generate(8, (i) => i),
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            List.generate(10, (i) => i),
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(19, (i) => i),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(25, (i) => i),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(30, (i) => i),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(34, (i) => i),
           ),
           _stage(
             'Stage 8',
