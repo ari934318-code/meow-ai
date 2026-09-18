@@ -10,6 +10,72 @@ const A1BasicLesson a1BasicPresentSimple = A1BasicLesson(
       'and things that are generally true. With I, you, we, and they, use the base verb. '
       'With he, she, and it, usually add s, es, or change y to ies.',
 
+  learningPhases: [
+    A1BasicLearningPhase(type: 'curiosity', title: 'Think First', titleFa: 'اول فکر کن', body: 'Think: If you want to say “I play football every day,” why do we say “He plays” but “I play”?', bodyFa: 'فکر کن: اگر بخواهی بگویی «من هر روز فوتبال بازی می‌کنم»، چرا می‌گوییم He plays ولی I play؟'),
+    A1BasicLearningPhase(type: 'introduction', title: 'Present Simple', titleFa: 'حال ساده', body: 'The Present Simple is used for habits, routines, repeated actions, and general facts.', bodyFa: 'زمان حال ساده برای عادت‌ها، کارهای روزمره، کارهای تکراری و واقعیت‌های کلی استفاده می‌شود.'),
+    A1BasicLearningPhase(type: 'examples', title: 'Simple Examples', titleFa: 'مثال‌های ساده', body: 'Notice the verb with different subjects.', bodyFa: 'به شکل فعل با فاعل‌های مختلف دقت کن.', examples: [
+      A1BasicExample(english: 'I play football every day.', persian: 'من هر روز فوتبال بازی می‌کنم.'),
+      A1BasicExample(english: 'He plays football every day.', persian: 'او هر روز فوتبال بازی می‌کند.'),
+      A1BasicExample(english: 'They play football every day.', persian: 'آنها هر روز فوتبال بازی می‌کنند.'),
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'When Do We Use It?', titleFa: 'چه زمانی از حال ساده استفاده می‌کنیم؟', body: 'Use it for routines, habits, repeated actions, and general facts.', bodyFa: 'برای کارهای روزمره، عادت‌ها، کارهای تکراری و واقعیت‌های کلی استفاده می‌شود.', examples: [
+      A1BasicExample(english: 'I wake up at 7.', persian: 'من ساعت ۷ بیدار می‌شوم.'),
+      A1BasicExample(english: 'She drinks tea.', persian: 'او چای می‌نوشد.'),
+      A1BasicExample(english: 'The sun rises in the east.', persian: 'خورشید از شرق طلوع می‌کند.'),
+    ]),
+    A1BasicLearningPhase(type: 'chart', title: 'Present Simple Chart', titleFa: 'جدول حال ساده', body: 'I, you, we, and they use the base verb. He, she, and it usually take s, es, or ies.', bodyFa: 'با I، you، we و they شکل پایه فعل می‌آید. با he، she و it معمولاً s، es یا ies می‌آید.', tableRows: [
+      ['Pronoun', 'Verb', 'Example'], ['I', 'play', 'I play'], ['You', 'play', 'You play'], ['He', 'plays', 'He plays'], ['She', 'plays', 'She plays'], ['It', 'works', 'It works'], ['We', 'play', 'We play'], ['They', 'play', 'They play'],
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'The -s Rule', titleFa: 'قانون s', body: 'Many verbs simply take s with he, she, and it.', bodyFa: 'بسیاری از فعل‌ها با he، she و it فقط s می‌گیرند.', examples: [
+      A1BasicExample(english: 'play → plays', persian: 'بازی کردن → بازی می‌کند'), A1BasicExample(english: 'work → works', persian: 'کار کردن → کار می‌کند'), A1BasicExample(english: 'read → reads', persian: 'خواندن → می‌خواند'),
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'The -es Rule', titleFa: 'قانون es', body: 'Some verbs ending in s, sh, ch, x, or o take es with he, she, and it.', bodyFa: 'بعضی فعل‌ها که به s، sh، ch، x یا o ختم می‌شوند با he، she و it، es می‌گیرند.', examples: [
+      A1BasicExample(english: 'watch → watches', persian: 'تماشا کردن → تماشا می‌کند'), A1BasicExample(english: 'wash → washes', persian: 'شستن → می‌شوید'), A1BasicExample(english: 'go → goes', persian: 'رفتن → می‌رود'),
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'The -y → -ies Rule', titleFa: 'قانون y → ies', body: 'When a verb ends in a consonant + y, y usually changes to ies with he, she, and it.', bodyFa: 'وقتی فعل به صامت + y ختم شود، با he، she و it معمولاً y به ies تبدیل می‌شود.', examples: [
+      A1BasicExample(english: 'study → studies', persian: 'درس خواندن → درس می‌خواند'), A1BasicExample(english: 'carry → carries', persian: 'حمل کردن → حمل می‌کند'),
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'Vowel + y', titleFa: 'حرف صدادار + y', body: 'When a verb ends in a vowel + y, keep y and add s.', bodyFa: 'وقتی قبل از y یک حرف صدادار باشد، y تغییر نمی‌کند و فقط s اضافه می‌کنیم.', examples: [
+      A1BasicExample(english: 'play → plays', persian: 'بازی کردن → بازی می‌کند'), A1BasicExample(english: 'buy → buys', persian: 'خریدن → می‌خرد'),
+    ]),
+    A1BasicLearningPhase(type: 'practice', title: 'Positive Sentences', titleFa: 'جمله‌های مثبت', body: 'Build positive sentences and choose the correct verb form.', bodyFa: 'جمله‌های مثبت بساز و شکل درست فعل را انتخاب کن.', examples: [
+      A1BasicExample(english: 'I drink coffee.', persian: 'من قهوه می‌نوشم.'), A1BasicExample(english: 'She drinks coffee.', persian: 'او قهوه می‌نوشد.'),
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'Negative Sentences', titleFa: 'جمله‌های منفی', body: 'Use do not with I, you, we, they and does not with he, she, it. After does not, use the base verb.', bodyFa: 'با I، you، we و they از do not و با he، she و it از does not استفاده کن. بعد از does not فعل به شکل پایه می‌آید.', examples: [
+      A1BasicExample(english: 'I don’t play football.', persian: 'من فوتبال بازی نمی‌کنم.'), A1BasicExample(english: 'He doesn’t play football.', persian: 'او فوتبال بازی نمی‌کند.'),
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'Questions with Do and Does', titleFa: 'سؤال با Do و Does', body: 'Use Do with I, you, we, they and Does with he, she, it. The main verb stays in the base form.', bodyFa: 'با I، you، we و they از Do و با he، she و it از Does استفاده کن. فعل اصلی بعد از آن‌ها به شکل پایه می‌آید.', examples: [
+      A1BasicExample(english: 'Do you play football?', persian: 'فوتبال بازی می‌کنی؟'), A1BasicExample(english: 'Does he play football?', persian: 'او فوتبال بازی می‌کند؟'),
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'The Golden Rule', titleFa: 'قاعده طلایی', body: 'Does and doesn’t carry the third-person s, so the main verb returns to its base form.', bodyFa: 'does و doesn’t، s مربوط به سوم‌شخص را با خودشان می‌برند؛ بنابراین فعل اصلی به شکل پایه برمی‌گردد.', examples: [
+      A1BasicExample(english: 'He plays. → He doesn’t play.', persian: 'او بازی می‌کند. → او بازی نمی‌کند.'), A1BasicExample(english: 'He plays. → Does he play?', persian: 'او بازی می‌کند. → آیا او بازی می‌کند؟'), A1BasicExample(english: 'He doesn’t plays. ✗', persian: 'غلط'), A1BasicExample(english: 'He doesn’t play. ✓', persian: 'درست'),
+    ]),
+    A1BasicLearningPhase(type: 'comparison', title: 'Positive vs Negative vs Question', titleFa: 'مثبت، منفی و سؤال', body: 'Compare the three forms and notice where the s appears.', bodyFa: 'سه شکل جمله را مقایسه کن و ببین s کجا می‌آید.', tableRows: [
+      ['Form', 'Example'], ['Positive', 'He plays football.'], ['Negative', 'He doesn’t play football.'], ['Question', 'Does he play football?'],
+    ]),
+    A1BasicLearningPhase(type: 'concept', title: 'Common Time Expressions', titleFa: 'عبارت‌های رایج تکرار', body: 'Always, usually, often, sometimes, never, and every day often appear with the Present Simple.', bodyFa: 'کلماتی مثل always، usually، often، sometimes، never و عبارت‌هایی مثل every day زیاد همراه حال ساده می‌آیند.', examples: [
+      A1BasicExample(english: 'I always drink coffee.', persian: 'من همیشه قهوه می‌نوشم.'), A1BasicExample(english: 'She usually drinks tea.', persian: 'او معمولاً چای می‌نوشد.'), A1BasicExample(english: 'I play football every day.', persian: 'من هر روز فوتبال بازی می‌کنم.'),
+    ]),
+    A1BasicLearningPhase(type: 'comparison', title: 'Difference from Persian', titleFa: 'تفاوت مهم با فارسی', body: 'English usually marks he, she, and it with a changed present-simple verb form.', bodyFa: 'در انگلیسی با he، she و it معمولاً شکل فعل در حال ساده با s، es یا ies تغییر می‌کند.', examples: [
+      A1BasicExample(english: 'I go → He goes', persian: 'من می‌روم → او می‌رود'), A1BasicExample(english: 'I play → He plays', persian: 'من بازی می‌کنم → او بازی می‌کند'),
+    ]),
+    A1BasicLearningPhase(type: 'examples', title: 'More Examples', titleFa: 'مثال‌های بیشتر', body: 'Read everyday Present Simple sentences.', bodyFa: 'جمله‌های روزمره حال ساده را بخوان.', examples: [
+      A1BasicExample(english: 'I wake up at 7.', persian: 'من ساعت ۷ بیدار می‌شوم.'), A1BasicExample(english: 'You like coffee.', persian: 'تو قهوه دوست داری.'), A1BasicExample(english: 'He works in a bank.', persian: 'او در بانک کار می‌کند.'), A1BasicExample(english: 'She studies English.', persian: 'او انگلیسی می‌خواند.'), A1BasicExample(english: 'It rains a lot here.', persian: 'اینجا زیاد باران می‌بارد.'), A1BasicExample(english: 'We live in Tehran.', persian: 'ما در تهران زندگی می‌کنیم.'), A1BasicExample(english: 'They play football.', persian: 'آنها فوتبال بازی می‌کنند.'),
+    ]),
+    A1BasicLearningPhase(type: 'practice', title: 'Guided Practice', titleFa: 'تمرین هدایت‌شده', body: 'Choose the correct Present Simple verb form.', bodyFa: 'شکل درست فعل در حال ساده را انتخاب کن.', examples: [
+      A1BasicExample(english: 'I ___ tea. (like)', persian: 'I like tea.'), A1BasicExample(english: 'She ___ in a hospital. (work)', persian: 'She works in a hospital.'), A1BasicExample(english: 'They ___ tennis. (play)', persian: 'They play tennis.'), A1BasicExample(english: 'He ___ TV. (watch)', persian: 'He watches TV.'), A1BasicExample(english: 'We ___ to school. (go)', persian: 'We go to school.'), A1BasicExample(english: 'It ___ a lot. (rain)', persian: 'It rains a lot.'),
+    ]),
+    A1BasicLearningPhase(type: 'independent', title: 'Independent Production', titleFa: 'تولید مستقل', body: 'Write three things you do every day, then write one sentence about another person.', bodyFa: 'سه کاری که هر روز انجام می‌دهی بنویس، سپس یک جمله درباره شخص دیگری بنویس.', examples: [
+      A1BasicExample(english: 'I wake up at 8.', persian: 'من ساعت ۸ بیدار می‌شوم.'), A1BasicExample(english: 'I drink tea.', persian: 'من چای می‌نوشم.'), A1BasicExample(english: 'My brother plays football.', persian: 'برادرم فوتبال بازی می‌کند.'),
+    ]),
+    A1BasicLearningPhase(type: 'real_world', title: 'Real-Life Use', titleFa: 'کاربرد واقعی', body: 'Use the Present Simple to describe routines and ask about habits.', bodyFa: 'از حال ساده برای توصیف کارهای روزمره و پرسیدن درباره عادت‌ها استفاده کن.', examples: [
+      A1BasicExample(english: 'I usually wake up at seven.', persian: 'من معمولاً ساعت هفت بیدار می‌شوم.'), A1BasicExample(english: 'What do you do every day?', persian: 'هر روز چه کار می‌کنی؟'), A1BasicExample(english: 'Does she work here?', persian: 'آیا او اینجا کار می‌کند؟'),
+    ]),
+    A1BasicLearningPhase(type: 'speaking', title: 'Speaking', titleFa: 'تمرین تلفظ و لهجه', body: 'Read the sentences aloud and focus on the final sounds in plays, watches, studies, and works.', bodyFa: 'جمله‌ها را با صدای بلند بخوان و روی صداهای پایانی plays، watches، studies و works تمرکز کن.', examples: [
+      A1BasicExample(english: 'I play football every day.', persian: 'من هر روز فوتبال بازی می‌کنم.', pronunciation: 'آی پِلِی فوتبال اِوری دِی'), A1BasicExample(english: 'He plays football every day.', persian: 'او هر روز فوتبال بازی می‌کند.', pronunciation: 'هی پِلِیز فوتبال اِوری دِی'), A1BasicExample(english: 'She watches TV.', persian: 'او تلویزیون تماشا می‌کند.', pronunciation: 'شی واچِز تی‌وی'), A1BasicExample(english: 'She studies English.', persian: 'او انگلیسی می‌خواند.', pronunciation: 'شی اِستادیز اِنگلیش'), A1BasicExample(english: 'He works in a bank.', persian: 'او در بانک کار می‌کند.', pronunciation: 'هی وِرکز اِن ا بَنک'),
+    ]),
+  ],
+
 vocabulary: [
   A1BasicVocabulary(
     english: 'study',
