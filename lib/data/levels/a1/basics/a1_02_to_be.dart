@@ -1457,7 +1457,7 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       persian: 'بگو: ما آماده‌ایم.',
       acceptableAnswers: [
         'we are ready',
-        'were ready',
+        'are ready',
       ],
     ),
     A1BasicSpeakingQuestion(
