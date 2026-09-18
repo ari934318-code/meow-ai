@@ -8,6 +8,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/levels/a1/basics/a1_basics_models.dart';
+import '../data/levels/a1/basics/a1_basics_listening_data.dart';
 import '../data/levels/a1/basics/a1_basics_ui_config.dart';
 import '../localization.dart';
 
@@ -37,6 +38,8 @@ class _A1BasicsLessonPageState
 
   final Set<int> _answeredQuestions = {};
   final Set<int> _completedSpeaking = {};
+  final Set<int> _listeningAnswered = {};
+  final Map<int, String> _selectedListeningAnswers = {};
   final Set<int> _listenedExamples = {};
 
   final Map<int, String> _selectedAnswers = {};
@@ -74,6 +77,9 @@ class _A1BasicsLessonPageState
 
   String get progressKey =>
       'a1_basics_lesson_progress${widget.lesson.id}';
+
+  List<A1BasicListeningQuestion> get _listeningQuestions =>
+      a1BasicsListeningQuestionsFor(widget.lesson.id);
 
   String get stageKey =>
       'a1_basics_stage${widget.lesson.id}';
@@ -726,6 +732,502 @@ class _A1BasicsLessonPageState
           ),
         ];
 
+      case 'a1_basic_12':
+      case 'lesson_12':
+      case '12':
+        return [
+          _stage('What Is a Regular Verb?', 'فعل باقاعده چیست؟', [0, 18, 19, 20]),
+          _stage('Base Form: I/You/We/They', 'شکل پایه: I/You/We/They', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28]),
+          _stage('He/She/It + S', 'He/She/It + S', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32]),
+          _stage('Adding ES', 'اضافه کردن ES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29]),
+          _stage('Y → IES', 'تبدیل Y به IES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33]),
+          _stage('Positive Sentences', 'جمله‌های مثبت', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13]),
+          _stage('Negative Sentences', 'جمله‌های منفی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23]),
+          _stage('Questions', 'سؤال‌ها', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34]),
+          _stage('Positive vs Negative vs Question', 'مثبت، منفی و سوالی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34, 21, 22, 35]),
+          _stage('Everyday Verbs and Review', 'افعال روزمره و مرور نهایی', List.generate(37, (i) => i)),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_13':
+      case 'lesson_13':
+      case '13':
+        return [
+          // Each stage keeps all previously taught material.
+          _stage('Go and Goes', 'Go و Goes', [0, 1]),
+          _stage('Have and Has', 'Have و Has', [0, 1, 2, 3]),
+          _stage('Do and Does', 'Do و Does', [0, 1, 2, 3, 4, 5]),
+          _stage(
+            'Get and Gets',
+            'Get و Gets',
+            [0, 1, 2, 3, 4, 5, 6, 7],
+          ),
+          _stage(
+            'Make and Makes',
+            'Make و Makes',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          ),
+          _stage(
+            'Take and Takes',
+            'Take و Takes',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20],
+          ),
+          _stage(
+            'Give and Gives',
+            'Give و Gives',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13],
+          ),
+          _stage(
+            'See and Sees',
+            'See و Sees',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15],
+          ),
+          _stage(
+            'Know and Knows',
+            'Know و Knows',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17],
+          ),
+          _stage(
+            'Say and Says',
+            'Say و Says',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19],
+          ),
+          _stage(
+            'Questions with Irregular Verbs',
+            'سؤال با افعال بی‌قاعده',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25],
+          ),
+          _stage(
+            'Negative Sentences',
+            'جمله‌های منفی',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+          ),
+          _stage(
+            'Common Mistakes',
+            'اشتباهات رایج',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35],
+          ),
+          _stage(
+            'Translation and Word Order',
+            'ترجمه و مرتب کردن جمله',
+            List.generate(44, (i) => i),
+          ),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_06':
+      case 'a1_06_simple_wh':
+        return [
+          _stage('Think First', 'اول فکر کن', []),
+          _stage('Introduction', 'معرفی', []),
+          _stage('Simple Examples', 'مثال‌های ساده', [0, 1, 2]),
+          _stage('What Are Wh-Questions?', 'Wh-Questions چیست؟', [0, 1, 2, 3, 4, 5]),
+          _stage('Question Words', 'کلمه‌های پرسشی', [0, 1, 2, 3, 4, 5]),
+          _stage('Wh + To Be', 'Wh + To Be', [6, 7, 12, 17]),
+          _stage('Wh + Do / Does', 'Wh + Do / Does', [8, 9, 10, 11]),
+          _stage('Important Who Rule', 'نکته مهم درباره Who', [13]),
+          _stage('More Examples', 'مثال‌های بیشتر', [6, 8, 9, 13]),
+          _stage('Recognition Practice', 'تمرین تشخیص', [6, 8, 9, 10]),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', [10, 11, 12, 13]),
+          _stage('Translation Practice', 'تمرین ترجمه', [14, 15, 16, 17]),
+          _stage('Real-World Use', 'کاربرد واقعی', [0, 1, 2, 8]),
+          _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
+        ];
+
+      case 'a1_basic_07':
+      case 'lesson_7':
+      case '7':
+        return [
+          // Object pronouns are cumulative: each stage keeps everything
+          // introduced before it. Later pronouns must never appear early.
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 5, 10],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [0, 5, 10, 1, 6, 11],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [0, 5, 10, 1, 6, 11, 2, 7, 12],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(30, (i) => i),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(40, (i) => i),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_08':
+      case 'lesson_8':
+      case '8':
+        return [
+          // Possessive adjectives are cumulative: every stage keeps
+          // everything taught before it. Later forms must never leak
+          // into an earlier stage.
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 1, 7, 8],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [0, 1, 7, 8, 2, 3, 11, 12],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18, 6, 15],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [
+              0,
+              1,
+              7,
+              8,
+              2,
+              3,
+              11,
+              12,
+              4,
+              5,
+              13,
+              14,
+              18,
+              6,
+              15,
+              9,
+              10,
+              16,
+              17,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+            ],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(30, (i) => i),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(35, (i) => i),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(40, (i) => i),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_09':
+      case 'lesson_9':
+      case '9':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('A / An / The', 'A / An / The', [0, 1, 2]),
+          _stage(
+            'A vs An',
+            'تفاوت A و An',
+            [0, 1, 2, 6, 14, 18, 19],
+          ),
+          _stage(
+            'The for Specific Things',
+            'The برای چیزهای مشخص',
+            [0, 1, 2, 6, 14, 18, 19, 4, 8, 9, 11],
+          ),
+          _stage(
+            'Plural Nouns',
+            'اسم‌های جمع',
+            [0, 1, 2, 6, 14, 18, 19, 4, 8, 9, 11, 12, 13],
+          ),
+          _stage(
+            'General vs Specific',
+            'کلی یا مشخص؟',
+            [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20],
+          ),
+          _stage(
+            'Guided Practice',
+            'تمرین هدایت‌شده',
+            List.generate(21, (i) => i),
+          ),
+          _stage(
+            'Translation and Final Review',
+            'ترجمه و مرور نهایی',
+            List.generate(25, (i) => i),
+          ),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_10':
+      case 'lesson_10':
+      case '10':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('What Is Can?', 'Can چیست؟', [0, 1, 2, 3, 4, 5]),
+          _stage(
+            'Can + Base Verb',
+            'Can + شکل ساده فعل',
+            List.generate(14, (i) => i),
+          ),
+          _stage(
+            'Can’t / Cannot',
+            'Can’t / Cannot',
+            List.generate(18, (i) => i),
+          ),
+          _stage(
+            'Questions and Short Answers',
+            'سؤال‌ها و جواب‌های کوتاه',
+            List.generate(23, (i) => i),
+          ),
+          _stage(
+            'Recognition Practice',
+            'تمرین تشخیص',
+            List.generate(29, (i) => i),
+          ),
+          _stage(
+            'Translation and Word Order',
+            'ترجمه و مرتب کردن جمله',
+            List.generate(37, (i) => i),
+          ),
+          _stage(
+            'Permission, Requests and Inability',
+            'اجازه، درخواست و ناتوانی',
+            List.generate(40, (i) => i),
+          ),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_11':
+      case 'lesson_11':
+      case '11':
+
+      case 'a1_basic_11':
+      case 'lesson_11':
+      case '11':
+        return [
+          // Must/Mustn't is cumulative: every stage keeps all material
+          // introduced earlier in this lesson. Later structures must never
+          // leak into an earlier stage.
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(6, (i) => i),
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            List.generate(8, (i) => i),
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            List.generate(10, (i) => i),
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(19, (i) => i),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(25, (i) => i),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(30, (i) => i),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(34, (i) => i),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(40, (i) => i),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_05':
+      case 'lesson_5':
+      case '5':
+        return [
+          // Present Simple is cumulative: each stage keeps every concept
+          // taught earlier. A later grammar point must never appear in an
+          // earlier stage, even as a multiple-choice distractor.
+          _stage(
+            'What Is the Present Simple?',
+            'Present Simple چیست؟',
+            [33],
+          ),
+          _stage(
+            'I, You, We, They',
+            'I, You, We, They',
+            [33, 0, 3, 5, 7, 10],
+          ),
+          _stage(
+            'He, She, It',
+            'He, She, It',
+            [33, 0, 3, 5, 7, 10, 2, 4],
+          ),
+          _stage(
+            'Adding -s',
+            'اضافه کردن s',
+            [33, 0, 3, 5, 7, 10, 2, 4, 8],
+          ),
+          _stage(
+            'Adding -es',
+            'اضافه کردن es',
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11],
+          ),
+          _stage(
+            'The -y to -ies Rule',
+            'قانون تبدیل y به ies',
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27],
+          ),
+          _stage(
+            'Positive Sentences',
+            'جمله‌های مثبت',
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34],
+          ),
+          _stage(
+            'Negative Sentences',
+            'جمله‌های منفی',
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37],
+          ),
+          _stage(
+            'Do and Does in Questions',
+            'سؤال با Do و Does',
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19],
+          ),
+          _stage(
+            'Common Mistakes',
+            'اشتباهات رایج',
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19, 20, 21, 22, 23, 25, 35, 36],
+          ),
+          _stage(
+            'Adverbs of Frequency',
+            'قیدهای تکرار',
+            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19, 20, 21, 22, 23, 25, 35, 36, 28, 29, 30, 31, 32],
+          ),
+          _stage(
+            'Real-Life Present Simple',
+            'Present Simple در انگلیسی واقعی',
+            List.generate(47, (i) => i),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_14':
+      case 'lesson_14':
+      case '14':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('What Is the Present Continuous?', 'Present Continuous چیست؟', const []),
+          _stage('Basic Structure', 'ساختار پایه', List.generate(10, (i) => i)),
+          _stage('Positive Sentences', 'جمله‌های مثبت', List.generate(10, (i) => i)),
+          _stage('Negative Sentences', 'جمله‌های منفی', List.generate(11, (i) => i)),
+          _stage('Questions and Short Answers', 'سؤال‌ها و جواب‌های کوتاه', List.generate(14, (i) => i)),
+          _stage('When Do We Use It?', 'چه زمانی از آن استفاده می‌کنیم؟', List.generate(22, (i) => i)),
+          _stage('Translation and Recognition', 'ترجمه و تشخیص', List.generate(27, (i) => i)),
+          _stage('Accuracy Practice', 'تمرین دقت', List.generate(32, (i) => i)),
+          _stage('Independent Practice and Review', 'تمرین مستقل و مرور', List.generate(37, (i) => i)),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_15':
+      case 'lesson_15':
+      case '15':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('Will / Going to', 'Will / Going to', const []),
+          _stage('Will', 'Will', List.generate(5, (i) => i)),
+          _stage('Will: Forms', 'شکل‌های Will', List.generate(10, (i) => i)),
+          _stage('Going to', 'Going to', List.generate(15, (i) => i)),
+          _stage('Will vs Going to', 'تفاوت Will و Going to', List.generate(19, (i) => i)),
+          _stage('Translation Practice', 'تمرین ترجمه', List.generate(23, (i) => i)),
+          _stage('Accuracy and Word Order', 'دقت و ترتیب کلمات', List.generate(31, (i) => i)),
+          _stage('Real-World Future Review', 'مرور کاربردی آینده', List.generate(35, (i) => i)),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_16':
+      case 'lesson_16':
+      case '16':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('Wh-Questions', 'سؤال‌های Wh', const []),
+          _stage('Wh-Words', 'کلمه‌های Wh', List.generate(7, (i) => i)),
+          _stage('Present Simple Wh', 'Wh در Present Simple', List.generate(9, (i) => i)),
+          _stage('Present Continuous Wh', 'Wh در Present Continuous', List.generate(10, (i) => i)),
+          _stage('Past Wh with Did', 'Wh در گذشته با Did', List.generate(12, (i) => i)),
+          _stage('Can, Must, Will and Going to', 'Can، Must، Will و Going to', List.generate(15, (i) => i)),
+          _stage('Who: Subject or Object?', 'Who: فاعل یا مفعول؟', List.generate(20, (i) => i)),
+          _stage('Translation and Guided Practice', 'ترجمه و تمرین هدایت‌شده', List.generate(24, (i) => i)),
+          _stage('Independent and Real-World Practice', 'تمرین مستقل و کاربرد واقعی', List.generate(28, (i) => i)),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
+        ];
+
       default:
         return _buildGenericStages(
           _questions.length,
@@ -747,6 +1249,22 @@ class _A1BasicsLessonPageState
       descriptionFa:
           'این بخش را یاد بگیر و بعد تمرین‌های آن را انجام بده.',
       questionIndices: questions,
+    );
+  }
+
+  _A1Stage _listeningStage(
+    String title,
+    String titleFa,
+  ) {
+    return _A1Stage(
+      title: title,
+      titleFa: titleFa,
+      description: 'Listen to the sentence and choose what you hear.',
+      descriptionFa: 'به جمله گوش بده و چیزی را که می‌شنوی انتخاب کن.',
+      listeningIndices: List.generate(
+        _listeningQuestions.length,
+        (index) => index,
+      ),
     );
   }
 
@@ -1402,6 +1920,22 @@ class _A1BasicsLessonPageState
           );
         }
 
+        _listeningAnswered.clear();
+        final listeningAnswered = data['listeningAnswered'];
+        if (listeningAnswered is List) {
+          for (final value in listeningAnswered) {
+            if (value is num) _listeningAnswered.add(value.toInt());
+          }
+        }
+        _selectedListeningAnswers.clear();
+        final selectedListeningAnswers = data['selectedListeningAnswers'];
+        if (selectedListeningAnswers is Map) {
+          selectedListeningAnswers.forEach((key, value) {
+            final index = int.tryParse(key.toString());
+            if (index != null && value is String) _selectedListeningAnswers[index] = value;
+          });
+        }
+
         _listenedExamples.clear();
 
         if (listenedExamples is List) {
@@ -1478,6 +2012,8 @@ class _A1BasicsLessonPageState
 
       'completedSpeaking':
           _completedSpeaking.toList(),
+      'listeningAnswered': _listeningAnswered.toList(),
+      'selectedListeningAnswers': _selectedListeningAnswers.map((key, value) => MapEntry(key.toString(), value)),
 
       'speakingResults':
           _speakingResults.map(
@@ -2601,6 +3137,56 @@ class _A1BasicsLessonPageState
   // SPEAKING
   // =========================================================
 
+  Widget _buildListeningQuestion(int index) {
+    final item = _listeningQuestions[index];
+    final answered = _listeningAnswered.contains(index);
+    final selected = _selectedListeningAnswers[index];
+    final correct = selected != null && selected == item.answer;
+
+    return Container(
+      margin: EdgeInsets.only(bottom: A1BasicsUIConfig.cardSpacing),
+      padding: EdgeInsets.all(A1BasicsUIConfig.pagePadding),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: answered
+              ? (correct ? Colors.green.withAlpha(55) : Colors.red.withAlpha(45))
+              : _outline,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(_isPersian ? 'گوش بده و انتخاب کن' : 'Listen and choose',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          IconButton(onPressed: () => _speak(item.sentence), icon: const Icon(Icons.volume_up_rounded)),
+          if (_isPersian) Text(item.sentenceFa),
+          const SizedBox(height: 12),
+          ...item.options.map((option) => Padding(
+            padding: EdgeInsets.only(bottom: A1BasicsUIConfig.cardSpacing),
+            child: OutlinedButton(
+              onPressed: answered ? null : () async {
+                setState(() {
+                  _selectedListeningAnswers[index] = option;
+                  _listeningAnswered.add(index);
+                });
+                await _saveProgress();
+              },
+              child: Align(alignment: AlignmentDirectional.centerStart, child: Text(option)),
+            ),
+          )),
+          if (answered)
+            Text(correct
+                ? (_isPersian ? 'درست! 😼✨' : 'Correct! 😼✨')
+                : (_isPersian ? 'جواب صحیح: ${item.answer}' : 'Correct answer: ${item.answer}'),
+              style: TextStyle(fontWeight: FontWeight.bold, color: correct ? Colors.green : Colors.red)),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSpeakingQuestion(
     int index,
   ) {
@@ -2914,15 +3500,14 @@ class _A1BasicsLessonPageState
               .contains(index),
     );
 
-    final speakingComplete =
-        stage.speakingIndices.every(
-      (index) =>
-          _completedSpeaking
-              .contains(index),
+    final speakingComplete = stage.speakingIndices.every(
+      (index) => _completedSpeaking.contains(index),
+    );
+    final listeningComplete = stage.listeningIndices.every(
+      (index) => _listeningAnswered.contains(index),
     );
 
-    return questionsComplete &&
-        speakingComplete;
+    return questionsComplete && speakingComplete && listeningComplete;
   }
 
   Future<void> _goPreviousStage() async {
@@ -3259,12 +3844,12 @@ class _A1BasicsLessonPageState
         if (_learningMode)
           _buildLearningContent()
         else ...[
-          ...stage.questionIndices.map(
-            _buildQuestion,
-          ),
-          ...stage.speakingIndices.map(
-            _buildSpeakingQuestion,
-          ),
+          if (stage.listeningIndices.isNotEmpty)
+            ...stage.listeningIndices.map(_buildListeningQuestion)
+          else ...[
+            ...stage.questionIndices.map(_buildQuestion),
+            ...stage.speakingIndices.map(_buildSpeakingQuestion),
+          ],
           SizedBox(
             height:
                 A1BasicsUIConfig
@@ -3490,6 +4075,7 @@ class _A1Stage {
 
   final List<int> questionIndices;
   final List<int> speakingIndices;
+  final List<int> listeningIndices;
 
   const _A1Stage({
     required this.title,
@@ -3499,6 +4085,8 @@ class _A1Stage {
     this.questionIndices =
         const [],
     this.speakingIndices =
+        const [],
+    this.listeningIndices =
         const [],
   });
 }
