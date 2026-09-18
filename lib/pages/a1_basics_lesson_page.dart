@@ -332,47 +332,54 @@ class _A1BasicsLessonPageState
       case '4':
         return [
           _stage(
-            'Stage 1',
-            'مرحله ۱',
-            [0, 2, 4],
+            'What are Do and Does?',
+            'Do و Does چیستند؟',
+            [0, 18, 19],
           ),
           _stage(
-            'Stage 2',
-            'مرحله ۲',
-            [1, 3, 5],
+            'Do',
+            'Do',
+            [0, 18, 19, 2, 4, 12, 24, 28],
           ),
           _stage(
-            'Stage 3',
-            'مرحله ۳',
-            [6, 7, 8, 9],
+            'Does',
+            'Does',
+            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35],
           ),
           _stage(
-            'Stage 4',
-            'مرحله ۴',
-            [10, 11, 12, 13],
+            'Does + Base Verb',
+            'Does + شکل ساده فعل',
+            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22],
           ),
           _stage(
-            'Stage 5',
-            'مرحله ۵',
-            [14, 15, 16, 17],
+            'Negative: Don’t',
+            'منفی: Don’t',
+            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32],
           ),
           _stage(
-            'Stage 6',
-            'مرحله ۶',
-            [18, 19, 20, 21, 22, 23],
+            'Negative: Doesn’t',
+            'منفی: Doesn’t',
+            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33],
           ),
           _stage(
-            'Stage 7',
-            'مرحله ۷',
-            [24, 25, 26, 27],
+            'Don’t / Doesn’t + Base Verb',
+            'Don’t / Doesn’t + شکل ساده فعل',
+            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23],
           ),
           _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(
-              11,
-              (i) => i + 28,
-            ),
+            'Short Answers',
+            'جواب‌های کوتاه',
+            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17],
+          ),
+          _stage(
+            'Do as a Main Verb',
+            'Do به‌عنوان فعل اصلی',
+            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17, 34, 36],
+          ),
+          _stage(
+            'Everyday Questions and Review',
+            'سؤال‌های روزمره و مرور نهایی',
+            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17, 34, 36, 37],
           ),
           _speakingStage(
             'Speaking',
@@ -2030,6 +2037,84 @@ class _A1BasicsLessonPageState
           used.add(candidate);
         }
       }
+      return result;
+    }
+
+    // Do/Does lesson: only grammar introduced by the current stage
+    // may appear in multiple-choice options. Previously learned grammar
+    // such as To Be and Have/Has may remain as distractors.
+    if (widget.lesson.id == 'a1_basic_04' ||
+        widget.lesson.id == 'a1_04' ||
+        widget.lesson.id == 'lesson_4' ||
+        widget.lesson.id == '4') {
+      final allowDoes = _currentStage >= 2;
+      final allowNegative = _currentStage >= 4;
+      final allowShortAnswers = _currentStage >= 7;
+      final allowMainVerbDo = _currentStage >= 8;
+
+      bool allowedGrammar(String value) {
+        final v = value.toLowerCase().trim();
+
+        // Do/does forms introduced later in this lesson.
+        if (v == 'does' || v.startsWith('does ')) {
+          return allowDoes;
+        }
+        if (v == 'do' || v.startsWith('do ')) {
+          return true;
+        }
+        if (v.contains("doesn't") || v.contains("does not")) {
+          return allowNegative;
+        }
+        if (v.contains("don't") || v.contains("do not")) {
+          return allowNegative;
+        }
+
+        // Short-answer forms are taught later than the basic grammar.
+        if (v == 'i do' || v == 'i don’t' || v == 'i dont' ||
+            v == 'she does' || v == 'he doesn’t' || v == 'he doesnt') {
+          return allowShortAnswers;
+        }
+
+        // "do" as the main verb is a later concept.
+        if (allowMainVerbDo) return true;
+        if (v.contains('do my homework') ||
+            v.contains('do the dishes') ||
+            v.contains('do exercise')) {
+          return false;
+        }
+
+        return true;
+      }
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (!allowedGrammar(value)) continue;
+        result.add(value);
+        used.add(value);
+      }
+
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      const safeWords = [
+        'music', 'coffee', 'pizza', 'English',
+        'work', 'help', 'ticket', 'homework',
+      ];
+
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer && !used.contains(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+
       return result;
     }
 
