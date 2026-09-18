@@ -199,6 +199,30 @@ class _A1BasicsLessonPageState
           ),
         ];
 
+      case 'a1_basic_04_5':
+      case 'a1_04_5':
+      case 'lesson_4_5':
+      case '4.5':
+        return [
+          _stage(
+            'Learn',
+            'یادگیری',
+            const [],
+          ),
+          _stage(
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین تلفظ و لهجه',
+          ),
+        ];
+
       case 'a1_05':
       case 'lesson_5':
       case '5':
