@@ -81,6 +81,9 @@ class _A1BasicsLessonPageState
   String get stageKey =>
       'a1_basics_stage${widget.lesson.id}';
 
+  List<A1BasicListeningQuestion> get _listeningQuestions =>
+      a1BasicsListeningQuestionsFor(widget.lesson.id);
+
   @override
   void initState() {
     super.initState();
@@ -894,7 +897,7 @@ class _A1BasicsLessonPageState
     int totalSpeaking,
   ) {
     if (totalQuestions == 0 && totalSpeaking == 0) {
-      if (widget.lesson.listeningQuestions.isEmpty) {
+      if (_listeningQuestions.isEmpty) {
         return [];
       }
       return [
@@ -937,7 +940,7 @@ class _A1BasicsLessonPageState
       );
     }
 
-    if (widget.lesson.listeningQuestions.isNotEmpty) {
+    if (_listeningQuestions.isNotEmpty) {
       stages.add(
         _listeningStage(
           'Listening',
@@ -1934,7 +1937,7 @@ class _A1BasicsLessonPageState
     A1BasicQuestion question,
   ) {
     // Pronoun lesson: only show pronouns already introduced.
-    if (widget.lesson.id == 'a1_01' ||
+    if (widget.lesson.id == 'a1_basic_01' ||
         widget.lesson.id == 'lesson_1' ||
         widget.lesson.id == '1') {
       final learnedPronouns = <String>[
@@ -2006,7 +2009,7 @@ class _A1BasicsLessonPageState
     // Object Pronouns lesson: only object pronouns introduced by the
     // current stage may appear. Possessive and reflexive pronouns are
     // intentionally excluded because they are taught later.
-    if (widget.lesson.id == 'a1_09' ||
+    if (widget.lesson.id == 'a1_basic_07' ||
         widget.lesson.id == 'lesson_9' ||
         widget.lesson.id == '9') {
       final learnedObjects = <String>{
@@ -2088,7 +2091,7 @@ class _A1BasicsLessonPageState
     // current stage may appear as distractors. Possessive pronouns
     // such as yours/hers/ours/theirs are not taught here, so they
     // must never leak into this lesson's choices.
-    if (widget.lesson.id == 'a1_10' ||
+    if (widget.lesson.id == 'a1_basic_08' ||
         widget.lesson.id == 'lesson_10' ||
         widget.lesson.id == '10') {
       final allowedAdjectives = <String>{
@@ -2188,7 +2191,7 @@ class _A1BasicsLessonPageState
     // Present Simple lesson: keep verb forms, negatives, questions, and
     // frequency adverbs inside the current teaching scope. A question may
     // be reused cumulatively, but future forms must not leak in early.
-    if (widget.lesson.id == 'a1_11' ||
+    if (widget.lesson.id == 'a1_basic_05' ||
         widget.lesson.id == 'lesson_11' ||
         widget.lesson.id == '11') {
       const thirdPersonForms = <String>{
