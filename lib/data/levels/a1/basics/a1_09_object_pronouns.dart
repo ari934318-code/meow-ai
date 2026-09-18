@@ -596,7 +596,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'می‌توانم به تو کمک کنم؟',
         ),
         A1BasicExample(
-          english: 'I called you yesterday.',
+          english: 'I like you.',
           persian: 'من دیروز با تو تماس گرفتم.',
         ),
       ],
