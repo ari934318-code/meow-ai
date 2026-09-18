@@ -375,6 +375,24 @@ class _A1BasicsLessonPageState
           ),
         ];
 
+      case 'a1_12':
+      case 'lesson_12':
+      case '12':
+        return [
+          // Basics 12 follows the teaching order: structure first,
+          // then guided/diagnostic practice, with Speaking always last.
+          _stage('What Is the Present Continuous?', 'Present Continuous چیست؟', [0, 1, 2, 3, 4, 5]),
+          _stage('Positive Sentences', 'جمله‌های مثبت', [6, 7, 8, 9]),
+          _stage('Negative Sentences', 'جمله‌های منفی', [10]),
+          _stage('Questions and Short Answers', 'سؤال‌ها و جواب‌های کوتاه', [11, 12, 13]),
+          _stage('-ing Rules', 'قوانین -ing', [14]),
+          _stage('Present Simple vs Present Continuous', 'Present Simple در برابر Present Continuous', [15, 16, 17, 18, 19, 20]),
+          _stage('Translation Practice', 'تمرین ترجمه', [21, 22, 23, 24, 25]),
+          _stage('Recognition and Word Order', 'تشخیص و مرتب‌سازی', [26, 27, 28, 29, 30, 31, 32, 33, 34, 35]),
+          _stage('Real-Life Practice', 'تمرین کاربردی', List.generate(_questions.length, (i) => i)),
+          _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
+        ];
+
       case 'a1_11':
       case 'lesson_11':
       case '11':
