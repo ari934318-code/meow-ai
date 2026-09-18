@@ -303,51 +303,25 @@ class _A1BasicsLessonPageState
       case 'lesson_9':
       case '9':
         return [
-          // Object pronouns are cumulative: each stage keeps everything
-          // introduced before it. Later pronouns must never appear early.
+          // Basics 9 uses the complete structured teaching path first.
+          // All practice questions become available only after the lesson
+          // has taught the concepts they use. Speaking remains last.
           _stage(
-            'Stage 1',
-            'مرحله ۱',
-            [0, 5, 10],
+            'Learn',
+            'یادگیری',
+            const [],
           ),
           _stage(
-            'Stage 2',
-            'مرحله ۲',
-            [0, 5, 10, 1, 6, 11],
-          ),
-          _stage(
-            'Stage 3',
-            'مرحله ۳',
-            [0, 5, 10, 1, 6, 11, 2, 7, 12],
-          ),
-          _stage(
-            'Stage 4',
-            'مرحله ۴',
-            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13],
-          ),
-          _stage(
-            'Stage 5',
-            'مرحله ۵',
-            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18],
-          ),
-          _stage(
-            'Stage 6',
-            'مرحله ۶',
-            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
-          ),
-          _stage(
-            'Stage 7',
-            'مرحله ۷',
-            List.generate(30, (i) => i),
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(40, (i) => i),
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
           ),
           _speakingStage(
             'Speaking',
-            'تمرین مکالمه',
+            'تمرین تلفظ و لهجه',
           ),
         ];
 
