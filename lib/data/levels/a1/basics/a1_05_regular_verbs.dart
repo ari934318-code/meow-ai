@@ -6,9 +6,9 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
   titleFa: 'گذشته ساده با افعال باقاعده',
   topic: 'Regular past verbs: -ed, spelling rules, negatives, and questions',
   explanation:
-      'The present simple is used for habits, routines, repeated actions, and simple facts. '
-      'With I, you, we, and they, we normally use the base form. '
-      'With he, she, and it, we usually add s, es, or change y to ies.',
+      'Regular verbs form the simple past in a predictable way, usually by adding -ed. '
+      'The simple past describes finished actions in the past. '
+      'After did or did not, use the base form of the verb.',
 
   learningPhases: [
     A1BasicLearningPhase(
