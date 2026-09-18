@@ -178,59 +178,24 @@ class _A1BasicsLessonPageState
       case 'lesson_4':
       case '4':
         return [
+          // Basics 4 uses the structured teaching path in the lesson data.
+          // Practice starts only after all introduced concepts have been taught.
           _stage(
-            'What are Do and Does?',
-            'Do و Does چیستند؟',
-            [0, 18, 19],
+            'Learn',
+            'یادگیری',
+            const [],
           ),
           _stage(
-            'Do',
-            'Do',
-            [0, 18, 19, 2, 4, 12, 24, 28],
-          ),
-          _stage(
-            'Does',
-            'Does',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35],
-          ),
-          _stage(
-            'Does + Base Verb',
-            'Does + شکل ساده فعل',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22],
-          ),
-          _stage(
-            'Negative: Don’t',
-            'منفی: Don’t',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32],
-          ),
-          _stage(
-            'Negative: Doesn’t',
-            'منفی: Doesn’t',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33],
-          ),
-          _stage(
-            'Don’t / Doesn’t + Base Verb',
-            'Don’t / Doesn’t + شکل ساده فعل',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23],
-          ),
-          _stage(
-            'Short Answers',
-            'جواب‌های کوتاه',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17],
-          ),
-          _stage(
-            'Do as a Main Verb',
-            'Do به‌عنوان فعل اصلی',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17, 34, 36],
-          ),
-          _stage(
-            'Everyday Questions and Review',
-            'سؤال‌های روزمره و مرور نهایی',
-            [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17, 34, 36, 37],
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
           ),
           _speakingStage(
             'Speaking',
-            'تمرین مکالمه',
+            'تمرین تلفظ و لهجه',
           ),
         ];
 
