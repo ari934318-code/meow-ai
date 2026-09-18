@@ -127,67 +127,24 @@ class _A1BasicsLessonPageState
       case 'lesson_2':
       case '2':
         return [
-          // To Be is cumulative: every stage keeps everything learned
-          // in the previous stages. A later concept must never appear
-          // in an earlier stage, even as a distractor.
+          // The complete teaching path comes first. Practice only starts
+          // after the learner has seen the full concept sequence.
           _stage(
-            'What is To Be?',
-            'To Be یعنی چه؟',
-            [0],
+            'Learn',
+            'یادگیری',
+            const [],
           ),
           _stage(
-            'Am',
-            'Am',
-            [0, 7, 23],
-          ),
-          _stage(
-            'Is',
-            'Is',
-            [0, 7, 23, 1, 4, 6, 8, 24],
-          ),
-          _stage(
-            'Are',
-            'Are',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25],
-          ),
-          _stage(
-            'Am, Is, Are Review',
-            'مرور Am، Is و Are',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27],
-          ),
-          _stage(
-            'Negative Sentences',
-            'جمله‌های منفی',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12],
-          ),
-          _stage(
-            'Negative Contractions',
-            'شکل کوتاه جمله‌های منفی',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15],
-          ),
-          _stage(
-            'Questions with To Be',
-            'سؤال با To Be',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18],
-          ),
-          _stage(
-            'Short Answers',
-            'جواب‌های کوتاه',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
-          ),
-          _stage(
-            'Translation and Word Order',
-            'ترجمه و مرتب کردن جمله',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 34, 35],
-          ),
-          _stage(
-            'Common Contractions and Final Review',
-            'شکل‌های کوتاه و مرور نهایی',
-            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
           ),
           _speakingStage(
             'Speaking',
-            'تمرین مکالمه',
+            'تمرین تلفظ و لهجه',
           ),
         ];
 
