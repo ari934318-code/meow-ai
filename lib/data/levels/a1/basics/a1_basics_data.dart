@@ -6,6 +6,8 @@ import 'a1_03_have_has_questions_localized.dart';
 import 'a1_04_do_does.dart';
 import 'a1_04_do_does_questions_localized.dart';
 import 'a1_04_5_articles_plurals.dart';
+import 'a1_06_simple_wh_questions.dart';
+import 'a1_06_simple_wh_questions_questions_localized.dart';
 import 'a1_04_5_articles_plurals_questions_localized.dart';
 import 'a1_05_regular_verbs.dart';
 import 'a1_05_regular_verbs_questions_localized.dart';
@@ -33,15 +35,16 @@ final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicToBe.copyWithQuestions(a1ToBeQuestions),
   a1BasicHaveHas.copyWithQuestions(a1HaveHasQuestions),
   a1BasicDoDoes.copyWithQuestions(a1DoDoesQuestions),
-  a1BasicArticlesPlurals.copyWithQuestions(a1ArticlesPluralsQuestions),
   a1BasicPresentSimple.copyWithQuestions(a1PresentSimpleQuestions),
+  a1BasicSimpleWhQuestions.copyWithQuestions(a1SimpleWhQuestions),
+  a1BasicPresentContinuous.copyWithQuestions(a1PresentContinuousQuestions),
   a1BasicObjectPronouns.copyWithQuestions(a1ObjectPronounsQuestions),
   a1BasicPossessiveAdjectives.copyWithQuestions(a1PossessiveAdjectivesQuestions),
+  a1BasicArticlesPlurals.copyWithQuestions(a1ArticlesPluralsQuestions),
   a1BasicRegularVerbs.copyWithQuestions(a1RegularVerbsQuestions),
   a1BasicIrregularVerbs.copyWithQuestions(a1IrregularVerbsQuestions),
   a1BasicCanCant.copyWithQuestions(a1CanCantQuestions),
   a1BasicMustMustnt.copyWithQuestions(a1MustMustntQuestions),
-  a1BasicPresentContinuous.copyWithQuestions(a1PresentContinuousQuestions),
   a1BasicWillGoingTo.copyWithQuestions(a1WillGoingToQuestions),
   a1BasicWhQuestions.copyWithQuestions(a1WhQuestions),
 ];
