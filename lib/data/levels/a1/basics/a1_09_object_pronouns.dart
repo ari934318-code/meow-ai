@@ -76,7 +76,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'She فاعل است و me مفعول.',
         ),
         A1BasicExample(
-          english: 'They helped us. → They = subject, us = object',
+          english: 'They like us. → They = subject, us = object',
           persian: 'They فاعل است و us مفعول.',
         ),
       ],
