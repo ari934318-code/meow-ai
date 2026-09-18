@@ -8,6 +8,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/levels/a1/basics/a1_basics_models.dart';
+import '../data/levels/a1/basics/a1_basics_listening_data.dart';
 import '../data/levels/a1/basics/a1_basics_ui_config.dart';
 import '../localization.dart';
 
@@ -37,7 +38,9 @@ class _A1BasicsLessonPageState
 
   final Set<int> _answeredQuestions = {};
   final Set<int> _completedSpeaking = {};
+  final Set<int> _listeningAnswered = {};
   final Set<int> _listenedExamples = {};
+  final Map<int, String> _selectedListeningAnswers = {};
 
   final Map<int, String> _selectedAnswers = {};
   final Map<int, String> _typedAnswers = {};
@@ -172,6 +175,10 @@ class _A1BasicsLessonPageState
             'جدول ضمیرها',
             const [],
           ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
@@ -238,6 +245,10 @@ class _A1BasicsLessonPageState
             'Common Contractions and Final Review',
             'شکل‌های کوتاه و مرور نهایی',
             [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+          ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
           ),
           _speakingStage(
             'Speaking',
@@ -321,6 +332,10 @@ class _A1BasicsLessonPageState
             'عبارت‌های واقعی و کاربردی',
             [0, 2, 4, 6, 7, 9, 1, 3, 5, 8, 15, 16, 29, 31, 33, 40, 41, 51, 30, 32, 39, 42, 43, 50, 10, 17, 44, 11, 45, 18, 12, 13, 14, 19, 21, 22, 23, 24, 46, 47, 48, 20, 25, 26, 27, 28, 34, 35, 36, 37, 38, 49],
           ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
@@ -381,6 +396,10 @@ class _A1BasicsLessonPageState
             'سؤال‌های روزمره و مرور نهایی',
             [0, 18, 19, 2, 4, 12, 24, 28, 1, 3, 5, 13, 25, 35, 10, 21, 22, 6, 8, 26, 30, 32, 7, 9, 11, 27, 31, 33, 20, 23, 14, 15, 16, 17, 34, 36, 37],
           ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
@@ -401,6 +420,10 @@ class _A1BasicsLessonPageState
           _stage('Questions', 'سؤال‌ها', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34]),
           _stage('Positive vs Negative vs Question', 'مثبت، منفی و سوالی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34, 21, 22, 35]),
           _stage('Everyday Verbs and Review', 'افعال روزمره و مرور نهایی', List.generate(37, (i) => i)),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -467,6 +490,10 @@ class _A1BasicsLessonPageState
             'ترجمه و مرتب کردن جمله',
             List.generate(44, (i) => i),
           ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
@@ -488,6 +515,10 @@ class _A1BasicsLessonPageState
           _stage('Guided Practice', 'تمرین هدایت‌شده', [10, 11, 12, 13]),
           _stage('Translation Practice', 'تمرین ترجمه', [14, 15, 16, 17]),
           _stage('Real-World Use', 'کاربرد واقعی', [0, 1, 2, 8]),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
         ];
 
@@ -534,6 +565,10 @@ class _A1BasicsLessonPageState
             'Stage 8',
             'مرحله ۸',
             List.generate(40, (i) => i),
+          ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
           ),
           _speakingStage(
             'Speaking',
@@ -588,6 +623,10 @@ class _A1BasicsLessonPageState
             'مرحله ۸',
             List.generate(40, (i) => i),
           ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
@@ -639,6 +678,10 @@ class _A1BasicsLessonPageState
             'Stage 8',
             'مرحله ۸',
             List.generate(40, (i) => i),
+          ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
           ),
           _speakingStage(
             'Speaking',
@@ -719,6 +762,10 @@ class _A1BasicsLessonPageState
             'مرحله ۸',
             List.generate(40, (i) => i),
           ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
@@ -791,6 +838,10 @@ class _A1BasicsLessonPageState
             'Real-Life Present Simple',
             'Present Simple در انگلیسی واقعی',
             List.generate(47, (i) => i),
+          ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
           ),
           _speakingStage(
             'Speaking',
@@ -1339,6 +1390,12 @@ class _A1BasicsLessonPageState
       final listenedExamples =
           data['listenedExamples'];
 
+      final listeningAnswered =
+          data['listeningAnswered'];
+
+      final selectedListeningAnswers =
+          data['selectedListeningAnswers'];
+
       if (!mounted) {
         return;
       }
@@ -1477,6 +1534,27 @@ class _A1BasicsLessonPageState
           );
         }
 
+        _listeningAnswered.clear();
+
+        if (listeningAnswered is List) {
+          for (final value in listeningAnswered) {
+            if (value is num) {
+              _listeningAnswered.add(value.toInt());
+            }
+          }
+        }
+
+        _selectedListeningAnswers.clear();
+
+        if (selectedListeningAnswers is Map) {
+          selectedListeningAnswers.forEach((key, value) {
+            final index = int.tryParse(key.toString());
+            if (index != null && value is String) {
+              _selectedListeningAnswers[index] = value;
+            }
+          });
+        }
+
         _listenedExamples.clear();
 
         if (listenedExamples is List) {
@@ -1553,6 +1631,14 @@ class _A1BasicsLessonPageState
 
       'completedSpeaking':
           _completedSpeaking.toList(),
+
+      'listeningAnswered':
+          _listeningAnswered.toList(),
+
+      'selectedListeningAnswers':
+          _selectedListeningAnswers.map(
+        (key, value) => MapEntry(key.toString(), value),
+      ),
 
       'speakingResults':
           _speakingResults.map(
@@ -3591,6 +3677,116 @@ class _A1BasicsLessonPageState
   }
 
   // =========================================================
+  // LISTENING
+  // =========================================================
+
+  List<A1BasicListeningQuestion> get _listeningQuestions =>
+      a1BasicsListeningQuestionsFor(widget.lesson.id);
+
+  Widget _buildListeningQuestion(int index) {
+    final questions = _listeningQuestions;
+    if (index < 0 || index >= questions.length) {
+      return const SizedBox.shrink();
+    }
+
+    final listening = questions[index];
+    final answered = _listeningAnswered.contains(index);
+    final selected = _selectedListeningAnswers[index];
+    final correct = selected == listening.answer;
+
+    return Container(
+      margin: EdgeInsets.only(bottom: A1BasicsUIConfig.cardSpacing),
+      padding: EdgeInsets.all(A1BasicsUIConfig.pagePadding),
+      decoration: BoxDecoration(
+        color: _surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: answered
+              ? (correct ? Colors.green.withAlpha(65) : Colors.orange.withAlpha(65))
+              : _outline,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            _isPersian
+                ? 'به جمله گوش بده و چیزی را که شنیدی انتخاب کن.'
+                : 'Listen to the sentence and choose what you hear.',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 14),
+          OutlinedButton.icon(
+            onPressed: () => _speak(listening.sentence),
+            icon: const Icon(Icons.volume_up_rounded),
+            label: Text(_isPersian ? 'پخش صدا' : 'Play audio'),
+          ),
+          const SizedBox(height: 14),
+          ...listening.options.map((option) {
+            final isSelected = selected == option;
+            final isAnswer = option == listening.answer;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: OutlinedButton(
+                onPressed: answered ? null : () => _answerListening(index, option),
+                style: OutlinedButton.styleFrom(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  side: BorderSide(
+                    color: isSelected
+                        ? (isAnswer ? Colors.green : Colors.orange)
+                        : _outline,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(child: Text(option)),
+                    if (answered && isAnswer)
+                      const Icon(Icons.check_circle_rounded),
+                    if (answered && isSelected && !isAnswer)
+                      const Icon(Icons.cancel_rounded),
+                  ],
+                ),
+              ),
+            );
+          }),
+          if (answered)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                correct
+                    ? (_isPersian ? 'درست شنیدی 😼🎧' : 'Correct! 😼🎧')
+                    : (_isPersian
+                        ? 'جواب درست: ' + listening.answer
+                        : 'Correct answer: ' + listening.answer),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: correct ? Colors.green : Colors.orange,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _answerListening(int index, String answer) {
+    if (_listeningAnswered.contains(index)) {
+      return;
+    }
+    setState(() {
+      _selectedListeningAnswers[index] = answer;
+      _listeningAnswered.add(index);
+    });
+    _saveProgress();
+  }
+
+  // =========================================================
   // SPEAKING
   // =========================================================
 
@@ -3914,8 +4110,15 @@ class _A1BasicsLessonPageState
               .contains(index),
     );
 
+    final listeningComplete =
+        stage.listeningIndices.every(
+      (index) =>
+          _listeningAnswered.contains(index),
+    );
+
     return questionsComplete &&
-        speakingComplete;
+        speakingComplete &&
+        listeningComplete;
   }
 
   Future<void> _goPreviousStage() async {
@@ -4251,7 +4454,24 @@ class _A1BasicsLessonPageState
         ),
         if (_learningMode)
           _buildLearningContent()
-        else ...[
+        else if (stage.isListeningStage) ...[
+          ...stage.listeningIndices.map(
+            _buildListeningQuestion,
+          ),
+          SizedBox(height: A1BasicsUIConfig.sectionSpacing),
+          FilledButton(
+            onPressed: _finishCurrentStage,
+            style: FilledButton.styleFrom(
+              backgroundColor: lavender,
+              foregroundColor: Colors.black87,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(A1BasicsUIConfig.buttonRadius),
+              ),
+            ),
+            child: Text(_isPersian ? 'تکمیل Listening' : 'Complete Listening'),
+          ),
+        ] else ...[
           ...stage.questionIndices.map(
             _buildQuestion,
           ),
@@ -4456,6 +4676,20 @@ class _A1BasicsLessonPageState
     );
   }
 
+  _A1Stage _listeningStage(
+    String title,
+    String titleFa,
+  ) {
+    return _A1Stage(
+      title: title,
+      titleFa: titleFa,
+      description: 'Listen first, then choose the sentence you heard.',
+      descriptionFa: 'اول گوش بده، بعد جمله‌ای را که شنیدی انتخاب کن.',
+      listeningIndices: const [0, 1, 2],
+      stageKind: 'listening',
+    );
+  }
+
   @override
   void dispose() {
     _tts.stop();
@@ -4483,6 +4717,10 @@ class _A1Stage {
 
   final List<int> questionIndices;
   final List<int> speakingIndices;
+  final List<int> listeningIndices;
+  final String stageKind;
+
+  bool get isListeningStage => stageKind == 'listening';
 
   const _A1Stage({
     required this.title,
@@ -4493,5 +4731,7 @@ class _A1Stage {
         const [],
     this.speakingIndices =
         const [],
+    this.listeningIndices = const [],
+    this.stageKind = 'learning',
   });
 }
