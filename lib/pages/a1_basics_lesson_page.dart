@@ -412,8 +412,8 @@ class _A1BasicsLessonPageState
         ];
 
       case 'a1_basic_12':
-      case 'lesson_5':
-      case '5':
+      case 'lesson_12':
+      case '12':
         return [
           _stage('What Is a Regular Verb?', 'فعل باقاعده چیست؟', [0, 18, 19, 20]),
           _stage('Base Form: I/You/We/They', 'شکل پایه: I/You/We/They', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28]),
@@ -433,8 +433,8 @@ class _A1BasicsLessonPageState
         ];
 
       case 'a1_basic_13':
-      case 'lesson_6':
-      case '6':
+      case 'lesson_13':
+      case '13':
         return [
           // Each stage keeps all previously taught material.
           _stage('Go and Goes', 'Go و Goes', [0, 1]),
@@ -667,13 +667,86 @@ class _A1BasicsLessonPageState
       case 'a1_basic_09':
       case 'lesson_9':
       case '9':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('A / An / The', 'A / An / The', [0, 1, 2]),
+          _stage(
+            'A vs An',
+            'تفاوت A و An',
+            [0, 1, 2, 6, 14, 18, 19],
+          ),
+          _stage(
+            'The for Specific Things',
+            'The برای چیزهای مشخص',
+            [0, 1, 2, 6, 14, 18, 19, 4, 8, 9, 11],
+          ),
+          _stage(
+            'Plural Nouns',
+            'اسم‌های جمع',
+            [0, 1, 2, 6, 14, 18, 19, 4, 8, 9, 11, 12, 13],
+          ),
+          _stage(
+            'General vs Specific',
+            'کلی یا مشخص؟',
+            [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20],
+          ),
+          _stage(
+            'Guided Practice',
+            'تمرین هدایت‌شده',
+            List.generate(21, (i) => i),
+          ),
+          _stage(
+            'Translation and Final Review',
+            'ترجمه و مرور نهایی',
+            List.generate(25, (i) => i),
+          ),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
       case 'a1_basic_10':
       case 'lesson_10':
       case '10':
-        return _buildGenericStages(
-          _questions.length,
-          widget.lesson.speakingQuestions.length,
-        );
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('What Is Can?', 'Can چیست؟', [0, 1, 2, 3, 4, 5]),
+          _stage(
+            'Can + Base Verb',
+            'Can + شکل ساده فعل',
+            List.generate(14, (i) => i),
+          ),
+          _stage(
+            'Can’t / Cannot',
+            'Can’t / Cannot',
+            List.generate(18, (i) => i),
+          ),
+          _stage(
+            'Questions and Short Answers',
+            'سؤال‌ها و جواب‌های کوتاه',
+            List.generate(23, (i) => i),
+          ),
+          _stage(
+            'Recognition Practice',
+            'تمرین تشخیص',
+            List.generate(29, (i) => i),
+          ),
+          _stage(
+            'Translation and Word Order',
+            'ترجمه و مرتب کردن جمله',
+            List.generate(37, (i) => i),
+          ),
+          _stage(
+            'Permission, Requests and Inability',
+            'اجازه، درخواست و ناتوانی',
+            List.generate(40, (i) => i),
+          ),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_11':
+      case 'lesson_11':
+      case '11':
 
       case 'a1_basic_11':
       case 'lesson_11':
@@ -807,6 +880,59 @@ class _A1BasicsLessonPageState
             'Speaking',
             'تمرین مکالمه',
           ),
+        ];
+
+      case 'a1_basic_14':
+      case 'lesson_14':
+      case '14':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('What Is the Present Continuous?', 'Present Continuous چیست؟', const []),
+          _stage('Basic Structure', 'ساختار پایه', List.generate(10, (i) => i)),
+          _stage('Positive Sentences', 'جمله‌های مثبت', List.generate(10, (i) => i)),
+          _stage('Negative Sentences', 'جمله‌های منفی', List.generate(11, (i) => i)),
+          _stage('Questions and Short Answers', 'سؤال‌ها و جواب‌های کوتاه', List.generate(14, (i) => i)),
+          _stage('When Do We Use It?', 'چه زمانی از آن استفاده می‌کنیم؟', List.generate(22, (i) => i)),
+          _stage('Translation and Recognition', 'ترجمه و تشخیص', List.generate(27, (i) => i)),
+          _stage('Accuracy Practice', 'تمرین دقت', List.generate(32, (i) => i)),
+          _stage('Independent Practice and Review', 'تمرین مستقل و مرور', List.generate(37, (i) => i)),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_15':
+      case 'lesson_15':
+      case '15':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('Will / Going to', 'Will / Going to', const []),
+          _stage('Will', 'Will', List.generate(5, (i) => i)),
+          _stage('Will: Forms', 'شکل‌های Will', List.generate(10, (i) => i)),
+          _stage('Going to', 'Going to', List.generate(15, (i) => i)),
+          _stage('Will vs Going to', 'تفاوت Will و Going to', List.generate(19, (i) => i)),
+          _stage('Translation Practice', 'تمرین ترجمه', List.generate(23, (i) => i)),
+          _stage('Accuracy and Word Order', 'دقت و ترتیب کلمات', List.generate(31, (i) => i)),
+          _stage('Real-World Future Review', 'مرور کاربردی آینده', List.generate(35, (i) => i)),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_16':
+      case 'lesson_16':
+      case '16':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('Wh-Questions', 'سؤال‌های Wh', const []),
+          _stage('Wh-Words', 'کلمه‌های Wh', List.generate(7, (i) => i)),
+          _stage('Present Simple Wh', 'Wh در Present Simple', List.generate(9, (i) => i)),
+          _stage('Present Continuous Wh', 'Wh در Present Continuous', List.generate(10, (i) => i)),
+          _stage('Past Wh with Did', 'Wh در گذشته با Did', List.generate(12, (i) => i)),
+          _stage('Can, Must, Will and Going to', 'Can، Must، Will و Going to', List.generate(15, (i) => i)),
+          _stage('Who: Subject or Object?', 'Who: فاعل یا مفعول؟', List.generate(20, (i) => i)),
+          _stage('Translation and Guided Practice', 'ترجمه و تمرین هدایت‌شده', List.generate(24, (i) => i)),
+          _stage('Independent and Real-World Practice', 'تمرین مستقل و کاربرد واقعی', List.generate(28, (i) => i)),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
         ];
 
       default:
