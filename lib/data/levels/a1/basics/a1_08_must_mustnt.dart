@@ -1095,15 +1095,15 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Must I smoke here? — ___',
+      question: 'Must we wear a seat belt? — ___',
       options: [
-        'No, you mustn’t.',
-        'No, you must.',
-        'No, you are.',
-        'No, you do.',
+        'Yes, we must.',
+        'Yes, we do.',
+        'Yes, we are.',
+        'Yes, we wear.',
       ],
-      answer: 'No, you mustn’t.',
-      explanation: 'Mustn’t is used when something is forbidden or not allowed.',
+      answer: 'Yes, we must.',
+      explanation: 'Must is repeated in a positive short answer.'
     ),
     A1BasicQuestion(
       type: 'true_false',
