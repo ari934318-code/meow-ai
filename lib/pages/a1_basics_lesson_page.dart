@@ -2392,7 +2392,7 @@ class _A1BasicsLessonPageState
               height: A1BasicsUIConfig.cardSpacing,
             ),
           ],
-          ...(List<String>.from(question.options)..shuffle()).map(
+          ...question.options.map(
             (option) {
               final selectedThis =
                   selected == option;
