@@ -477,57 +477,42 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 1',
             'مرحله ۱',
-            List.generate(
-              6,
-              (i) => i,
-            ),
+            List.generate(6, (i) => i),
           ),
           _stage(
             'Stage 2',
             'مرحله ۲',
-            [6, 7],
+            List.generate(8, (i) => i),
           ),
           _stage(
             'Stage 3',
             'مرحله ۳',
-            List.generate(
-              6,
-              (i) => i + 8,
-            ),
+            List.generate(14, (i) => i),
           ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            List.generate(
-              9,
-              (i) => i + 14,
-            ),
+            List.generate(23, (i) => i),
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
-            List.generate(
-              6,
-              (i) => i + 23,
-            ),
+            List.generate(29, (i) => i),
           ),
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(
-              5,
-              (i) => i + 29,
-            ),
+            List.generate(34, (i) => i),
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            [34, 35, 36],
+            List.generate(37, (i) => i),
           ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            [37, 38, 39],
+            List.generate(40, (i) => i),
           ),
           _speakingStage(
             'Speaking',
@@ -2143,6 +2128,84 @@ class _A1BasicsLessonPageState
           'taks', 'gived', 'seed', 'knowes', 'saies',
         };
         if (futureMalformed.contains(v)) return true;
+
+        return false;
+      }
+
+      if (widget.lesson.id == 'a1_basic_07' ||
+        widget.lesson.id == 'a1_07' ||
+        widget.lesson.id == 'lesson_7' ||
+        widget.lesson.id == '7') {
+      final allowNegative = _currentStage >= 2;
+      final allowQuestions = _currentStage >= 3;
+      final allowShortAnswers = _currentStage >= 4;
+      final allowTrueFalse = _currentStage >= 5;
+      final allowTranslation = _currentStage >= 6;
+      final allowWordOrder = _currentStage >= 7;
+      final allowRealLife = _currentStage >= 8;
+
+      bool isFutureConcept(String value) {
+        final v = value.toLowerCase().trim();
+
+        if (v == 'true' || v == 'false') {
+          return !allowTrueFalse;
+        }
+
+        if (!allowNegative &&
+            (v == "can't" ||
+                v == 'cannot' ||
+                v.contains("can't ") ||
+                v.contains('cannot '))) {
+          return true;
+        }
+
+        if (!allowQuestions &&
+            (v.startsWith('can ') ||
+                v.startsWith('do can') ||
+                v.startsWith('does can') ||
+                v.startsWith('is can') ||
+                v.startsWith('are can'))) {
+          return true;
+        }
+
+        if (!allowShortAnswers &&
+            (v.startsWith('yes,') || v.startsWith('no,'))) {
+          return true;
+        }
+
+        if (!allowTranslation && v.contains('ترجمه')) return true;
+        if (!allowWordOrder && v.contains('put the words in order')) return true;
+
+        if (!allowRealLife &&
+            (v.contains('permission') ||
+                v.contains('request') ||
+                v.contains('inability'))) {
+          return true;
+        }
+
+        // Common future/incorrect forms should not become distractors
+        // before the corresponding can + base-verb rule is taught.
+        const futureForms = {
+          'cans',
+          'can to',
+          'can swimming',
+          'can speaks',
+          'can playing',
+          'can driving',
+          'can helping',
+          'can opening',
+          'can’t to',
+          'can’t swimming',
+          'can’t drives',
+          'can’t driving',
+          'doesn’t can',
+          'do can',
+          'does can',
+          'is can',
+          'cann’t',
+          'cannotn’t',
+        };
+        if (futureForms.contains(v)) return true;
 
         return false;
       }
