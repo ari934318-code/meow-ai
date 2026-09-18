@@ -229,66 +229,23 @@ class _A1BasicsLessonPageState
       case 'lesson_6':
       case '6':
         return [
-          // Each stage keeps all previously taught material.
-          _stage('Go and Goes', 'Go و Goes', [0, 1]),
-          _stage('Have and Has', 'Have و Has', [0, 1, 2, 3]),
-          _stage('Do and Does', 'Do و Does', [0, 1, 2, 3, 4, 5]),
           _stage(
-            'Get and Gets',
-            'Get و Gets',
-            [0, 1, 2, 3, 4, 5, 6, 7],
+            'Learn',
+            'یادگیری',
+            const [],
           ),
           _stage(
-            'Make and Makes',
-            'Make و Makes',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
           ),
-          _stage(
-            'Take and Takes',
-            'Take و Takes',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20],
+          _speakingStage(
+            'Speaking',
+            'تمرین تلفظ و لهجه',
           ),
-          _stage(
-            'Give and Gives',
-            'Give و Gives',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13],
-          ),
-          _stage(
-            'See and Sees',
-            'See و Sees',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15],
-          ),
-          _stage(
-            'Know and Knows',
-            'Know و Knows',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17],
-          ),
-          _stage(
-            'Say and Says',
-            'Say و Says',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19],
-          ),
-          _stage(
-            'Questions with Irregular Verbs',
-            'سؤال با افعال بی‌قاعده',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25],
-          ),
-          _stage(
-            'Negative Sentences',
-            'جمله‌های منفی',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29],
-          ),
-          _stage(
-            'Common Mistakes',
-            'اشتباهات رایج',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35],
-          ),
-          _stage(
-            'Translation and Word Order',
-            'ترجمه و مرتب کردن جمله',
-            List.generate(44, (i) => i),
-          ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
 
       case 'a1_07':
