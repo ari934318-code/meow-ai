@@ -736,17 +736,20 @@ class _A1BasicsLessonPageState
       case 'lesson_12':
       case '12':
         return [
-          _stage('What Is a Regular Verb?', 'فعل باقاعده چیست؟', [0, 18, 19, 20]),
-          _stage('Base Form: I/You/We/They', 'شکل پایه: I/You/We/They', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28]),
-          _stage('He/She/It + S', 'He/She/It + S', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32]),
-          _stage('Adding ES', 'اضافه کردن ES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29]),
-          _stage('Y → IES', 'تبدیل Y به IES', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33]),
-          _stage('Positive Sentences', 'جمله‌های مثبت', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13]),
-          _stage('Negative Sentences', 'جمله‌های منفی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23]),
-          _stage('Questions', 'سؤال‌ها', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34]),
-          _stage('Positive vs Negative vs Question', 'مثبت، منفی و سوالی', [0, 18, 19, 20, 1, 2, 7, 11, 24, 26, 28, 3, 5, 8, 9, 10, 25, 30, 31, 32, 4, 29, 6, 33, 12, 13, 14, 16, 17, 23, 15, 27, 34, 21, 22, 35]),
-          _stage('Everyday Verbs and Review', 'افعال روزمره و مرور نهایی', List.generate(37, (i) => i)),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('What Is the Regular Past?', 'گذشته باقاعده چیست؟', const []),
+          _stage('The -ed Rule', 'قانون -ed', [0, 6, 7, 8, 9]),
+          _stage('Spelling Changes', 'تغییرات املایی', [0, 6, 7, 8, 9, 26, 27]),
+          _stage('Positive Sentences', 'جمله‌های مثبت', List.generate(12, (i) => i)),
+          _stage('Negative with Didn’t', 'منفی با Didn’t', List.generate(14, (i) => i)),
+          _stage('Questions with Did', 'سؤال با Did', List.generate(16, (i) => i)),
+          _stage('The Important Rule', 'قانون مهم', List.generate(20, (i) => i)),
+          _stage('More Examples', 'مثال‌های بیشتر', List.generate(24, (i) => i)),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', List.generate(29, (i) => i)),
+          _stage('Independent Production', 'تولید مستقل', List.generate(29, (i) => i)),
+          _stage('Real-Life Use', 'کاربرد واقعی', List.generate(29, (i) => i)),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
         ];
 
       case 'a1_basic_13':
@@ -2071,27 +2074,33 @@ class _A1BasicsLessonPageState
     final section =
         _getCurrentSection();
 
+    final phase = section == null &&
+            widget.lesson.learningPhases.isNotEmpty
+        ? widget.lesson.learningPhases[
+            min(_currentStage, widget.lesson.learningPhases.length - 1)
+          ]
+        : null;
+
     final examples =
-        section != null &&
-                section.examples.isNotEmpty
-            ? section.examples
-            : widget.lesson.examples
-                .take(5)
-                .toList();
+        phase != null && phase.examples.isNotEmpty
+            ? phase.examples
+            : section != null && section.examples.isNotEmpty
+                ? section.examples
+                : widget.lesson.examples.take(5).toList();
 
     final sectionTitle =
-        section == null
-            ? (_isPersian
-                ? _stages[_currentStage]
-                    .titleFa
-                : _stages[_currentStage]
-                    .title)
-            : (_isPersian
-                ? section.titleFa
-                : section.title);
+        phase != null
+            ? (_isPersian ? phase.titleFa : phase.title)
+            : section == null
+                ? (_isPersian
+                    ? _stages[_currentStage].titleFa
+                    : _stages[_currentStage].title)
+                : (_isPersian ? section.titleFa : section.title);
 
     final sectionDescription =
-        _localizedSectionDescription(section);
+        phase != null
+            ? (_isPersian ? phase.bodyFa : phase.body)
+            : _localizedSectionDescription(section);
 
     return Column(
       crossAxisAlignment:
