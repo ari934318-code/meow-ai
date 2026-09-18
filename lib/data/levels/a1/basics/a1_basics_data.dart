@@ -23,6 +23,8 @@ import 'a1_10_possessive_adjectives.dart';
 import 'a1_10_possessive_adjectives_questions_localized.dart';
 import 'a1_11_present_simple.dart';
 import 'a1_11_present_simple_questions_localized.dart';
+import 'a1_12_present_continuous.dart';
+import 'a1_12_present_continuous_questions_localized.dart';
 
 final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicPronouns,
@@ -39,4 +41,5 @@ final List<A1BasicLesson> a1BasicsLessons = [
   a1BasicIrregularVerbs.copyWithQuestions(a1IrregularVerbsQuestions),
   a1BasicCanCant.copyWithQuestions(a1CanCantQuestions),
   a1BasicMustMustnt.copyWithQuestions(a1MustMustntQuestions),
+  a1BasicPresentContinuous.copyWithQuestions(a1PresentContinuousQuestions),
 ];
