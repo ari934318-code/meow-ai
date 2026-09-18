@@ -23,6 +23,7 @@ class A1BasicLesson {
   final String topic;
   final String explanation;
   final List<A1BasicSection> _sections;
+  final List<A1BasicLearningPhase> learningPhases;
   final List<A1BasicExample> examples;
   final List<A1BasicQuestion> questions;
   final List<A1BasicSpeakingQuestion> speakingQuestions;
@@ -35,6 +36,7 @@ class A1BasicLesson {
     required this.topic,
     required this.explanation,
     required List<A1BasicSection> sections,
+    this.learningPhases = const [],
     required this.examples,
     required this.questions,
     required this.speakingQuestions,
@@ -51,6 +53,7 @@ class A1BasicLesson {
       topic: topic,
       explanation: explanation,
       sections: _sections,
+      learningPhases: learningPhases,
       examples: examples,
       questions: newQuestions,
       speakingQuestions: speakingQuestions,
@@ -72,6 +75,26 @@ class A1BasicSection {
     required this.explanation,
     required this.explanationFa,
     required this.examples,
+  });
+}
+
+class A1BasicLearningPhase {
+  final String type;
+  final String title;
+  final String titleFa;
+  final String body;
+  final String bodyFa;
+  final List<A1BasicExample> examples;
+  final List<List<String>> tableRows;
+
+  const A1BasicLearningPhase({
+    required this.type,
+    required this.title,
+    required this.titleFa,
+    required this.body,
+    required this.bodyFa,
+    this.examples = const [],
+    this.tableRows = const [],
   });
 }
 
