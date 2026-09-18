@@ -358,66 +358,15 @@ class _A1BasicsLessonPageState
           // Present Simple is cumulative: each stage keeps every concept
           // taught earlier. A later grammar point must never appear in an
           // earlier stage, even as a multiple-choice distractor.
-          _stage(
-            'What Is the Present Simple?',
-            'Present Simple چیست؟',
-            [33],
-          ),
-          _stage(
-            'I, You, We, They',
-            'I, You, We, They',
-            [33, 0, 3, 5, 7, 10],
-          ),
-          _stage(
-            'He, She, It',
-            'He, She, It',
-            [33, 0, 3, 5, 7, 10, 2, 4],
-          ),
-          _stage(
-            'Adding -s',
-            'اضافه کردن s',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8],
-          ),
-          _stage(
-            'Adding -es',
-            'اضافه کردن es',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11],
-          ),
-          _stage(
-            'The -y to -ies Rule',
-            'قانون تبدیل y به ies',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27],
-          ),
-          _stage(
-            'Positive Sentences',
-            'جمله‌های مثبت',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34],
-          ),
-          _stage(
-            'Negative Sentences',
-            'جمله‌های منفی',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37],
-          ),
-          _stage(
-            'Do and Does in Questions',
-            'سؤال با Do و Does',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19],
-          ),
-          _stage(
-            'Common Mistakes',
-            'اشتباهات رایج',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19, 20, 21, 22, 23, 25, 35, 36],
-          ),
-          _stage(
-            'Adverbs of Frequency',
-            'قیدهای تکرار',
-            [33, 0, 3, 5, 7, 10, 2, 4, 8, 6, 9, 11, 1, 27, 24, 34, 12, 13, 14, 15, 26, 37, 16, 17, 18, 19, 20, 21, 22, 23, 25, 35, 36, 28, 29, 30, 31, 32],
-          ),
-          _stage(
-            'Real-Life Present Simple',
-            'Present Simple در انگلیسی واقعی',
-            List.generate(47, (i) => i),
-          ),
+          _stage('What Is the Present Simple?', 'Present Simple چیست؟', [0, 1, 2, 3]),
+          _stage('I, You, We, They', 'I, You, We, They', [4, 5, 6, 7]),
+          _stage('He, She, It', 'He, She, It', [8, 9, 10, 11]),
+          _stage('Positive Sentences', 'جمله‌های مثبت', [12, 13, 14, 15]),
+          _stage('Negative Sentences', 'جمله‌های منفی', [16, 17, 18, 19]),
+          _stage('Do and Does in Questions', 'سؤال با Do و Does', [20, 21, 22, 23]),
+          _stage('Common Mistakes', 'اشتباهات رایج', [24, 25, 26, 27]),
+          _stage('Adverbs of Frequency', 'قیدهای تکرار', [28, 29, 30, 31, 32]),
+          _stage('Real-Life Present Simple', 'Present Simple در انگلیسی واقعی', List.generate(_questions.length, (i) => i)),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
