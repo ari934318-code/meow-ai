@@ -1362,6 +1362,32 @@ class _A1BasicsLessonPageState
   // SECTION
   // =========================================================
 
+  A1BasicLearningPhase? _getCurrentLearningPhase() {
+    final phases = widget.lesson.learningPhases;
+    if (phases.isEmpty || _stages.isEmpty) return null;
+
+    final stage = _stages[_currentStage];
+    final stageTitle = _normalizeTitle(stage.title);
+    final stageTitleFa = _normalizeTitle(stage.titleFa);
+
+    for (final phase in phases) {
+      final title = _normalizeTitle(phase.title);
+      final titleFa = _normalizeTitle(phase.titleFa);
+      if (title == stageTitle ||
+          titleFa == stageTitleFa ||
+          (stageTitle.isNotEmpty &&
+              (title.contains(stageTitle) || stageTitle.contains(title))) ||
+          (stageTitleFa.isNotEmpty &&
+              (titleFa.contains(stageTitleFa) ||
+                  stageTitleFa.contains(titleFa)))) {
+        return phase;
+      }
+    }
+
+    final index = min(_currentStage, phases.length - 1);
+    return phases[index];
+  }
+
   A1BasicSection? _getCurrentSection() {
     if (widget.lesson.sections.isEmpty ||
         _stages.isEmpty) {
@@ -2080,15 +2106,10 @@ class _A1BasicsLessonPageState
   }
 
   Widget _buildLearningContent() {
-    final section =
-        _getCurrentSection();
+    final section = _getCurrentSection();
+    final phase = _getCurrentLearningPhase();
 
-    final phase = section == null &&
-            widget.lesson.learningPhases.isNotEmpty
-        ? widget.lesson.learningPhases[
-            min(_currentStage, widget.lesson.learningPhases.length - 1)
-          ]
-        : null;
+
 
     final examples =
         phase != null && phase.examples.isNotEmpty
