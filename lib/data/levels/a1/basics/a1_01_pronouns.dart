@@ -9,6 +9,22 @@ const A1BasicLesson a1BasicPronouns = A1BasicLesson(
       'Subject pronouns are words we use instead of names or nouns. In English, the main subject pronouns are I, you, he, she, it, we, and they.',
   sections: [
     A1BasicSection(
+      title: 'What Are Pronouns?',
+      titleFa: 'ضمیر چیست؟',
+      explanation: 'A pronoun is a word that replaces a person, animal, thing, or group.',
+      explanationFa: 'ضمیر کلمه‌ای است که به جای شخص، حیوان، چیز یا یک گروه استفاده می‌شود.',
+      examples: [
+        A1BasicExample(
+          english: 'Sara is a student. She is happy.',
+          persian: 'سارا دانش‌آموز است. او خوشحال است.',
+        ),
+        A1BasicExample(
+          english: 'Ali is my friend. He is kind.',
+          persian: 'علی دوست من است. او مهربان است.',
+        ),
+      ],
+    ),
+    A1BasicSection(
       title: 'I',
       titleFa: 'I — من',
       explanation: 'Use "I" when you are talking about yourself.',
@@ -100,22 +116,6 @@ const A1BasicLesson a1BasicPronouns = A1BasicLesson(
       ],
     ),
     A1BasicSection(
-      title: 'What Are Pronouns?',
-      titleFa: 'ضمیر چیست؟',
-      explanation: 'A pronoun is a word that replaces a person, animal, thing, or group.',
-      explanationFa: 'ضمیر کلمه‌ای است که به جای شخص، حیوان، چیز یا یک گروه استفاده می‌شود.',
-      examples: [
-        A1BasicExample(
-          english: 'Sara is a student. She is happy.',
-          persian: 'سارا دانش‌آموز است. او خوشحال است.',
-        ),
-        A1BasicExample(
-          english: 'Ali is my friend. He is kind.',
-          persian: 'علی دوست من است. او مهربان است.',
-        ),
-      ],
-    ),
-    A1BasicSection(
       title: 'Pronoun Chart',
       titleFa: 'جدول ضمیرها',
       explanation: 'Learn the basic subject pronouns and their meanings.',
@@ -129,8 +129,8 @@ const A1BasicLesson a1BasicPronouns = A1BasicLesson(
         A1BasicExample(english: 'we → ما', persian: 'ما'),
         A1BasicExample(english: 'they → آن‌ها', persian: 'آن‌ها'),
       ],
-    ),
-  ],
+    )
+
   examples: [
     A1BasicExample(english: 'I am a student.', persian: 'من دانش‌آموز هستم.', pronunciation: 'آی اَم اَ اِستودِنت'),
     A1BasicExample(english: 'You are my friend.', persian: 'تو دوست من هستی.', pronunciation: 'یو آر مای فِرِند'),
@@ -166,7 +166,7 @@ const A1BasicLesson a1BasicPronouns = A1BasicLesson(
     A1BasicQuestion(type: 'multipleChoice', question: 'Choose the correct sentence.', questionFa: 'جمله درست را انتخاب کن.', options: ['It is a phone.', 'He is a phone.', 'She is a phone.', 'They is a phone.'], answer: 'It is a phone.', explanation: 'A phone is a thing, so use it.', explanationFa: 'Phone یک چیز است، پس از it استفاده می‌کنیم.'),
     A1BasicQuestion(type: 'multipleChoice', question: 'Choose the correct sentence.', questionFa: 'جمله درست را انتخاب کن.', options: ['We are friends.', 'We is friends.', 'We am friends.', 'We are friend.'], answer: 'We are friends.', explanation: 'Use we for yourself and other people.', explanationFa: 'برای خودت همراه با افراد دیگر از we استفاده می‌کنیم.'),
     A1BasicQuestion(type: 'multipleChoice', question: 'Choose the correct sentence.', questionFa: 'جمله درست را انتخاب کن.', options: ['They are students.', 'They is students.', 'They am students.', 'They are student.'], answer: 'They are students.', explanation: 'Use they for two or more people.', explanationFa: 'برای دو یا چند نفر از they استفاده می‌کنیم.'),
-    A1BasicQuestion(type: 'multipleChoice', question: 'Complete: ___ am happy.', questionFa: 'جمله را کامل کن: ___ خوشحالم.', options: ['I', 'He', 'She', 'They'], answer: 'I', explanation: 'The speaker uses I for themselves.', explanationFa: 'گوینده برای خودش از I استفاده می‌کند.'),
+    A1BasicQuestion(type: 'multipleChoice', question: 'Which pronoun means "من"?', questionFa: 'کدام ضمیر به معنی «من» است؟', options: ['I', 'You', 'He', 'They'], answer: 'I', explanation: 'I means the person who is speaking.', explanationFa: 'I به شخصی اشاره می‌کند که در حال صحبت کردن است.'),
     A1BasicQuestion(type: 'multipleChoice', question: 'Complete: ___ is my teacher. (a woman)', questionFa: 'جمله را کامل کن: ___ معلم من است. (یک زن)', options: ['She', 'He', 'It', 'We'], answer: 'She', explanation: 'Use she for a female person.', explanationFa: 'برای یک شخص مؤنث از she استفاده می‌کنیم.'),
     A1BasicQuestion(type: 'multipleChoice', question: 'Complete: ___ is my father.', questionFa: 'جمله را کامل کن: ___ پدر من است.', options: ['He', 'She', 'It', 'They'], answer: 'He', explanation: 'Use he for a male person.', explanationFa: 'برای یک شخص مذکر از he استفاده می‌کنیم.'),
     A1BasicQuestion(type: 'multipleChoice', question: 'Complete: ___ is my cat.', questionFa: 'جمله را کامل کن: ___ گربه من است.', options: ['It', 'He', 'We', 'They'], answer: 'It', explanation: 'It is the basic pronoun for an animal when he or she is not specified.', explanationFa: 'وقتی برای حیوان he یا she را مشخص نکرده‌ایم، از it استفاده می‌کنیم.'),
@@ -196,6 +196,7 @@ const A1BasicLesson a1BasicPronouns = A1BasicLesson(
     A1BasicQuestion(type: 'multipleChoice', question: 'Complete: My parents are at home. ___ are tired.', questionFa: 'جمله را کامل کن: والدینم خانه هستند. ___ خسته هستند.', options: ['They', 'We', 'He', 'She'], answer: 'They', explanation: 'Parents are two people, so use they.', explanationFa: 'Parents دو نفر هستند، پس از they استفاده می‌کنیم.'),
     A1BasicQuestion(type: 'multipleChoice', question: 'Complete: I have a new bag. ___ is black.', questionFa: 'جمله را کامل کن: یک کیف جدید دارم. ___ مشکی است.', options: ['It', 'He', 'She', 'They'], answer: 'It', explanation: 'A bag is one thing, so use it.', explanationFa: 'Bag یک چیز است، پس از it استفاده می‌کنیم.'),
   ],
+  A1BasicQuestion(type: 'multipleChoice', question: 'What is a pronoun?', questionFa: 'ضمیر چیست؟', options: ['A word that replaces a person, thing, or group', 'A word for an action', 'A word for a place', 'A word for a number'], answer: 'A word that replaces a person, thing, or group', explanation: 'A pronoun can replace a person, animal, thing, or group.', explanationFa: 'ضمیر می‌تواند جای شخص، حیوان، چیز یا یک گروه را بگیرد.'),
   speakingQuestions: [
     A1BasicSpeakingQuestion(question: 'Introduce yourself. Say your name.', persian: 'خودت را معرفی کن و اسمت را بگو.', acceptableAnswers: ['my name is', 'i am', "i'm"]),
   ],
