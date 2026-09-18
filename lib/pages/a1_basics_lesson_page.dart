@@ -21,6 +21,19 @@
           ),
         ];
 
+      case 'a1_basic_06':
+      case 'a1_06_simple_wh':
+      case 'lesson_6':
+      case '6':
+        return [
+          _stage('Question Words', 'کلمه‌های پرسشی', [0, 1, 2, 3, 4]),
+          _stage('To Be Questions', 'سؤال با To Be', [5, 6, 7, 8]),
+          _stage('Present Simple Questions', 'سؤال با Present Simple', [9, 10, 11, 12]),
+          _stage('Recognition and Word Order', 'تشخیص و ترتیب کلمات', [13, 14, 15]),
+          _stage('Real-Life Practice', 'تمرین کاربردی', List.generate(_questions.length, (i) => i)),
+          _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
+        ];
+
       case 'a1_basic_13':
       case 'a1_13':
       case 'lesson_13':
