@@ -4,7 +4,7 @@ import '../lib/data/levels/a1/basics/a1_basics_data.dart';
 
 void main() {
   group('A1 Basics data integrity', () {
-    test('contains all 14 lessons in the official order', () {
+    test('contains all 16 lessons in the official order', () {
       expect(a1BasicsLessons.length, 16);
       expect(
         a1BasicsLessons.map((lesson) => lesson.id).toList(),
@@ -13,7 +13,7 @@ void main() {
           'a1_basic_02',
           'a1_basic_03',
           'a1_basic_04',
-          'a1_basic_04_5',
+          'a1_basic_09',
           'a1_basic_05',
           'a1_basic_06',
           'a1_basic_07',
@@ -23,8 +23,9 @@ void main() {
           'a1_basic_11',
           'a1_basic_12',
           'a1_basic_13',
-          'a1_basic_06',
           'a1_basic_14',
+          'a1_basic_15',
+          'a1_basic_16',
         ],
       );
     });
