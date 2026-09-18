@@ -1205,15 +1205,18 @@ class _A1BasicsLessonPageState
         return [
           _stage('Think First', 'اول فکر کن', const []),
           _stage('Will / Going to', 'Will / Going to', const []),
-          _stage('Will', 'Will', List.generate(5, (i) => i)),
-          _stage('Will: Forms', 'شکل‌های Will', List.generate(10, (i) => i)),
-          _stage('Going to', 'Going to', List.generate(15, (i) => i)),
-          _stage('Will vs Going to', 'تفاوت Will و Going to', List.generate(19, (i) => i)),
-          _stage('Translation Practice', 'تمرین ترجمه', List.generate(23, (i) => i)),
-          _stage('Accuracy and Word Order', 'دقت و ترتیب کلمات', List.generate(31, (i) => i)),
-          _stage('Real-World Future Review', 'مرور کاربردی آینده', List.generate(35, (i) => i)),
+          _stage('Will: Positive', 'Will: جمله مثبت', [0, 1, 2, 3, 4]),
+          _stage('Will: Negative & Questions', 'Will: منفی و سؤال', List.generate(12, (i) => i)),
+          _stage('Going to', 'Going to', List.generate(18, (i) => i)),
+          _stage('Going to: Negative & Questions', 'Going to: منفی و سؤال', List.generate(22, (i) => i)),
+          _stage('Will vs Going to', 'فرق Will و Going to', List.generate(26, (i) => i)),
+          _stage('When Do We Use Each One?', 'چه زمانی از هرکدام استفاده کنیم؟', List.generate(30, (i) => i)),
+          _stage('Recognize the Difference', 'تفاوت را تشخیص بده', List.generate(34, (i) => i)),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', List.generate(38, (i) => i)),
+          _stage('Independent Production', 'تولید مستقل', List.generate(38, (i) => i)),
+          _stage('Real-World Use', 'کاربرد واقعی', List.generate(38, (i) => i)),
           _listeningStage('Listening', 'گوش دادن'),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
         ];
 
       case 'a1_basic_16':
