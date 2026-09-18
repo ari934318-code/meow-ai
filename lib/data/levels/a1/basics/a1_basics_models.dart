@@ -313,6 +313,20 @@ class A1BasicQuestion {
   }
 }
 
+class A1BasicListeningQuestion {
+  final String sentence;
+  final String sentenceFa;
+  final List<String> options;
+  final String answer;
+
+  const A1BasicListeningQuestion({
+    required this.sentence,
+    required this.sentenceFa,
+    required this.options,
+    required this.answer,
+  });
+}
+
 class A1BasicSpeakingQuestion {
   final String question;
   final String persian;
