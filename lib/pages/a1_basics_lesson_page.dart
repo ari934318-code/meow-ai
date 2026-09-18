@@ -103,74 +103,54 @@ class _A1BasicsLessonPageState
       case 'lesson_1':
       case '1':
         return [
-          // Pronouns are cumulative: a stage may test only concepts
-          // introduced in this stage or in earlier stages.
+          // Pronouns follow a true teaching progression:
+          // definition first, then each new pronoun, then cumulative
+          // comparison/review. A stage may test only what has already
+          // been introduced, never a future concept.
+          _stage(
+            'What Are Pronouns?',
+            'ضمیر چیست؟',
+            [45],
+          ),
           _stage(
             'I',
             'I — من',
-            [0, 16, 24],
+            [0, 24, 45],
           ),
           _stage(
             'You',
             'You — تو / شما',
-            [0, 16, 24, 22, 25, 31],
+            [0, 24, 25, 31, 45],
           ),
           _stage(
             'He',
             'He — او، مذکر',
-            [0, 16, 24, 22, 25, 31, 2, 6, 11, 18, 26, 33, 38],
+            [0, 1, 2, 6, 24, 25, 26, 31, 38, 45],
           ),
           _stage(
             'She',
             'She — او، مؤنث',
-            [
-              0, 16, 24, 22, 25, 31,
-              2, 6, 11, 18, 26, 33, 38,
-              1, 7, 12, 17, 27, 32, 39,
-            ],
+            [0, 1, 2, 6, 7, 17, 24, 25, 26, 27, 31, 38, 39, 45],
           ),
           _stage(
             'It',
             'It — آن / این',
-            [
-              0, 16, 24, 22, 25, 31,
-              2, 6, 11, 18, 26, 33, 38,
-              1, 7, 12, 17, 27, 32, 39,
-              3, 8, 13, 19, 28, 34, 41, 44,
-            ],
+            [0, 1, 2, 3, 6, 7, 8, 17, 19, 24, 25, 26, 27, 28, 31, 38, 39, 41, 45],
           ),
           _stage(
             'We',
             'We — ما',
-            [
-              0, 16, 24, 22, 25, 31,
-              2, 6, 11, 18, 26, 33, 38,
-              1, 7, 12, 17, 27, 32, 39,
-              3, 8, 13, 19, 28, 34, 41, 44,
-              5, 10, 14, 21, 29, 36, 42,
-            ],
+            [0, 1, 2, 3, 5, 6, 7, 8, 10, 17, 19, 21, 24, 25, 26, 27, 28, 29, 31, 36, 38, 39, 41, 42, 45],
           ),
           _stage(
             'They',
             'They — آن‌ها',
-            [
-              0, 16, 24, 22, 25, 31,
-              2, 6, 11, 18, 26, 33, 38,
-              1, 7, 12, 17, 27, 32, 39,
-              3, 8, 13, 19, 28, 34, 41, 44,
-              5, 10, 14, 21, 29, 36, 42,
-              4, 9, 15, 20, 23, 30, 35, 37, 40, 43,
-            ],
+            List.generate(45, (i) => i),
           ),
           _stage(
-            'What Are Pronouns?',
-            'ضمیر چیست؟',
-            const [],
-          ),
-          _stage(
-            'Pronoun Chart',
-            'جدول ضمیرها',
-            const [],
+            'Cumulative Review',
+            'مرور تجمعی',
+            List.generate(46, (i) => i),
           ),
           _speakingStage(
             'Speaking',
