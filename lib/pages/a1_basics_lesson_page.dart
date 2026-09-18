@@ -1183,17 +1183,20 @@ class _A1BasicsLessonPageState
       case '14':
         return [
           _stage('Think First', 'اول فکر کن', const []),
-          _stage('What Is the Present Continuous?', 'Present Continuous چیست؟', const []),
-          _stage('Basic Structure', 'ساختار پایه', List.generate(10, (i) => i)),
+          _stage('What Is Present Continuous?', 'Present Continuous چیست؟', const []),
+          _stage('Basic Structure', 'ساختار اصلی', [0, 1, 2, 3, 4, 5]),
           _stage('Positive Sentences', 'جمله‌های مثبت', List.generate(10, (i) => i)),
-          _stage('Negative Sentences', 'جمله‌های منفی', List.generate(11, (i) => i)),
-          _stage('Questions and Short Answers', 'سؤال‌ها و جواب‌های کوتاه', List.generate(14, (i) => i)),
-          _stage('When Do We Use It?', 'چه زمانی از آن استفاده می‌کنیم؟', List.generate(22, (i) => i)),
-          _stage('Translation and Recognition', 'ترجمه و تشخیص', List.generate(27, (i) => i)),
-          _stage('Accuracy Practice', 'تمرین دقت', List.generate(32, (i) => i)),
-          _stage('Independent Practice and Review', 'تمرین مستقل و مرور', List.generate(37, (i) => i)),
+          _stage('Negative Sentences', 'جمله‌های منفی', List.generate(15, (i) => i)),
+          _stage('Questions and Short Answers', 'سؤال‌ها و جواب‌های کوتاه', List.generate(22, (i) => i)),
+          _stage('-ing Rules', 'قوانین -ing', List.generate(27, (i) => i)),
+          _stage('When Do We Use It?', 'چه زمانی از آن استفاده می‌کنیم؟', List.generate(31, (i) => i)),
+          _stage('Present Simple vs Present Continuous', 'Present Simple در برابر Present Continuous', List.generate(37, (i) => i)),
+          _stage('Key Time Expressions', 'عبارت‌های زمانی مهم', List.generate(41, (i) => i)),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', List.generate(45, (i) => i)),
+          _stage('Independent Production', 'تولید مستقل', List.generate(45, (i) => i)),
+          _stage('Real-World Use', 'کاربرد واقعی', List.generate(45, (i) => i)),
           _listeningStage('Listening', 'گوش دادن'),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
         ];
 
       case 'a1_basic_15':
