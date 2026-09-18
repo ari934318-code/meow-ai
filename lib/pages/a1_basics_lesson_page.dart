@@ -181,6 +181,9 @@ class _A1BasicsLessonPageState
       case 'lesson_2':
       case '2':
         return [
+          // To Be is cumulative: every stage keeps everything learned
+          // in the previous stages. A later concept must never appear
+          // in an earlier stage, even as a distractor.
           _stage(
             'What is To Be?',
             'To Be یعنی چه؟',
@@ -189,52 +192,52 @@ class _A1BasicsLessonPageState
           _stage(
             'Am',
             'Am',
-            [7, 23],
+            [0, 7, 23],
           ),
           _stage(
             'Is',
             'Is',
-            [1, 4, 6, 8, 24],
+            [0, 7, 23, 1, 4, 6, 8, 24],
           ),
           _stage(
             'Are',
             'Are',
-            [2, 3, 5, 9, 25],
+            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25],
           ),
           _stage(
             'Am, Is, Are Review',
             'مرور Am، Is و Are',
-            [26, 27],
+            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27],
           ),
           _stage(
             'Negative Sentences',
             'جمله‌های منفی',
-            [10, 11, 12],
+            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12],
           ),
           _stage(
             'Negative Contractions',
             'شکل کوتاه جمله‌های منفی',
-            [13, 14, 15],
+            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15],
           ),
           _stage(
             'Questions with To Be',
             'سؤال با To Be',
-            [16, 17, 18],
+            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18],
           ),
           _stage(
             'Short Answers',
             'جواب‌های کوتاه',
-            [19, 20, 21, 22],
+            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
           ),
           _stage(
             'Translation and Word Order',
             'ترجمه و مرتب کردن جمله',
-            [28, 29, 30, 31, 32, 33, 34, 35],
+            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 34, 35],
           ),
           _stage(
             'Common Contractions and Final Review',
             'شکل‌های کوتاه و مرور نهایی',
-            [36, 37, 38, 39],
+            [0, 7, 23, 1, 4, 6, 8, 24, 2, 3, 5, 9, 25, 26, 27, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
           ),
           _speakingStage(
             'Speaking',
@@ -1869,123 +1872,177 @@ class _A1BasicsLessonPageState
   List<String> _safeOptionsForQuestion(
     A1BasicQuestion question,
   ) {
-    final learnedPronouns = <String>[
-      'I',
-      'You',
-      'He',
-      'She',
-      'It',
-      'We',
-      'They',
-    ].take(_currentStage + 1).toSet();
+    // Pronoun lesson: only show pronouns already introduced.
+    if (widget.lesson.id == 'a1_01' ||
+        widget.lesson.id == 'lesson_1' ||
+        widget.lesson.id == '1') {
+      final learnedPronouns = <String>[
+        'I',
+        'You',
+        'He',
+        'She',
+        'It',
+        'We',
+        'They',
+      ].take(_currentStage + 1).toSet();
 
-    final pronouns = <String>{
-      'i',
-      'you',
-      'he',
-      'she',
-      'it',
-      'we',
-      'they',
-    };
+      final pronouns = <String>{
+        'i',
+        'you',
+        'he',
+        'she',
+        'it',
+        'we',
+        'they',
+      };
 
-    final isSentenceLike = question.options.any(
-      (option) => option.trim().contains(' '),
-    );
+      bool containsFuturePronoun(String value) {
+        final words = value
+            .toLowerCase()
+            .split(RegExp(r'[^a-z]+'))
+            .where((word) => word.isNotEmpty)
+            .toSet();
 
-    final safeSentenceDistractors = <String>[
-      'I am a student.',
-      'You are my friend.',
-      'He is a teacher.',
-      'She is my sister.',
-      'It is a book.',
-      'We are ready.',
-      'They are students.',
-    ];
+        return words.any(
+          (word) =>
+              pronouns.contains(word) &&
+              !learnedPronouns
+                  .map((p) => p.toLowerCase())
+                  .contains(word),
+        );
+      }
 
-    final safeWordDistractors = <String>[
-      'student',
-      'teacher',
-      'friend',
-      'book',
-      'happy',
-      'ready',
-      'name',
-    ];
-
-    final used = <String>{};
-    final result = <String>[];
-
-    bool containsFuturePronoun(String value) {
-      final words = value
-          .toLowerCase()
-          .split(RegExp(r'[^a-z]+'))
-          .where((word) => word.isNotEmpty)
-          .toSet();
-
-      return words.any(
-        (word) =>
-            pronouns.contains(word) &&
-            !learnedPronouns
-                .map((p) => p.toLowerCase())
-                .contains(word),
+      final isSentenceLike = question.options.any(
+        (option) => option.trim().contains(' '),
       );
-    }
 
-    for (final option in question.options) {
-      final trimmed = option.trim();
-      if (trimmed.isEmpty || used.contains(trimmed)) {
-        continue;
+      final sentencePool = <String>[
+        'I am a student.',
+        'You are my friend.',
+        'He is a teacher.',
+        'She is my sister.',
+        'It is a book.',
+        'We are ready.',
+        'They are students.',
+      ];
+
+      final wordPool = <String>[
+        'student',
+        'teacher',
+        'friend',
+        'book',
+        'happy',
+        'ready',
+        'name',
+      ];
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+
+        if (!containsFuturePronoun(value)) {
+          result.add(value);
+          used.add(value);
+          continue;
+        }
+
+        final pool = isSentenceLike ? sentencePool : wordPool;
+        final replacement = pool.firstWhere(
+          (candidate) =>
+              candidate != question.answer &&
+              !used.contains(candidate) &&
+              !containsFuturePronoun(candidate),
+          orElse: () => '',
+        );
+
+        if (replacement.isNotEmpty) {
+          result.add(replacement);
+          used.add(replacement);
+        }
       }
 
-      if (!containsFuturePronoun(trimmed)) {
-        result.add(trimmed);
-        used.add(trimmed);
-        continue;
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
       }
 
-      final pool = isSentenceLike
-          ? safeSentenceDistractors
-          : safeWordDistractors;
-
-      final replacement = pool.firstWhere(
-        (candidate) =>
-            candidate != question.answer &&
+      final pool = isSentenceLike ? sentencePool : wordPool;
+      for (final candidate in pool) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer &&
             !used.contains(candidate) &&
-            !containsFuturePronoun(candidate),
-        orElse: () => '',
-      );
-
-      if (replacement.isNotEmpty) {
-        result.add(replacement);
-        used.add(replacement);
+            !containsFuturePronoun(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
       }
+
+      return result;
     }
 
-    // Keep the correct answer even if a legacy question contains a
-    // future-pronoun distractor set.
-    if (!result.contains(question.answer)) {
-      result.insert(0, question.answer);
-    }
+    // To Be lesson: am/is/are are introduced one at a time.
+    // Earlier stages must not leak a later form as a distractor.
+    if (widget.lesson.id == 'a1_02' ||
+        widget.lesson.id == 'lesson_2' ||
+        widget.lesson.id == '2') {
+      final allowedForms = <String>{
+        if (_currentStage >= 1) 'am',
+        if (_currentStage >= 2) 'is',
+        if (_currentStage >= 3) 'are',
+      };
 
-    // A four-option exercise should remain four-option whenever possible.
-    final fallbackPool = isSentenceLike
-        ? safeSentenceDistractors
-        : safeWordDistractors;
+      final toBeForms = <String>{'am', 'is', 'are', 'be'};
+      final result = <String>[];
+      final used = <String>{};
 
-    for (final candidate in fallbackPool) {
-      if (result.length >= 4) break;
-      if (!used.contains(candidate) &&
-          candidate != question.answer &&
-          !containsFuturePronoun(candidate)) {
-        result.add(candidate);
-        used.add(candidate);
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+
+        final lower = value.toLowerCase();
+        if (toBeForms.contains(lower) &&
+            !allowedForms.contains(lower)) {
+          continue;
+        }
+
+        result.add(value);
+        used.add(value);
       }
+
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      // When fewer than four safe options remain, use already introduced
+      // vocabulary instead of exposing future grammar forms.
+      const safeWords = <String>[
+        'happy',
+        'tired',
+        'student',
+        'friend',
+        'ready',
+        'home',
+        'teacher',
+        'busy',
+      ];
+
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer &&
+            !used.contains(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+
+      return result;
     }
 
-    return result;
+    return List<String>.from(question.options);
   }
-
 
   Widget _buildMultipleChoiceQuestion(
     int index,
