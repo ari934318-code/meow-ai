@@ -199,7 +199,7 @@ vocabulary: [
     english: 'its',
     persian: 'مال آن / ـِ آن',
     pronunciation: 'اِتس',
-    example: 'The cat is eating its food.',
+    example: 'The cat likes its food.',
   ),
   A1BasicVocabulary(
     english: 'our',
@@ -313,13 +313,13 @@ vocabulary: [
     english: 'food',
     persian: 'غذا',
     pronunciation: 'فود',
-    example: 'The cat is eating its food.',
+    example: 'The cat likes its food.',
   ),
   A1BasicVocabulary(
     english: 'cat',
     persian: 'گربه',
     pronunciation: 'کَت',
-    example: 'The cat is eating its food.',
+    example: 'The cat likes its food.',
   ),
   A1BasicVocabulary(
     english: 'dog',
@@ -557,7 +557,7 @@ vocabulary: [
           'Do not confuse its with it’s. It’s means it is or it has.',
       examples: [
         A1BasicExample(
-          english: 'The cat is eating its food.',
+          english: 'The cat likes its food.',
           persian: 'گربه دارد غذایش را می‌خورد.',
         ),
         A1BasicExample(
@@ -811,7 +811,7 @@ vocabulary: [
       persian: 'کیف او روی میز است.',
     ),
     A1BasicExample(
-      english: 'The cat is eating its food.',
+      english: 'The cat likes its food.',
       persian: 'گربه دارد غذایش را می‌خورد.',
     ),
     A1BasicExample(
@@ -889,7 +889,7 @@ vocabulary: [
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'The cat is eating ___ food.',
+      question: 'The cat likes ___ food.',
       options: ['its', 'it’s', 'it', 'their'],
       answer: 'its',
       explanation: 'Its shows possession.',
@@ -1241,10 +1241,10 @@ vocabulary: [
       ],
     ),
     A1BasicSpeakingQuestion(
-      question: 'Say: The cat is eating its food.',
+      question: 'Say: The cat likes its food.',
       persian: 'بگو: گربه دارد غذایش را می‌خورد.',
       acceptableAnswers: [
-        'the cat is eating its food',
+        'the cat likes its food',
       ],
     ),
     A1BasicSpeakingQuestion(
