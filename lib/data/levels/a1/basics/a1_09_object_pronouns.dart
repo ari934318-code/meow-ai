@@ -10,6 +10,344 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       'The main object pronouns are me, you, him, her, it, us, and them. '
       'They usually come after a verb or after a preposition.',
 
+
+  learningPhases: [
+    A1BasicLearningPhase(
+      type: 'curiosity',
+      title: 'Think First',
+      titleFa: 'اول فکر کن',
+      body: 'Think: If you want to say “I see him/her,” why do we say “I see him” and not “I see he”?',
+      bodyFa: 'فکر کن: اگر بخواهی بگویی «من او را می‌بینم»، چرا می‌گوییم I see him و نه I see he؟',
+    ),
+    A1BasicLearningPhase(
+      type: 'introduction',
+      title: 'What Are Object Pronouns?',
+      titleFa: 'ضمیرهای مفعولی چیستند؟',
+      body: 'Object pronouns are used for the person or thing that receives the action. Today we will learn me, you, him, her, it, us, and them.',
+      bodyFa: 'ضمیر مفعولی برای شخص یا چیزی استفاده می‌شود که عمل فعل روی آن انجام می‌شود. امروز me، you، him، her، it، us و them را یاد می‌گیریم.',
+    ),
+    A1BasicLearningPhase(
+      type: 'examples',
+      title: 'Simple Examples',
+      titleFa: 'مثال‌های ساده',
+      body: 'Look at how the object pronoun replaces a person or thing.',
+      bodyFa: 'ببین چطور ضمیر مفعولی جای یک شخص یا چیز را می‌گیرد.',
+      examples: [
+        A1BasicExample(
+          english: 'I see Sara. → I see her.',
+          persian: 'من سارا را می‌بینم. → من او را می‌بینم.',
+        ),
+        A1BasicExample(
+          english: 'I see Ali. → I see him.',
+          persian: 'من علی را می‌بینم. → من او را می‌بینم.',
+        ),
+        A1BasicExample(
+          english: 'I see my friends. → I see them.',
+          persian: 'من دوستانم را می‌بینم. → من آنها را می‌بینم.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'concept',
+      title: 'Subject vs Object',
+      titleFa: 'فاعل و مفعول چیست؟',
+      body: 'The subject usually does the action. The object receives the action. In “She loves me,” she does the action and me receives it.',
+      bodyFa: 'فاعل معمولاً انجام‌دهنده عمل است و مفعول دریافت‌کننده عمل. در جمله She loves me، کلمه she انجام‌دهنده عمل و me دریافت‌کننده عمل است.',
+      examples: [
+        A1BasicExample(
+          english: 'She loves me.',
+          persian: 'او من را دوست دارد.',
+        ),
+        A1BasicExample(
+          english: 'He sees her.',
+          persian: 'او او را می‌بیند.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'guided',
+      title: 'Find the Object',
+      titleFa: 'فاعل و مفعول را پیدا کن',
+      body: 'Ask: Who does the action? That is the subject. Who receives the action? That is the object.',
+      bodyFa: 'بپرس: چه کسی عمل را انجام می‌دهد؟ آن فاعل است. عمل روی چه کسی یا چه چیزی انجام می‌شود؟ آن مفعول است.',
+      examples: [
+        A1BasicExample(
+          english: 'She loves me. → She = subject, me = object',
+          persian: 'She فاعل است و me مفعول.',
+        ),
+        A1BasicExample(
+          english: 'They helped us. → They = subject, us = object',
+          persian: 'They فاعل است و us مفعول.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'chart',
+      title: 'Object Pronouns Chart',
+      titleFa: 'جدول ضمیرهای مفعولی',
+      body: 'Some subject pronouns change in the object form. You and it stay the same.',
+      bodyFa: 'بعضی ضمیرهای فاعلی در حالت مفعولی تغییر می‌کنند. you و it در هر دو حالت یکسان می‌مانند.',
+      tableRows: [
+        ['Subject', 'Object', 'Meaning'],
+        ['I', 'me', 'من / من را'],
+        ['you', 'you', 'تو / شما'],
+        ['he', 'him', 'او (مذکر) / او را'],
+        ['she', 'her', 'او (مؤنث) / او را'],
+        ['it', 'it', 'آن / آن را'],
+        ['we', 'us', 'ما / ما را'],
+        ['they', 'them', 'آنها / آنها را'],
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'concept',
+      title: 'An Important Difference from Persian',
+      titleFa: 'یک تفاوت مهم با فارسی',
+      body: 'Persian uses “او را” for both male and female. English separates him and her. In English, a direct object usually comes after the verb.',
+      bodyFa: 'در فارسی برای زن و مرد هر دو می‌گوییم «او را»، اما انگلیسی بین him و her تفاوت می‌گذارد. در انگلیسی مفعول مستقیم معمولاً بعد از فعل می‌آید.',
+      examples: [
+        A1BasicExample(
+          english: 'من او را می‌بینم. → I see him.',
+          persian: 'برای مرد از him استفاده می‌کنیم.',
+        ),
+        A1BasicExample(
+          english: 'من او را می‌بینم. → I see her.',
+          persian: 'برای زن از her استفاده می‌کنیم.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'examples',
+      title: 'Object After a Verb',
+      titleFa: 'مفعول بعد از فعل',
+      body: 'Object pronouns commonly come after a verb: help me, know him, like her, need it, help us, and know them.',
+      bodyFa: 'ضمیرهای مفعولی معمولاً بعد از فعل می‌آیند؛ مثل help me، know him، like her، need it، help us و know them.',
+      examples: [
+        A1BasicExample(
+          english: 'Please help me.',
+          persian: 'لطفاً به من کمک کن.',
+        ),
+        A1BasicExample(
+          english: 'I know him.',
+          persian: 'من او را می‌شناسم.',
+        ),
+        A1BasicExample(
+          english: 'I like her.',
+          persian: 'من او را دوست دارم.',
+        ),
+        A1BasicExample(
+          english: 'I need it.',
+          persian: 'من به آن نیاز دارم.',
+        ),
+        A1BasicExample(
+          english: 'They helped us.',
+          persian: 'آنها به ما کمک کردند.',
+        ),
+        A1BasicExample(
+          english: 'I know them.',
+          persian: 'من آنها را می‌شناسم.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'examples',
+      title: 'Object After a Preposition',
+      titleFa: 'مفعول بعد از حرف اضافه',
+      body: 'Object pronouns also come after prepositions such as for, with, and to: for me, with us, to him.',
+      bodyFa: 'ضمیرهای مفعولی بعد از حروف اضافه‌ای مثل for، with و to هم می‌آیند؛ مثل for me، with us و to him.',
+      examples: [
+        A1BasicExample(
+          english: 'This is for me.',
+          persian: 'این برای من است.',
+        ),
+        A1BasicExample(
+          english: 'Come with us.',
+          persian: 'با ما بیا.',
+        ),
+        A1BasicExample(
+          english: 'Give it to him.',
+          persian: 'آن را به او بده.',
+        ),
+        A1BasicExample(
+          english: 'This message is from her.',
+          persian: 'این پیام از طرف اوست.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'comparison',
+      title: 'Subject vs Object Forms',
+      titleFa: 'مقایسه شکل فاعلی و مفعولی',
+      body: 'Use the subject form for the doer and the object form for the receiver. Do not choose the form just because it appears first in a sentence.',
+      bodyFa: 'برای انجام‌دهنده عمل از شکل فاعلی و برای دریافت‌کننده عمل از شکل مفعولی استفاده کن. فقط بر اساس جای کلمه تصمیم نگیر.',
+      examples: [
+        A1BasicExample(
+          english: 'I see him. → I = subject, him = object',
+          persian: 'I فاعل و him مفعول است.',
+        ),
+        A1BasicExample(
+          english: 'She loves me. → She = subject, me = object',
+          persian: 'She فاعل و me مفعول است.',
+        ),
+        A1BasicExample(
+          english: 'They called us. → They = subject, us = object',
+          persian: 'They فاعل و us مفعول است.',
+        ),
+        A1BasicExample(
+          english: 'He knows her. → He = subject, her = object',
+          persian: 'He فاعل و her مفعول است.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'mistakes',
+      title: 'Common Mistakes',
+      titleFa: 'اشتباهات رایج',
+      body: 'After a verb or preposition, use the object form: me, you, him, her, it, us, or them.',
+      bodyFa: 'بعد از فعل یا حرف اضافه، از شکل مفعولی استفاده کن: me، you، him، her، it، us یا them.',
+      examples: [
+        A1BasicExample(
+          english: 'I see him. ✓  I see he. ✗',
+          persian: 'درست: I see him. غلط: I see he.',
+        ),
+        A1BasicExample(
+          english: 'She loves me. ✓  She loves I. ✗',
+          persian: 'درست: She loves me. غلط: She loves I.',
+        ),
+        A1BasicExample(
+          english: 'This is for us. ✓  This is for we. ✗',
+          persian: 'درست: This is for us. غلط: This is for we.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'examples',
+      title: 'More Examples',
+      titleFa: 'مثال‌های بیشتر',
+      body: 'Now see the object pronouns in short everyday sentences.',
+      bodyFa: 'حالا ضمیرهای مفعولی را در چند جمله کوتاه و روزمره ببین.',
+      examples: [
+        A1BasicExample(
+          english: 'Please help me.',
+          persian: 'لطفاً به من کمک کن.',
+        ),
+        A1BasicExample(
+          english: 'I know him.',
+          persian: 'من او را می‌شناسم.',
+        ),
+        A1BasicExample(
+          english: 'She saw us.',
+          persian: 'او ما را دید.',
+        ),
+        A1BasicExample(
+          english: 'They invited them.',
+          persian: 'آنها آنها را دعوت کردند.',
+        ),
+        A1BasicExample(
+          english: 'Can you call her?',
+          persian: 'می‌توانی با او تماس بگیری؟',
+        ),
+        A1BasicExample(
+          english: 'This gift is for you.',
+          persian: 'این هدیه برای تو/شماست.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'practice',
+      title: 'Guided Practice',
+      titleFa: 'تمرین هدایت‌شده',
+      body: 'Choose the correct object pronoun. Start with forms you have just learned, then mix them together.',
+      bodyFa: 'ضمیر مفعولی درست را انتخاب کن. ابتدا شکل‌هایی را که تازه یاد گرفته‌ای تمرین کن و بعد آنها را با هم ترکیب کن.',
+      examples: [
+        A1BasicExample(
+          english: 'I see Ali. → I see him.',
+          persian: 'من علی را می‌بینم. → من او را می‌بینم.',
+        ),
+        A1BasicExample(
+          english: 'She loves me.',
+          persian: 'او من را دوست دارد.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'independent',
+      title: 'Independent Translation',
+      titleFa: 'تمرین مستقل',
+      body: 'Translate short sentences using the correct object pronoun: me, him, her, it, us, or them.',
+      bodyFa: 'جمله‌های کوتاه را با ضمیر مفعولی درست ترجمه کن: me، him، her، it، us یا them.',
+      examples: [
+        A1BasicExample(
+          english: 'I see him.',
+          persian: 'من او (مرد) را می‌بینم.',
+        ),
+        A1BasicExample(
+          english: 'She loves me.',
+          persian: 'او (زن) من را دوست دارد.',
+        ),
+        A1BasicExample(
+          english: 'This is for us.',
+          persian: 'این برای ماست.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'real_world',
+      title: 'Real-Life Use',
+      titleFa: 'کاربرد واقعی',
+      body: 'Use object pronouns in everyday requests and short conversations: Can you help me? Call her. Come with us. Give it to him.',
+      bodyFa: 'از ضمیرهای مفعولی در درخواست‌ها و گفت‌وگوهای روزمره استفاده کن: Can you help me?، Call her.، Come with us.، Give it to him.',
+      examples: [
+        A1BasicExample(
+          english: 'Can you help me?',
+          persian: 'می‌توانی به من کمک کنی؟',
+        ),
+        A1BasicExample(
+          english: 'Come with us.',
+          persian: 'با ما بیا.',
+        ),
+        A1BasicExample(
+          english: 'Give it to him.',
+          persian: 'آن را به او بده.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'speaking',
+      title: 'Speaking',
+      titleFa: 'تمرین تلفظ و لهجه',
+      body: 'Read the sentences aloud. Focus on the natural pronunciation of me, him, her, us, and them.',
+      bodyFa: 'جمله‌ها را با صدای بلند بخوان. روی تلفظ طبیعی me، him، her، us و them تمرکز کن.',
+      examples: [
+        A1BasicExample(
+          english: 'Please help me.',
+          persian: 'لطفاً به من کمک کن.',
+          pronunciation: 'پلیز هِلپ می',
+        ),
+        A1BasicExample(
+          english: 'I know him.',
+          persian: 'من او را می‌شناسم.',
+          pronunciation: 'آی نو هِم',
+        ),
+        A1BasicExample(
+          english: 'I like her.',
+          persian: 'من او را دوست دارم.',
+          pronunciation: 'آی لایک هِر',
+        ),
+        A1BasicExample(
+          english: 'They helped us.',
+          persian: 'آنها به ما کمک کردند.',
+          pronunciation: 'ذِی هِلپت اَس',
+        ),
+        A1BasicExample(
+          english: 'I know them.',
+          persian: 'من آنها را می‌شناسم.',
+          pronunciation: 'آی نو ذِم',
+        ),
+      ],
+    ),
+  ],
+
+
   vocabulary: [
     A1BasicVocabulary(
       english: 'me',
