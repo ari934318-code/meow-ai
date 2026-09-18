@@ -661,33 +661,6 @@ vocabulary: [
     ),
 
     A1BasicSection(
-      title: 'My vs Mine',
-      titleFa: 'تفاوت My و Mine',
-      explanationFa: "my قبل از اسم استفاده می‌شود، اما mine معمولاً بدون اسم می‌آید. مثلاً می‌گوییم This is my phone و This phone is mine.",
-
-      explanation:
-          'My comes before a noun. Mine is used without the noun.',
-      examples: [
-        A1BasicExample(
-          english: 'This is my phone.',
-          persian: 'این گوشی من است.',
-        ),
-        A1BasicExample(
-          english: 'This phone is mine.',
-          persian: 'این گوشی مال من است.',
-        ),
-        A1BasicExample(
-          english: 'That is my bag.',
-          persian: 'آن کیف من است.',
-        ),
-        A1BasicExample(
-          english: 'That bag is mine.',
-          persian: 'آن کیف مال من است.',
-        ),
-      ],
-    ),
-
-    A1BasicSection(
       title: 'His vs Her',
       titleFa: 'تفاوت His و Her',
       explanationFa: "his برای اشاره به مالکیت یک فرد مذکر و her برای اشاره به مالکیت یک فرد مؤنث استفاده می‌شود. جنسیت صاحب وسیله یا چیز تعیین می‌کند از کدام‌یک استفاده کنیم.",
@@ -744,7 +717,7 @@ vocabulary: [
     A1BasicSection(
       title: 'Common Mistakes',
       titleFa: 'اشتباهات رایج',
-      explanationFa: "یکی از اشتباه‌های رایج این است که صفت ملکی را با ضمیر ملکی یا شکل کوتاه کلمات اشتباه بگیریم. مثلاً my phone درست است، اما mine phone و you’re bag نادرست هستند.",
+      explanationFa: "یکی از اشتباه‌های رایج این است که صفت ملکی را با شکل کوتاه کلمات اشتباه بگیریم. مثلاً my phone درست است، اما you’re bag، they’re house و it’s name نادرست هستند.",
 
       explanation:
           'Remember that possessive adjectives come before nouns. Also remember that your and you’re, their and they’re, and its and it’s have different meanings.',
@@ -752,10 +725,6 @@ vocabulary: [
         A1BasicExample(
           english: 'my phone ✓',
           persian: 'گوشی من',
-        ),
-        A1BasicExample(
-          english: 'mine phone ✗',
-          persian: 'غلط',
         ),
         A1BasicExample(
           english: 'your bag ✓',
