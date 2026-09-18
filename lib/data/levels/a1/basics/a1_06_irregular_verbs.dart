@@ -1,7 +1,7 @@
 import 'a1_basics_models.dart';
 
 const A1BasicLesson a1BasicIrregularVerbs = A1BasicLesson(
-  id: 'a1_basic_09',
+  id: 'a1_basic_13',
   title: 'Irregular Verbs',
   titleFa: 'افعال بی‌قاعده',
   topic: 'Common irregular verbs in the past simple',
