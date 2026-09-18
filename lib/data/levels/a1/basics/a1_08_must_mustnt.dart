@@ -887,15 +887,15 @@ const A1BasicLesson a1BasicMustMustnt = A1BasicLesson(
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Must we wait? — ___',
+      question: 'Must I smoke here? — ___',
       options: [
         'No, you mustn’t.',
-        'No, you don’t must.',
-        'No, you aren’t.',
-        'No, you wait not.',
+        'No, you must.',
+        'No, you are.',
+        'No, you do.',
       ],
       answer: 'No, you mustn’t.',
-      explanation: 'For this A1 practice, mustn’t is the negative form.',
+      explanation: 'Mustn’t is used when something is forbidden or not allowed.',
     ),
     A1BasicQuestion(
       type: 'true_false',
