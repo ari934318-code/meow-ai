@@ -629,6 +629,9 @@ class _A1BasicsLessonPageState
       case 'lesson_10':
       case '10':
         return [
+          // Possessive adjectives are cumulative: every stage keeps
+          // everything taught before it. Later forms must never leak
+          // into an earlier stage.
           _stage(
             'Stage 1',
             'مرحله ۱',
@@ -637,22 +640,37 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 2',
             'مرحله ۲',
-            [2, 3, 11, 12],
+            [0, 1, 7, 8, 2, 3, 11, 12],
           ),
           _stage(
             'Stage 3',
             'مرحله ۳',
-            [4, 5, 13, 14, 18],
+            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18],
           ),
           _stage(
             'Stage 4',
             'مرحله ۴',
-            [6, 15],
+            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18, 6, 15],
           ),
           _stage(
             'Stage 5',
             'مرحله ۵',
             [
+              0,
+              1,
+              7,
+              8,
+              2,
+              3,
+              11,
+              12,
+              4,
+              5,
+              13,
+              14,
+              18,
+              6,
+              15,
               9,
               10,
               16,
@@ -668,26 +686,17 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 6',
             'مرحله ۶',
-            List.generate(
-              5,
-              (i) => i + 25,
-            ),
+            List.generate(30, (i) => i),
           ),
           _stage(
             'Stage 7',
             'مرحله ۷',
-            List.generate(
-              5,
-              (i) => i + 30,
-            ),
+            List.generate(35, (i) => i),
           ),
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(
-              5,
-              (i) => i + 35,
-            ),
+            List.generate(40, (i) => i),
           ),
           _speakingStage(
             'Speaking',
@@ -1947,6 +1956,107 @@ class _A1BasicsLessonPageState
           used.add(candidate);
         }
       }
+      return result;
+    }
+
+    // Possessive Adjectives lesson: only forms introduced by the
+    // current stage may appear as distractors. Possessive pronouns
+    // such as yours/hers/ours/theirs are not taught here, so they
+    // must never leak into this lesson's choices.
+    if (widget.lesson.id == 'a1_10' ||
+        widget.lesson.id == 'lesson_10' ||
+        widget.lesson.id == '10') {
+      final allowedAdjectives = <String>{
+        'my',
+        'your',
+        if (_currentStage >= 1) ...['his', 'her'],
+        if (_currentStage >= 2) ...['our', 'their'],
+        if (_currentStage >= 3) 'its',
+      };
+
+      const allowedSpecial = <String>{
+        'mine',
+      };
+
+      const possessiveAdjectives = <String>{
+        'my', 'your', 'his', 'her', 'its', 'our', 'their',
+      };
+
+      const possessivePronouns = <String>{
+        'mine', 'yours', 'hers', 'ours', 'theirs',
+      };
+
+      bool isAllowedOption(String value) {
+        final words = value
+            .toLowerCase()
+            .split(RegExp(r'[^a-z]+'))
+            .where((word) => word.isNotEmpty)
+            .toSet();
+
+        for (final word in possessivePronouns) {
+          if (words.contains(word)) {
+            if (word == 'mine' &&
+                _currentStage >= 4 &&
+                allowedSpecial.contains(word)) {
+              continue;
+            }
+            return false;
+          }
+        }
+
+        for (final adjective in possessiveAdjectives) {
+          if (words.contains(adjective) &&
+              !allowedAdjectives.contains(adjective)) {
+            return false;
+          }
+        }
+
+        // "it's" is explicitly taught together with its. Do not expose
+        // the contraction before the Its / It's stage.
+        if (words.contains('it') &&
+            value.toLowerCase().contains("it's") &&
+            _currentStage < 3) {
+          return false;
+        }
+
+        return true;
+      }
+
+      final result = <String>[];
+      final used = <String>{};
+
+      for (final option in question.options) {
+        final value = option.trim();
+        if (value.isEmpty || used.contains(value)) continue;
+        if (!isAllowedOption(value)) continue;
+        result.add(value);
+        used.add(value);
+      }
+
+      if (!result.contains(question.answer)) {
+        result.insert(0, question.answer);
+        used.add(question.answer);
+      }
+
+      // Already-taught pronouns/words are safe fallback distractors.
+      // They prevent future possessive forms from being used just to
+      // fill the four-option requirement.
+      const safeWords = [
+        'I', 'you', 'he', 'she', 'we', 'they',
+        'me', 'him', 'her', 'us', 'them',
+        'student', 'friend', 'teacher', 'book',
+      ];
+
+      for (final candidate in safeWords) {
+        if (result.length >= 4) break;
+        if (candidate != question.answer &&
+            !used.contains(candidate) &&
+            isAllowedOption(candidate)) {
+          result.add(candidate);
+          used.add(candidate);
+        }
+      }
+
       return result;
     }
 
