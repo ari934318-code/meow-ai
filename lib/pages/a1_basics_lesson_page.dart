@@ -109,6 +109,18 @@ class _A1BasicsLessonPageState
       case 'lesson_1':
       case '1':
         return [
+          // Stage 1 is explanation-first. Practice begins only after
+          // the learner has seen what pronouns are.
+          _stage(
+            'What Are Pronouns?',
+            'ضمیر چیست؟',
+            const [],
+          ),
+          _stage(
+            'Pronoun Chart',
+            'جدول ضمیرها',
+            const [],
+          ),
           // Pronouns are cumulative: a stage may test only concepts
           // introduced in this stage or in earlier stages.
           _stage(
@@ -167,16 +179,6 @@ class _A1BasicsLessonPageState
               5, 10, 14, 21, 29, 36, 42,
               4, 9, 15, 20, 23, 30, 35, 37, 40, 43,
             ],
-          ),
-          _stage(
-            'What Are Pronouns?',
-            'ضمیر چیست؟',
-            const [],
-          ),
-          _stage(
-            'Pronoun Chart',
-            'جدول ضمیرها',
-            const [],
           ),
           _listeningStage(
             'Listening',
@@ -731,8 +733,8 @@ class _A1BasicsLessonPageState
         ];
 
       case 'a1_basic_05':
-      case 'lesson_11':
-      case '11':
+      case 'lesson_5':
+      case '5':
         return [
           // Present Simple is cumulative: each stage keeps every concept
           // taught earlier. A later grammar point must never appear in an
@@ -865,7 +867,17 @@ class _A1BasicsLessonPageState
       ];
     }
 
-    final stages = <_A1Stage>[];
+    final stages = <_A1Stage>[
+      _A1Stage(
+        title: 'Introduction',
+        titleFa: 'معرفی و یادگیری',
+        description:
+            'Learn the main idea before starting the exercises.',
+        descriptionFa:
+            'اول مفهوم اصلی را یاد بگیر، سپس تمرین‌ها را شروع کن.',
+        questionIndices: const [],
+      ),
+    ];
 
     const stageCount = 5;
 
