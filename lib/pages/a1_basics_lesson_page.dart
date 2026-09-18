@@ -2096,11 +2096,6 @@ class _A1BasicsLessonPageState
           return false;
         }
 
-        if (_currentStage < 3 &&
-            words.any(thirdPersonForms.contains)) {
-          return false;
-        }
-
         if (_currentStage < 4 &&
             words.any(esForms.contains)) {
           return false;
@@ -2111,9 +2106,13 @@ class _A1BasicsLessonPageState
           return false;
         }
 
+        final normalized = value.toLowerCase().trim();
+
         if (_currentStage < 7 &&
-            (words.contains("don't") ||
-                words.contains("doesn't"))) {
+            (normalized.contains("don't") ||
+                normalized.contains("doesn't") ||
+                normalized.contains("do not") ||
+                normalized.contains("does not"))) {
           return false;
         }
 
@@ -2417,8 +2416,9 @@ class _A1BasicsLessonPageState
 
         return false;
       }
+    }
 
-      if (widget.lesson.id == 'a1_basic_07' ||
+    if (widget.lesson.id == 'a1_basic_07' ||
         widget.lesson.id == 'a1_07' ||
         widget.lesson.id == 'lesson_7' ||
         widget.lesson.id == '7') {
