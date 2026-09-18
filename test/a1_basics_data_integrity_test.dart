@@ -20,9 +20,6 @@ void main() {
           'a1_basic_09',
           'a1_basic_10',
           'a1_basic_11',
-          'a1_basic_06',
-          'a1_basic_07',
-          'a1_basic_05',
         ],
       );
     });
