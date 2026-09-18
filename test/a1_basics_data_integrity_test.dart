@@ -4,8 +4,8 @@ import '../lib/data/levels/a1/basics/a1_basics_data.dart';
 
 void main() {
   group('A1 Basics data integrity', () {
-    test('contains all 12 lessons in the official order', () {
-      expect(a1BasicsLessons.length, 12);
+    test('contains all 13 lessons in the official order', () {
+      expect(a1BasicsLessons.length, 13);
       expect(
         a1BasicsLessons.map((lesson) => lesson.id).toList(),
         [
@@ -21,6 +21,7 @@ void main() {
           'a1_basic_09',
           'a1_basic_10',
           'a1_basic_11',
+          'a1_basic_12',
         ],
       );
     });
