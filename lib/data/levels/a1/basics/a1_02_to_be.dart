@@ -11,6 +11,203 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       'We use them to talk about identity, age, feelings, locations, descriptions, '
       'and many other basic situations.',
 
+
+  learningPhases: [
+    A1BasicLearningPhase(
+      type: 'curiosity',
+      title: 'Think First',
+      titleFa: 'اول یک لحظه فکر کن',
+      body: 'Look at this sentence: I ___ happy. What do you think belongs in the blank?\n\nNow notice something important: in English, a sentence like “I happy” is not complete. We need a form of to be.',
+      bodyFa: 'این جمله را ببین: I ___ happy. فکر می‌کنی جای خالی با چه کلمه‌ای پر می‌شود؟\n\nیک نکته مهم: در انگلیسی جمله‌ای مثل «I happy» کامل نیست. برای ساختن این جمله به یکی از شکل‌های فعل to be نیاز داریم.',
+      examples: [
+        A1BasicExample(
+          english: 'I ___ happy.',
+          persian: 'من خوشحالم.',
+          pronunciation: 'آی ... هَپی',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'introduction',
+      title: 'What Is To Be?',
+      titleFa: 'To Be چیست؟',
+      body: 'To be is a basic English verb. In the present tense, it appears as am, is, or are. We use it to connect the subject to information about a person, thing, feeling, or place.',
+      bodyFa: 'to be یکی از فعل‌های پایه و بسیار مهم انگلیسی است. در زمان حال، شکل‌های اصلی آن am، is و are هستند. از آن برای وصل کردن فاعل به اطلاعاتی درباره یک شخص، چیز، احساس یا مکان استفاده می‌کنیم.',
+      examples: [
+        A1BasicExample(
+          english: 'I am happy.',
+          persian: 'من خوشحالم.',
+          pronunciation: 'آی اَم هَپی',
+        ),
+        A1BasicExample(
+          english: 'He is tall.',
+          persian: 'او قدبلند است.',
+          pronunciation: 'هی ایز تال',
+        ),
+        A1BasicExample(
+          english: 'They are here.',
+          persian: 'آنها اینجا هستند.',
+          pronunciation: 'ذِی آر هیر',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'examples',
+      title: 'Simple Examples',
+      titleFa: 'مثال‌های ساده',
+      body: 'First, notice the pattern in complete sentences. The subject comes first, then the correct form of to be.',
+      bodyFa: 'اول الگو را در جمله‌های کامل ببین. ابتدا فاعل می‌آید و بعد شکل مناسب فعل to be قرار می‌گیرد.',
+      examples: [
+        A1BasicExample(english: 'I am a student.', persian: 'من دانش‌آموز / دانشجو هستم.', pronunciation: 'آی اَم ا اِستودِنت'),
+        A1BasicExample(english: 'She is happy.', persian: 'او خوشحال است.', pronunciation: 'شی ایز هَپی'),
+        A1BasicExample(english: 'We are friends.', persian: 'ما دوست هستیم.', pronunciation: 'وی آر فِرِندز'),
+        A1BasicExample(english: 'It is cold.', persian: 'هوا سرد است.', pronunciation: 'اِت ایز کُلد'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'why',
+      title: 'Why Do We Need To Be?',
+      titleFa: 'چرا به To Be نیاز داریم؟',
+      body: 'English normally needs a verb in a complete sentence. Persian can say «من خوشحالم» without a separate word that looks like am, but English needs it: I am happy.',
+      bodyFa: 'در انگلیسی معمولاً یک جمله کامل به فعل نیاز دارد. فارسی می‌تواند «من خوشحالم» را بدون کلمه‌ای شبیه am بنویسد، اما انگلیسی به آن نیاز دارد: I am happy.',
+      examples: [
+        A1BasicExample(english: 'I happy. ✗', persian: 'غلط'),
+        A1BasicExample(english: 'I am happy. ✓', persian: 'درست'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'chart',
+      title: 'The Am, Is, Are Chart',
+      titleFa: 'جدول Am، Is و Are',
+      body: 'Learn the core pattern. You will use it again and again when building basic English sentences.',
+      bodyFa: 'این الگوی اصلی را یاد بگیر. هنگام ساختن جمله‌های پایه انگلیسی بارها از آن استفاده می‌کنی.',
+      tableRows: [
+        ['I', 'am'],
+        ['You', 'are'],
+        ['He', 'is'],
+        ['She', 'is'],
+        ['It', 'is'],
+        ['We', 'are'],
+        ['They', 'are'],
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'persian_note',
+      title: 'A Persian Contrast',
+      titleFa: 'نکته مهم برای فارسی‌زبان‌ها',
+      body: 'Persian and English do not build these sentences in exactly the same way. Persian often hides the present form of “to be” inside the ending, but English keeps am, is, or are visible.',
+      bodyFa: 'فارسی و انگلیسی این جمله‌ها را دقیقاً به یک شکل نمی‌سازند. در فارسی «هستم، هستی، است...» معمولاً در پایان یا ساختار جمله می‌آید، اما در انگلیسی am، is یا are باید در جمله دیده شود.',
+      examples: [
+        A1BasicExample(english: 'من خوشحالم → I am happy.', persian: 'در انگلیسی am را حذف نمی‌کنیم.'),
+        A1BasicExample(english: 'او پزشک است → He is a doctor.', persian: 'برای یک شخص مذکر از he + is استفاده می‌کنیم.'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'more_examples',
+      title: 'More Sentence Patterns',
+      titleFa: 'الگوهای بیشتر',
+      body: 'To be can be followed by a noun, an adjective, or location information.',
+      bodyFa: 'بعد از to be می‌توانیم اطلاعاتی درباره اسم، صفت یا مکان بیاوریم.',
+      examples: [
+        A1BasicExample(english: 'I am a student.', persian: 'من دانش‌آموز / دانشجو هستم.'),
+        A1BasicExample(english: 'She is a teacher.', persian: 'او معلم است.'),
+        A1BasicExample(english: 'He is tall.', persian: 'او قدبلند است.'),
+        A1BasicExample(english: 'We are at home.', persian: 'ما در خانه هستیم.'),
+        A1BasicExample(english: 'They are outside.', persian: 'آنها بیرون هستند.'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'negative',
+      title: 'Making Negative Sentences',
+      titleFa: 'ساختن جمله‌های منفی',
+      body: 'To make a negative sentence, put not after am, is, or are.',
+      bodyFa: 'برای منفی کردن جمله، کلمه not را بعد از am، is یا are می‌آوریم.',
+      examples: [
+        A1BasicExample(english: 'I am not tired.', persian: 'من خسته نیستم.', pronunciation: 'آی اَم نات تایِرد'),
+        A1BasicExample(english: 'She is not busy.', persian: 'او مشغول نیست.', pronunciation: 'شی ایز نات بیزی'),
+        A1BasicExample(english: 'They are not ready.', persian: 'آنها آماده نیستند.', pronunciation: 'ذِی آر نات رِدی'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'contractions',
+      title: 'Everyday Short Forms',
+      titleFa: 'شکل‌های کوتاه روزمره',
+      body: 'In everyday English, contractions are very common. I am becomes I’m, she is becomes she’s, and they are becomes they’re. Negative contractions are common too.',
+      bodyFa: 'در انگلیسی روزمره شکل‌های کوتاه بسیار رایج‌اند. I am به I’m، she is به she’s و they are به they’re تبدیل می‌شود. شکل‌های کوتاه منفی هم در مکالمه زیاد استفاده می‌شوند.',
+      examples: [
+        A1BasicExample(english: 'I am → I’m', persian: 'من هستم', pronunciation: 'آی اَم → آیم'),
+        A1BasicExample(english: 'She is → She’s', persian: 'او است', pronunciation: 'شی ایز → شیز'),
+        A1BasicExample(english: 'They are → They’re', persian: 'آنها هستند', pronunciation: 'ذِی آر → ذِیر'),
+        A1BasicExample(english: 'I am not → I’m not', persian: 'من نیستم', pronunciation: 'آی اَم نات → آیم نات'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'questions',
+      title: 'Questions with To Be',
+      titleFa: 'سؤال ساختن با To Be',
+      body: 'To make a question, move am, is, or are before the subject: You are okay. → Are you okay?',
+      bodyFa: 'برای ساختن سؤال، am، is یا are را قبل از فاعل می‌آوریم: You are okay. → Are you okay?',
+      examples: [
+        A1BasicExample(english: 'Are you okay?', persian: 'خوبی؟', pronunciation: 'آر یو اوکِی'),
+        A1BasicExample(english: 'Is she at home?', persian: 'آیا او خانه است؟', pronunciation: 'ایز شی اَت هوم'),
+        A1BasicExample(english: 'Are they ready?', persian: 'آیا آنها آماده‌اند؟', pronunciation: 'آر ذِی رِدی'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'short_answers',
+      title: 'Short Answers',
+      titleFa: 'جواب‌های کوتاه',
+      body: 'Short answers keep the correct form of to be. For example: Are you tired? → Yes, I am. / No, I’m not.',
+      bodyFa: 'در جواب‌های کوتاه، شکل درست to be حفظ می‌شود. مثلاً: Are you tired? → Yes, I am. / No, I’m not.',
+      examples: [
+        A1BasicExample(english: 'Are you tired? — Yes, I am.', persian: 'خسته‌ای؟ — بله.'),
+        A1BasicExample(english: 'Are you tired? — No, I’m not.', persian: 'خسته‌ای؟ — نه.'),
+        A1BasicExample(english: 'Is she your sister? — Yes, she is.', persian: 'او خواهرت است؟ — بله.'),
+        A1BasicExample(english: 'Are they ready? — Yes, they are.', persian: 'آنها آماده‌اند؟ — بله.'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'guided_practice',
+      title: 'Guided Practice',
+      titleFa: 'تمرین هدایت‌شده',
+      body: 'Before you build sentences alone, complete the pattern with the correct form of to be.',
+      bodyFa: 'قبل از اینکه خودت جمله بسازی، الگو را با شکل درست فعل to be کامل کن.',
+      examples: [
+        A1BasicExample(english: 'I ___ happy. → am', persian: 'من خوشحالم.'),
+        A1BasicExample(english: 'She ___ a teacher. → is', persian: 'او معلم است.'),
+        A1BasicExample(english: 'They ___ friends. → are', persian: 'آنها دوست هستند.'),
+        A1BasicExample(english: 'It ___ cold. → is', persian: 'هوا سرد است.'),
+        A1BasicExample(english: 'You ___ kind. → are', persian: 'تو مهربانی.'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'independent',
+      title: 'Independent Production',
+      titleFa: 'تولید مستقل',
+      body: 'Now make your own sentences. Start with a simple subject and choose am, is, or are yourself.',
+      bodyFa: 'حالا خودت جمله بساز. با یک فاعل ساده شروع کن و خودت am، is یا are مناسب را انتخاب کن.',
+      examples: [
+        A1BasicExample(english: 'I am ______.', persian: 'مثلاً: I am happy.'),
+        A1BasicExample(english: 'She is ______.', persian: 'مثلاً: She is tired.'),
+        A1BasicExample(english: 'They are ______.', persian: 'مثلاً: They are ready.'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'real_world',
+      title: 'Real-Life Use',
+      titleFa: 'کاربرد واقعی',
+      body: 'Now notice how to be appears in everyday English. These are useful phrases you will actually hear and use.',
+      bodyFa: 'حالا ببین to be در انگلیسی روزمره چطور استفاده می‌شود. این‌ها عبارت‌هایی هستند که واقعاً زیاد می‌شنوی و استفاده می‌کنی.',
+      examples: [
+        A1BasicExample(english: 'I’m hungry.', persian: 'گرسنه‌ام.', pronunciation: 'آیم هانگری'),
+        A1BasicExample(english: 'I’m tired.', persian: 'خسته‌ام.', pronunciation: 'آیم تایِرد'),
+        A1BasicExample(english: 'Are you okay?', persian: 'خوبی؟', pronunciation: 'آر یو اوکِی'),
+        A1BasicExample(english: 'I’m fine.', persian: 'خوبم.', pronunciation: 'آیم فاین'),
+        A1BasicExample(english: 'We’re late.', persian: 'ما دیر کرده‌ایم.', pronunciation: 'ویر لِیت'),
+      ],
+    ),
+  ],
+
   vocabulary: [
     A1BasicVocabulary(
       english: 'happy',
