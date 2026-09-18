@@ -2133,8 +2133,7 @@ class _A1BasicsLessonPageState
           return true;
         }
 
-        // Keep third-person forms locked until their verb has been taught.
-        if (learnedThirdPerson.contains(v)) return false;
+        // Keep base and third-person forms locked until their verb has been taught.
         if (learnedBaseVerbs.contains(v)) return !baseAllowed.contains(v);
         if (learnedThirdPerson.contains(v)) return !thirdAllowed.contains(v);
 
