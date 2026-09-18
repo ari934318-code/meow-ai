@@ -145,7 +145,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_009',
-    lessonId: 'a1_basic_05',
+    lessonId: 'a1_basic_08',
     topic: 'Regular Verbs',
     category: 'Grammar',
     question: 'She ___ English every day.',
@@ -159,7 +159,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_010',
-    lessonId: 'a1_basic_05',
+    lessonId: 'a1_basic_08',
     topic: 'Regular Verbs',
     category: 'Sentence Building',
     question: 'Choose the correct sentence.',
@@ -182,7 +182,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_011',
-    lessonId: 'a1_basic_06',
+    lessonId: 'a1_basic_09',
     topic: 'Irregular Verbs',
     category: 'Vocabulary',
     question: 'What is the correct form of "go" with "she"?',
@@ -196,7 +196,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_012',
-    lessonId: 'a1_basic_06',
+    lessonId: 'a1_basic_09',
     topic: 'Irregular Verbs',
     category: 'Vocabulary',
     question: 'Which sentence is correct?',
@@ -219,7 +219,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_013',
-    lessonId: 'a1_basic_07',
+    lessonId: 'a1_basic_10',
     topic: 'Can / Can’t',
     category: 'Grammar',
     question: 'I can ___ English.',
@@ -233,7 +233,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_014',
-    lessonId: 'a1_basic_07',
+    lessonId: 'a1_basic_10',
     topic: 'Can / Can’t',
     category: 'Grammar',
     question: 'Choose the correct sentence.',
@@ -256,7 +256,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_015',
-    lessonId: 'a1_basic_08',
+    lessonId: 'a1_basic_11',
     topic: 'Must / Mustn’t',
     category: 'Grammar',
     question: 'You must ___ your homework.',
@@ -270,7 +270,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_016',
-    lessonId: 'a1_basic_08',
+    lessonId: 'a1_basic_11',
     topic: 'Must / Mustn’t',
     category: 'Vocabulary',
     question: 'What does "You mustn’t smoke here" mean?',
@@ -293,7 +293,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_017',
-    lessonId: 'a1_basic_09',
+    lessonId: 'a1_basic_06',
     topic: 'Object Pronouns',
     category: 'Grammar',
     question: 'Can you help ___?',
@@ -307,7 +307,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_018',
-    lessonId: 'a1_basic_09',
+    lessonId: 'a1_basic_06',
     topic: 'Object Pronouns',
     category: 'Grammar',
     question: 'I know Sara. I see ___ every day.',
@@ -325,7 +325,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_019',
-    lessonId: 'a1_basic_10',
+    lessonId: 'a1_basic_07',
     topic: 'Possessive Adjectives',
     category: 'Grammar',
     question: 'This is ___ book. I bought it yesterday.',
@@ -339,7 +339,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_020',
-    lessonId: 'a1_basic_10',
+    lessonId: 'a1_basic_07',
     topic: 'Possessive Adjectives',
     category: 'Grammar',
     question: 'They love ___ dog.',
@@ -392,7 +392,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_023',
-    lessonId: 'a1_basic_07',
+    lessonId: 'a1_basic_10',
     topic: 'Can / Can’t',
     category: 'Speaking',
     question: 'Say one thing you can do.',
@@ -408,7 +408,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_024',
-    lessonId: 'a1_basic_08',
+    lessonId: 'a1_basic_11',
     topic: 'Must / Mustn’t',
     category: 'Speaking',
     question: 'Say one thing you must do every day.',
@@ -424,7 +424,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
 
   A1BasicsExamQuestion(
     id: 'basics_exam_025',
-    lessonId: 'a1_basic_11',
+    lessonId: 'a1_basic_05',
     topic: 'Present Simple',
     category: 'Speaking',
     question: 'Tell me one thing you do every day.',
