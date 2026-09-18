@@ -277,52 +277,25 @@ class _A1BasicsLessonPageState
       case 'lesson_8':
       case '8':
         return [
-          // Must/Mustn't is cumulative: every stage keeps all material
-          // introduced earlier in this lesson. Later structures must never
-          // leak into an earlier stage.
+          // Basics 8 now follows the same structured route as the other
+          // revised Basics lessons: learn first, then cumulative practice,
+          // then speaking as the final step.
           _stage(
-            'Stage 1',
-            'مرحله ۱',
-            List.generate(6, (i) => i),
+            'Learn',
+            'یادگیری',
+            const [],
           ),
           _stage(
-            'Stage 2',
-            'مرحله ۲',
-            List.generate(8, (i) => i),
-          ),
-          _stage(
-            'Stage 3',
-            'مرحله ۳',
-            List.generate(10, (i) => i),
-          ),
-          _stage(
-            'Stage 4',
-            'مرحله ۴',
-            List.generate(19, (i) => i),
-          ),
-          _stage(
-            'Stage 5',
-            'مرحله ۵',
-            List.generate(25, (i) => i),
-          ),
-          _stage(
-            'Stage 6',
-            'مرحله ۶',
-            List.generate(30, (i) => i),
-          ),
-          _stage(
-            'Stage 7',
-            'مرحله ۷',
-            List.generate(34, (i) => i),
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(40, (i) => i),
+            'Practice',
+            'تمرین',
+            List.generate(
+              _questions.length,
+              (index) => index,
+            ),
           ),
           _speakingStage(
             'Speaking',
-            'تمرین مکالمه',
+            'تمرین تلفظ و لهجه',
           ),
         ];
 
