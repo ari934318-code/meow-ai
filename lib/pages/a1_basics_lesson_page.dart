@@ -103,58 +103,24 @@ class _A1BasicsLessonPageState
       case 'lesson_1':
       case '1':
         return [
-          // Pronouns follow a true teaching progression:
-          // definition first, then each new pronoun, then cumulative
-          // comparison/review. A stage may test only what has already
-          // been introduced, never a future concept.
           _stage(
-            'What Are Pronouns?',
-            'ضمیر چیست؟',
-            [45],
+            'Learn',
+            'یادگیری',
+            const [],
           ),
           _stage(
-            'I',
-            'I — من',
-            [0, 24, 45],
-          ),
-          _stage(
-            'You',
-            'You — تو / شما',
-            [0, 24, 25, 31, 45],
-          ),
-          _stage(
-            'He',
-            'He — او، مذکر',
-            [0, 1, 2, 6, 24, 25, 26, 31, 38, 45],
-          ),
-          _stage(
-            'She',
-            'She — او، مؤنث',
-            [0, 1, 2, 6, 7, 17, 24, 25, 26, 27, 31, 38, 39, 45],
-          ),
-          _stage(
-            'It',
-            'It — آن / این',
-            [0, 1, 2, 3, 6, 7, 8, 17, 19, 24, 25, 26, 27, 28, 31, 38, 39, 41, 45],
-          ),
-          _stage(
-            'We',
-            'We — ما',
-            [0, 1, 2, 3, 5, 6, 7, 8, 10, 17, 19, 21, 24, 25, 26, 27, 28, 29, 31, 36, 38, 39, 41, 42, 45],
-          ),
-          _stage(
-            'They',
-            'They — آن‌ها',
-            List.generate(45, (i) => i),
-          ),
-          _stage(
-            'Cumulative Review',
-            'مرور تجمعی',
-            List.generate(46, (i) => i),
+            'Practice',
+            'تمرین',
+            [
+              0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+              16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+              26, 27, 28, 29, 30, 31,
+              36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+            ],
           ),
           _speakingStage(
             'Speaking',
-            'تمرین مکالمه',
+            'تمرین تلفظ و لهجه',
           ),
         ];
       case 'a1_02':
@@ -1565,7 +1531,85 @@ class _A1BasicsLessonPageState
         : _stages[_currentStage].description;
   }
 
+  Widget _buildPronounsLearningPath() {
+    final phases = widget.lesson.learningPhases;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ...phases.map((phase) {
+          final title = _isPersian ? phase.titleFa : phase.title;
+          final body = _isPersian ? phase.bodyFa : phase.body;
+
+          return Container(
+            margin: const EdgeInsets.only(bottom: 18),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: _surface,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: _outline),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(body, style: Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.55)),
+                if (phase.tableRows.isNotEmpty) ...[
+                  const SizedBox(height: 14),
+                  Table(
+                    columnWidths: const {
+                      0: FlexColumnWidth(1),
+                      1: FlexColumnWidth(2),
+                    },
+                    children: [
+                      for (final row in phase.tableRows)
+                        TableRow(
+                          children: row.map((cell) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 6),
+                            child: Text(
+                              cell,
+                              style: const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          )).toList(),
+                        ),
+                    ],
+                  ),
+                ],
+                if (phase.examples.isNotEmpty) ...[
+                  const SizedBox(height: 14),
+                  ...phase.examples.map(_buildExample),
+                ],
+              ],
+            ),
+          );
+        }),
+        FilledButton(
+          onPressed: _startPractice,
+          style: FilledButton.styleFrom(
+            backgroundColor: lavender,
+            foregroundColor: Colors.black87,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(A1BasicsUIConfig.buttonRadius),
+            ),
+          ),
+          child: Text(_isPersian ? 'شروع تمرین 😼' : 'Start Practice 😼'),
+        ),
+      ],
+    );
+  }
+
   Widget _buildLearningContent() {
+    if (widget.lesson.id == 'a1_01' && widget.lesson.learningPhases.isNotEmpty) {
+      return _buildPronounsLearningPath();
+    }
+
     final section =
         _getCurrentSection();
 
