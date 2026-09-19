@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/data/levels/a1/basics/a1_basics_data.dart';
 import '../lib/data/levels/a1/basics/a1_basics_listening_data.dart';
+import '../lib/data/levels/a1/basics/a1_basics_exam_data.dart';
 
 void main() {
   group('A1 Basics data integrity', () {
@@ -28,6 +29,32 @@ void main() {
       expect(a1BasicsLessons.length, expectedIds.length);
       expect(a1BasicsLessons.map((lesson) => lesson.id).toList(), expectedIds);
       expect(a1BasicsLessons.map((lesson) => lesson.id).toSet().length, expectedIds.length);
+    });
+
+
+    test('final exam covers every A1 Basics lesson with enough MC questions', () {
+      final multipleChoice = a1BasicsExamQuestions
+          .where((question) => !question.isSpeaking)
+          .toList();
+      final coveredLessons = multipleChoice.map((q) => q.lessonId).toSet();
+
+      expect(coveredLessons, containsAll(expectedIds));
+      expect(multipleChoice.length, greaterThanOrEqualTo(expectedIds.length));
+
+      for (final question in multipleChoice) {
+        expect(question.question.trim(), isNotEmpty);
+        expect(question.persian.trim(), isNotEmpty);
+        expect(question.options.length, 4);
+        expect(question.options.toSet().length, 4);
+        expect(question.options.contains(question.correctAnswer), isTrue);
+      }
+
+      final speaking = a1BasicsExamQuestions.where((q) => q.isSpeaking).toList();
+      expect(speaking.length, greaterThanOrEqualTo(5));
+      for (final question in speaking) {
+        expect(question.persian.trim(), isNotEmpty);
+        expect(question.acceptableAnswers, isNotEmpty);
+      }
     });
 
     for (final lesson in a1BasicsLessons) {
