@@ -18,8 +18,8 @@ const A1BasicLesson a1BasicWhQuestions = A1BasicLesson(
       type: 'introduction',
       title: 'Wh-Questions',
       titleFa: 'سؤال‌های Wh',
-      body: 'Now that you know the main auxiliaries and structures from Basics 1–13, you can use them to ask for information.',
-      bodyFa: 'حالا که در مبانی ۱ تا ۱۳ ساختارها و فعل‌های کمکی اصلی را یاد گرفته‌ای، می‌توانی با آن‌ها سؤال‌های اطلاعاتی بسازی.',
+      body: 'Now that you know the main auxiliaries and structures from Basics 1–15, you can use them to ask for information.',
+      bodyFa: 'حالا که در مبانی ۱ تا ۱۵ ساختارها و فعل‌های کمکی اصلی را یاد گرفته‌ای، می‌توانی با آن‌ها سؤال‌های اطلاعاتی بسازی.',
       examples: [
         A1BasicExample(english: 'Where do you live?', persian: 'کجا زندگی می‌کنی؟'),
         A1BasicExample(english: 'What are you doing?', persian: 'داری چه کار می‌کنی؟'),
