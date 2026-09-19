@@ -131,7 +131,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'من او را می‌شناسم.',
         ),
         A1BasicExample(
-          english: 'I like her.',
+          english: 'I talk to her.',
           persian: 'من او را دوست دارم.',
         ),
         A1BasicExample(
@@ -139,8 +139,8 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'من به آن نیاز دارم.',
         ),
         A1BasicExample(
-          english: 'They helped us.',
-          persian: 'آنها به ما کمک کردند.',
+          english: 'They help us.',
+          persian: 'آنها به ما کمک می‌کنند.',
         ),
         A1BasicExample(
           english: 'I know them.',
@@ -236,15 +236,15 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
         ),
         A1BasicExample(
           english: 'She likes us.',
-          persian: 'او ما را دید.',
+          persian: 'او ما را دوست دارد.',
         ),
         A1BasicExample(
-          english: 'They invited them.',
-          persian: 'آنها آنها را دعوت کردند.',
+          english: 'They invite them.',
+          persian: 'آنها آنها را دعوت می‌کنند.',
         ),
         A1BasicExample(
           english: 'I call her.',
-          persian: 'می‌توانی با او تماس بگیری؟',
+          persian: 'من با او تماس می‌گیرم.',
         ),
         A1BasicExample(
           english: 'This gift is for you.',
@@ -298,8 +298,8 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       bodyFa: 'از ضمیرهای مفعولی در درخواست‌ها و گفت‌وگوهای روزمره استفاده کن: I like me.، Call her.، Come with us.، Give it to him.',
       examples: [
         A1BasicExample(
-          english: 'I like me.',
-          persian: 'می‌توانی به من کمک کنی؟',
+          english: 'I like her.',
+          persian: 'من او را دوست دارم.',
         ),
         A1BasicExample(
           english: 'Come with us.',
@@ -558,15 +558,15 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           'me شکل مفعولی I است. وقتی عمل فعل روی خود گوینده انجام می‌شود، از me استفاده می‌کنیم؛ مثل She called me.',
       examples: [
         A1BasicExample(
-          english: 'She called me.',
-          persian: 'او با من تماس گرفت.',
+          english: 'She calls me.',
+          persian: 'او با من تماس می‌گیرد.',
         ),
         A1BasicExample(
           english: 'He helped me.',
           persian: 'او به من کمک کرد.',
         ),
         A1BasicExample(
-          english: 'I hear me.',
+          english: 'I hear her.',
           persian: 'می‌توانی صدای من را بشنوی؟',
         ),
         A1BasicExample(
@@ -697,7 +697,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
         ),
         A1BasicExample(
           english: 'She called us.',
-          persian: 'او با ما تماس گرفت.',
+          persian: 'او با ما تماس می‌گیرد.',
         ),
         A1BasicExample(
           english: 'Please wait for us.',
@@ -752,7 +752,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'آنها به ما کمک کردند.',
         ),
         A1BasicExample(
-          english: 'We called them.',
+          english: 'We call them.',
           persian: 'ما با آنها تماس گرفتیم.',
         ),
         A1BasicExample(
@@ -903,7 +903,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       persian: 'ما آنها را می‌شناسیم.',
     ),
     A1BasicExample(
-      english: 'I like me.',
+      english: 'I like her.',
       persian: 'می‌توانی به من کمک کنی؟',
     ),
     A1BasicExample(
@@ -920,7 +920,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     ),
     A1BasicExample(
       english: 'I like her.',
-      persian: 'دارم با او صحبت می‌کنم.',
+      persian: 'من با او صحبت می‌کنم.',
     ),
   ],
 
