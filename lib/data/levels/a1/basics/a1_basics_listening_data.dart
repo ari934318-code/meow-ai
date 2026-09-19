@@ -33,8 +33,8 @@ const Map<String, List<A1BasicListeningQuestion>> _a1Listening = {
   ],
   'a1_basic_07': [
     A1BasicListeningQuestion(sentence: 'I see him.', sentenceFa: 'من او را می‌بینم.', options: ['I see him.', 'I see her.', 'He sees me.'], answer: 'I see him.'),
-    A1BasicListeningQuestion(sentence: 'She called me.', sentenceFa: 'او به من زنگ زد.', options: ['She called me.', 'She called him.', 'He called me.'], answer: 'She called me.'),
-    A1BasicListeningQuestion(sentence: 'They helped us.', sentenceFa: 'آن‌ها به ما کمک کردند.', options: ['They helped us.', 'We helped them.', 'They helped him.'], answer: 'They helped us.'),
+    A1BasicListeningQuestion(sentence: 'She helps me.', sentenceFa: 'او به من کمک می‌کند.', options: ['She helps me.', 'She helps him.', 'He helps me.'], answer: 'She helps me.'),
+    A1BasicListeningQuestion(sentence: 'They help us.', sentenceFa: 'آن‌ها به ما کمک می‌کنند.', options: ['They help us.', 'We help them.', 'They help him.'], answer: 'They help us.'),
   ],
   'a1_basic_08': [
     A1BasicListeningQuestion(sentence: 'This is my book.', sentenceFa: 'این کتاب من است.', options: ['This is my book.', 'This is your book.', 'This is his book.'], answer: 'This is my book.'),
