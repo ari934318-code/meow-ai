@@ -306,6 +306,809 @@ class _A1BasicsLessonPageState
       case 'lesson_5':
       case '5':
         return [
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 2, 7],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 3, 5, 9],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [4, 6, 8],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [10, 11, 12],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [13, 14, 15, 16, 17],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [18, 19, 20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [24, 25, 26, 27, 28],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(
+              10,
+              (i) => i + 29,
+            ),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_06':
+      case 'lesson_6':
+      case '6':
+        return [
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 1, 2, 3],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [4, 5, 6, 7],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [8, 9, 10, 11],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [12, 13, 14, 15],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [16, 17, 18, 19, 20],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [21, 22, 23, 24, 25],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [26, 27, 28, 29],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            [30, 31, 32, 33, 34, 35],
+          ),
+          _stage(
+            'Stage 9',
+            'مرحله ۹',
+            [36, 37, 38, 39, 40, 41, 42, 43],
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_07':
+      case 'lesson_7':
+      case '7':
+        return [
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(
+              6,
+              (i) => i,
+            ),
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [6, 7],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            List.generate(
+              6,
+              (i) => i + 8,
+            ),
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(
+              9,
+              (i) => i + 14,
+            ),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(
+              6,
+              (i) => i + 23,
+            ),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(
+              5,
+              (i) => i + 29,
+            ),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [34, 35, 36],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            [37, 38, 39],
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_08':
+      case 'lesson_8':
+      case '8':
+        return [
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(
+              6,
+              (i) => i,
+            ),
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [6, 7],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [8, 9],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(
+              9,
+              (i) => i + 10,
+            ),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(
+              6,
+              (i) => i + 19,
+            ),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(
+              5,
+              (i) => i + 25,
+            ),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [30, 31, 32, 33],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(
+              6,
+              (i) => i + 34,
+            ),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_09':
+      case 'lesson_9':
+      case '9':
+        return [
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 5, 10],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 2, 6, 7, 11],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [3, 4, 8, 9, 12, 13],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(
+              5,
+              (i) => i + 14,
+            ),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(
+              5,
+              (i) => i + 19,
+            ),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(
+              6,
+              (i) => i + 24,
+            ),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(
+              10,
+              (i) => i + 30,
+            ),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_10':
+      case 'lesson_10':
+      case '10':
+        return [
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 1, 7, 8],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [2, 3, 11, 12],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [4, 5, 13, 14, 18],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [6, 15],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [
+              9,
+              10,
+              16,
+              17,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+            ],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(
+              5,
+              (i) => i + 25,
+            ),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(
+              5,
+              (i) => i + 30,
+            ),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(
+              5,
+              (i) => i + 35,
+            ),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_11':
+      case 'lesson_11':
+      case '11':
+        return [
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 3, 5, 7, 10],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [1, 2, 4, 6, 8, 9, 11],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [12, 13, 14, 15],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [16, 17, 18, 19],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [
+              24,
+              25,
+              26,
+              27,
+              33,
+              34,
+              35,
+              36,
+              37,
+            ],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            [28, 29, 30, 31, 32],
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            [38, 39, 40, 41, 42],
+          ),
+          _stage(
+            'Stage 9',
+            'مرحله ۹',
+            [43, 44, 45, 46],
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_12':
+      case 'lesson_12':
+      case '12':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('What Is the Regular Past?', 'گذشته باقاعده چیست؟', const []),
+          _stage('The -ed Rule', 'قانون -ed', [0, 6, 7, 8, 9]),
+          _stage('Spelling Changes', 'تغییرات املایی', [0, 6, 7, 8, 9, 26, 27]),
+          _stage('Positive Sentences', 'جمله‌های مثبت', List.generate(12, (i) => i)),
+          _stage('Negative with Didn’t', 'منفی با Didn’t', List.generate(14, (i) => i)),
+          _stage('Questions with Did', 'سؤال با Did', List.generate(16, (i) => i)),
+          _stage('The Important Rule', 'قانون مهم', List.generate(20, (i) => i)),
+          _stage('More Examples', 'مثال‌های بیشتر', List.generate(24, (i) => i)),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', List.generate(29, (i) => i)),
+          _stage('Independent Production', 'تولید مستقل', List.generate(29, (i) => i)),
+          _stage('Real-Life Use', 'کاربرد واقعی', List.generate(29, (i) => i)),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
+        ];
+
+      case 'a1_basic_13':
+      case 'lesson_13':
+      case '13':
+        return [
+          // Each stage keeps all previously taught material.
+          _stage('Go and Goes', 'Go و Goes', [0, 1]),
+          _stage('Have and Has', 'Have و Has', [0, 1, 2, 3]),
+          _stage('Do and Does', 'Do و Does', [0, 1, 2, 3, 4, 5]),
+          _stage(
+            'Get and Gets',
+            'Get و Gets',
+            [0, 1, 2, 3, 4, 5, 6, 7],
+          ),
+          _stage(
+            'Make and Makes',
+            'Make و Makes',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          ),
+          _stage(
+            'Take and Takes',
+            'Take و Takes',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20],
+          ),
+          _stage(
+            'Give and Gives',
+            'Give و Gives',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13],
+          ),
+          _stage(
+            'See and Sees',
+            'See و Sees',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15],
+          ),
+          _stage(
+            'Know and Knows',
+            'Know و Knows',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17],
+          ),
+          _stage(
+            'Say and Says',
+            'Say و Says',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19],
+          ),
+          _stage(
+            'Questions with Irregular Verbs',
+            'سؤال با افعال بی‌قاعده',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25],
+          ),
+          _stage(
+            'Negative Sentences',
+            'جمله‌های منفی',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+          ),
+          _stage(
+            'Common Mistakes',
+            'اشتباهات رایج',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35],
+          ),
+          _stage(
+            'Translation and Word Order',
+            'ترجمه و مرتب کردن جمله',
+            List.generate(44, (i) => i),
+          ),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_06':
+      case 'a1_06_simple_wh':
+        return [
+          _stage('Think First', 'اول فکر کن', []),
+          _stage('Introduction', 'معرفی', []),
+          _stage('Simple Examples', 'مثال‌های ساده', [0, 1, 2]),
+          _stage('What Are Wh-Questions?', 'Wh-Questions چیست؟', [0, 1, 2, 3, 4, 5]),
+          _stage('Question Words', 'کلمه‌های پرسشی', [0, 1, 2, 3, 4, 5]),
+          _stage('Wh + To Be', 'Wh + To Be', [6, 7, 12, 17]),
+          _stage('Wh + Do / Does', 'Wh + Do / Does', [8, 9, 10, 11]),
+          _stage('Important Who Rule', 'نکته مهم درباره Who', [13]),
+          _stage('More Examples', 'مثال‌های بیشتر', [6, 8, 9, 13]),
+          _stage('Recognition Practice', 'تمرین تشخیص', [6, 8, 9, 10]),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', [10, 11, 12, 13]),
+          _stage('Translation Practice', 'تمرین ترجمه', [14, 15, 16, 17]),
+          _stage('Real-World Use', 'کاربرد واقعی', [0, 1, 2, 8]),
+          _speakingStage('Speaking', 'تمرین تلفظ و لهجه'),
+        ];
+
+      case 'a1_basic_07':
+      case 'lesson_7':
+      case '7':
+        return [
+          // Object pronouns are cumulative: each stage keeps everything
+          // introduced before it. Later pronouns must never appear early.
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 5, 10],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [0, 5, 10, 1, 6, 11],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [0, 5, 10, 1, 6, 11, 2, 7, 12],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            [0, 5, 10, 1, 6, 11, 2, 7, 12, 3, 4, 8, 9, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(30, (i) => i),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(40, (i) => i),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_08':
+      case 'lesson_8':
+      case '8':
+        return [
+          // Possessive adjectives are cumulative: every stage keeps
+          // everything taught before it. Later forms must never leak
+          // into an earlier stage.
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            [0, 1, 7, 8],
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            [0, 1, 7, 8, 2, 3, 11, 12],
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18],
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            [0, 1, 7, 8, 2, 3, 11, 12, 4, 5, 13, 14, 18, 6, 15],
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            [
+              0,
+              1,
+              7,
+              8,
+              2,
+              3,
+              11,
+              12,
+              4,
+              5,
+              13,
+              14,
+              18,
+              6,
+              15,
+              9,
+              10,
+              16,
+              17,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+            ],
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(30, (i) => i),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(35, (i) => i),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(40, (i) => i),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_09':
+      case 'lesson_9':
+      case '9':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('A / An / The', 'A / An / The', [0, 1, 2]),
+          _stage(
+            'A vs An',
+            'تفاوت A و An',
+            [0, 1, 2, 6, 14, 18, 19],
+          ),
+          _stage(
+            'The for Specific Things',
+            'The برای چیزهای مشخص',
+            [0, 1, 2, 6, 14, 18, 19, 4, 8, 9, 11],
+          ),
+          _stage(
+            'Plural Nouns',
+            'اسم‌های جمع',
+            [0, 1, 2, 6, 14, 18, 19, 4, 8, 9, 11, 12, 13],
+          ),
+          _stage(
+            'General vs Specific',
+            'کلی یا مشخص؟',
+            [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20],
+          ),
+          _stage(
+            'Guided Practice',
+            'تمرین هدایت‌شده',
+            List.generate(21, (i) => i),
+          ),
+          _stage(
+            'Translation and Final Review',
+            'ترجمه و مرور نهایی',
+            List.generate(25, (i) => i),
+          ),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_10':
+      case 'lesson_10':
+      case '10':
+        return [
+          _stage('Think First', 'اول فکر کن', const []),
+          _stage('What Is Can?', 'Can چیست؟', [0, 1, 2, 3, 4, 5]),
+          _stage(
+            'Can + Base Verb',
+            'Can + شکل ساده فعل',
+            List.generate(14, (i) => i),
+          ),
+          _stage(
+            'Can’t / Cannot',
+            'Can’t / Cannot',
+            List.generate(18, (i) => i),
+          ),
+          _stage(
+            'Questions and Short Answers',
+            'سؤال‌ها و جواب‌های کوتاه',
+            List.generate(23, (i) => i),
+          ),
+          _stage(
+            'Recognition Practice',
+            'تمرین تشخیص',
+            List.generate(29, (i) => i),
+          ),
+          _stage(
+            'Translation and Word Order',
+            'ترجمه و مرتب کردن جمله',
+            List.generate(37, (i) => i),
+          ),
+          _stage(
+            'Permission, Requests and Inability',
+            'اجازه، درخواست و ناتوانی',
+            List.generate(40, (i) => i),
+          ),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین مکالمه'),
+        ];
+
+      case 'a1_basic_11':
+      case 'lesson_11':
+      case '11':
+
+      case 'a1_basic_11':
+      case 'lesson_11':
+      case '11':
+        return [
+          // Must/Mustn't is cumulative: every stage keeps all material
+          // introduced earlier in this lesson. Later structures must never
+          // leak into an earlier stage.
+          _stage(
+            'Stage 1',
+            'مرحله ۱',
+            List.generate(6, (i) => i),
+          ),
+          _stage(
+            'Stage 2',
+            'مرحله ۲',
+            List.generate(8, (i) => i),
+          ),
+          _stage(
+            'Stage 3',
+            'مرحله ۳',
+            List.generate(10, (i) => i),
+          ),
+          _stage(
+            'Stage 4',
+            'مرحله ۴',
+            List.generate(19, (i) => i),
+          ),
+          _stage(
+            'Stage 5',
+            'مرحله ۵',
+            List.generate(25, (i) => i),
+          ),
+          _stage(
+            'Stage 6',
+            'مرحله ۶',
+            List.generate(30, (i) => i),
+          ),
+          _stage(
+            'Stage 7',
+            'مرحله ۷',
+            List.generate(34, (i) => i),
+          ),
+          _stage(
+            'Stage 8',
+            'مرحله ۸',
+            List.generate(40, (i) => i),
+          ),
+          _speakingStage(
+            'Speaking',
+            'تمرین مکالمه',
+          ),
+        ];
+
+      case 'a1_basic_05':
+      case 'lesson_5':
+      case '5':
+        return [
           // Present Simple is cumulative: each stage keeps every concept
           // taught earlier. A later grammar point must never appear in an
           // earlier stage, even as a multiple-choice distractor.
