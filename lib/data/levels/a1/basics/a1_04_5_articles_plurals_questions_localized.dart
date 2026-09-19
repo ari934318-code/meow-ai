@@ -13,7 +13,7 @@ const List<A1BasicQuestion> a1ArticlesPluralsQuestions = [
   A1BasicQuestion(
     type: 'multiple_choice',
     question: 'She has ___ apple.',
-    questionFa: 'او ___ سیب خورد. کدام گزینه درست است؟',
+    questionFa: 'او ___ سیب دارد. کدام گزینه درست است؟',
     options: ['a', 'an', 'the', 'books'],
     answer: 'an',
     explanation: 'Apple is singular and starts with a vowel sound, so use an.',
@@ -49,7 +49,7 @@ const List<A1BasicQuestion> a1ArticlesPluralsQuestions = [
   A1BasicQuestion(
     type: 'multiple_choice',
     question: 'He has ___ orange.',
-    questionFa: 'او ___ پرتقال خورد. کدام گزینه درست است؟',
+    questionFa: 'او ___ پرتقال دارد. کدام گزینه درست است؟',
     options: ['a', 'an', 'the', 'books'],
     answer: 'an',
     explanation: 'Orange begins with a vowel sound in this simple example.',
@@ -85,7 +85,7 @@ const List<A1BasicQuestion> a1ArticlesPluralsQuestions = [
   A1BasicQuestion(
     type: 'multiple_choice',
     question: 'I have a dog. ___ dog is big.',
-    questionFa: 'یک سگ دیدم. ___ سگ بزرگ بود.',
+    questionFa: 'من یک سگ دارم. ___ سگ بزرگ است.',
     options: ['A', 'An', 'The', 'no article'],
     answer: 'The',
     explanation: 'The refers back to the dog already mentioned.',
