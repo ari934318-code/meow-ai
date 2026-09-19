@@ -190,6 +190,42 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   ),
 
   // ============================================================
+  // OBJECT PRONOUNS
+  // ============================================================
+
+  A1BasicsExamQuestion(
+    id: 'basics_exam_019',
+    lessonId: 'a1_basic_07',
+    topic: 'Object Pronouns',
+    category: 'Grammar',
+    question: 'I see Sara. I see ___.',
+    options: ['her', 'she', 'hers', 'herself'],
+    correctAnswer: 'her',
+    explanation: 'Sara is the object of see, so use the object pronoun "her".',
+    persian: 'من سارا را می‌بینم. من ___ را می‌بینم.',
+    isSpeaking: false,
+    acceptableAnswers: [],
+  ),
+
+  // ============================================================
+  // CAN / CAN'T
+  // ============================================================
+
+  A1BasicsExamQuestion(
+    id: 'basics_exam_020',
+    lessonId: 'a1_basic_10',
+    topic: 'Can / Can’t',
+    category: 'Grammar',
+    question: 'She ___ swim.',
+    options: ['can', 'cans', 'can to', 'is can'],
+    correctAnswer: 'can',
+    explanation: 'Use can + base verb to talk about ability.',
+    persian: 'او می‌تواند شنا کند.',
+    isSpeaking: false,
+    acceptableAnswers: [],
+  ),
+
+  // ============================================================
   // ARTICLES + PLURALS
   // ============================================================
 
@@ -212,7 +248,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   // ============================================================
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_024',
+    id: 'basics_exam_026',
     lessonId: 'a1_basic_12',
     topic: 'Regular Past',
     category: 'Grammar',
@@ -316,7 +352,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   ),
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_025',
+    id: 'basics_exam_027',
     lessonId: 'a1_basic_08',
     topic: 'Possessive Adjectives',
     category: 'Grammar',
