@@ -74,7 +74,7 @@ const A1BasicLesson a1BasicArticlesPlurals = A1BasicLesson(
       examples: [
         A1BasicExample(
           english: 'I have a book. The book is good.',
-          persian: 'من یک کتاب خریدم. آن کتاب خوب است.',
+          persian: 'من یک کتاب دارم. آن کتاب خوب است.',
         ),
         A1BasicExample(
           english: 'The sun is hot.',
@@ -198,7 +198,7 @@ const A1BasicLesson a1BasicArticlesPlurals = A1BasicLesson(
           'دقت کن که حرف تعریف چطور معنی جمله را تغییر می‌دهد: از یک چیز نامشخص به یک چیز مشخص، یا در جمع کلی حذف می‌شود.',
       examples: [
         A1BasicExample(english: 'I have a car.', persian: 'من یک ماشین دارم.'),
-        A1BasicExample(english: 'She has an orange.', persian: 'او یک پرتقال خورد.'),
+        A1BasicExample(english: 'She has an orange.', persian: 'او یک پرتقال دارد.'),
         A1BasicExample(english: 'The book is on the table.', persian: 'آن کتاب روی میز است.'),
         A1BasicExample(english: 'Books are useful.', persian: 'کتاب‌ها به طور کلی مفیدند.'),
         A1BasicExample(
@@ -233,7 +233,7 @@ const A1BasicLesson a1BasicArticlesPlurals = A1BasicLesson(
           'حرف تعریف مناسب را بر اساس اسم و معنی انتخاب کن. اول از مثال‌های ساده شروع کن و بعد تفاوت جمع کلی و جمع مشخص را تشخیص بده.',
       examples: [
         A1BasicExample(english: 'I have ___ dog. → a', persian: 'من یک سگ دارم. → a'),
-        A1BasicExample(english: 'She has ___ apple. → an', persian: 'او یک سیب خورد. → an'),
+        A1BasicExample(english: 'She has ___ apple. → an', persian: 'او یک سیب دارد. → an'),
         A1BasicExample(english: '___ sun is hot. → The', persian: 'خورشید داغ است. → The'),
       ],
     ),
