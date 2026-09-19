@@ -1303,7 +1303,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       question: 'Say: I like her.',
       persian: 'بگو: من او را دوست دارم.',
       acceptableAnswers: [
-        'he knows me',
+        'i like her',
       ],
     ),
     A1BasicSpeakingQuestion(
@@ -1331,7 +1331,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       question: 'Say: He knows me.',
       persian: 'بگو: او من را می‌شناسد.',
       acceptableAnswers: [
-        'i like her',
+        'he knows me',
       ],
     ),
     A1BasicSpeakingQuestion(
