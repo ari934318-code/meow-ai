@@ -363,7 +363,7 @@ class _A1BasicsLessonPageState
           _stage(
             'Translation and Word Order',
             'ترجمه و مرتب کردن جمله',
-            List.generate(44, (i) => i),
+            List.generate(36, (i) => i),
           ),
           _speakingStage('Speaking', 'تمرین مکالمه'),
         ];
