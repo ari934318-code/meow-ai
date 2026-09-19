@@ -306,66 +306,48 @@ class _A1BasicsLessonPageState
       case 'lesson_13':
       case '13':
         return [
-          // Each stage keeps all previously taught material.
-          _stage('Go and Goes', 'Go و Goes', [0, 1]),
-          _stage('Have and Has', 'Have و Has', [0, 1, 2, 3]),
-          _stage('Do and Does', 'Do و Does', [0, 1, 2, 3, 4, 5]),
           _stage(
-            'Get and Gets',
-            'Get و Gets',
-            [0, 1, 2, 3, 4, 5, 6, 7],
+            'What Are Irregular Past Verbs?',
+            'افعال بی‌قاعده در گذشته چیست؟',
+            [0, 1, 2, 3, 4],
           ),
           _stage(
-            'Make and Makes',
-            'Make و Makes',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            'More Common Irregular Verbs',
+            'افعال بی‌قاعده پرکاربرد بیشتر',
+            List.generate(10, (i) => i),
           ),
           _stage(
-            'Take and Takes',
-            'Take و Takes',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20],
+            'More Past Forms',
+            'شکل‌های بیشتر در گذشته',
+            List.generate(15, (i) => i),
           ),
           _stage(
-            'Give and Gives',
-            'Give و Gives',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13],
+            'Build Past Sentences',
+            'ساختن جمله‌های گذشته',
+            List.generate(21, (i) => i),
           ),
           _stage(
-            'See and Sees',
-            'See و Sees',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15],
+            'Recognize Correct Past Forms',
+            'تشخیص شکل درست گذشته',
+            List.generate(26, (i) => i),
           ),
           _stage(
-            'Know and Knows',
-            'Know و Knows',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17],
+            'Negative with Didn’t',
+            'منفی با Didn’t',
+            List.generate(31, (i) => i),
           ),
           _stage(
-            'Say and Says',
-            'Say و Says',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19],
+            'Questions with Did',
+            'سؤال با Did',
+            List.generate(35, (i) => i),
           ),
           _stage(
-            'Questions with Irregular Verbs',
-            'سؤال با افعال بی‌قاعده',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25],
-          ),
-          _stage(
-            'Negative Sentences',
-            'جمله‌های منفی',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29],
-          ),
-          _stage(
-            'Common Mistakes',
-            'اشتباهات رایج',
-            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35],
-          ),
-          _stage(
-            'Translation and Word Order',
-            'ترجمه و مرتب کردن جمله',
+            'Translation and Final Review',
+            'ترجمه و مرور نهایی',
             List.generate(36, (i) => i),
           ),
-          _speakingStage('Speaking', 'تمرین مکالمه'),
+          _listeningStage('Listening', 'گوش دادن'),
+          _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
         ];
 
       case 'a1_basic_06':
