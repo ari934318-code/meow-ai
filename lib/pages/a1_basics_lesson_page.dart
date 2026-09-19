@@ -295,9 +295,9 @@ class _A1BasicsLessonPageState
           _stage('Questions with Did', 'سؤال با Did', List.generate(16, (i) => i)),
           _stage('The Important Rule', 'قانون مهم', List.generate(20, (i) => i)),
           _stage('More Examples', 'مثال‌های بیشتر', List.generate(24, (i) => i)),
-          _stage('Guided Practice', 'تمرین هدایت‌شده', List.generate(29, (i) => i)),
-          _stage('Independent Production', 'تولید مستقل', List.generate(29, (i) => i)),
-          _stage('Real-Life Use', 'کاربرد واقعی', List.generate(29, (i) => i)),
+          _stage('Guided Practice', 'تمرین هدایت‌شده', List.generate(38, (i) => i)),
+          _stage('Independent Production', 'تولید مستقل', List.generate(38, (i) => i)),
+          _stage('Real-Life Use', 'کاربرد واقعی', List.generate(38, (i) => i)),
           _listeningStage('Listening', 'گوش دادن'),
           _speakingStage('Speaking', 'تمرین تلفظ و مکالمه'),
         ];
