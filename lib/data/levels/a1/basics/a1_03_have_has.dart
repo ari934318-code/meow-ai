@@ -9,6 +9,71 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       'Have and has are commonly used to talk about possession, relationships, '
       'features, and things that someone has. The form changes depending on the subject.',
 
+
+  learningPhases: [
+    A1BasicLearningPhase(
+      type: 'curiosity',
+      title: 'Think First',
+      titleFa: 'اول فکر کن',
+      body: 'Look at these sentences: I have a phone. She has a car. What changes?',
+      bodyFa: 'به این دو جمله نگاه کن: I have a phone. و She has a car. چه چیزی تغییر کرده است؟',
+      examples: [
+        A1BasicExample(
+          english: 'I ___ a phone.',
+          persian: 'من یک گوشی دارم.',
+        ),
+        A1BasicExample(
+          english: 'She ___ a car.',
+          persian: 'او یک ماشین دارد.',
+        ),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'introduction',
+      title: 'What Are Have and Has?',
+      titleFa: 'Have و Has چیستند؟',
+      body: 'Have and has are used to talk about things, people, relationships, and features that someone has. The form depends on the subject.',
+      bodyFa: 'از have و has برای صحبت درباره چیزها، افراد، روابط و ویژگی‌هایی که کسی دارد استفاده می‌کنیم. شکل فعل به فاعل بستگی دارد.',
+      examples: [
+        A1BasicExample(english: 'I have a phone.', persian: 'من یک گوشی دارم.'),
+        A1BasicExample(english: 'She has a car.', persian: 'او یک ماشین دارد.'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'rule',
+      title: 'Have or Has?',
+      titleFa: 'Have یا Has؟',
+      body: 'Use have with I, you, we, and they. Use has with he, she, and it.',
+      bodyFa: 'با I، you، we و they از have استفاده می‌کنیم. با he، she و it از has استفاده می‌کنیم.',
+      examples: [
+        A1BasicExample(english: 'We have a house.', persian: 'ما یک خانه داریم.'),
+        A1BasicExample(english: 'He has a dog.', persian: 'او یک سگ دارد.'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'negative',
+      title: 'Negative Have / Has',
+      titleFa: 'منفی کردن Have و Has',
+      body: 'In the present simple, use don’t have with I, you, we, they and doesn’t have with he, she, it.',
+      bodyFa: 'در زمان حال ساده، با I، you، we و they از don’t have و با he، she و it از doesn’t have استفاده می‌کنیم.',
+      examples: [
+        A1BasicExample(english: 'I don’t have a car.', persian: 'من ماشین ندارم.'),
+        A1BasicExample(english: 'She doesn’t have a car.', persian: 'او ماشین ندارد.'),
+      ],
+    ),
+    A1BasicLearningPhase(
+      type: 'review',
+      title: 'Common Mistakes and Review',
+      titleFa: 'اشتباهات رایج و مرور',
+      body: 'Remember: has is used with he, she, it, but after doesn’t use the base form have.',
+      bodyFa: 'یادت باشد: has با he، she و it می‌آید، اما بعد از doesn’t باید از شکل ساده have استفاده کنیم.',
+      examples: [
+        A1BasicExample(english: 'She has a cat.', persian: 'او یک گربه دارد.'),
+        A1BasicExample(english: 'She doesn’t have a cat.', persian: 'او یک گربه ندارد.'),
+      ],
+    ),
+  ],
+
   vocabulary: [
     A1BasicVocabulary(
       english: 'phone',
