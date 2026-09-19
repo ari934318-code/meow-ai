@@ -492,7 +492,7 @@ class _A1BasicsLessonPageState
           _stage(
             'Stage 8',
             'مرحله ۸',
-            List.generate(40, (i) => i),
+            List.generate(38, (i) => i),
           ),
           _speakingStage(
             'Speaking',
