@@ -151,7 +151,7 @@ const A1BasicLesson a1BasicWillGoingTo = A1BasicLesson(
         A1BasicExample(english: 'I will call you.', persian: 'بهت زنگ می‌زنم.'),
         A1BasicExample(english: "She won't come.", persian: 'او نمی‌آید.'),
         A1BasicExample(english: 'Will you help me?', persian: 'کمکم می‌کنی؟'),
-        A1BasicExample(english: 'They will be late.', persian: 'آن‌ها دیر خواهند کرد.'),
+        A1BasicExample(english: 'They will be late.', persian: 'آن‌ها دیر خواهند رسید.'),
         A1BasicExample(english: 'I am going to start a new job.', persian: 'قصد دارم یک کار جدید شروع کنم.'),
         A1BasicExample(english: "She isn't going to eat pizza.", persian: 'او قصد ندارد پیتزا بخورد.'),
         A1BasicExample(english: 'Are you going to watch TV?', persian: 'قصد داری تلویزیون تماشا کنی؟'),
