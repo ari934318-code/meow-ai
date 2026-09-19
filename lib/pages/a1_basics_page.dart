@@ -420,8 +420,8 @@ class _A1BasicsPageState extends State<A1BasicsPage> {
                 ? 'آزمون مبانی را کامل کن تا درس ۱ سطح A1 باز شود.'
                 : 'Complete the Basics exam to unlock A1 Lesson 1.')
             : (lang.isPersian
-                ? 'ابتدا هر ۱۱ درس مبانی را کامل کن.'
-                : 'Complete all 11 Basics lessons first.');
+                ? 'ابتدا هر ۱۶ درس مبانی را کامل کن.'
+                : 'Complete all 16 Basics lessons first.');
 
     return Padding(
       padding: const EdgeInsets.only(top: 2),
