@@ -92,11 +92,40 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
         .toList()
       ..shuffle(_random);
 
-    final selectedMultipleChoice =
-        multipleChoice.take(20).toList();
+    // Always include one multiple-choice question from each
+    // of the 16 A1 Basics lessons, then add four random review
+    // questions. This keeps the final exam comprehensive while
+    // preserving variety between attempts.
+    final lessonIds = List<String>.generate(
+      16,
+      (index) => 'a1_basic_${(index + 1).toString().padLeft(2, '0')}',
+    );
 
-    final selectedSpeaking =
-        speaking.take(5).toList();
+    final selectedMultipleChoice = <A1BasicsExamQuestion>[];
+    final selectedIds = <String>{};
+
+    for (final lessonId in lessonIds) {
+      final lessonQuestions = multipleChoice
+          .where((question) => question.lessonId == lessonId)
+          .toList();
+
+      if (lessonQuestions.isEmpty) continue;
+
+      final selected = lessonQuestions.first;
+      selectedMultipleChoice.add(selected);
+      selectedIds.add(selected.id);
+    }
+
+    final extraMultipleChoice = multipleChoice
+        .where((question) => !selectedIds.contains(question.id))
+        .toList()
+      ..shuffle(_random);
+
+    selectedMultipleChoice.addAll(
+      extraMultipleChoice.take(20 - selectedMultipleChoice.length),
+    );
+
+    final selectedSpeaking = speaking.take(5).toList();
 
     final combined = [
       ...selectedMultipleChoice,
