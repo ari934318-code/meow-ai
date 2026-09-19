@@ -302,59 +302,6 @@ class _A1BasicsLessonPageState
           ),
         ];
 
-      case 'a1_basic_05':
-      case 'lesson_5':
-      case '5':
-        return [
-          _stage(
-            'Stage 1',
-            'مرحله ۱',
-            [0, 2, 7],
-          ),
-          _stage(
-            'Stage 2',
-            'مرحله ۲',
-            [1, 3, 5, 9],
-          ),
-          _stage(
-            'Stage 3',
-            'مرحله ۳',
-            [4, 6, 8],
-          ),
-          _stage(
-            'Stage 4',
-            'مرحله ۴',
-            [10, 11, 12],
-          ),
-          _stage(
-            'Stage 5',
-            'مرحله ۵',
-            [13, 14, 15, 16, 17],
-          ),
-          _stage(
-            'Stage 6',
-            'مرحله ۶',
-            [18, 19, 20, 21, 22, 23],
-          ),
-          _stage(
-            'Stage 7',
-            'مرحله ۷',
-            [24, 25, 26, 27, 28],
-          ),
-          _stage(
-            'Stage 8',
-            'مرحله ۸',
-            List.generate(
-              10,
-              (i) => i + 29,
-            ),
-          ),
-          _speakingStage(
-            'Speaking',
-            'تمرین مکالمه',
-          ),
-        ];
-
       case 'a1_basic_12':
       case 'lesson_12':
       case '12':
