@@ -346,7 +346,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   // ============================================================
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_021',
+    id: 'basics_exam_033',
     lessonId: 'a1_basic_01',
     topic: 'Pronouns',
     category: 'Speaking',
@@ -364,7 +364,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   ),
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_022',
+    id: 'basics_exam_034',
     lessonId: 'a1_basic_02',
     topic: 'To Be',
     category: 'Speaking',
@@ -381,7 +381,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   ),
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_023',
+    id: 'basics_exam_035',
     lessonId: 'a1_basic_10',
     topic: 'Can / Can’t',
     category: 'Speaking',
@@ -397,7 +397,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   ),
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_024',
+    id: 'basics_exam_036',
     lessonId: 'a1_basic_11',
     topic: 'Must / Mustn’t',
     category: 'Speaking',
@@ -413,7 +413,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   ),
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_025',
+    id: 'basics_exam_037',
     lessonId: 'a1_basic_05',
     topic: 'Present Simple',
     category: 'Speaking',
