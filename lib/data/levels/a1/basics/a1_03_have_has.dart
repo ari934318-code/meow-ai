@@ -1138,7 +1138,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       persian: 'بگو: او یک گربه دارد.',
       acceptableAnswers: [
         'she has a cat',
-        'shes got a cat',
+        
       ],
     ),
     A1BasicSpeakingQuestion(
@@ -1146,7 +1146,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       persian: 'بگو: او یک ماشین دارد.',
       acceptableAnswers: [
         'he has a car',
-        'hes got a car',
+        
       ],
     ),
     A1BasicSpeakingQuestion(
