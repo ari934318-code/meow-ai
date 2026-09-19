@@ -1241,17 +1241,17 @@ vocabulary: [
       ],
     ),
     A1BasicSpeakingQuestion(
-      question: 'Say: The cat likes its food.',
-      persian: 'بگو: گربه دارد غذایش را می‌خورد.',
+      question: 'Say: This is its toy.',
+      persian: 'بگو: این اسباب‌بازی آن است.',
       acceptableAnswers: [
-        'the cat likes its food',
+        'this is its toy',
       ],
     ),
     A1BasicSpeakingQuestion(
-      question: 'Say: This book is mine.',
-      persian: 'بگو: این کتاب مال من است.',
+      question: 'Say: This is my book.',
+      persian: 'بگو: این کتاب من است.',
       acceptableAnswers: [
-        'this book is mine',
+        'this is my book',
       ],
     ),
   ],
