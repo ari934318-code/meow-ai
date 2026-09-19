@@ -172,139 +172,127 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   ),
 
   // ============================================================
-  // OBJECT PRONOUNS
-  // ============================================================
-
-  A1BasicsExamQuestion(
-    id: 'basics_exam_011',
-    lessonId: 'a1_basic_07',
-    topic: 'Object Pronouns',
-    category: 'Grammar',
-    question: 'I see Sara every day. I see ___.',
-    options: ['she', 'her', 'hers', 'herself'],
-    correctAnswer: 'her',
-    explanation: 'Her is the object pronoun for she.',
-    persian: 'من هر روز سارا را می‌بینم. من او را می‌بینم.',
-    isSpeaking: false,
-    acceptableAnswers: [],
-  ),
-
-  A1BasicsExamQuestion(
-    id: 'basics_exam_012',
-    lessonId: 'a1_basic_07',
-    topic: 'Object Pronouns',
-    category: 'Grammar',
-    question: 'Can you help ___?',
-    options: ['I', 'me', 'my', 'mine'],
-    correctAnswer: 'me',
-    explanation: 'Me is the object pronoun for I.',
-    persian: 'می‌توانی به من کمک کنی؟',
-    isSpeaking: false,
-    acceptableAnswers: [],
-  ),
-
-  // ============================================================
-  // CAN / CAN'T
-  // ============================================================
-
-  A1BasicsExamQuestion(
-    id: 'basics_exam_013',
-    lessonId: 'a1_basic_10',
-    topic: 'Can / Can’t',
-    category: 'Grammar',
-    question: 'I can ___ English.',
-    options: ['speak', 'speaks', 'speaking', 'spoke'],
-    correctAnswer: 'speak',
-    explanation: 'After "can", always use the base form of the verb.',
-    persian: 'من می‌توانم انگلیسی صحبت کنم.',
-    isSpeaking: false,
-    acceptableAnswers: [],
-  ),
-
-  A1BasicsExamQuestion(
-    id: 'basics_exam_014',
-    lessonId: 'a1_basic_10',
-    topic: 'Can / Can’t',
-    category: 'Grammar',
-    question: 'Choose the correct sentence.',
-    options: [
-      'She can swim.',
-      'She can swims.',
-      'She cans swim.',
-      'She can swimming.',
-    ],
-    correctAnswer: 'She can swim.',
-    explanation: 'Can is followed by the base form of the verb.',
-    persian: 'او می‌تواند شنا کند.',
-    isSpeaking: false,
-    acceptableAnswers: [],
-  ),
-
-  // ============================================================
-  // MUST / MUSTN'T
-  // ============================================================
-
-  A1BasicsExamQuestion(
-    id: 'basics_exam_015',
-    lessonId: 'a1_basic_11',
-    topic: 'Must / Mustn’t',
-    category: 'Grammar',
-    question: 'You must ___ your homework.',
-    options: ['do', 'does', 'doing', 'did'],
-    correctAnswer: 'do',
-    explanation: 'After "must", use the base form of the verb.',
-    persian: 'باید تکالیفت را انجام بدهی.',
-    isSpeaking: false,
-    acceptableAnswers: [],
-  ),
-
-  A1BasicsExamQuestion(
-    id: 'basics_exam_016',
-    lessonId: 'a1_basic_11',
-    topic: 'Must / Mustn’t',
-    category: 'Vocabulary',
-    question: 'What does "You mustn’t smoke here" mean?',
-    options: [
-      'Smoking is not allowed here.',
-      'Smoking is required here.',
-      'You can smoke here.',
-      'You like smoking here.',
-    ],
-    correctAnswer: 'Smoking is not allowed here.',
-    explanation: '"Mustn’t" means something is prohibited or not allowed.',
-    persian: 'اینجا نباید سیگار بکشی.',
-    isSpeaking: false,
-    acceptableAnswers: [],
-  ),
-
-  // ============================================================
-  // OBJECT PRONOUNS
+  // SIMPLE WH-QUESTIONS
   // ============================================================
 
   A1BasicsExamQuestion(
     id: 'basics_exam_017',
-    lessonId: 'a1_basic_07',
-    topic: 'Object Pronouns',
+    lessonId: 'a1_basic_06',
+    topic: 'Simple WH-Questions',
     category: 'Grammar',
-    question: 'Can you help ___?',
-    options: ['I', 'me', 'my', 'mine'],
-    correctAnswer: 'me',
-    explanation: '"Me" is the object pronoun for "I".',
-    persian: 'می‌توانی به من کمک کنی؟',
+    question: '___ do you live?',
+    options: ['Where', 'Who', 'When', 'Why'],
+    correctAnswer: 'Where',
+    explanation: 'Use "where" to ask about a place.',
+    persian: 'کجا زندگی می‌کنی؟',
     isSpeaking: false,
     acceptableAnswers: [],
   ),
 
+  // ============================================================
+  // ARTICLES + PLURALS
+  // ============================================================
+
   A1BasicsExamQuestion(
     id: 'basics_exam_018',
-    lessonId: 'a1_basic_07',
-    topic: 'Object Pronouns',
+    lessonId: 'a1_basic_09',
+    topic: 'Articles + Plurals',
     category: 'Grammar',
-    question: 'I know Sara. I see ___ every day.',
-    options: ['she', 'her', 'hers', 'herself'],
-    correctAnswer: 'her',
-    explanation: '"Her" is the object pronoun for "she".',
-    persian: 'من سارا را می‌شناسم. هر روز او را می‌بینم.',
+    question: 'I have ___ apple.',
+    options: ['an', 'a', 'the', 'some'],
+    correctAnswer: 'an',
+    explanation: 'Use "an" before a singular noun that begins with a vowel sound.',
+    persian: 'من یک سیب دارم.',
+    isSpeaking: false,
+    acceptableAnswers: [],
+  ),
+
+  // ============================================================
+  // REGULAR PAST
+  // ============================================================
+
+  A1BasicsExamQuestion(
+    id: 'basics_exam_024',
+    lessonId: 'a1_basic_12',
+    topic: 'Regular Past',
+    category: 'Grammar',
+    question: 'Yesterday, I ___ at home.',
+    options: ['worked', 'work', 'working', 'works'],
+    correctAnswer: 'worked',
+    explanation: 'Regular past verbs commonly use -ed for a completed action in the past.',
+    persian: 'دیروز در خانه کار کردم.',
+    isSpeaking: false,
+    acceptableAnswers: [],
+  ),
+
+  // ============================================================
+  // IRREGULAR PAST
+  // ============================================================
+
+  A1BasicsExamQuestion(
+    id: 'basics_exam_025',
+    lessonId: 'a1_basic_13',
+    topic: 'Irregular Past',
+    category: 'Grammar',
+    question: 'I ___ to the store yesterday.',
+    options: ['went', 'go', 'goed', 'going'],
+    correctAnswer: 'went',
+    explanation: '"Go" has the irregular past form "went".',
+    persian: 'دیروز به فروشگاه رفتم.',
+    isSpeaking: false,
+    acceptableAnswers: [],
+  ),
+
+  // ============================================================
+  // PRESENT CONTINUOUS
+  // ============================================================
+
+  A1BasicsExamQuestion(
+    id: 'basics_exam_021',
+    lessonId: 'a1_basic_14',
+    topic: 'Present Continuous',
+    category: 'Grammar',
+    question: 'She ___ studying now.',
+    options: ['is', 'are', 'am', 'be'],
+    correctAnswer: 'is',
+    explanation: 'Use "is" with she in the present continuous: she is studying.',
+    persian: 'او الان در حال درس خواندن است.',
+    isSpeaking: false,
+    acceptableAnswers: [],
+  ),
+
+  // ============================================================
+  // WILL / GOING TO
+  // ============================================================
+
+  A1BasicsExamQuestion(
+    id: 'basics_exam_022',
+    lessonId: 'a1_basic_15',
+    topic: 'Will / Going to',
+    category: 'Grammar',
+    question: 'I think it ___ rain tomorrow.',
+    options: ['will', 'am going to', 'is', 'does'],
+    correctAnswer: 'will',
+    explanation: 'Use "will" for a prediction or opinion about the future.',
+    persian: 'فکر می‌کنم فردا باران خواهد بارید.',
+    isSpeaking: false,
+    acceptableAnswers: [],
+  ),
+
+  // ============================================================
+  // FULL WH-QUESTIONS
+  // ============================================================
+
+  A1BasicsExamQuestion(
+    id: 'basics_exam_023',
+    lessonId: 'a1_basic_16',
+    topic: 'Full WH-Questions',
+    category: 'Grammar',
+    question: 'Where ___ you go yesterday?',
+    options: ['did', 'do', 'does', 'are'],
+    correctAnswer: 'did',
+    explanation: 'Use "did" to form a past simple WH-question.',
+    persian: 'دیروز کجا رفتی؟',
     isSpeaking: false,
     acceptableAnswers: [],
   ),
@@ -314,7 +302,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   // ============================================================
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_019',
+    id: 'basics_exam_024',
     lessonId: 'a1_basic_08',
     topic: 'Possessive Adjectives',
     category: 'Grammar',
@@ -328,7 +316,7 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
   ),
 
   A1BasicsExamQuestion(
-    id: 'basics_exam_020',
+    id: 'basics_exam_025',
     lessonId: 'a1_basic_08',
     topic: 'Possessive Adjectives',
     category: 'Grammar',
