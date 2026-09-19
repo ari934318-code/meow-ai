@@ -189,7 +189,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'She فاعل و me مفعول است.',
         ),
         A1BasicExample(
-          english: 'They called us. → They = subject, us = object',
+          english: 'They call us. → They = subject, us = object',
           persian: 'They فاعل و us مفعول است.',
         ),
         A1BasicExample(
@@ -334,7 +334,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           pronunciation: 'آی لایک هِر',
         ),
         A1BasicExample(
-          english: 'They helped us.',
+          english: 'They help us.',
           persian: 'آنها به ما کمک کردند.',
           pronunciation: 'ذِی هِلپت اَس',
         ),
@@ -353,7 +353,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       english: 'me',
       persian: 'من را / به من',
       pronunciation: 'می',
-      example: 'She called me.',
+      example: 'She calls me.',
     ),
     A1BasicVocabulary(
       english: 'you',
@@ -383,7 +383,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       english: 'us',
       persian: 'ما را / به ما',
       pronunciation: 'اَس',
-      example: 'They helped us.',
+      example: 'They help us.',
     ),
     A1BasicVocabulary(
       english: 'them',
@@ -479,7 +479,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       english: 'Ali',
       persian: 'علی',
       pronunciation: 'علی',
-      example: 'I called Ali. → I called him.',
+      example: 'I call Ali. → I call him.',
     ),
   ],
 
@@ -555,14 +555,14 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       explanation:
           'Me is the object form of I. Use me when I receive the action.',
       explanationFa:
-          'me شکل مفعولی I است. وقتی عمل فعل روی خود گوینده انجام می‌شود، از me استفاده می‌کنیم؛ مثل She called me.',
+          'me شکل مفعولی I است. وقتی عمل فعل روی خود گوینده انجام می‌شود، از me استفاده می‌کنیم؛ مثل She calls me.',
       examples: [
         A1BasicExample(
           english: 'She calls me.',
           persian: 'او با من تماس می‌گیرد.',
         ),
         A1BasicExample(
-          english: 'He helped me.',
+          english: 'He helps me.',
           persian: 'او به من کمک کرد.',
         ),
         A1BasicExample(
@@ -614,11 +614,11 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'من او را می‌شناسم.',
         ),
         A1BasicExample(
-          english: 'She called him.',
+          english: 'She calls him.',
           persian: 'او با او تماس گرفت.',
         ),
         A1BasicExample(
-          english: 'We helped him.',
+          english: 'We help him.',
           persian: 'ما به او کمک کردیم.',
         ),
         A1BasicExample(
@@ -640,11 +640,11 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'من او را می‌شناسم.',
         ),
         A1BasicExample(
-          english: 'He called her.',
+          english: 'He calls her.',
           persian: 'او با او تماس گرفت.',
         ),
         A1BasicExample(
-          english: 'We helped her.',
+          english: 'We help her.',
           persian: 'ما به او کمک کردیم.',
         ),
         A1BasicExample(
@@ -688,7 +688,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           'us شکل مفعولی we است. وقتی عمل روی گوینده و افراد همراه او انجام می‌شود، از us استفاده می‌کنیم.',
       examples: [
         A1BasicExample(
-          english: 'They helped us.',
+          english: 'They help us.',
           persian: 'آنها به ما کمک کردند.',
         ),
         A1BasicExample(
@@ -696,7 +696,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'می‌توانی صدای ما را بشنوی؟',
         ),
         A1BasicExample(
-          english: 'She called us.',
+          english: 'She calls us.',
           persian: 'او با ما تماس می‌گیرد.',
         ),
         A1BasicExample(
@@ -718,11 +718,11 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'من آنها را می‌شناسم.',
         ),
         A1BasicExample(
-          english: 'She called them.',
+          english: 'She calls them.',
           persian: 'او با آنها تماس گرفت.',
         ),
         A1BasicExample(
-          english: 'We helped them.',
+          english: 'We help them.',
           persian: 'ما به آنها کمک کردیم.',
         ),
         A1BasicExample(
@@ -748,7 +748,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'او من را می‌شناسد.',
         ),
         A1BasicExample(
-          english: 'They helped us.',
+          english: 'They help us.',
           persian: 'آنها به ما کمک کردند.',
         ),
         A1BasicExample(
@@ -838,11 +838,11 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           'یکی از اشتباه‌های رایج این است که به جای ضمیر مفعولی از ضمیر فاعلی استفاده کنیم. بعد از فعل یا حرف اضافه باید شکل مفعولی مناسب را انتخاب کنیم؛ مثلاً She called me درست است، نه She called I.',
       examples: [
         A1BasicExample(
-          english: 'She called me. ✓',
+          english: 'She calls me. ✓',
           persian: 'درست',
         ),
         A1BasicExample(
-          english: 'She called I. ✗',
+          english: 'She calls I. ✗',
           persian: 'غلط',
         ),
         A1BasicExample(
@@ -854,11 +854,11 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
           persian: 'غلط',
         ),
         A1BasicExample(
-          english: 'They helped us. ✓',
+          english: 'They help us. ✓',
           persian: 'درست',
         ),
         A1BasicExample(
-          english: 'They helped we. ✗',
+          english: 'They help we. ✗',
           persian: 'غلط',
         ),
         A1BasicExample(
@@ -875,7 +875,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
 
   examples: [
     A1BasicExample(
-      english: 'She called me.',
+      english: 'She calls me.',
       persian: 'او با من تماس گرفت.',
     ),
     A1BasicExample(
@@ -895,7 +895,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       persian: 'من به آن نیاز دارم.',
     ),
     A1BasicExample(
-      english: 'They helped us.',
+      english: 'They help us.',
       persian: 'آنها به ما کمک کردند.',
     ),
     A1BasicExample(
@@ -1027,12 +1027,12 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       type: 'multiple_choice',
       question: 'Which is correct?',
       options: [
-        'She helped me.',
-        'She helped I.',
+        'She helps me.',
+        'She helps I.',
         'She helped my.',
         'She helped mine.',
       ],
-      answer: 'She helped me.',
+      answer: 'She helps me.',
       explanation: 'Me is the object form of I.',
     ),
     A1BasicQuestion(
@@ -1063,12 +1063,12 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       type: 'multiple_choice',
       question: 'Which is correct?',
       options: [
-        'They helped us.',
-        'They helped we.',
+        'They help us.',
+        'They help we.',
         'They helped our.',
         'They helped ours.',
       ],
-      answer: 'They helped us.',
+      answer: 'They help us.',
       explanation: 'Us is the object form of we.',
     ),
     A1BasicQuestion(
@@ -1092,7 +1092,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Which word replaces "Ali" in: I called Ali.',
+      question: 'Which word replaces "Ali" in: I call Ali.',
       options: ['him', 'he', 'his', 'himself'],
       answer: 'him',
       explanation: 'Ali is the object, so use him.',
@@ -1165,12 +1165,12 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       type: 'translation',
       question: 'ترجمه کن: «او با من تماس گرفت.»',
       options: [
-        'She called me.',
+        'She calls me.',
         'She called I.',
         'She called my.',
         'She called mine.',
       ],
-      answer: 'She called me.',
+      answer: 'She calls me.',
       explanation: 'Me is the object form of I.',
     ),
     A1BasicQuestion(
@@ -1201,12 +1201,12 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       type: 'translation',
       question: 'ترجمه کن: «آنها به ما کمک کردند.»',
       options: [
-        'They helped us.',
-        'They helped we.',
+        'They help us.',
+        'They help we.',
         'They helped our.',
         'They helped ours.',
       ],
-      answer: 'They helped us.',
+      answer: 'They help us.',
       explanation: 'Us is the object form of we.',
     ),
     A1BasicQuestion(
@@ -1223,14 +1223,14 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     ),
     A1BasicQuestion(
       type: 'word_order',
-      question: 'Put the words in order: "helped / me / she"',
+      question: 'Put the words in order: "helps / me / she"',
       options: [
-        'She helped me.',
-        'Me helped she.',
-        'She me helped.',
-        'Helped she me.',
+        'She helps me.',
+        'Me helps she.',
+        'She me helps.',
+        'Helps she me.',
       ],
-      answer: 'She helped me.',
+      answer: 'She helps me.',
       explanation:
           'The subject comes before the verb and the object comes after it.',
     ),
@@ -1248,14 +1248,14 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
     ),
     A1BasicQuestion(
       type: 'word_order',
-      question: 'Put the words in order: "helped / us / they"',
+      question: 'Put the words in order: "helps / us / they"',
       options: [
-        'They helped us.',
-        'Us helped they.',
-        'They us helped.',
-        'Helped they us.',
+        'They help us.',
+        'Us helps they.',
+        'They us helps.',
+        'Helps they us.',
       ],
-      answer: 'They helped us.',
+      answer: 'They help us.',
       explanation: 'They is the subject and us is the object.',
     ),
     A1BasicQuestion(
