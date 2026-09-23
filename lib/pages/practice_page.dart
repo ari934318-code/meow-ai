@@ -4,6 +4,7 @@ import '../localization.dart';
 import '../services/practice_service.dart';
 import 'practice_mistakes_page.dart';
 import 'vocabulary_practice_page.dart';
+import 'a1_practice_skill_page.dart';
 
 class PracticePage extends StatefulWidget {
   const PracticePage({super.key});
@@ -105,7 +106,9 @@ class _PracticePageState extends State<PracticePage> {
                   : 'Practice conversations and pronunciation',
               icon: Icons.mic_rounded,
               color: lavender,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const A1PracticeSkillPage(skill: A1PracticeSkill.speaking)));
+              },
             ),
 
             _practiceCard(
@@ -119,7 +122,9 @@ class _PracticePageState extends State<PracticePage> {
                   : 'Write sentences and improve your grammar',
               icon: Icons.edit_rounded,
               color: const Color(0xFF5C8DDE),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const A1PracticeSkillPage(skill: A1PracticeSkill.writing)));
+              },
             ),
 
             _practiceCard(
@@ -133,7 +138,9 @@ class _PracticePageState extends State<PracticePage> {
                   : 'Train your listening with real English',
               icon: Icons.headphones_rounded,
               color: const Color(0xFF8C72D8),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const A1PracticeSkillPage(skill: A1PracticeSkill.listening)));
+              },
             ),
 
             _practiceCard(
