@@ -165,133 +165,18 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
   ],
 
   vocabulary: [
-    A1BasicVocabulary(
-      english: 'work',
-      persian: 'کار کردن',
-      pronunciation: 'وِرک',
-      example: 'I work every day.',
-    ),
-    A1BasicVocabulary(
-      english: 'play',
-      persian: 'بازی کردن',
-      pronunciation: 'پِلِی',
-      example: 'They play football.',
-    ),
-    A1BasicVocabulary(
-      english: 'live',
-      persian: 'زندگی کردن',
-      example: 'They live here.',
-    ),
-    A1BasicVocabulary(
-      english: 'like',
-      persian: 'دوست داشتن',
-      example: 'I like pizza.',
-    ),
-    A1BasicVocabulary(
-      english: 'study',
-      persian: 'درس خواندن',
-      example: 'I study English.',
-    ),
-    A1BasicVocabulary(
-      english: 'watch',
-      persian: 'تماشا کردن',
-      example: 'I watch TV at night.',
-    ),
-    A1BasicVocabulary(
-      english: 'read',
-      persian: 'خواندن',
-      example: 'He reads books.',
-    ),
-    A1BasicVocabulary(
-      english: 'eat',
-      persian: 'خوردن',
-      example: 'He eats breakfast.',
-    ),
-    A1BasicVocabulary(
-      english: 'drink',
-      persian: 'نوشیدن',
-      example: 'He drinks water.',
-    ),
-    A1BasicVocabulary(
-      english: 'sleep',
-      persian: 'خوابیدن',
-      example: 'He sleeps at night.',
-    ),
-    A1BasicVocabulary(
-      english: 'wash',
-      persian: 'شستن',
-      example: 'She washes her hands.',
-    ),
-    A1BasicVocabulary(
-      english: 'go',
-      persian: 'رفتن',
-      example: 'She goes to school.',
-    ),
-    A1BasicVocabulary(
-      english: 'fix',
-      persian: 'تعمیر کردن',
-      example: 'He fixes the car.',
-    ),
-    A1BasicVocabulary(
-      english: 'pass',
-      persian: 'عبور کردن',
-      example: 'He passes the house.',
-    ),
-    A1BasicVocabulary(
-      english: 'teach',
-      persian: 'آموزش دادن',
-      example: 'She teaches English.',
-    ),
-    A1BasicVocabulary(
-      english: 'try',
-      persian: 'تلاش کردن',
-      example: 'She tries again.',
-    ),
-    A1BasicVocabulary(
-      english: 'cry',
-      persian: 'گریه کردن',
-      example: 'The baby cries.',
-    ),
-    A1BasicVocabulary(
-      english: 'carry',
-      persian: 'حمل کردن',
-      example: 'He carries a bag.',
-    ),
-    A1BasicVocabulary(
-      english: 'enjoy',
-      persian: 'لذت بردن',
-      example: 'She enjoys music.',
-    ),
-    A1BasicVocabulary(
-      english: 'stay',
-      persian: 'ماندن',
-      example: 'They stay here.',
-    ),
-    A1BasicVocabulary(
-      english: 'clean',
-      persian: 'تمیز کردن',
-      example: 'She cleans her room every week.',
-    ),
-    A1BasicVocabulary(
-      english: 'walk',
-      persian: 'پیاده رفتن / راه رفتن',
-      example: 'He walks to school.',
-    ),
-    A1BasicVocabulary(
-      english: 'need',
-      persian: 'نیاز داشتن',
-      example: 'I need help.',
-    ),
-    A1BasicVocabulary(
-      english: 'want',
-      persian: 'خواستن',
-      example: 'She wants water.',
-    ),
-    A1BasicVocabulary(
-      english: 'help',
-      persian: 'کمک',
-      example: 'I need help.',
-    ),
+    A1BasicVocabulary(english: 'work', persian: 'کار کردن', pronunciation: 'وِرک', example: 'I worked yesterday.'),
+    A1BasicVocabulary(english: 'play', persian: 'بازی کردن', pronunciation: 'پِلِی', example: 'They played football yesterday.'),
+    A1BasicVocabulary(english: 'live', persian: 'زندگی کردن', example: 'They lived here last year.'),
+    A1BasicVocabulary(english: 'like', persian: 'دوست داشتن', example: 'I liked the movie.'),
+    A1BasicVocabulary(english: 'study', persian: 'درس خواندن', example: 'I studied English yesterday.'),
+    A1BasicVocabulary(english: 'watch', persian: 'تماشا کردن', example: 'I watched TV last night.'),
+    A1BasicVocabulary(english: 'clean', persian: 'تمیز کردن', example: 'We cleaned the room yesterday.'),
+    A1BasicVocabulary(english: 'open', persian: 'باز کردن', example: 'She opened the door.'),
+    A1BasicVocabulary(english: 'help', persian: 'کمک کردن', example: 'They helped me yesterday.'),
+    A1BasicVocabulary(english: 'walk', persian: 'پیاده رفتن / راه رفتن', example: 'He walked to school yesterday.'),
+    A1BasicVocabulary(english: 'visit', persian: 'دیدن / ملاقات کردن', example: 'We visited our friend last week.'),
+    A1BasicVocabulary(english: 'stop', persian: 'متوقف شدن', example: 'The bus stopped here.'),
   ],
 
   sections: [
