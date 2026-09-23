@@ -149,7 +149,7 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       bodyFa: 'برای ساختن سؤال، am، is یا are را قبل از فاعل می‌آوریم: You are okay. → Are you okay?',
       examples: [
         A1BasicExample(english: 'Are you okay?', persian: 'خوبی؟', pronunciation: 'آر یو اوکِی'),
-        A1BasicExample(english: 'Is she at home?', persian: 'آیا او خانه است؟', pronunciation: 'ایز شی اَت هوم'),
+        A1BasicExample(english: 'Is she at home?', persian: 'آیا او در خانه است؟', pronunciation: 'ایز شی اَت هوم'),
         A1BasicExample(english: 'Are they ready?', persian: 'آیا آنها آماده‌اند؟', pronunciation: 'آر ذِی رِدی'),
       ],
     ),
@@ -415,7 +415,7 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
         ),
         A1BasicExample(
           english: 'I am at home.',
-          persian: 'من خانه هستم.',
+          persian: 'من در خانه هستم.',
           pronunciation: 'آی اَم اَت هوم',
         ),
         A1BasicExample(
@@ -1090,21 +1090,21 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       question: 'I ___ from Iran.',
       options: ['am', 'is', 'are', 'be'],
       answer: 'am',
-      explanation: 'I goes with am.',
+      explanation: 'We use am with I.',
     ),
     A1BasicQuestion(
       type: 'fill_blank',
       question: 'She ___ my sister.',
       options: ['is', 'are', 'am', 'be'],
       answer: 'is',
-      explanation: 'She goes with is.',
+      explanation: 'We use is with she.',
     ),
     A1BasicQuestion(
       type: 'fill_blank',
       question: 'We ___ at home.',
       options: ['are', 'is', 'am', 'be'],
       answer: 'are',
-      explanation: 'We goes with are.',
+      explanation: 'We use are with we.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
@@ -1242,7 +1242,7 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       question: 'We use "is" with they.',
       options: ['True', 'False'],
       answer: 'False',
-      explanation: 'They goes with are.',
+      explanation: 'We use are with they.',
     ),
     A1BasicQuestion(
       type: 'true_false',
@@ -1275,7 +1275,7 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
         'I tired am.',
       ],
       answer: 'I am tired.',
-      explanation: 'I takes am.',
+      explanation: 'We use am with I.',
     ),
     A1BasicQuestion(
       type: 'translation',
@@ -1287,7 +1287,7 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
         'She happy is.',
       ],
       answer: 'She is happy.',
-      explanation: 'She takes is.',
+      explanation: 'We use is with she.',
     ),
     A1BasicQuestion(
       type: 'translation',
@@ -1299,7 +1299,7 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
         'They ready are.',
       ],
       answer: 'They are ready.',
-      explanation: 'They takes are.',
+      explanation: 'We use are with they.',
     ),
     A1BasicQuestion(
       type: 'translation',
@@ -1311,7 +1311,7 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
         'We at home are.',
       ],
       answer: 'We are at home.',
-      explanation: 'We takes are.',
+      explanation: 'We use are with we.',
     ),
     A1BasicQuestion(
       type: 'translation',
@@ -1457,7 +1457,8 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
       persian: 'بگو: ما آماده‌ایم.',
       acceptableAnswers: [
         'we are ready',
-        'are ready',
+        'we are ready',
+        'were ready',
       ],
     ),
     A1BasicSpeakingQuestion(
@@ -1475,8 +1476,6 @@ const A1BasicLesson a1BasicToBe = A1BasicLesson(
         'yes i am',
         'yes im okay',
         'yes i am okay',
-        'no im not',
-        'no i am not',
       ],
     ),
     A1BasicSpeakingQuestion(
