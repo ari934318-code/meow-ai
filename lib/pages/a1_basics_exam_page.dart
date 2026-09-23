@@ -398,12 +398,11 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
       result.passed,
     );
 
-    if (result.passed) {
-      await prefs.setBool(
-        'a1_basics_completed',
-        true,
-      );
-    }
+    // A failed attempt must not leave a previous successful completion active.
+    await prefs.setBool(
+      'a1_basics_completed',
+      result.passed,
+    );
   }
 
   Future<void> _restartExam() async {
@@ -424,6 +423,14 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
 
     await prefs.remove(
       'a1_basics_exam_wrong',
+    );
+
+    await prefs.remove(
+      'a1_basics_exam_passed',
+    );
+
+    await prefs.remove(
+      'a1_basics_completed',
     );
 
     setState(() {
