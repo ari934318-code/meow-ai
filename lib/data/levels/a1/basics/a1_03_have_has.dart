@@ -324,7 +324,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
         ),
         A1BasicExample(
           english: 'It has four legs.',
-          persian: 'آن چهار پا دارد.',
+          persian: 'چهار پا دارد.',
           pronunciation: 'اِت هَز فور لِگز',
         ),
         A1BasicExample(
@@ -518,7 +518,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
         ),
         A1BasicExample(
           english: 'It doesn’t have a name.',
-          persian: 'آن اسم ندارد.',
+          persian: 'اسم ندارد.',
           pronunciation: 'اِت دازِنت هَو ا نیم',
         ),
       ],
@@ -990,7 +990,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
       question: 'We use "has" with they.',
       options: ['True', 'False'],
       answer: 'False',
-      explanation: 'They takes have.',
+      explanation: 'We use have with they.',
     ),
     A1BasicQuestion(
       type: 'true_false',
@@ -1023,7 +1023,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
         'I having a sister.',
       ],
       answer: 'I have a sister.',
-      explanation: 'I takes have.',
+      explanation: 'We use have with I.',
     ),
     A1BasicQuestion(
       type: 'translation',
@@ -1035,7 +1035,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
         'She having a car.',
       ],
       answer: 'She has a car.',
-      explanation: 'She takes has.',
+      explanation: 'We use has with she.',
     ),
     A1BasicQuestion(
       type: 'translation',
@@ -1107,7 +1107,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
         'He having two brothers.',
       ],
       answer: 'He has two brothers.',
-      explanation: 'He takes has.',
+      explanation: 'We use has with he.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
@@ -1119,7 +1119,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
         'We having a problem.',
       ],
       answer: 'We have a problem.',
-      explanation: 'We takes have.',
+      explanation: 'We use have with we.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
@@ -1155,7 +1155,7 @@ const A1BasicLesson a1BasicHaveHas = A1BasicLesson(
         'My phone has have a good camera.',
       ],
       answer: 'My phone has a good camera.',
-      explanation: 'One thing, my phone, takes has.',
+      explanation: 'My phone is one thing, so we use has.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
