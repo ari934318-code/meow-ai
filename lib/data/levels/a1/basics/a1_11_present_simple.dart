@@ -978,35 +978,40 @@ vocabulary: [
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Which word means "همیشه"?',
+      question: 'Which word means "always"?',
+      questionFa: 'کدام کلمه یعنی «همیشه»؟',
       options: ['always', 'never', 'sometimes', 'rarely'],
       answer: 'always',
       explanation: 'Always means every time or all the time.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Which word means "معمولاً"?',
+      question: 'Which word means "usually"?',
+      questionFa: 'کدام کلمه یعنی «معمولاً»؟',
       options: ['usually', 'never', 'always', 'sometimes'],
       answer: 'usually',
       explanation: 'Usually means most of the time.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Which word means "اغلب"?',
+      question: 'Which word means "often"?',
+      questionFa: 'کدام کلمه یعنی «اغلب»؟',
       options: ['often', 'never', 'always', 'rarely'],
       answer: 'often',
       explanation: 'Often means many times.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Which word means "گاهی"?',
+      question: 'Which word means "sometimes"?',
+      questionFa: 'کدام کلمه یعنی «گاهی»؟',
       options: ['sometimes', 'always', 'never', 'usually'],
       answer: 'sometimes',
       explanation: 'Sometimes means on some occasions.',
     ),
     A1BasicQuestion(
       type: 'multiple_choice',
-      question: 'Which word means "هرگز"?',
+      question: 'Which word means "never"?',
+      questionFa: 'کدام کلمه یعنی «هرگز»؟',
       options: ['never', 'often', 'usually', 'always'],
       answer: 'never',
       explanation: 'Never means at no time.',
@@ -1048,7 +1053,8 @@ vocabulary: [
     ),
     A1BasicQuestion(
       type: 'translation',
-      question: 'ترجمه کن: «من هر روز انگلیسی می‌خوانم.»',
+      question: 'Translate into English: "من هر روز انگلیسی می‌خوانم."',
+      questionFa: 'ترجمه کن: «من هر روز انگلیسی می‌خوانم.»',
       options: [
         'I study English every day.',
         'I studies English every day.',
@@ -1060,7 +1066,8 @@ vocabulary: [
     ),
     A1BasicQuestion(
       type: 'translation',
-      question: 'ترجمه کن: «او هر روز انگلیسی می‌خواند.»',
+      question: 'Translate into English: "او هر روز انگلیسی می‌خواند."',
+      questionFa: 'ترجمه کن: «او هر روز انگلیسی می‌خواند.»',
       options: [
         'She studies English every day.',
         'She study English every day.',
@@ -1072,7 +1079,8 @@ vocabulary: [
     ),
     A1BasicQuestion(
       type: 'translation',
-      question: 'ترجمه کن: «او قهوه دوست ندارد.»',
+      question: 'Translate into English: "او قهوه دوست ندارد."',
+      questionFa: 'ترجمه کن: «او قهوه دوست ندارد.»',
       options: [
         'She doesn’t like coffee.',
         'She don’t like coffee.',
@@ -1084,7 +1092,8 @@ vocabulary: [
     ),
     A1BasicQuestion(
       type: 'translation',
-      question: 'ترجمه کن: «آیا تو انگلیسی صحبت می‌کنی؟»',
+      question: 'Translate into English: "آیا تو انگلیسی صحبت می‌کنی؟"',
+      questionFa: 'ترجمه کن: «آیا تو انگلیسی صحبت می‌کنی؟»',
       options: [
         'Do you speak English?',
         'Does you speak English?',
@@ -1096,7 +1105,8 @@ vocabulary: [
     ),
     A1BasicQuestion(
       type: 'translation',
-      question: 'ترجمه کن: «آیا او اینجا کار می‌کند؟»',
+      question: 'Translate into English: "آیا او اینجا کار می‌کند؟"',
+      questionFa: 'ترجمه کن: «آیا او اینجا کار می‌کند؟»',
       options: [
         'Does he work here?',
         'Does he works here?',
