@@ -698,6 +698,10 @@ class _A1BasicsLessonPageState
             'Present Simple در انگلیسی واقعی',
             List.generate(47, (i) => i),
           ),
+          _listeningStage(
+            'Listening',
+            'گوش دادن',
+          ),
           _speakingStage(
             'Speaking',
             'تمرین مکالمه',
