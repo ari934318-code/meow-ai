@@ -179,6 +179,29 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
     A1BasicVocabulary(english: 'stop', persian: 'متوقف شدن', example: 'The bus stopped here.'),
   ],
 
+  examples: [
+    A1BasicExample(
+      english: 'I worked yesterday.',
+      persian: 'من دیروز کار کردم.',
+    ),
+    A1BasicExample(
+      english: 'She played last night.',
+      persian: 'او دیشب بازی کرد.',
+    ),
+    A1BasicExample(
+      english: 'They studied English last week.',
+      persian: 'آنها هفته پیش انگلیسی خواندند.',
+    ),
+    A1BasicExample(
+      english: 'I didn’t work yesterday.',
+      persian: 'من دیروز کار نکردم.',
+    ),
+    A1BasicExample(
+      english: 'Did you work yesterday?',
+      persian: 'آیا دیروز کار کردی؟',
+    ),
+  ],
+
   sections: [
     A1BasicSection(
       title: 'What Is the Regular Past?',
