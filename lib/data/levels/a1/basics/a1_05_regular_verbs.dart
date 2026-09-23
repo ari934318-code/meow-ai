@@ -40,10 +40,10 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       body: 'Start with common regular verbs.',
       bodyFa: 'با چند فعل باقاعده و پرکاربرد شروع کنیم.',
       examples: [
-        A1BasicExample(english: 'work → worked', persian: 'کار کردن → کار کرد'),
-        A1BasicExample(english: 'play → played', persian: 'بازی کردن → بازی کرد'),
-        A1BasicExample(english: 'clean → cleaned', persian: 'تمیز کردن → تمیز کرد'),
-        A1BasicExample(english: 'watch → watched', persian: 'تماشا کردن → تماشا کرد'),
+        A1BasicExample(english: 'work → worked', persian: 'کار کردن → کار کردم'),
+        A1BasicExample(english: 'play → played', persian: 'بازی کردن → بازی کردم'),
+        A1BasicExample(english: 'clean → cleaned', persian: 'تمیز کردن → تمیز کردم'),
+        A1BasicExample(english: 'watch → watched', persian: 'تماشا کردن → تماشا کردم'),
       ],
     ),
     A1BasicLearningPhase(
@@ -54,8 +54,8 @@ const A1BasicLesson a1BasicRegularVerbs = A1BasicLesson(
       bodyFa: 'برای بسیاری از فعل‌های باقاعده، برای ساخت شکل گذشته -ed اضافه می‌کنیم.',
       examples: [
         A1BasicExample(english: 'work → worked', persian: 'کار کردن → کار کرد'),
-        A1BasicExample(english: 'help → helped', persian: 'کمک کردن → کمک کرد'),
-        A1BasicExample(english: 'open → opened', persian: 'باز کردن → باز کرد'),
+        A1BasicExample(english: 'help → helped', persian: 'کمک کردن → کمک کردم'),
+        A1BasicExample(english: 'open → opened', persian: 'باز کردن → باز کردم'),
       ],
     ),
     A1BasicLearningPhase(
