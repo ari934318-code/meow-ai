@@ -586,43 +586,43 @@ class _A1BasicsLessonPageState
           // introduced earlier in this lesson. Later structures must never
           // leak into an earlier stage.
           _stage(
-            'Stage 1',
-            'مرحله ۱',
+            'What Is Must?',
+            'Must چیست؟',
             List.generate(6, (i) => i),
           ),
           _stage(
-            'Stage 2',
-            'مرحله ۲',
+            'Must + Base Verb',
+            'Must + شکل پایه فعل',
             List.generate(8, (i) => i),
           ),
           _stage(
-            'Stage 3',
-            'مرحله ۳',
+            'Mustn’t',
+            'Mustn’t',
             List.generate(10, (i) => i),
           ),
           _stage(
-            'Stage 4',
-            'مرحله ۴',
+            'Questions and Short Answers',
+            'سؤال‌ها و جواب‌های کوتاه',
             List.generate(19, (i) => i),
           ),
           _stage(
-            'Stage 5',
-            'مرحله ۵',
+            'Mustn’t vs Must',
+            'تفاوت Must و Mustn’t',
             List.generate(25, (i) => i),
           ),
           _stage(
-            'Stage 6',
-            'مرحله ۶',
+            'Translation and Word Order',
+            'ترجمه و ترتیب کلمات',
             List.generate(30, (i) => i),
           ),
           _stage(
-            'Stage 7',
-            'مرحله ۷',
+            'Rules and Necessity',
+            'قوانین و ضرورت',
             List.generate(34, (i) => i),
           ),
           _stage(
-            'Stage 8',
-            'مرحله ۸',
+            'Final Review',
+            'مرور نهایی',
             List.generate(40, (i) => i),
           ),
           _speakingStage(
