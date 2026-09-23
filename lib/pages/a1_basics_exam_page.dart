@@ -207,6 +207,17 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
       return false;
     }
 
+    // The name-introduction prompt must contain an actual name.
+    // Accepting just "I am" would mark an incomplete response as correct.
+    if (question.id == 'basics_exam_033') {
+      final hasNameIntroduction = RegExp(
+        r'^(?:my name is|i am|im)\\s+.+',
+      ).hasMatch(normalized);
+      if (!hasNameIntroduction) {
+        return false;
+      }
+    }
+
     for (final accepted in question.acceptableAnswers) {
       final acceptedNormalized = _normalize(accepted);
 
