@@ -655,11 +655,6 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
     A1BasicsExamQuestion question,
     Color primary,
   ) {
-    final displayedQuestion =
-        _isPersian && question.persian != null
-            ? question.persian!
-            : question.question;
-
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -733,19 +728,31 @@ class _A1BasicsExamPageState extends State<A1BasicsExamPage> {
           ),
           const SizedBox(height: 22),
 
-          // در فارسی فقط ترجمه سؤال نمایش داده می‌شود.
-          // در انگلیسی خود سؤال انگلیسی نمایش داده می‌شود.
           Text(
-            displayedQuestion,
-            textDirection: _isPersian
-                ? TextDirection.rtl
-                : TextDirection.ltr,
+            question.question,
+            textDirection: TextDirection.ltr,
             style: const TextStyle(
               fontSize: 23,
               height: 1.35,
               fontWeight: FontWeight.w700,
             ),
           ),
+          if (_isPersian && question.persian != null) ...[
+            const SizedBox(height: 10),
+            Text(
+              question.persian!,
+              textDirection: TextDirection.rtl,
+              style: TextStyle(
+                fontSize: 15,
+                height: 1.5,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.color
+                    ?.withOpacity(0.65),
+              ),
+            ),
+          ],
         ],
       ),
     );
