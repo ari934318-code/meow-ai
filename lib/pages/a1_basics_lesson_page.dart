@@ -354,9 +354,7 @@ class _A1BasicsLessonPageState
       case 'a1_06_simple_wh':
         return [
           _stage('Think First', 'اول فکر کن', []),
-          _stage('Introduction', 'معرفی', []),
-          _stage('Simple Examples', 'مثال‌های ساده', [0, 1, 2]),
-          _stage('What Are Wh-Questions?', 'Wh-Questions چیست؟', [0, 1, 2, 3, 4, 5]),
+          _stage('Simple Wh-Questions', 'سؤال‌های ساده Wh', [0, 1, 2]),
           _stage('Question Words', 'کلمه‌های پرسشی', [0, 1, 2, 3, 4, 5]),
           _stage('Wh + To Be', 'Wh + To Be', [6, 7, 12, 17]),
           _stage('Wh + Do / Does', 'Wh + Do / Does', [8, 9, 10, 11]),
