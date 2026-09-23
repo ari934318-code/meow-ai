@@ -294,8 +294,8 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       type: 'real_world',
       title: 'Real-Life Use',
       titleFa: 'کاربرد واقعی',
-      body: 'Use object pronouns in everyday requests and short conversations: I like me. Call her. Come with us. Give it to him.',
-      bodyFa: 'از ضمیرهای مفعولی در درخواست‌ها و گفت‌وگوهای روزمره استفاده کن: I like me.، Call her.، Come with us.، Give it to him.',
+      body: 'Use object pronouns in everyday requests and short conversations: I like her. Call her. Come with us. Give it to him.',
+      bodyFa: 'از ضمیرهای مفعولی در درخواست‌ها و گفت‌وگوهای روزمره استفاده کن: I like her.، Call her.، Come with us.، Give it to him.',
       examples: [
         A1BasicExample(
           english: 'I like her.',
@@ -395,7 +395,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       english: 'help',
       persian: 'کمک کردن',
       pronunciation: 'هِلپ',
-      example: 'I like me.',
+      example: 'I like her.',
     ),
     A1BasicVocabulary(
       english: 'call',
@@ -425,7 +425,7 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       english: 'hear',
       persian: 'شنیدن',
       pronunciation: 'هِیر',
-      example: 'I hear me.',
+      example: 'I hear her.',
     ),
     A1BasicVocabulary(
       english: 'need',
@@ -1262,12 +1262,12 @@ const A1BasicLesson a1BasicObjectPronouns = A1BasicLesson(
       type: 'multiple_choice',
       question: 'Choose the correct sentence.',
       options: [
-        'I like me.',
+        'I like her.',
         'I help I.',
         'I help my.',
         'I help mine.',
       ],
-      answer: 'I like me.',
+      answer: 'I like her.',
       explanation: 'Me is used after help.',
     ),
     A1BasicQuestion(
