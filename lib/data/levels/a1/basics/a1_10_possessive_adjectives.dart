@@ -43,6 +43,7 @@ const A1BasicLesson a1BasicPossessiveAdjectives = A1BasicLesson(
       titleFa: 'صفت ملکی + اسم',
       body: 'A possessive adjective comes before the noun and tells us who the noun belongs to. The basic order is possessive adjective + noun.',
       bodyFa: 'صفت ملکی قبل از اسم می‌آید و نشان می‌دهد اسم متعلق به چه کسی است. ترتیب اصلی این است: صفت ملکی + اسم.',
+      // Note: mine is a possessive pronoun, not a possessive adjective. It is included only to contrast the two forms.
       examples: [
         A1BasicExample(english: 'my book', persian: 'کتاب من'),
         A1BasicExample(english: 'their house', persian: 'خانه آنها'),
@@ -271,7 +272,7 @@ vocabulary: [
     english: 'school',
     persian: 'مدرسه',
     pronunciation: 'اِسکول',
-    example: 'Our school',
+    example: 'Our school is big.'
   ),
   A1BasicVocabulary(
     english: 'friend',
@@ -289,13 +290,13 @@ vocabulary: [
     english: 'sister',
     persian: 'خواهر',
     pronunciation: 'سیستِر',
-    example: 'His sister',
+    example: 'His sister is a student.'
   ),
   A1BasicVocabulary(
     english: 'brother',
     persian: 'برادر',
     pronunciation: 'برادِر',
-    example: 'Her brother',
+    example: 'Her brother is young.'
   ),
   A1BasicVocabulary(
     english: 'parents',
@@ -812,7 +813,7 @@ vocabulary: [
     ),
     A1BasicExample(
       english: 'The cat likes its food.',
-      persian: 'گربه دارد غذایش را می‌خورد.',
+      persian: 'گربه غذایش را دوست دارد.',
     ),
     A1BasicExample(
       english: 'Our house is small.',
@@ -836,7 +837,7 @@ vocabulary: [
     ),
     A1BasicExample(
       english: 'That book is mine.',
-      persian: 'آن کتاب مال من است.',
+      persian: 'آن کتاب مال من است.'
     ),
     A1BasicExample(
       english: 'Is this your bag?',
