@@ -5,6 +5,7 @@ import '../localization.dart';
 import '../services/a1_progress_service.dart';
 import '../services/progress_service.dart';
 import '../data/levels/a2/a2_data.dart';
+import '../data/levels/a1/basics/a1_basics_data.dart';
 
 class ProgressPage extends StatefulWidget {
   const ProgressPage({super.key});
@@ -18,11 +19,19 @@ class _ProgressPageState extends State<ProgressPage> {
 
   static const int a1TotalLessons = 12;
 
+  static const String _a1BasicsCompletedKey =
+      'a1_basics_completed_lessons';
+
+  static const String _a1BasicsExamCompletedKey =
+      'a1_basics_completed';
+
   bool _loading = true;
 
   int _a1CompletedLessons = 0;
+  int _a1BasicsCompletedLessons = 0;
   int _a2CompletedLessons = 0;
 
+  bool _a1BasicsExamCompleted = false;
   bool _a2ExamCompleted = false;
 
   int _totalXp = 0;
@@ -30,6 +39,8 @@ class _ProgressPageState extends State<ProgressPage> {
   int _speakingSessions = 0;
   int _studyDays = 0;
   int _streak = 0;
+
+  int get _a1BasicsTotalLessons => a1BasicsLessons.length;
 
   int get _a2TotalLessons => a2Lessons.length;
 
@@ -47,6 +58,15 @@ class _ProgressPageState extends State<ProgressPage> {
     // -----------------------------
     final a1Completed =
         await A1ProgressService.getCompletedLessons();
+
+    // -----------------------------
+    // A1 Basics (16 lessons)
+    // -----------------------------
+    final a1BasicsCompleted =
+        prefs.getStringList(_a1BasicsCompletedKey) ?? <String>[];
+
+    final a1BasicsExamCompleted =
+        prefs.getBool(_a1BasicsExamCompletedKey) ?? false;
 
     // -----------------------------
     // A2
@@ -88,6 +108,8 @@ class _ProgressPageState extends State<ProgressPage> {
 
     setState(() {
       _a1CompletedLessons = a1Completed.length;
+      _a1BasicsCompletedLessons = a1BasicsCompleted.length;
+      _a1BasicsExamCompleted = a1BasicsExamCompleted;
       _a2CompletedLessons = a2Completed;
       _a2ExamCompleted = a2ExamCompleted;
 
@@ -99,6 +121,19 @@ class _ProgressPageState extends State<ProgressPage> {
 
       _loading = false;
     });
+  }
+
+  // -----------------------------
+  // A1 Basics Progress
+  // -----------------------------
+
+  double get _a1BasicsProgress {
+    return (_a1BasicsCompletedLessons / _a1BasicsTotalLessons)
+        .clamp(0.0, 1.0);
+  }
+
+  int get _a1BasicsPercent {
+    return (_a1BasicsProgress * 100).round();
   }
 
   // -----------------------------
@@ -139,7 +174,7 @@ class _ProgressPageState extends State<ProgressPage> {
 
   String get _currentLevel {
     if (_a2ExamCompleted) {
-      return 'B1';
+      return 'A2';
     }
 
     if (_a1CompletedLessons >= a1TotalLessons) {
@@ -151,7 +186,7 @@ class _ProgressPageState extends State<ProgressPage> {
 
   int get _currentLevelPercent {
     if (_a2ExamCompleted) {
-      return 0;
+      return 100;
     }
 
     if (_a1CompletedLessons >= a1TotalLessons) {
@@ -162,7 +197,8 @@ class _ProgressPageState extends State<ProgressPage> {
   }
 
   int get _totalCompletedLessons {
-    return _a1CompletedLessons +
+    return _a1BasicsCompletedLessons +
+        _a1CompletedLessons +
         _a2CompletedLessons;
   }
 
@@ -350,6 +386,20 @@ class _ProgressPageState extends State<ProgressPage> {
               ),
 
               const SizedBox(height: 20),
+
+              // A1 Basics
+              _levelProgressCard(
+                context,
+                lang,
+                level: 'A1 Basics',
+                completedLessons: _a1BasicsCompletedLessons,
+                totalLessons: _a1BasicsTotalLessons,
+                percent: _a1BasicsPercent,
+                progress: _a1BasicsProgress,
+                examCompleted: _a1BasicsExamCompleted,
+              ),
+
+              const SizedBox(height: 14),
 
               // A1
               _levelProgressCard(
@@ -607,9 +657,11 @@ class _ProgressPageState extends State<ProgressPage> {
     required bool examCompleted,
   }) {
     final isComplete =
-        level == 'A1'
-            ? completedLessons >= totalLessons
-            : examCompleted;
+        level == 'A1 Basics'
+            ? examCompleted
+            : level == 'A1'
+                ? completedLessons >= totalLessons
+                : examCompleted;
 
     return Container(
       padding: const EdgeInsets.all(18),
@@ -694,7 +746,18 @@ class _ProgressPageState extends State<ProgressPage> {
                 ),
               ),
 
-              if (level == 'A2')
+              if (level == 'A1 Basics')
+                Text(
+                  examCompleted
+                      ? (lang.isPersian ? 'آزمون ✓' : 'Exam ✓')
+                      : (lang.isPersian ? 'آزمون باقی مانده' : 'Exam remaining'),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: examCompleted ? Colors.green : Colors.grey,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              else if (level == 'A2')
                 Text(
                   examCompleted
                       ? (lang.isPersian
@@ -723,6 +786,7 @@ class _ProgressPageState extends State<ProgressPage> {
     MeowLocalizations lang,
   ) {
     final a1Complete =
+        _a1BasicsExamCompleted &&
         _a1CompletedLessons >= a1TotalLessons;
 
     final a2Complete = _a2ExamCompleted;
@@ -785,8 +849,8 @@ class _ProgressPageState extends State<ProgressPage> {
                               ? 'درس‌های A2 را کامل کن و بعد امتحان نهایی را بده.'
                               : 'Complete the A2 lessons, then take the final exam.')
                           : (lang.isPersian
-                              ? 'ابتدا باید سطح A1 را کامل کنی.'
-                              : 'Complete A1 first.'),
+                              ? 'ابتدا مبانی A1 و سپس درس‌های A1 را کامل کن.'
+                              : 'Complete A1 Basics and then the A1 lessons first.'),
                   style: const TextStyle(
                     fontSize: 13,
                     color: Colors.grey,
