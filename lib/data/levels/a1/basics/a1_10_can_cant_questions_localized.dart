@@ -1,3 +1,5 @@
+import 'a1_basics_models.dart';
+
 const List<A1BasicQuestion> a1CanCantQuestions = [
   A1BasicQuestion(type: 'multiple_choice', question: 'I ___ swim.', questionFa: 'جای خالی را کامل کن: من ___ شنا کنم.', options: ['can', 'cans', 'can to', 'can swimming'], answer: 'can', explanation: 'Can comes before the base verb.', explanationFa: 'can قبل از شکل پایه فعل می‌آید.'),
   A1BasicQuestion(type: 'multiple_choice', question: 'She ___ speak English.', questionFa: 'جای خالی را کامل کن: او ___ انگلیسی صحبت کند.', options: ['can', 'cans', 'can to', 'can speaks'], answer: 'can', explanation: 'Can does not change with she.', explanationFa: 'can با she تغییر نمی‌کند.'),
