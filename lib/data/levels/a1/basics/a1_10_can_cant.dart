@@ -523,15 +523,15 @@ sections: [
       examples: [
         A1BasicExample(
           english: 'You can’t park here.',
-          persian: 'نمی‌توانی اینجا پارک کنی.',
+          persian: 'اینجا اجازه پارک کردن نداری.',
         ),
         A1BasicExample(
           english: 'You can’t smoke here.',
-          persian: 'اینجا نمی‌توانی سیگار بکشی.',
+          persian: 'اینجا اجازه سیگار کشیدن نداری.',
         ),
         A1BasicExample(
-          english: 'We can’t enter this room.',
-          persian: 'ما نمی‌توانیم وارد این اتاق شویم.',
+          english: 'You can’t enter this room.',
+          persian: 'اجازه نداری وارد این اتاق شوی.',
         ),
         A1BasicExample(
           english: 'You can’t use your phone here.',
