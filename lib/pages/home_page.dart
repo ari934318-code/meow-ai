@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../localization.dart';
 import '../real_english_page.dart';
+import '../services/progress_service.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -52,25 +53,7 @@ class HomePage extends StatelessWidget {
             _realEnglishCard(context, lang),
             const SizedBox(height: 18),
 
-            Row(
-              children: [
-                Expanded(
-                  child: _smallStat(
-                    icon: Icons.local_fire_department_outlined,
-                    title: lang.isPersian ? 'روزهای پشت سر هم' : 'Streak',
-                    value: lang.isPersian ? '۰ روز' : '0 days',
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _smallStat(
-                    icon: Icons.star_outline_rounded,
-                    title: 'XP',
-                    value: '0 XP',
-                  ),
-                ),
-              ],
-            ),
+            _HomeProgressStats(isPersian: lang.isPersian),
 
             const SizedBox(height: 18),
 
@@ -604,6 +587,145 @@ class HomePage extends StatelessWidget {
             break;
         }
       },
+    );
+  }
+}
+
+/// Displays persisted learning statistics rather than placeholder values.
+class _HomeProgressStats extends StatefulWidget {
+  const _HomeProgressStats({required this.isPersian});
+
+  final bool isPersian;
+
+  @override
+  State<_HomeProgressStats> createState() => _HomeProgressStatsState();
+}
+
+class _HomeProgressStatsState extends State<_HomeProgressStats> {
+  int _streak = 0;
+  int _xp = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStats();
+  }
+
+  @override
+  void didUpdateWidget(covariant _HomeProgressStats oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // The values are language-independent; no reload is needed on locale change.
+  }
+
+  Future<void> _loadStats() async {
+    final values = await Future.wait<int>([
+      ProgressService.getCurrentStreak(),
+      ProgressService.getTotalXp(),
+    ]);
+    if (!mounted) return;
+    setState(() {
+      _streak = values[0];
+      _xp = values[1];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final streakValue = widget.isPersian
+        ? '${_toPersianDigits(_streak)} روز'
+        : '$_streak ${_streak == 1 ? 'day' : 'days'}';
+    final xpValue = widget.isPersian
+        ? '${_toPersianDigits(_xp)} XP'
+        : '$_xp XP';
+
+    return Row(
+      children: [
+        Expanded(
+          child: _HomeStatCard(
+            icon: Icons.local_fire_department_outlined,
+            title: widget.isPersian ? 'روزهای پشت سر هم' : 'Streak',
+            value: streakValue,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: _HomeStatCard(
+            icon: Icons.star_outline_rounded,
+            title: 'XP',
+            value: xpValue,
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _toPersianDigits(int value) {
+    const digits = '۰۱۲۳۴۵۶۷۸۹';
+    return value.toString().split('').map((character) {
+      final digit = int.tryParse(character);
+      return digit == null ? character : digits[digit];
+    }).join();
+  }
+}
+
+class _HomeStatCard extends StatelessWidget {
+  const _HomeStatCard({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String title;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return _HomePageStatWrapper(
+      icon: icon,
+      title: title,
+      value: value,
+    );
+  }
+}
+
+class _HomePageStatWrapper extends StatelessWidget {
+  const _HomePageStatWrapper({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String title;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.withOpacity(0.14)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: const Color(0xFFB9A7E8)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, maxLines: 1, overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                const SizedBox(height: 4),
+                Text(value, style: const TextStyle(fontWeight: FontWeight.w800)),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
