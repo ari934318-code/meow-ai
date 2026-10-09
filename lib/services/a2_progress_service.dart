@@ -76,6 +76,9 @@ class A2ProgressService {
   static Future<void> resetProgress() async {
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.remove(_completedLessonsKey);
+    // Clear A2-owned lesson/exam state, preserving shared XP and other levels.
+    for (final key in prefs.getKeys().where((key) => key.startsWith('a2_')).toList()) {
+      await prefs.remove(key);
+    }
   }
 }
