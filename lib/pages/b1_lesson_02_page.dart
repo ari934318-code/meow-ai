@@ -13,6 +13,7 @@ class B1Lesson02Page extends StatefulWidget {
 class _B1Lesson02PageState extends State<B1Lesson02Page> {
   static const _progressKey = 'b1_lesson_progress_b1_lesson_02';
   static const _completedKey = 'b1_completed_lessons';
+  static const _typedKey = 'b1_lesson_02_typed_answer';
   final Map<int, String> _answers = {};
   final _typed = TextEditingController();
   bool _completed = false;
@@ -28,6 +29,8 @@ class _B1Lesson02PageState extends State<B1Lesson02Page> {
   Future<void> _restore() async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_progressKey);
+    _typed.text = prefs.getString(_typedKey) ?? '';
+    _completed = (prefs.getStringList(_completedKey) ?? <String>[]).contains(B1Lesson02Data.id);
     if (raw != null) {
       for (final part in raw.split('|')) {
         final pieces = part.split(':');
@@ -45,6 +48,7 @@ class _B1Lesson02PageState extends State<B1Lesson02Page> {
     final prefs = await SharedPreferences.getInstance();
     final raw = _answers.entries.map((e) => '${e.key}:${e.value}').join('|');
     await prefs.setString(_progressKey, raw);
+    await prefs.setString(_typedKey, _typed.text);
   }
 
   bool get _allCorrect => B1Lesson02Data.examples.asMap().entries.every(
@@ -79,6 +83,7 @@ class _B1Lesson02PageState extends State<B1Lesson02Page> {
   Widget build(BuildContext context) {
     if (!_saved) return const Scaffold(body: Center(child: CircularProgressIndicator()));
     final doneCount = _answers.entries.where((e) =>
+      e.key >= 0 && e.key < B1Lesson02Data.examples.length &&
       B1Lesson02Data.examples[e.key].answer == e.value).length;
     return Scaffold(
       appBar: AppBar(title: const Text('B1 · Lesson 2')),
@@ -115,7 +120,7 @@ class _B1Lesson02PageState extends State<B1Lesson02Page> {
         const SizedBox(height: 12),
         Text(B1Lesson02Data.typedPromptEn, style: const TextStyle(fontWeight: FontWeight.bold)),
         Text(B1Lesson02Data.typedPromptFa),
-        TextField(controller: _typed, decoration: const InputDecoration(hintText: 'We are leaving...')),
+        TextField(controller: _typed, onChanged: (_) => _save(), decoration: const InputDecoration(hintText: 'We are leaving...')),
         const SizedBox(height: 16),
         Text('Correct choices: $doneCount / ${B1Lesson02Data.examples.length}'),
         FilledButton(onPressed: _finish, child: Text(_completed ? 'Lesson completed ✓' : 'Check and complete lesson')),
