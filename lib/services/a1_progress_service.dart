@@ -1,7 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'progress_service.dart';
-
 class A1ProgressService {
   static const String _completedLessonsKey = 'a1_completed_lessons';
 
