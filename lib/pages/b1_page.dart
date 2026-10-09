@@ -44,22 +44,32 @@ class _B1PageState extends State<B1Page> {
       return true;
     }
 
-    return completedLessons.contains(
-      b1Lessons[index - 1].id.toString(),
-    );
+    final previousId = B1LessonRegistry.idForNumber(b1Lessons[index - 1].id);
+    return completedLessons.contains(previousId) ||
+        completedLessons.contains(b1Lessons[index - 1].id.toString());
   }
 
   Future<void> _openLesson(B1Lesson lesson) async {
-    if (lesson.id == 1) {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const B1LessonDetailPage(),
-        ),
+    final lessonId = B1LessonRegistry.idForNumber(lesson.id);
+    if (B1LessonRegistry.resolvePlayable(lessonId) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(
+          MeowLocalizations.of(context).isPersian
+              ? 'محتوای این درس هنوز آماده نیست.'
+              : 'This lesson content is not available yet.',
+        )),
       );
-
-      await _loadProgress();
+      return;
     }
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => lesson.id == 2
+            ? const B1Lesson02Page()
+            : const B1LessonDetailPage(),
+      ),
+    );
+    await _loadProgress();
   }
 
   @override
@@ -201,11 +211,15 @@ class _B1PageState extends State<B1Page> {
         (index) {
           final lesson = b1Lessons[index];
 
-          final unlocked = _isLessonUnlocked(index);
+          final hasContent = B1LessonRegistry.hasContent(
+            B1LessonRegistry.idForNumber(lesson.id),
+          );
+          final unlocked = _isLessonUnlocked(index) && hasContent;
 
           final completed = completedLessons.contains(
-            lesson.id.toString(),
-          );
+                B1LessonRegistry.idForNumber(lesson.id),
+              ) ||
+              completedLessons.contains(lesson.id.toString());
 
           return _buildLessonCard(
             lang: lang,
@@ -326,9 +340,11 @@ class _B1PageState extends State<B1Page> {
                 Icon(
                   completed
                       ? Icons.check_circle_rounded
-                      : unlocked
-                          ? Icons.arrow_forward_ios_rounded
-                          : Icons.lock_outline_rounded,
+                      : !hasContent
+                          ? Icons.hourglass_disabled_rounded
+                          : unlocked
+                              ? Icons.arrow_forward_ios_rounded
+                              : Icons.lock_outline_rounded,
                   size: completed ? 23 : 17,
                   color: completed
                       ? Colors.green
