@@ -37,6 +37,8 @@ class A2ProgressService {
   }
 
   static Future<void> completeLesson(String lessonId) async {
+    if (!_lessonXp.containsKey(lessonId)) return;
+
     final prefs = await SharedPreferences.getInstance();
 
     final completed =
