@@ -47,3 +47,7 @@ app.*.map.json
 # Widget Preview related
 .widget_preview/
 meow-key-base64.txt
+
+# Android release signing material must never be committed.
+/android/key.properties
+/android/app/*.jks
