@@ -1,17 +1,20 @@
-name: Fix A1 Lesson 6 Staging
+name: Prepare A1 Lesson 6 staging patch
+
+# This workflow used to run on every push to main, write directly to the
+# checked-out branch, commit a source change, and delete itself. Keep the
+# intended stage-map repair available for review, but never push or mutate main.
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
-  fix:
+  prepare-patch:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Update Lesson 6 stage mapping
+      - name: Prepare the Lesson 6 stage-map patch
         shell: python
         run: |
           from pathlib import Path
@@ -40,12 +43,11 @@ jobs:
 
 '''
           p.write_text(s[:start] + new_block + s[end:])
-      - name: Commit and clean up
+      - name: Export patch for review
         run: |
-          rm -f .github/workflows/fix-a1-lesson6-staging.yml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add lib/pages/a1_basics_lesson_page.dart .github/workflows/fix-a1-lesson6-staging.yml
-          git diff --cached --quiet && exit 0
-          git commit -m "Fix A1 Lesson 6 learning stages"
-          git push
+          git diff -- lib/pages/a1_basics_lesson_page.dart > a1-lesson6-staging.patch
+          test -s a1-lesson6-staging.patch
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a1-lesson6-staging-patch
+          path: a1-lesson6-staging.patch
