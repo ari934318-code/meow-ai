@@ -201,11 +201,15 @@ class _B1PageState extends State<B1Page> {
         (index) {
           final lesson = b1Lessons[index];
 
-          final unlocked = _isLessonUnlocked(index);
+          final hasContent = B1LessonRegistry.hasContent(
+            B1LessonRegistry.idForNumber(lesson.id),
+          );
+          final unlocked = _isLessonUnlocked(index) && hasContent;
 
           final completed = completedLessons.contains(
-            lesson.id.toString(),
-          );
+                B1LessonRegistry.idForNumber(lesson.id),
+              ) ||
+              completedLessons.contains(lesson.id.toString());
 
           return _buildLessonCard(
             lang: lang,
@@ -326,9 +330,11 @@ class _B1PageState extends State<B1Page> {
                 Icon(
                   completed
                       ? Icons.check_circle_rounded
-                      : unlocked
-                          ? Icons.arrow_forward_ios_rounded
-                          : Icons.lock_outline_rounded,
+                      : !hasContent
+                          ? Icons.hourglass_disabled_rounded
+                          : unlocked
+                              ? Icons.arrow_forward_ios_rounded
+                              : Icons.lock_outline_rounded,
                   size: completed ? 23 : 17,
                   color: completed
                       ? Colors.green
