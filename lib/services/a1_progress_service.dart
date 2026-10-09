@@ -69,9 +69,9 @@ class A1ProgressService {
   static Future<void> resetProgress() async {
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.remove(_completedLessonsKey);
-
-    // ریست XP، Practice، Speaking، Study Days و Streak
-    await ProgressService.resetProgress();
+    // Reset only A1-owned state. Shared XP/streak may include other levels.
+    for (final key in prefs.getKeys().where((key) => key.startsWith('a1_')).toList()) {
+      await prefs.remove(key);
+    }
   }
 }
