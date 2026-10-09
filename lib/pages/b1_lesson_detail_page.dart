@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 import '../data/levels/b1/b1_lesson_01_data.dart';
+import '../services/progress_service.dart';
 
 class B1LessonDetailPage extends StatefulWidget {
   const B1LessonDetailPage({super.key});
@@ -445,14 +446,14 @@ class _B1LessonDetailPageState extends State<B1LessonDetailPage> {
     final completed =
         preferences.getStringList(completedKey) ?? [];
 
-    if (!completed.contains(B1Lesson01Data.id)) {
+    final isFirstCompletion = !completed.contains(B1Lesson01Data.id);
+    if (isFirstCompletion) {
       completed.add(B1Lesson01Data.id);
+      await preferences.setStringList(completedKey, completed);
+      // Award lesson XP only once, even if the learner revisits the lesson.
+      await ProgressService.addXp(50);
+      await ProgressService.recordStudyDay();
     }
-
-    await preferences.setStringList(
-      completedKey,
-      completed,
-    );
 
     await _saveProgress();
 
