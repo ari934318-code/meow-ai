@@ -17,7 +17,7 @@ void main() {
     expect(await ProgressService.getStudyDays(), 1);
   });
 
-  test('unknown A2 lesson does not earn XP but records eligible completion', () async {
+  test('unknown A2 lesson is not completed or rewarded', () async {
     await A2ProgressService.completeLesson('unknown_a2_lesson');
     expect(await ProgressService.getTotalXp(), 0);
     expect(await A2ProgressService.getStudyDays(), 1);
