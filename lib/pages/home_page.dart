@@ -270,46 +270,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _smallStat({
-    required IconData icon,
-    required String title,
-    required String value,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-        color: Colors.grey.withOpacity(0.08),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            color: lavender,
-            size: 25,
-          ),
-          const SizedBox(height: 13),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 13,
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _dailyGoal(MeowLocalizations lang) {
     return Container(
       padding: const EdgeInsets.all(20),
