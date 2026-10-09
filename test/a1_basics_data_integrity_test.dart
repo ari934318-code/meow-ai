@@ -52,7 +52,7 @@ void main() {
       final speaking = a1BasicsExamQuestions.where((q) => q.isSpeaking).toList();
       expect(speaking.length, greaterThanOrEqualTo(5));
       for (final question in speaking) {
-        expect(question.persian.trim(), isNotEmpty);
+        expect((question.persian ?? '').trim(), isNotEmpty);
         expect(question.acceptableAnswers, isNotEmpty);
       }
     });
