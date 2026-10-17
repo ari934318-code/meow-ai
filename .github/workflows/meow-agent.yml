@@ -1,4 +1,3 @@
-
 name: Meow Agent
 
 on:
@@ -70,8 +69,8 @@ jobs:
           FILES: ${{ inputs.files }}
           MAX_ROUNDS: ${{ inputs.max_rounds }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
-          MODEL: ${{ vars.MEOW_AGENT_MODEL }}
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://openrouter.ai/api/v1' }}
+          MODEL: ${{ vars.MEOW_AGENT_MODEL || 'openrouter/free' }}
         run: |
           set -euo pipefail
           if [ -z "${LLM_API_KEY:-}" ]; then
