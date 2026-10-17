@@ -1,6 +1,7 @@
 import 'b1_lessons.dart';
 import 'b1_lesson_01_data.dart';
 import 'b1_lesson_02_data.dart';
+import 'b1_practice_lessons_data.dart';
 
 /// Resolves catalog entries by stable ID and only exposes content with a player.
 class B1LessonRegistry {
@@ -15,7 +16,9 @@ class B1LessonRegistry {
   }
 
   static bool hasContent(String lessonId) =>
-      lessonId == B1Lesson01Data.id || lessonId == B1Lesson02Data.id;
+      lessonId == B1Lesson01Data.id ||
+      lessonId == B1Lesson02Data.id ||
+      b1PracticeLessons.containsKey(lessonId);
 
   static B1Lesson? resolvePlayable(String lessonId) {
     final lesson = findById(lessonId);
