@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/levels/b1/b1_lessons.dart';
+import '../data/levels/b1/b1_lesson_registry.dart';
 import '../localization.dart';
 import 'b1_lesson_detail_page.dart';
+import 'b1_lesson_02_page.dart';
+import 'b1_practice_lesson_page.dart';
 
 class B1Page extends StatefulWidget {
   const B1Page({super.key});
@@ -64,9 +67,11 @@ class _B1PageState extends State<B1Page> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => lesson.id == 2
-            ? const B1Lesson02Page()
-            : const B1LessonDetailPage(),
+        builder: (_) {
+          if (lesson.id == 1) return const B1LessonDetailPage();
+          if (lesson.id == 2) return const B1Lesson02Page();
+          return B1PracticeLessonPage(lessonId: lessonId);
+        },
       ),
     );
     await _loadProgress();
@@ -84,7 +89,10 @@ class _B1PageState extends State<B1Page> {
 
     final lang = MeowLocalizations.of(context);
 
-    final completedCount = completedLessons.length;
+    final completedCount = b1Lessons.where((lesson) =>
+      completedLessons.contains(B1LessonRegistry.idForNumber(lesson.id)) ||
+      completedLessons.contains(lesson.id.toString()),
+    ).length;
     final totalCount = b1Lessons.length;
 
     final progress = totalCount == 0
@@ -241,6 +249,9 @@ class _B1PageState extends State<B1Page> {
     required bool completed,
   }) {
     final lessonNumber = index + 1;
+    final hasContent = B1LessonRegistry.hasContent(
+      B1LessonRegistry.idForNumber(lesson.id),
+    );
 
     final label = lang.isPersian
         ? 'درس $lessonNumber'
@@ -361,10 +372,9 @@ class _B1PageState extends State<B1Page> {
   }
 
   Widget _buildFinalTestCard(MeowLocalizations lang) {
-    final allCompleted = b1Lessons.every(
-      (lesson) => completedLessons.contains(
-        lesson.id.toString(),
-      ),
+    final allCompleted = b1Lessons.every((lesson) =>
+      completedLessons.contains(B1LessonRegistry.idForNumber(lesson.id)) ||
+      completedLessons.contains(lesson.id.toString()),
     );
 
     return Container(
