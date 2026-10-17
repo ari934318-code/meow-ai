@@ -125,6 +125,7 @@ def main():
     rules = (ROOT / "agent" / "AGENT.md").read_text()
     past = PROGRESS.read_text()[-2500:] if PROGRESS.exists() else ""
     notes, status = [], "finished"
+    completed = False
     try:
         ok, out = analyze()
         files = FILES or files_from_analyze(out)
@@ -140,6 +141,7 @@ def main():
             ok, out = analyze()
             notes.append(f"  analyze after round {rnd}: {'clean' if ok else 'errors remain'}")
             if data.get("done") and ok:
+                completed = True
                 break
             files = list(dict.fromkeys(files + files_from_analyze(out) + [e.get("path", "") for e in data.get("edits", [])]))[:5]
             feedback = "RESULT OF YOUR LAST EDITS:\n" + "\n".join(res)
@@ -149,8 +151,13 @@ def main():
     except Exception as ex:  # report, never crash silently
         status = "FAILED"
         notes.append(f"error: {ex}")
+    if status == "finished" and not completed:
+        status = "FAILED"
+        notes.append("agent did not confirm completion within the allowed rounds, or analyzer errors remain")
     log_progress(status, notes)
     print("\n".join(notes))
+    if status != "finished":
+        sys.exit(1)
 
 
 if __name__ == "__main__":
