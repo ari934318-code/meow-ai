@@ -1,0 +1,118 @@
+
+name: Meow Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "A small, specific task for Meow AI"
+        required: true
+        type: string
+      files:
+        description: "Optional comma-separated file paths"
+        required: false
+        type: string
+        default: ""
+      max_rounds:
+        description: "Maximum edit rounds"
+        required: true
+        type: choice
+        options:
+          - "1"
+          - "2"
+        default: "1"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: meow-agent
+  cancel-in-progress: false
+
+jobs:
+  agent:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.4"
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Prepare agent files
+        run: |
+          set -euo pipefail
+          mkdir -p agent
+          cp AGENT.md agent/AGENT.md
+          cp PROGRESS.md agent/PROGRESS.md
+
+      - name: Run agent
+        env:
+          TASK: ${{ inputs.task }}
+          FILES: ${{ inputs.files }}
+          MAX_ROUNDS: ${{ inputs.max_rounds }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
+          MODEL: ${{ vars.MEOW_AGENT_MODEL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${LLM_API_KEY:-}" ]; then
+            echo "::error::Configure the LLM_API_KEY repository secret first."
+            exit 1
+          fi
+          python agent.py
+
+      - name: Save progress log
+        if: always()
+        run: |
+          if [ -f agent/PROGRESS.md ]; then
+            cp agent/PROGRESS.md PROGRESS.md
+          fi
+
+      - name: Validate changes
+        run: |
+          set -euo pipefail
+          flutter analyze
+          flutter test
+
+      - name: Create branch and pull request
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TASK: ${{ inputs.task }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="agent/meow-$(date -u +%Y%m%d-%H%M%S)"
+          git switch -c "$branch"
+          git add -- lib test PROGRESS.md
+          if git diff --cached --quiet; then
+            echo "No eligible changes. No PR created."
+            exit 0
+          fi
+          git commit -m "chore(agent): update Meow AI"
+          git push origin "$branch"
+          gh pr create \
+            --base main \
+            --head "$branch" \
+            --title "Meow Agent: automated changes" \
+            --body "Draft changes from Meow Agent. Review the diff and CI results before merging. This workflow never merges pull requests. Task: ${TASK}"
