@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""Meow agent: tiny, free, PR-only coding agent. Standard library only."""
+import datetime, json, os, pathlib, re, subprocess, sys, time
+import urllib.error, urllib.request
+
+ROOT = pathlib.Path.cwd().resolve()
+BASE = os.environ.get("LLM_BASE_URL", "https://models.github.ai/inference").rstrip("/")
+KEY = os.environ.get("LLM_API_KEY") or os.environ.get("GITHUB_TOKEN", "")
+MODEL = os.environ.get("MODEL", "openai/gpt-4o-mini")
+TASK = os.environ.get("TASK", "").strip()
+FILES = [f.strip() for f in os.environ.get("FILES", "").split(",") if f.strip()]
+MAX_ROUNDS = int(os.environ.get("MAX_ROUNDS", "3"))
+MAX_FILE_CHARS = int(os.environ.get("MAX_FILE_CHARS", "9000"))
+PROTECTED = (".git/", ".github/", "agent/")
+PROGRESS = ROOT / "agent" / "PROGRESS.md"
+PR_BODY = pathlib.Path(os.environ.get("PR_BODY_PATH", "/tmp/pr_body.md"))
+
+
+class QuotaStop(Exception):
+    pass
+
+
+def chat(messages):
+    body = json.dumps({"model": MODEL, "messages": messages, "temperature": 0.2}).encode()
+    req = urllib.request.Request(
+        f"{BASE}/chat/completions", data=body,
+        headers={"Content-Type": "application/json", "Authorization": f"Bearer {KEY}"})
+    for attempt in range(2):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                return json.load(r)["choices"][0]["message"]["content"]
+        except urllib.error.HTTPError as e:
+            detail = e.read().decode(errors="replace")[:300]
+            if e.code in (413, 429) or "rate" in detail.lower() or "quota" in detail.lower():
+                raise QuotaStop(f"HTTP {e.code}: {detail}")
+            if e.code >= 500 and attempt == 0:
+                time.sleep(5); continue
+            raise RuntimeError(f"HTTP {e.code}: {detail}")
+
+
+def run(cmd, timeout=900):
+    p = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
+    return p.returncode, (p.stdout + p.stderr)
+
+
+def analyze():
+    code, out = run("flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings")
+    return code == 0, out[-6000:]
+
+
+def files_from_analyze(out):
+    seen = []
+    for m in re.finditer(r"•\s+((?:lib|test)/[^\s:]+\.dart):\d+", out):
+        if m.group(1) not in seen:
+            seen.append(m.group(1))
+    return seen[:4]
+
+
+def read_files(paths):
+    parts = []
+    for p in paths:
+        f = ROOT / p
+        if f.is_file():
+            txt = f.read_text(errors="replace")
+            note = "\n[...TRUNCATED, do not edit beyond this point...]" if len(txt) > MAX_FILE_CHARS else ""
+            parts.append(f"=== {p} ===\n{txt[:MAX_FILE_CHARS]}{note}")
+    return "\n\n".join(parts)
+
+
+def tree():
+    _, out = run("git ls-files lib test pubspec.yaml | head -150")
+    return out
+
+
+def safe_path(rel):
+    p = (ROOT / rel).resolve()
+    if ROOT not in p.parents:
+        return None
+    r = p.relative_to(ROOT).as_posix()
+    return None if r.startswith(PROTECTED) else p
+
+
+def apply_edits(edits):
+    log = []
+    for e in edits[:8]:
+        rel, old, new = e.get("path", ""), e.get("old", ""), e.get("new", "")
+        p = safe_path(rel)
+        if p is None:
+            log.append(f"SKIP {rel}: path not allowed"); continue
+        if old == "":
+            if p.exists():
+                log.append(f"SKIP {rel}: file exists (use old/new)"); continue
+            p.parent.mkdir(parents=True, exist_ok=True); p.write_text(new)
+            log.append(f"CREATED {rel}"); continue
+        if not p.is_file():
+            log.append(f"SKIP {rel}: not found"); continue
+        txt = p.read_text()
+        if txt.count(old) != 1:
+            log.append(f"SKIP {rel}: 'old' matched {txt.count(old)} times (need exactly 1)"); continue
+        p.write_text(txt.replace(old, new, 1))
+        log.append(f"EDITED {rel}")
+    return log
+
+
+def parse(reply):
+    reply = re.sub(r"^```(?:json)?|```$", "", reply.strip(), flags=re.M).strip()
+    try:
+        return json.loads(reply)
+    except json.JSONDecodeError:
+        m = re.search(r"\{.*\}", reply, re.S)
+        return json.loads(m.group(0)) if m else {}
+
+
+def log_progress(status, notes):
+    stamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    entry = f"\n## {stamp} — {status}\nTask: {TASK}\nModel: {MODEL}\n" + "\n".join(f"- {n}" for n in notes) + "\n"
+    with PROGRESS.open("a") as f:
+        f.write(entry)
+    PR_BODY.write_text(f"Automated by meow-agent ({MODEL}). **Do not merge without review.**\n{entry}")
+
+
+def main():
+    if not TASK or not KEY:
+        sys.exit("TASK and an API key (GITHUB_TOKEN or LLM_API_KEY) are required")
+    rules = (ROOT / "agent" / "AGENT.md").read_text()
+    past = PROGRESS.read_text()[-2500:] if PROGRESS.exists() else ""
+    notes, status = [], "finished"
+    try:
+        ok, out = analyze()
+        files = FILES or files_from_analyze(out)
+        notes.append(f"analyze at start: {'clean' if ok else 'errors'}; context files: {files or 'none'}")
+        feedback = ""
+        for rnd in range(1, MAX_ROUNDS + 1):
+            user = (f"TASK: {TASK}\n\nRECENT PROGRESS LOG:\n{past}\n\nPROJECT FILES:\n{tree()}\n\n"
+                    f"ANALYZER OUTPUT:\n{out}\n\nFILE CONTENTS:\n{read_files(files)}\n\n{feedback}")
+            data = parse(chat([{"role": "system", "content": rules}, {"role": "user", "content": user}]))
+            res = apply_edits(data.get("edits", []))
+            notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
+            notes += [f"  {r}" for r in res]
+            ok, out = analyze()
+            notes.append(f"  analyze after round {rnd}: {'clean' if ok else 'errors remain'}")
+            if data.get("done") and ok:
+                break
+            files = list(dict.fromkeys(files + files_from_analyze(out) + [e.get("path", "") for e in data.get("edits", [])]))[:5]
+            feedback = "RESULT OF YOUR LAST EDITS:\n" + "\n".join(res)
+    except QuotaStop as q:
+        status = "PAUSED (usage limit)"
+        notes.append(f"stopped at quota: {q}. Re-run the workflow later with the same task to resume.")
+    except Exception as ex:  # report, never crash silently
+        status = "FAILED"
+        notes.append(f"error: {ex}")
+    log_progress(status, notes)
+    print("\n".join(notes))
+
+
+if __name__ == "__main__":
+    main()
