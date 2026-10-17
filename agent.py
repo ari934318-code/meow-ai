@@ -151,8 +151,13 @@ def main():
     except Exception as ex:  # report, never crash silently
         status = "FAILED"
         notes.append(f"error: {ex}")
+    if status == "finished" and not completed:
+        status = "FAILED"
+        notes.append("agent did not confirm completion within the allowed rounds, or analyzer errors remain")
     log_progress(status, notes)
     print("\n".join(notes))
+    if status != "finished":
+        sys.exit(1)
 
 
 if __name__ == "__main__":
