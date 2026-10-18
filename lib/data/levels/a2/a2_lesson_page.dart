@@ -9,6 +9,7 @@ import '../../../localization.dart';
 import 'a2_data.dart';
 import 'a2_models.dart';
 import 'a2_exam_page.dart';
+import '../../../services/a2_progress_service.dart';
 
 class A2LessonsPage extends StatefulWidget {
   const A2LessonsPage({super.key});
@@ -30,16 +31,13 @@ class _A2LessonsPageState extends State<A2LessonsPage> {
   }
 
   Future<void> _loadCompletedLessons() async {
-    final prefs = await SharedPreferences.getInstance();
+    final completedIds =
+        await A2ProgressService.getCompletedLessons();
 
     final completed = <int>{};
 
     for (int i = 0; i < a2Lessons.length; i++) {
-      final done = prefs.getBool(
-        'a2_lesson_completed_${a2Lessons[i].id}',
-      );
-
-      if (done == true) {
+      if (completedIds.contains(a2Lessons[i].id)) {
         completed.add(i);
       }
     }
@@ -1199,9 +1197,8 @@ class _A2LessonDetailPageState
     final prefs =
         await SharedPreferences.getInstance();
 
-    await prefs.setBool(
-      'a2_lesson_completed_${widget.lesson.id}',
-      true,
+    await A2ProgressService.completeLesson(
+      widget.lesson.id,
     );
 
     await prefs.setInt(
