@@ -280,9 +280,24 @@ def main():
                 completed = True
                 break
             else:
-                res = apply_edits(data.get("edits", []))
+                proposed_edits = data.get("edits", [])
+                if not isinstance(proposed_edits, list):
+                    notes.append(f"round {rnd}: invalid edit payload; expected a list, no edits applied")
+                    res = ["SKIP edits: expected a list"]
+                else:
+                    res = apply_edits(proposed_edits)
                 notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
                 notes += [f"  {r}" for r in res]
+                if proposed_edits and not any(
+                    item.startswith(("EDITED ", "CREATED ")) for item in res
+                ):
+                    feedback = (
+                        "Your previous edit payload was rejected or made no changes. "
+                        "Do not claim the requested task is complete unless the code "
+                        "actually changed and verification passes. Correct the payload "
+                        "or explain why no safe edit is possible."
+                    )
+                    notes.append("  no proposed edits were applied; completion requires explicit verification")
             ok, out = analyze()
             no_regressions = analysis_has_no_regressions(
                 baseline_ok, baseline_out, ok, out
