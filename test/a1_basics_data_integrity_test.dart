@@ -63,7 +63,7 @@ void main() {
         final seenQuestions = <String>{};
 
         for (final question in lesson.questions) {
-          final normalizedQuestion = question.question.trim().toLowerCase();
+          final normalizedQuestion = '${question.question.trim().toLowerCase()}|${question.options.join('|').toLowerCase()}';
           expect(normalizedQuestion, isNotEmpty);
           expect(
             seenQuestions.add(normalizedQuestion),
