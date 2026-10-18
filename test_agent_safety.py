@@ -75,6 +75,39 @@ class AgentSafetyTests(unittest.TestCase):
             self.assertIn("none were applied", output.getvalue())
 
 
+    def test_apply_edits_skips_non_list_payload(self):
+        self.assertEqual(agent.apply_edits({"path": "x", "old": "a", "new": "b"}), [
+            "SKIP edits: expected a list"
+        ])
+
+    def test_apply_edits_skips_malformed_edit_entries(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            with mock.patch.object(agent, "ROOT", root):
+                result = agent.apply_edits([
+                    "not an object",
+                    {"path": "sample.txt", "old": 1, "new": "text"},
+                    {"path": "", "old": "", "new": "text"},
+                ])
+            self.assertEqual(len(result), 3)
+            self.assertIn("expected an object", result[0])
+            self.assertIn("must be strings", result[1])
+            self.assertIn("invalid path", result[2])
+            self.assertFalse((root / "sample.txt").exists())
+
+    def test_apply_edits_enforces_eight_edit_limit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            edits = [
+                {"path": f"file_{i}.txt", "old": "", "new": "created"}
+                for i in range(9)
+            ]
+            with mock.patch.object(agent, "ROOT", root):
+                result = agent.apply_edits(edits)
+            self.assertEqual(sum(item.startswith("CREATED") for item in result), 8)
+            self.assertIn("SKIP 1 additional edits: limit is 8", result[-1])
+            self.assertFalse((root / "file_8.txt").exists())
+
     def test_safe_path_rejects_traversal_and_protected_paths(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp).resolve()
