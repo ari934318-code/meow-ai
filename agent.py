@@ -56,6 +56,20 @@ def files_from_analyze(out):
     return seen[:4]
 
 
+def files_from_task(task):
+    """Include explicitly mentioned repository file paths in the model context."""
+    candidates = re.findall(
+        r"(?<![A-Za-z0-9_./-])(?:[A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+\.(?:py|md|yaml|yml|dart|json)(?![A-Za-z0-9_.-])",
+        task,
+    )
+    found = []
+    for rel in candidates:
+        path = (ROOT / rel).resolve()
+        if ROOT in path.parents and path.is_file() and rel not in found:
+            found.append(rel)
+    return found[:5]
+
+
 def read_files(paths):
     parts = []
     for p in paths:
@@ -68,7 +82,7 @@ def read_files(paths):
 
 
 def tree():
-    _, out = run("git ls-files lib test pubspec.yaml | head -150")
+    _, out = run("git ls-files lib test pubspec.yaml agent.py AGENT.md | head -160")
     return out
 
 
@@ -138,7 +152,8 @@ def main():
     completed = False
     try:
         ok, out = analyze()
-        files = FILES or files_from_analyze(out)
+        requested_files = files_from_task(TASK)
+        files = list(dict.fromkeys(FILES + requested_files + files_from_analyze(out)))[:5]
         notes.append(f"analyze at start: {'clean' if ok else 'errors'}; context files: {files or 'none'}")
         if not ok:
             notes.append("analyzer output at start (last 2500 chars):\\n" + out[-2500:])
