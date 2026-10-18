@@ -103,12 +103,22 @@ def apply_edits(edits):
 
 
 def parse(reply):
-    reply = re.sub(r"^```(?:json)?|```$", "", reply.strip(), flags=re.M).strip()
+    # Accept JSON directly or wrapped in a Markdown code fence.
+    cleaned = reply.strip()
+    if cleaned.startswith(chr(96) * 3):
+        cleaned = re.sub(r"^```(?:json)?\\s*", "", cleaned, count=1, flags=re.I)
+        cleaned = re.sub(r"\\s*```$", "", cleaned, count=1)
     try:
-        return json.loads(reply)
+        data = json.loads(cleaned)
     except json.JSONDecodeError:
-        m = re.search(r"\{.*\}", reply, re.S)
-        return json.loads(m.group(0)) if m else {}
+        match = re.search(r"\\{.*\\}", cleaned, re.S)
+        if not match:
+            return {}
+        try:
+            data = json.loads(match.group(0))
+        except json.JSONDecodeError:
+            return {}
+    return data if isinstance(data, dict) else {}
 
 
 def log_progress(status, notes):
