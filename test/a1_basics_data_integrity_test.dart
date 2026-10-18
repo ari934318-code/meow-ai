@@ -42,8 +42,8 @@ void main() {
       expect(multipleChoice.length, greaterThanOrEqualTo(expectedIds.length));
 
       for (final question in multipleChoice) {
-        expect(question.question.trim(), isNotEmpty);
-        expect(question.persian.trim(), isNotEmpty);
+        expect(question.question?.trim(), isNotEmpty);
+        expect(question.persian?.trim(), isNotEmpty);
         expect(question.options.length, 4);
         expect(question.options.toSet().length, 4);
         expect(question.options.contains(question.correctAnswer), isTrue);
