@@ -6,6 +6,7 @@ on:
       - fix/meow-agent-diagnostics
     paths:
       - "agent.py"
+      - "test_agent_safety.py"
       - "lib/**"
       - "test/**"
       - "pubspec.yaml"
@@ -40,7 +41,10 @@ jobs:
           python-version: "3.12"
 
       - name: Check agent Python syntax
-        run: python -m py_compile agent.py
+        run: python -m py_compile agent.py test_agent_safety.py
+
+      - name: Test agent safety and timeout handling
+        run: python -m unittest -v test_agent_safety.py
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
