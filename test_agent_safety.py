@@ -75,6 +75,44 @@ class AgentSafetyTests(unittest.TestCase):
             self.assertIn("none were applied", output.getvalue())
 
 
+    def test_safe_path_rejects_traversal_and_protected_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            with mock.patch.object(agent, "ROOT", root):
+                self.assertIsNone(agent.safe_path("../outside.txt"))
+                self.assertIsNone(agent.safe_path(".github/workflows/test.yml"))
+                self.assertIsNone(agent.safe_path("agent/PROGRESS.md"))
+                self.assertEqual(agent.safe_path("lib/example.dart"), root / "lib" / "example.dart")
+
+    def test_apply_edits_skips_ambiguous_replacements(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            sample = root / "sample.txt"
+            sample.write_text("repeat repeat")
+            with mock.patch.object(agent, "ROOT", root):
+                result = agent.apply_edits([
+                    {"path": "sample.txt", "old": "repeat", "new": "changed"}
+                ])
+            self.assertEqual(sample.read_text(), "repeat repeat")
+            self.assertEqual(len(result), 1)
+            self.assertIn("matched 2 times", result[0])
+
+    def test_apply_edits_rejects_path_traversal_without_writing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            outside = root.parent / (root.name + "-outside.txt")
+            outside.write_text("safe")
+            try:
+                with mock.patch.object(agent, "ROOT", root):
+                    result = agent.apply_edits([
+                        {"path": "../" + outside.name, "old": "safe", "new": "changed"}
+                    ])
+                self.assertEqual(outside.read_text(), "safe")
+                self.assertIn("path not allowed", result[0])
+            finally:
+                outside.unlink(missing_ok=True)
+
+
     def test_parse_accepts_raw_json(self):
         self.assertEqual(agent.parse('{"summary":"ok","done":true}'), {"summary": "ok", "done": True})
 
