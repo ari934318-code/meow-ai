@@ -1,28 +1,39 @@
 name: Fix A1 Lesson 5 staging
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   fix:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Require a non-main branch
+        shell: bash
+        run: |
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            echo "::error::Run this workflow from a dedicated fix branch, not main."
+            exit 1
+          fi
+
+      - name: Check out selected branch
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Patch Lesson 5 staging
-        shell: python
+        shell: bash
         run: |
+          python3 <<'PY'
           from pathlib import Path
           import re
 
-          path = Path('lib/pages/a1_basics_lesson_page.dart')
-          text = path.read_text(encoding='utf-8')
+          path = Path("lib/pages/a1_basics_lesson_page.dart")
+          text = path.read_text(encoding="utf-8")
 
-          replacement = r'''      case 'a1_05':
+          replacement = r"""      case 'a1_05':
       case 'lesson_5':
       case '5':
         return [
@@ -85,19 +96,39 @@ jobs:
           ),
         ];
 
-'''
+"""
 
           pattern = r"      case 'a1_05':.*?        ];\n\n      case 'a1_06':"
-          new_text, count = re.subn(pattern, replacement + "      case 'a1_06':", text, count=1, flags=re.S)
+          new_text, count = re.subn(
+              pattern,
+              replacement + "      case 'a1_06':",
+              text,
+              count=1,
+              flags=re.S,
+          )
           if count != 1:
-              raise SystemExit(f'Expected exactly one Lesson 5 block, found {count}')
-          path.write_text(new_text, encoding='utf-8')
+              raise SystemExit(
+                  f"Expected exactly one Lesson 5 block, found {count}"
+              )
 
-      - name: Commit and clean up
+          if new_text == text:
+              raise SystemExit("Lesson 5 block was already unchanged; no commit needed.")
+
+          path.write_text(new_text, encoding="utf-8")
+          print("Lesson 5 staging patch applied.")
+          PY
+
+      - name: Verify patch and commit on this branch
+        shell: bash
         run: |
+          git diff --check
+          git diff -- lib/pages/a1_basics_lesson_page.dart
+          if git diff --quiet -- lib/pages/a1_basics_lesson_page.dart; then
+            echo "No Lesson 5 changes to commit."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add lib/pages/a1_basics_lesson_page.dart .github/workflows/fix-a1-lesson5-staging.yml
-          git rm .github/workflows/fix-a1-lesson5-staging.yml
-          git commit -m "fix A1 Basics lesson 5 staging" || exit 0
-          git push
+          git add lib/pages/a1_basics_lesson_page.dart
+          git commit -m "fix A1 Basics lesson 5 staging"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
