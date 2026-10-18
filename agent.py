@@ -320,7 +320,15 @@ def main():
                         "but this round introduced no new parsed diagnostics"
                     )
                 break
-            files = list(dict.fromkeys(files + files_from_analyze(out) + [e.get("path", "") for e in data.get("edits", [])]))[:5]
+            proposed_paths = data.get("edits", [])
+            if isinstance(proposed_paths, list):
+                new_paths = [
+                    edit.get("path", "") for edit in proposed_paths
+                    if isinstance(edit, dict) and isinstance(edit.get("path"), str)
+                ]
+            else:
+                new_paths = []
+            files = list(dict.fromkeys(files + files_from_analyze(out) + new_paths))[:5]
             feedback = "RESULT OF YOUR LAST EDITS:\n" + "\n".join(res)
     except QuotaStop as q:
         status = "PAUSED (usage limit)"
