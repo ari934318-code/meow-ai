@@ -112,7 +112,7 @@ def parse(reply):
 
 
 def log_progress(status, notes):
-    stamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     entry = f"\n## {stamp} — {status}\nTask: {TASK}\nModel: {MODEL}\n" + "\n".join(f"- {n}" for n in notes) + "\n"
     with PROGRESS.open("a") as f:
         f.write(entry)
@@ -130,16 +130,26 @@ def main():
         ok, out = analyze()
         files = FILES or files_from_analyze(out)
         notes.append(f"analyze at start: {'clean' if ok else 'errors'}; context files: {files or 'none'}")
+        if not ok:
+            notes.append("analyzer output at start (last 2500 chars):\\n" + out[-2500:])
         feedback = ""
         for rnd in range(1, MAX_ROUNDS + 1):
             user = (f"TASK: {TASK}\n\nRECENT PROGRESS LOG:\n{past}\n\nPROJECT FILES:\n{tree()}\n\n"
                     f"ANALYZER OUTPUT:\n{out}\n\nFILE CONTENTS:\n{read_files(files)}\n\n{feedback}")
-            data = parse(chat([{"role": "system", "content": rules}, {"role": "user", "content": user}]))
-            res = apply_edits(data.get("edits", []))
-            notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
-            notes += [f"  {r}" for r in res]
+            reply = chat([{"role": "system", "content": rules}, {"role": "user", "content": user}])
+            data = parse(reply)
+            if not any(key in data for key in ("summary", "edits", "done")):
+                preview = " ".join(reply.split())[:1200]
+                notes.append(f"round {rnd}: model response was not valid agent JSON; preview: {preview}")
+                res = []
+            else:
+                res = apply_edits(data.get("edits", []))
+                notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
+                notes += [f"  {r}" for r in res]
             ok, out = analyze()
             notes.append(f"  analyze after round {rnd}: {'clean' if ok else 'errors remain'}")
+            if not ok:
+                notes.append(f"  analyzer output after round {rnd} (last 2500 chars):\\n{out[-2500:]}")
             if data.get("done") and ok:
                 completed = True
                 break
