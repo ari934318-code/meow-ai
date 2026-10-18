@@ -81,7 +81,7 @@ jobs:
           python agent.py
 
       - name: Save progress log
-        if: always()
+        if: ${{ always() && !contains(inputs.task, 'READ-ONLY DIAGNOSTIC MODE') }}
         run: |
           if [ -f agent/PROGRESS.md ]; then
             cp agent/PROGRESS.md PROGRESS.md
@@ -94,7 +94,7 @@ jobs:
           flutter test
 
       - name: Create branch and pull request
-        if: success()
+        if: ${{ success() && !contains(inputs.task, 'READ-ONLY DIAGNOSTIC MODE') }}
         env:
           GH_TOKEN: ${{ github.token }}
           TASK: ${{ inputs.task }}
