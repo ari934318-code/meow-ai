@@ -281,16 +281,19 @@ def main():
                 break
             else:
                 proposed_edits = data.get("edits", [])
+                edits_rejected = False
                 if not isinstance(proposed_edits, list):
                     notes.append(f"round {rnd}: invalid edit payload; expected a list, no edits applied")
                     res = ["SKIP edits: expected a list"]
+                    edits_rejected = True
                 else:
                     res = apply_edits(proposed_edits)
+                    edits_rejected = bool(proposed_edits) and not any(
+                        item.startswith(("EDITED ", "CREATED ")) for item in res
+                    )
                 notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
                 notes += [f"  {r}" for r in res]
-                if proposed_edits and not any(
-                    item.startswith(("EDITED ", "CREATED ")) for item in res
-                ):
+                if edits_rejected:
                     feedback = (
                         "Your previous edit payload was rejected or made no changes. "
                         "Do not claim the requested task is complete unless the code "
@@ -308,7 +311,9 @@ def main():
             )
             if not ok:
                 notes.append(f"  analyzer output after round {rnd} (last 2500 chars):\\n{out[-2500:]}")
-            if data.get("done") and no_regressions:
+            if data.get("done") and no_regressions and not (
+                not read_only and "edits_rejected" in locals() and edits_rejected
+            ):
                 completed = True
                 if not ok:
                     notes.append(
