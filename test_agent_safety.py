@@ -29,6 +29,20 @@ class AgentSafetyTests(unittest.TestCase):
         self.assertIn("analyzer started", diagnostic)
         self.assertIn("timed out after 120 seconds", diagnostic)
 
+    def test_existing_analyzer_errors_do_not_block_unchanged_diagnostics(self):
+        baseline = "  error • Undefined name 'missing' • lib/example.dart:10:3 • undefined_identifier"
+        shifted = "  error • Undefined name 'missing' • lib/example.dart:14:3 • undefined_identifier"
+        self.assertEqual(len(agent.analyzer_diagnostics(baseline)), 1)
+        self.assertTrue(agent.analysis_has_no_regressions(False, baseline, False, shifted))
+
+    def test_new_analyzer_diagnostic_blocks_completion(self):
+        baseline = "  error • Undefined name 'missing' • lib/example.dart:10:3 • undefined_identifier"
+        changed = baseline + "\\n" + "  error • Undefined name 'other' • lib/example.dart:20:3 • undefined_identifier"
+        self.assertFalse(agent.analysis_has_no_regressions(False, baseline, False, changed))
+
+    def test_clean_baseline_still_requires_clean_analysis(self):
+        self.assertFalse(agent.analysis_has_no_regressions(True, "", False, "analyzer failed"))
+
     def test_read_only_mode_does_not_apply_edits_or_write_progress(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp)
