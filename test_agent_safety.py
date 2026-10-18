@@ -84,7 +84,7 @@ class AgentSafetyTests(unittest.TestCase):
             pr_body = root / "pr_body.md"
             replies = [
                 '{"summary":"I fixed it","edits":[{"path":"../outside.txt","old":"a","new":"b"}],"done":true}',
-                '{"summary":"Still done","edits":[],"done":true}',
+                '{"summary":"Still done","edits":[{"path":"../outside.txt","old":"a","new":"b"}],"done":true}',
             ]
             with (
                 mock.patch.object(agent, "ROOT", root),
