@@ -75,6 +75,63 @@ class AgentSafetyTests(unittest.TestCase):
             self.assertIn("none were applied", output.getvalue())
 
 
+    def test_main_does_not_accept_done_when_edits_were_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            (root / "agent").mkdir()
+            (root / "agent" / "AGENT.md").write_text("rules")
+            progress = root / "agent" / "PROGRESS.md"
+            pr_body = root / "pr_body.md"
+            replies = [
+                '{"summary":"I fixed it","edits":[{"path":"../outside.txt","old":"a","new":"b"}],"done":true}',
+                '{"summary":"Still done","edits":[],"done":true}',
+            ]
+            with (
+                mock.patch.object(agent, "ROOT", root),
+                mock.patch.object(agent, "PROGRESS", progress),
+                mock.patch.object(agent, "PR_BODY", pr_body),
+                mock.patch.object(agent, "TASK", "Fix a safe sample"),
+                mock.patch.object(agent, "KEY", "test-key"),
+                mock.patch.object(agent, "MODEL", "test-model"),
+                mock.patch.object(agent, "MAX_ROUNDS", 2),
+                mock.patch.object(agent, "analyze", return_value=(True, "No issues")),
+                mock.patch.object(agent, "tree", return_value="sample.txt"),
+                mock.patch.object(agent, "chat", side_effect=replies),
+                contextlib.redirect_stdout(io.StringIO()) as output,
+            ):
+                with self.assertRaises(SystemExit) as raised:
+                    agent.main()
+            self.assertEqual(raised.exception.code, 1)
+            self.assertIn("no proposed edits were applied", output.getvalue())
+            self.assertIn("FAILED", progress.read_text())
+            self.assertNotIn("finished", progress.read_text().splitlines()[-2].lower())
+
+    def test_main_marks_task_failed_when_model_says_done_but_edit_payload_is_invalid(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            (root / "agent").mkdir()
+            (root / "agent" / "AGENT.md").write_text("rules")
+            progress = root / "agent" / "PROGRESS.md"
+            pr_body = root / "pr_body.md"
+            with (
+                mock.patch.object(agent, "ROOT", root),
+                mock.patch.object(agent, "PROGRESS", progress),
+                mock.patch.object(agent, "PR_BODY", pr_body),
+                mock.patch.object(agent, "TASK", "Fix a safe sample"),
+                mock.patch.object(agent, "KEY", "test-key"),
+                mock.patch.object(agent, "MODEL", "test-model"),
+                mock.patch.object(agent, "MAX_ROUNDS", 1),
+                mock.patch.object(agent, "analyze", return_value=(True, "No issues")),
+                mock.patch.object(agent, "tree", return_value="sample.txt"),
+                mock.patch.object(agent, "chat", return_value='{"summary":"done","edits":{},"done":true}'),
+                contextlib.redirect_stdout(io.StringIO()) as output,
+            ):
+                with self.assertRaises(SystemExit) as raised:
+                    agent.main()
+            self.assertEqual(raised.exception.code, 1)
+            self.assertIn("invalid edit payload", output.getvalue())
+            self.assertIn("FAILED", progress.read_text())
+
     def test_apply_edits_skips_non_list_payload(self):
         self.assertEqual(agent.apply_edits({"path": "x", "old": "a", "new": "b"}), [
             "SKIP edits: expected a list"
