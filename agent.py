@@ -180,20 +180,28 @@ def apply_edits(edits):
 
 
 def parse(reply):
-    # Accept JSON directly or wrapped in a Markdown code fence.
+    """Parse a JSON object from a model reply, tolerating surrounding prose."""
     cleaned = reply.strip()
     if cleaned.startswith(chr(96) * 3):
         cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, count=1, flags=re.I)
         cleaned = re.sub(r"\s*```$", "", cleaned, count=1)
+
     try:
         data = json.loads(cleaned)
     except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", cleaned, re.S)
-        if not match:
-            return {}
-        try:
-            data = json.loads(match.group(0))
-        except json.JSONDecodeError:
+        # Try each opening brace with JSONDecoder.raw_decode. Unlike a greedy
+        # regex, the decoder correctly handles braces inside JSON string values.
+        decoder = json.JSONDecoder()
+        data = None
+        for match in re.finditer(r"\{", cleaned):
+            try:
+                candidate, _ = decoder.raw_decode(cleaned[match.start():])
+            except json.JSONDecodeError:
+                continue
+            if isinstance(candidate, dict):
+                data = candidate
+                break
+        if data is None:
             return {}
     return data if isinstance(data, dict) else {}
 
