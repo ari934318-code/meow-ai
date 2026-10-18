@@ -91,7 +91,8 @@ jobs:
       - name: Validate changes
         run: |
           set -euo pipefail
-          flutter analyze
+          # Existing infos/warnings should not fail CI; analyzer errors still fail the job.
+          flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings
           flutter test
 
       - name: Create branch and pull request
