@@ -304,5 +304,21 @@ class AgentSafetyTests(unittest.TestCase):
         self.assertEqual(agent.parse('[{"summary":"not an object"}]'), {})
 
 
+    def test_chat_reports_invalid_json_response(self):
+        with (
+            mock.patch.object(agent.urllib.request, "urlopen", return_value=io.BytesIO(b"{not json")),
+            self.assertRaisesRegex(RuntimeError, "Invalid model response JSON"),
+        ):
+            agent.chat([{"role": "user", "content": "test"}])
+
+    def test_chat_reports_invalid_response_envelope(self):
+        response = io.BytesIO(b'{"choices": []}')
+        with (
+            mock.patch.object(agent.urllib.request, "urlopen", return_value=response),
+            self.assertRaisesRegex(RuntimeError, "missing choices"),
+        ):
+            agent.chat([{"role": "user", "content": "test"}])
+
+
 if __name__ == "__main__":
     unittest.main()
