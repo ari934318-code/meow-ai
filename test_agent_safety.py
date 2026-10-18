@@ -165,6 +165,53 @@ class AgentSafetyTests(unittest.TestCase):
             self.assertIn("SKIP 1 additional edits: limit is 8", result[-1])
             self.assertFalse((root / "file_8.txt").exists())
 
+    def test_safe_path_rejects_absolute_and_root_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            with mock.patch.object(agent, "ROOT", root):
+                self.assertIsNone(agent.safe_path(str(root / "outside.txt")))
+                self.assertIsNone(agent.safe_path("."))
+                self.assertIsNone(agent.safe_path(""))
+                self.assertEqual(agent.safe_path("lib/example.dart"), root / "lib" / "example.dart")
+
+    def test_safe_path_rejects_symlink_components(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            outside = pathlib.Path(tmp).parent / (pathlib.Path(tmp).name + "-external")
+            outside.mkdir()
+            try:
+                (root / "linked").symlink_to(outside, target_is_directory=True)
+                with mock.patch.object(agent, "ROOT", root):
+                    self.assertIsNone(agent.safe_path("linked/new.txt"))
+            finally:
+                (root / "linked").unlink(missing_ok=True)
+                outside.rmdir()
+
+    def test_apply_edits_reports_write_errors_without_crashing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            sample = root / "sample.txt"
+            sample.write_text("before", encoding="utf-8")
+            with (
+                mock.patch.object(agent, "ROOT", root),
+                mock.patch.object(agent, "write_text_atomically", side_effect=OSError("disk full")),
+            ):
+                result = agent.apply_edits([
+                    {"path": "sample.txt", "old": "before", "new": "after"}
+                ])
+            self.assertEqual(sample.read_text(encoding="utf-8"), "before")
+            self.assertIn("write failed (OSError)", result[0])
+
+    def test_apply_edits_creates_file_atomically(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            with mock.patch.object(agent, "ROOT", root):
+                result = agent.apply_edits([
+                    {"path": "nested/new.txt", "old": "", "new": "content"}
+                ])
+            self.assertEqual((root / "nested/new.txt").read_text(encoding="utf-8"), "content")
+            self.assertEqual(result, ["CREATED nested/new.txt"])
+
     def test_safe_path_rejects_traversal_and_protected_paths(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp).resolve()
