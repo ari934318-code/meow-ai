@@ -20,6 +20,17 @@ class QuotaStop(Exception):
     pass
 
 
+def extract_model_content(payload):
+    """Validate the OpenAI-compatible response envelope before using its text."""
+    try:
+        content = payload["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise RuntimeError("Invalid model response: missing choices[0].message.content") from exc
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError("Invalid model response: content must be a non-empty string")
+    return content
+
+
 def chat(messages):
     body = json.dumps({"model": MODEL, "messages": messages, "temperature": 0.2}).encode()
     req = urllib.request.Request(
@@ -27,25 +38,63 @@ def chat(messages):
         headers={"Content-Type": "application/json", "Authorization": f"Bearer {KEY}"})
     for attempt in range(2):
         try:
-            with urllib.request.urlopen(req, timeout=120) as r:
-                return json.load(r)["choices"][0]["message"]["content"]
+            with urllib.request.urlopen(req, timeout=45) as r:
+                payload = json.load(r)
+            return extract_model_content(payload)
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="replace")[:300]
             if e.code in (413, 429) or "rate" in detail.lower() or "quota" in detail.lower():
                 raise QuotaStop(f"HTTP {e.code}: {detail}")
             if e.code >= 500 and attempt == 0:
-                time.sleep(5); continue
+                time.sleep(2)
+                continue
             raise RuntimeError(f"HTTP {e.code}: {detail}")
+        except (TimeoutError, urllib.error.URLError) as exc:
+            if attempt == 0:
+                time.sleep(2)
+                continue
+            raise RuntimeError(f"Model request failed after retry: {exc.__class__.__name__}") from exc
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            raise RuntimeError(f"Invalid model response JSON: {exc.__class__.__name__}") from exc
 
 
-def run(cmd, timeout=900):
-    p = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
-    return p.returncode, (p.stdout + p.stderr)
+def run(cmd, timeout=120):
+    """Run a command with a hard timeout and print its captured output."""
+    print(f"$ {cmd} (timeout: {timeout}s)", flush=True)
+    try:
+        p = subprocess.run(
+            cmd, shell=True, capture_output=True, text=True, timeout=timeout,
+        )
+    except subprocess.TimeoutExpired as exc:
+        captured = exc.stdout or ""
+        if isinstance(captured, bytes):
+            captured = captured.decode(errors="replace")
+        captured_err = exc.stderr or ""
+        if isinstance(captured_err, bytes):
+            captured_err = captured_err.decode(errors="replace")
+        output = captured + captured_err
+        if output:
+            print(output[-12000:], end="", flush=True)
+        print(f"\\n::error::Command timed out after {timeout}s: {cmd}", flush=True)
+        raise subprocess.TimeoutExpired(cmd, timeout, output=output)
+    output = p.stdout + p.stderr
+    if output:
+        print(output[-20000:], end="", flush=True)
+    return p.returncode, output
 
 
 def analyze():
-    code, out = run("flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings")
-    return code == 0, out[-6000:]
+    try:
+        code, out = run(
+            "flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings",
+            timeout=120,
+        )
+        return code == 0, out[-6000:]
+    except subprocess.TimeoutExpired as exc:
+        captured = exc.output or ""
+        if isinstance(captured, bytes):
+            captured = captured.decode(errors="replace")
+        return False, (str(captured) + "\\nERROR: flutter analyze timed out after 120 seconds.")[-6000:]
 
 
 def files_from_analyze(out):
@@ -54,6 +103,54 @@ def files_from_analyze(out):
         if m.group(1) not in seen:
             seen.append(m.group(1))
     return seen[:4]
+
+
+
+def analyzer_diagnostics(out):
+    """Return stable analyzer diagnostic signatures, ignoring line/column shifts."""
+    diagnostics = set()
+    for line in out.splitlines():
+        parts = [part.strip() for part in line.split("•")]
+        if len(parts) < 3:
+            continue
+        severity = parts[0].lower()
+        if severity not in {"error", "warning", "info"}:
+            continue
+        location_index = next(
+            (i for i, part in enumerate(parts)
+             if re.search(r"(?:lib|test)/[^ \t:]+\.dart:\d+:\d+", part)),
+            None,
+        )
+        if location_index is None or location_index < 2:
+            continue
+        message = parts[1]
+        code = parts[location_index + 1] if location_index + 1 < len(parts) else ""
+        diagnostics.add((severity, message, code))
+    return diagnostics
+
+
+def analysis_has_no_regressions(baseline_ok, baseline_out, current_ok, current_out):
+    """Accept pre-existing analyzer failures only when edits add no diagnostics."""
+    if current_ok:
+        return True
+    if baseline_ok:
+        return False
+    baseline = analyzer_diagnostics(baseline_out)
+    current = analyzer_diagnostics(current_out)
+    return bool(baseline) and current.issubset(baseline)
+
+def files_from_task(task):
+    """Include explicitly mentioned repository file paths in the model context."""
+    candidates = re.findall(
+        r"(?<![A-Za-z0-9_./-])(?:[A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+\.(?:py|md|yaml|yml|dart|json)(?![A-Za-z0-9_.-])",
+        task,
+    )
+    found = []
+    for rel in candidates:
+        path = (ROOT / rel).resolve()
+        if ROOT in path.parents and path.is_file() and rel not in found:
+            found.append(rel)
+    return found[:5]
 
 
 def read_files(paths):
@@ -68,51 +165,161 @@ def read_files(paths):
 
 
 def tree():
-    _, out = run("git ls-files lib test pubspec.yaml | head -150")
+    _, out = run("git ls-files lib test pubspec.yaml agent.py AGENT.md | head -160")
     return out
 
 
 def safe_path(rel):
-    p = (ROOT / rel).resolve()
-    if ROOT not in p.parents:
+    if not isinstance(rel, str) or not rel.strip():
+        return None
+    candidate = pathlib.Path(rel)
+    if candidate.is_absolute():
+        return None
+    # Reject symlinks in every existing path component to avoid redirecting writes.
+    current = ROOT
+    for part in candidate.parts:
+        if part in ("", ".", ".."):
+            if part == "..":
+                return None
+            continue
+        current = current / part
+        if current.is_symlink():
+            return None
+    p = (ROOT / candidate).resolve()
+    if p == ROOT or ROOT not in p.parents:
         return None
     r = p.relative_to(ROOT).as_posix()
-    return None if r.startswith(PROTECTED) else p
+    protected_roots = tuple(item.rstrip("/") for item in PROTECTED)
+    if any(r == protected or r.startswith(protected + "/") for protected in protected_roots):
+        return None
+    return p
+
+
+def write_text_atomically(path, content):
+    """Write UTF-8 content via a temporary sibling and replace the destination."""
+    temporary = None
+    try:
+        import tempfile
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent,
+            prefix=".meow-agent-", suffix=".tmp", delete=False,
+        ) as handle:
+            temporary = pathlib.Path(handle.name)
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    except OSError:
+        if temporary is not None:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                pass
+        raise
 
 
 def apply_edits(edits):
+    """Apply only well-formed, bounded edits to paths inside the repository."""
     log = []
-    for e in edits[:8]:
-        rel, old, new = e.get("path", ""), e.get("old", ""), e.get("new", "")
+    if not isinstance(edits, list):
+        return ["SKIP edits: expected a list"]
+    for index, edit in enumerate(edits[:8]):
+        if not isinstance(edit, dict):
+            log.append(f"SKIP edit {index + 1}: expected an object")
+            continue
+        rel = edit.get("path")
+        old = edit.get("old", "")
+        new = edit.get("new")
+        if not isinstance(rel, str) or not rel.strip():
+            log.append(f"SKIP edit {index + 1}: invalid path")
+            continue
+        if len(rel) > 240:
+            log.append(f"SKIP edit {index + 1}: path exceeds 240 characters")
+            continue
+        if not isinstance(old, str) or not isinstance(new, str):
+            log.append(f"SKIP {rel}: 'old' and 'new' must be strings")
+            continue
+        if len(old) > 200_000 or len(new) > 200_000:
+            log.append(f"SKIP {rel}: edit text exceeds 200000 characters")
+            continue
         p = safe_path(rel)
         if p is None:
-            log.append(f"SKIP {rel}: path not allowed"); continue
+            log.append(f"SKIP {rel}: path not allowed")
+            continue
         if old == "":
             if p.exists():
-                log.append(f"SKIP {rel}: file exists (use old/new)"); continue
-            p.parent.mkdir(parents=True, exist_ok=True); p.write_text(new)
-            log.append(f"CREATED {rel}"); continue
+                log.append(f"SKIP {rel}: file exists (use old/new)")
+                continue
+            try:
+                p.parent.mkdir(parents=True, exist_ok=True)
+                # Re-check after creating parents in case a symlink appeared.
+                p = safe_path(rel)
+                if p is None or p.exists():
+                    log.append(f"SKIP {rel}: path became unsafe or file appeared")
+                    continue
+                write_text_atomically(p, new)
+            except OSError as exc:
+                log.append(f"SKIP {rel}: write failed ({exc.__class__.__name__})")
+                continue
+            log.append(f"CREATED {rel}")
+            continue
         if not p.is_file():
-            log.append(f"SKIP {rel}: not found"); continue
-        txt = p.read_text()
-        if txt.count(old) != 1:
-            log.append(f"SKIP {rel}: 'old' matched {txt.count(old)} times (need exactly 1)"); continue
-        p.write_text(txt.replace(old, new, 1))
+            log.append(f"SKIP {rel}: not found")
+            continue
+        txt = p.read_text(encoding="utf-8")
+        matches = txt.count(old)
+        if matches != 1:
+            log.append(f"SKIP {rel}: 'old' matched {matches} times (need exactly 1)")
+            continue
+        try:
+            # Re-check immediately before replacing to reject newly introduced symlinks.
+            p = safe_path(rel)
+            if p is None or not p.is_file():
+                log.append(f"SKIP {rel}: path became unsafe")
+                continue
+            latest = p.read_text(encoding="utf-8")
+            if latest.count(old) != 1:
+                log.append(f"SKIP {rel}: file changed before write")
+                continue
+            write_text_atomically(p, latest.replace(old, new, 1))
+        except OSError as exc:
+            log.append(f"SKIP {rel}: write failed ({exc.__class__.__name__})")
+            continue
         log.append(f"EDITED {rel}")
+    if len(edits) > 8:
+        log.append(f"SKIP {len(edits) - 8} additional edits: limit is 8")
     return log
 
 
 def parse(reply):
-    reply = re.sub(r"^```(?:json)?|```$", "", reply.strip(), flags=re.M).strip()
+    """Parse a JSON object from a model reply, tolerating surrounding prose."""
+    cleaned = reply.strip()
+    if cleaned.startswith(chr(96) * 3):
+        cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, count=1, flags=re.I)
+        cleaned = re.sub(r"\s*```$", "", cleaned, count=1)
+
     try:
-        return json.loads(reply)
+        data = json.loads(cleaned)
     except json.JSONDecodeError:
-        m = re.search(r"\{.*\}", reply, re.S)
-        return json.loads(m.group(0)) if m else {}
+        # Try each opening brace with JSONDecoder.raw_decode. Unlike a greedy
+        # regex, the decoder correctly handles braces inside JSON string values.
+        decoder = json.JSONDecoder()
+        data = None
+        for match in re.finditer(r"\{", cleaned):
+            try:
+                candidate, _ = decoder.raw_decode(cleaned[match.start():])
+            except json.JSONDecodeError:
+                continue
+            if isinstance(candidate, dict):
+                data = candidate
+                break
+        if data is None:
+            return {}
+    return data if isinstance(data, dict) else {}
 
 
 def log_progress(status, notes):
-    stamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     entry = f"\n## {stamp} — {status}\nTask: {TASK}\nModel: {MODEL}\n" + "\n".join(f"- {n}" for n in notes) + "\n"
     with PROGRESS.open("a") as f:
         f.write(entry)
@@ -126,24 +333,120 @@ def main():
     past = PROGRESS.read_text()[-2500:] if PROGRESS.exists() else ""
     notes, status = [], "finished"
     completed = False
+    read_only = bool(re.search(
+        r"READ[- ]ONLY DIAGNOSTIC MODE|do not modify.*files|no files? (?:may be )?modified",
+        TASK, re.I | re.S,
+    ))
+    if read_only:
+        print("READ-ONLY MODE: file edits and repository progress writes are disabled.", flush=True)
     try:
         ok, out = analyze()
-        files = FILES or files_from_analyze(out)
+        requested_files = files_from_task(TASK)
+        files = list(dict.fromkeys(FILES + requested_files + files_from_analyze(out)))[:5]
+        baseline_ok, baseline_out = ok, out
+        baseline_diagnostics = analyzer_diagnostics(out)
         notes.append(f"analyze at start: {'clean' if ok else 'errors'}; context files: {files or 'none'}")
+        if not ok and baseline_diagnostics:
+            notes.append(f"baseline analyzer diagnostics tracked: {len(baseline_diagnostics)}")
+        if not ok:
+            notes.append("analyzer output at start (last 2500 chars):\\n" + out[-2500:])
         feedback = ""
         for rnd in range(1, MAX_ROUNDS + 1):
+            edits_rejected = False
             user = (f"TASK: {TASK}\n\nRECENT PROGRESS LOG:\n{past}\n\nPROJECT FILES:\n{tree()}\n\n"
                     f"ANALYZER OUTPUT:\n{out}\n\nFILE CONTENTS:\n{read_files(files)}\n\n{feedback}")
-            data = parse(chat([{"role": "system", "content": rules}, {"role": "user", "content": user}]))
-            res = apply_edits(data.get("edits", []))
-            notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
-            notes += [f"  {r}" for r in res]
-            ok, out = analyze()
-            notes.append(f"  analyze after round {rnd}: {'clean' if ok else 'errors remain'}")
-            if data.get("done") and ok:
+            print(f"round {rnd}: sending request to model {MODEL} at {BASE}", flush=True)
+            reply = chat([{"role": "system", "content": rules}, {"role": "user", "content": user}])
+            print(f"round {rnd}: model response received ({len(reply)} characters)", flush=True)
+            data = parse(reply)
+            if not any(key in data for key in ("summary", "edits", "done")):
+                # Free models sometimes wrap the required JSON in tool-call syntax or prose.
+                # Make one bounded format-repair request before treating the round as failed.
+                notes.append(f"round {rnd}: invalid JSON response; requesting one format-only retry")
+                repair_messages = [
+                    {"role": "system", "content": rules},
+                    {"role": "user", "content": (
+                        "Your previous response was not a valid JSON object. Return ONLY one valid JSON object "
+                        'with keys "summary" (string), "edits" (array), and "done" (boolean). '
+                        "Do not include markdown fences, prose, tool calls, or XML. "
+                        "Preserve the intended result of your previous response, and do not invent edits.\n\n"
+                        "Previous response:\n" + reply[:12000]
+                    )},
+                ]
+                try:
+                    repaired_reply = chat(repair_messages)
+                    repaired_data = parse(repaired_reply)
+                    if any(key in repaired_data for key in ("summary", "edits", "done")):
+                        reply, data = repaired_reply, repaired_data
+                        notes.append(f"round {rnd}: format-only retry returned parseable JSON")
+                    else:
+                        preview = " ".join(repaired_reply.split())[:500]
+                        notes.append(f"round {rnd}: format retry also invalid; preview: {preview}")
+                except Exception as exc:
+                    notes.append(f"round {rnd}: format retry failed ({exc.__class__.__name__})")
+            if not any(key in data for key in ("summary", "edits", "done")):
+                res = []
+                if read_only:
+                    notes.append("read-only diagnostic could not be completed because the model did not return valid JSON")
+                    completed = False
+                    break
+            elif read_only:
+                res = []
+                notes.append(f"round {rnd} (read-only): {data.get('summary', '(no summary)')}")
+                notes.append("Model-proposed edits were intentionally not applied.")
+                if data.get("edits"):
+                    notes.append(f"Model suggested {len(data['edits'])} edit(s); none were applied.")
                 completed = True
                 break
-            files = list(dict.fromkeys(files + files_from_analyze(out) + [e.get("path", "") for e in data.get("edits", [])]))[:5]
+            else:
+                proposed_edits = data.get("edits", [])
+                edits_rejected = False
+                if not isinstance(proposed_edits, list):
+                    notes.append(f"round {rnd}: invalid edit payload; expected a list, no edits applied")
+                    res = ["SKIP edits: expected a list"]
+                    edits_rejected = True
+                else:
+                    res = apply_edits(proposed_edits)
+                    edits_rejected = bool(proposed_edits) and not any(
+                        item.startswith(("EDITED ", "CREATED ")) for item in res
+                    )
+                notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
+                notes += [f"  {r}" for r in res]
+                if edits_rejected:
+                    feedback = (
+                        "Your previous edit payload was rejected or made no changes. "
+                        "Do not claim the requested task is complete unless the code "
+                        "actually changed and verification passes. Correct the payload "
+                        "or explain why no safe edit is possible."
+                    )
+                    notes.append("  no proposed edits were applied; completion requires explicit verification")
+            ok, out = analyze()
+            no_regressions = analysis_has_no_regressions(
+                baseline_ok, baseline_out, ok, out
+            )
+            notes.append(
+                f"  analyze after round {rnd}: "
+                f"{'clean' if ok else ('baseline errors only' if no_regressions else 'errors remain/new diagnostics')}"
+            )
+            if not ok:
+                notes.append(f"  analyzer output after round {rnd} (last 2500 chars):\\n{out[-2500:]}")
+            if data.get("done") and no_regressions and not edits_rejected:
+                completed = True
+                if not ok:
+                    notes.append(
+                        "  completed: analyzer still has baseline diagnostics, "
+                        "but this round introduced no new parsed diagnostics"
+                    )
+                break
+            proposed_paths = data.get("edits", [])
+            if isinstance(proposed_paths, list):
+                new_paths = [
+                    edit.get("path", "") for edit in proposed_paths
+                    if isinstance(edit, dict) and isinstance(edit.get("path"), str)
+                ]
+            else:
+                new_paths = []
+            files = list(dict.fromkeys(files + files_from_analyze(out) + new_paths))[:5]
             feedback = "RESULT OF YOUR LAST EDITS:\n" + "\n".join(res)
     except QuotaStop as q:
         status = "PAUSED (usage limit)"
@@ -154,8 +457,11 @@ def main():
     if status == "finished" and not completed:
         status = "FAILED"
         notes.append("agent did not confirm completion within the allowed rounds, or analyzer errors remain")
-    log_progress(status, notes)
-    print("\n".join(notes))
+    if not read_only:
+        log_progress(status, notes)
+    else:
+        notes.append("READ-ONLY CONFIRMED: skipped PROGRESS.md and PR-body writes.")
+    print("\\n".join(notes), flush=True)
     if status != "finished":
         sys.exit(1)
 

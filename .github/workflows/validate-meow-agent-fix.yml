@@ -1,0 +1,73 @@
+name: Validate Meow Agent Fix
+
+on:
+  push:
+    branches:
+      - fix/meow-agent-diagnostics
+    paths:
+      - "agent.py"
+      - "test_agent_safety.py"
+      - "lib/**"
+      - "test/**"
+      - "pubspec.yaml"
+      - ".github/workflows/validate-meow-agent-fix.yml"
+  pull_request:
+    paths:
+      - "agent.py"
+      - "test_agent_safety.py"
+      - "lib/**"
+      - "test/**"
+      - "pubspec.yaml"
+      - ".github/workflows/validate-meow-agent-fix.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-meow-agent-fix-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check agent Python syntax
+        run: python -m py_compile agent.py test_agent_safety.py
+
+      - name: Test agent safety and timeout handling
+        run: python -m unittest -v test_agent_safety.py
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.4"
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze Flutter code
+        run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings lib/data/levels/a1/basics test/a1_basics_data_integrity_test.dart
+
+      - name: Run Flutter tests
+        run: flutter test --no-pub
+
+      - name: Build debug APK
+        run: flutter build apk --debug --no-pub
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: meow-ai-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error

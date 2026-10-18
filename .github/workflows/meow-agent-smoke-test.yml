@@ -1,0 +1,38 @@
+name: Meow Agent Smoke Test
+
+on:
+  push:
+    branches: [fix/meow-agent-diagnostics]
+    paths:
+      - "agent.py"
+      - "test_agent_safety.py"
+      - ".github/workflows/meow-agent-smoke-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: meow-agent-smoke-test
+  cancel-in-progress: true
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout diagnostic branch only
+        uses: actions/checkout@v4
+        with:
+          ref: fix/meow-agent-diagnostics
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile agent and tests
+        run: python -m py_compile agent.py test_agent_safety.py
+
+      - name: Run deterministic agent safety and parser tests
+        run: python -m unittest -v test_agent_safety.py

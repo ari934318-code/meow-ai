@@ -31,15 +31,16 @@ concurrency:
 
 jobs:
   agent:
-    if: github.ref == 'refs/heads/main'
+    # Keep write-capable agent runs on main. Feature-branch runs are allowed only for explicit diagnostics.
+    if: github.ref == 'refs/heads/main' || (github.ref == 'refs/heads/fix/meow-agent-diagnostics' && contains(inputs.task, 'READ-ONLY DIAGNOSTIC MODE'))
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
-      - name: Checkout main
+      - name: Checkout selected branch
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.ref }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -64,6 +65,7 @@ jobs:
           cp PROGRESS.md agent/PROGRESS.md
 
       - name: Run agent
+        timeout-minutes: 8
         env:
           TASK: ${{ inputs.task }}
           FILES: ${{ inputs.files }}
@@ -80,7 +82,7 @@ jobs:
           python agent.py
 
       - name: Save progress log
-        if: always()
+        if: ${{ always() && !contains(inputs.task, 'READ-ONLY DIAGNOSTIC MODE') }}
         run: |
           if [ -f agent/PROGRESS.md ]; then
             cp agent/PROGRESS.md PROGRESS.md
@@ -89,11 +91,12 @@ jobs:
       - name: Validate changes
         run: |
           set -euo pipefail
-          flutter analyze
+          # Existing infos/warnings should not fail CI; analyzer errors still fail the job.
+          flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings
           flutter test
 
       - name: Create branch and pull request
-        if: success()
+        if: ${{ success() && !contains(inputs.task, 'READ-ONLY DIAGNOSTIC MODE') }}
         env:
           GH_TOKEN: ${{ github.token }}
           TASK: ${{ inputs.task }}

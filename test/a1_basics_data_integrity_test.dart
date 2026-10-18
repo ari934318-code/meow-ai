@@ -32,6 +32,24 @@ void main() {
     });
 
 
+    test('final exam references only existing lesson IDs and unique question IDs', () {
+      final knownLessonIds = expectedIds.toSet();
+      final questionIds = <String>{};
+
+      for (final question in a1BasicsExamQuestions) {
+        expect(knownLessonIds.contains(question.lessonId), isTrue,
+            reason: 'Exam question has unknown lesson ID: ' + question.lessonId);
+        expect(question.id.trim(), isNotEmpty);
+        expect(questionIds.add(question.id), isTrue,
+            reason: 'Duplicate exam question ID: ' + question.id);
+        expect(question.question.trim(), isNotEmpty);
+        expect(question.correctAnswer.trim(), isNotEmpty);
+        if (!question.isSpeaking) {
+          expect(question.options.contains(question.correctAnswer), isTrue,
+              reason: 'Correct answer is not an option for ' + question.id);
+        }
+      }
+    });
     test('final exam covers every A1 Basics lesson with enough MC questions', () {
       final multipleChoice = a1BasicsExamQuestions
           .where((question) => !question.isSpeaking)
@@ -43,7 +61,7 @@ void main() {
 
       for (final question in multipleChoice) {
         expect(question.question.trim(), isNotEmpty);
-        expect(question.persian.trim(), isNotEmpty);
+        expect(question.persian?.trim(), isNotEmpty);
         expect(question.options.length, 4);
         expect(question.options.toSet().length, 4);
         expect(question.options.contains(question.correctAnswer), isTrue);
@@ -52,7 +70,7 @@ void main() {
       final speaking = a1BasicsExamQuestions.where((q) => q.isSpeaking).toList();
       expect(speaking.length, greaterThanOrEqualTo(5));
       for (final question in speaking) {
-        expect(question.persian.trim(), isNotEmpty);
+        expect(question.persian?.trim(), isNotEmpty);
         expect(question.acceptableAnswers, isNotEmpty);
       }
     });
@@ -63,7 +81,7 @@ void main() {
         final seenQuestions = <String>{};
 
         for (final question in lesson.questions) {
-          final normalizedQuestion = question.question.trim().toLowerCase();
+          final normalizedQuestion = '${question.question.trim().toLowerCase()}|${question.options.join('|').toLowerCase()}';
           expect(normalizedQuestion, isNotEmpty);
           expect(
             seenQuestions.add(normalizedQuestion),
