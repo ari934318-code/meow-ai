@@ -355,7 +355,9 @@ def main():
             edits_rejected = False
             user = (f"TASK: {TASK}\n\nRECENT PROGRESS LOG:\n{past}\n\nPROJECT FILES:\n{tree()}\n\n"
                     f"ANALYZER OUTPUT:\n{out}\n\nFILE CONTENTS:\n{read_files(files)}\n\n{feedback}")
+            print(f"round {rnd}: sending request to model {MODEL} at {BASE}", flush=True)
             reply = chat([{"role": "system", "content": rules}, {"role": "user", "content": user}])
+            print(f"round {rnd}: model response received ({len(reply)} characters)", flush=True)
             data = parse(reply)
             if not any(key in data for key in ("summary", "edits", "done")):
                 preview = " ".join(reply.split())[:1200]
