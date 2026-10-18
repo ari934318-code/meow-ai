@@ -38,7 +38,7 @@ def chat(messages):
         headers={"Content-Type": "application/json", "Authorization": f"Bearer {KEY}"})
     for attempt in range(2):
         try:
-            with urllib.request.urlopen(req, timeout=120) as r:
+            with urllib.request.urlopen(req, timeout=45) as r:
                 payload = json.load(r)
             return extract_model_content(payload)
         except urllib.error.HTTPError as e:
@@ -46,8 +46,14 @@ def chat(messages):
             if e.code in (413, 429) or "rate" in detail.lower() or "quota" in detail.lower():
                 raise QuotaStop(f"HTTP {e.code}: {detail}")
             if e.code >= 500 and attempt == 0:
-                time.sleep(5); continue
+                time.sleep(2)
+                continue
             raise RuntimeError(f"HTTP {e.code}: {detail}")
+        except (TimeoutError, urllib.error.URLError) as exc:
+            if attempt == 0:
+                time.sleep(2)
+                continue
+            raise RuntimeError(f"Model request failed after retry: {exc.__class__.__name__}") from exc
         except (json.JSONDecodeError, UnicodeDecodeError) as exc:
             raise RuntimeError(f"Invalid model response JSON: {exc.__class__.__name__}") from exc
 
