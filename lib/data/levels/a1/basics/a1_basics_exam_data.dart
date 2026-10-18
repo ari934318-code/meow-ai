@@ -453,4 +453,18 @@ const List<A1BasicsExamQuestion> a1BasicsExamQuestions = [
       'i study everyday',
     ],
   ),
+
+  A1BasicsExamQuestion(
+    id: 'basics_exam_041',
+    lessonId: 'a1_basic_11',
+    topic: 'Must / Mustn’t',
+    category: 'Grammar',
+    question: 'You ___ wear a seat belt in a car.',
+    options: ['must', 'mustn’t', 'must to', 'are must'],
+    correctAnswer: 'must',
+    explanation: 'Use must to express an obligation or an important rule.',
+    persian: 'باید در ماشین کمربند ایمنی ببندی.',
+    isSpeaking: false,
+    acceptableAnswers: [],
+  ),
 ];
