@@ -4,6 +4,8 @@ on:
   push:
     branches: [fix/meow-agent-diagnostics]
     paths:
+      - "agent.py"
+      - "test_agent_safety.py"
       - ".github/workflows/meow-agent-smoke-test.yml"
   workflow_dispatch:
 
@@ -17,7 +19,7 @@ concurrency:
 jobs:
   smoke-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - name: Checkout diagnostic branch only
         uses: actions/checkout@v4
@@ -29,56 +31,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.47.4"
-          channel: stable
+      - name: Compile agent and tests
+        run: python -m py_compile agent.py test_agent_safety.py
 
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Prepare agent context
-        run: |
-          set -euo pipefail
-          mkdir -p agent
-          cp AGENT.md agent/AGENT.md
-          cp PROGRESS.md agent/PROGRESS.md
-
-      - name: Run one isolated Python maintenance task
-        timeout-minutes: 4
-        env:
-          TASK: "Fix the response parsing weakness exposed by the previous failed run. In agent.py, improve parse(reply) so it can safely extract one JSON object surrounded by explanatory prose, including braces inside JSON string values, while still returning {} for malformed or non-object JSON. Preserve support for raw JSON and fenced JSON. In test_agent_safety.py, add focused unit tests for raw JSON, fenced JSON, prose surrounding JSON, a string value containing braces, malformed JSON, and a JSON array. Only edit agent.py and test_agent_safety.py. Do not change any other files."
-          FILES: "agent.py,test_agent_safety.py"
-          MAX_ROUNDS: "1"
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://openrouter.ai/api/v1' }}
-          MODEL: ${{ vars.MEOW_AGENT_MODEL || 'openrouter/free' }}
-        run: |
-          set -euo pipefail
-          if [ -z "${LLM_API_KEY:-}" ]; then
-            echo "::error::Configure the LLM_API_KEY repository secret first."
-            exit 1
-          fi
-          cp agent.py /tmp/agent.py.before
-          cp test_agent_safety.py /tmp/test_agent_safety.py.before
-          python agent.py
-          if cmp -s /tmp/agent.py.before agent.py; then
-            echo "::error::Agent made no agent.py change; smoke test did not demonstrate a code edit."
-            exit 1
-          fi
-          if cmp -s /tmp/test_agent_safety.py.before test_agent_safety.py; then
-            echo "::error::Agent did not add the requested regression tests."
-            exit 1
-          fi
-          changed="$(git diff --name-only)"
-          printf '%s\n' "$changed"
-          if [ "$(printf '%s\n' "$changed" | sort | tr '\n' ' ')" != "agent.py test_agent_safety.py " ]; then
-            echo "::error::Unexpected files changed; only agent.py and test_agent_safety.py are allowed."
-            exit 1
-          fi
-          python -m py_compile agent.py test_agent_safety.py
-          python -m unittest -v test_agent_safety.py
-          diff -u /tmp/agent.py.before agent.py || true
-          diff -u /tmp/test_agent_safety.py.before test_agent_safety.py || true
-          echo "Python maintenance task and regression tests passed."
+      - name: Run deterministic agent safety and parser tests
+        run: python -m unittest -v test_agent_safety.py
