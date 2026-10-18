@@ -62,6 +62,9 @@ jobs:
           fi
           cp README.md /tmp/README.before
           python agent.py
-          diff -u /tmp/README.before README.md
-          echo "::error::Agent made no README change; smoke test did not demonstrate an edit."
-          exit 1
+          if cmp -s /tmp/README.before README.md; then
+            echo "::error::Agent made no README change; smoke test did not demonstrate an edit."
+            exit 1
+          fi
+          diff -u /tmp/README.before README.md || true
+          echo "Agent changed README; smoke test passed."
