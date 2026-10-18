@@ -213,8 +213,14 @@ def apply_edits(edits):
         if not isinstance(rel, str) or not rel.strip():
             log.append(f"SKIP edit {index + 1}: invalid path")
             continue
+        if len(rel) > 240:
+            log.append(f"SKIP edit {index + 1}: path exceeds 240 characters")
+            continue
         if not isinstance(old, str) or not isinstance(new, str):
             log.append(f"SKIP {rel}: 'old' and 'new' must be strings")
+            continue
+        if len(old) > 200_000 or len(new) > 200_000:
+            log.append(f"SKIP {rel}: edit text exceeds 200000 characters")
             continue
         p = safe_path(rel)
         if p is None:
