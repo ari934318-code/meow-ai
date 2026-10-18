@@ -39,33 +39,28 @@ def chat(messages):
 
 
 def run(cmd, timeout=120):
-    """Run diagnostics with live output and a bounded runtime."""
-    print(f"$ {cmd}", flush=True)
-    started = time.monotonic()
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT, text=True, bufsize=1)
-    chunks = []
+    """Run a command with a hard timeout and print its captured output."""
+    print(f"$ {cmd} (timeout: {timeout}s)", flush=True)
     try:
-        while True:
-            line = p.stdout.readline()
-            if line:
-                print(line, end="", flush=True)
-                chunks.append(line)
-                if sum(map(len, chunks)) > 20000:
-                    chunks = ["".join(chunks)[-12000:]]
-            elif p.poll() is not None:
-                break
-            if time.monotonic() - started > timeout:
-                p.kill()
-                p.wait()
-                raise subprocess.TimeoutExpired(cmd, timeout, output="".join(chunks))
-        return p.returncode, "".join(chunks)
-    except subprocess.TimeoutExpired:
+        p = subprocess.run(
+            cmd, shell=True, capture_output=True, text=True, timeout=timeout,
+        )
+    except subprocess.TimeoutExpired as exc:
+        captured = exc.stdout or ""
+        if isinstance(captured, bytes):
+            captured = captured.decode(errors="replace")
+        captured_err = exc.stderr or ""
+        if isinstance(captured_err, bytes):
+            captured_err = captured_err.decode(errors="replace")
+        output = captured + captured_err
+        if output:
+            print(output[-12000:], end="", flush=True)
         print(f"\\n::error::Command timed out after {timeout}s: {cmd}", flush=True)
-        raise
-    finally:
-        if p.stdout:
-            p.stdout.close()
+        raise subprocess.TimeoutExpired(cmd, timeout, output=output)
+    output = p.stdout + p.stderr
+    if output:
+        print(output[-20000:], end="", flush=True)
+    return p.returncode, output
 
 
 def analyze():
