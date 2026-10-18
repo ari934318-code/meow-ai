@@ -132,6 +132,22 @@ class AgentSafetyTests(unittest.TestCase):
             self.assertIn("invalid edit payload", output.getvalue())
             self.assertIn("FAILED", progress.read_text())
 
+    def test_apply_edits_rejects_oversized_text_and_paths(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp).resolve()
+            with mock.patch.object(agent, "ROOT", root):
+                result = agent.apply_edits([
+                    {"path": "x" * 241, "old": "", "new": "text"},
+                    {"path": "large.txt", "old": "", "new": "x" * 200_001},
+                    {"path": "large-old.txt", "old": "x" * 200_001, "new": "y"},
+                ])
+            self.assertEqual(len(result), 3)
+            self.assertIn("path exceeds 240 characters", result[0])
+            self.assertIn("edit text exceeds 200000 characters", result[1])
+            self.assertIn("edit text exceeds 200000 characters", result[2])
+            self.assertFalse((root / "large.txt").exists())
+            self.assertFalse((root / "large-old.txt").exists())
+
     def test_apply_edits_skips_non_list_payload(self):
         self.assertEqual(agent.apply_edits({"path": "x", "old": "a", "new": "b"}), [
             "SKIP edits: expected a list"
