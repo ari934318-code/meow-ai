@@ -45,11 +45,11 @@ jobs:
           cp AGENT.md agent/AGENT.md
           cp PROGRESS.md agent/PROGRESS.md
 
-      - name: Run one tiny isolated task
+      - name: Run one isolated Python maintenance task
         timeout-minutes: 4
         env:
-          TASK: "Add exactly one concise HTML comment near the top of README.md stating that Meow AI is built with Flutter. Do not change any other content."
-          FILES: "README.md"
+          TASK: "In agent.py, extract the existing read-only task detection regex from main() into a helper function named is_read_only_task(task). Keep its behavior exactly the same and make main() call the helper. In test_agent_safety.py, add unit tests proving it returns True for 'READ-ONLY DIAGNOSTIC MODE: inspect only' and 'do not modify any files', and False for 'Fix a typo in README.md'. Only edit agent.py and test_agent_safety.py. Do not change any other files."
+          FILES: "agent.py,test_agent_safety.py"
           MAX_ROUNDS: "1"
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://openrouter.ai/api/v1' }}
@@ -60,11 +60,25 @@ jobs:
             echo "::error::Configure the LLM_API_KEY repository secret first."
             exit 1
           fi
-          cp README.md /tmp/README.before
+          cp agent.py /tmp/agent.py.before
+          cp test_agent_safety.py /tmp/test_agent_safety.py.before
           python agent.py
-          if cmp -s /tmp/README.before README.md; then
-            echo "::error::Agent made no README change; smoke test did not demonstrate an edit."
+          if cmp -s /tmp/agent.py.before agent.py; then
+            echo "::error::Agent made no agent.py change; smoke test did not demonstrate a code edit."
             exit 1
           fi
-          diff -u /tmp/README.before README.md || true
-          echo "Agent changed README; smoke test passed."
+          if cmp -s /tmp/test_agent_safety.py.before test_agent_safety.py; then
+            echo "::error::Agent did not add the requested regression tests."
+            exit 1
+          fi
+          changed="$(git diff --name-only)"
+          printf '%s\n' "$changed"
+          if [ "$(printf '%s\n' "$changed" | sort | tr '\n' ' ')" != "agent.py test_agent_safety.py " ]; then
+            echo "::error::Unexpected files changed; only agent.py and test_agent_safety.py are allowed."
+            exit 1
+          fi
+          python -m py_compile agent.py test_agent_safety.py
+          python -m unittest -v test_agent_safety.py
+          diff -u /tmp/agent.py.before agent.py || true
+          diff -u /tmp/test_agent_safety.py.before test_agent_safety.py || true
+          echo "Python maintenance task and regression tests passed."
