@@ -286,7 +286,8 @@ class _A1LessonDetailPageState
   String _normalizeText(String text) {
     return text
         .toLowerCase()
-        .replaceAll(RegExp(r"[.,!?;:'\"()]"), ' ')
+        .replaceAll(RegExp(r"[.,!?;:'()]"), ' ')
+        .replaceAll('"', ' ')
         .replaceAll(RegExp(r'\s+'), ' ')
         .trim();
   }
