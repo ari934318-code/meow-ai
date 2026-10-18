@@ -75,5 +75,30 @@ class AgentSafetyTests(unittest.TestCase):
             self.assertIn("none were applied", output.getvalue())
 
 
+    def test_parse_accepts_raw_json(self):
+        self.assertEqual(agent.parse('{"summary":"ok","done":true}'), {"summary": "ok", "done": True})
+
+    def test_parse_accepts_fenced_json(self):
+        reply = ' ```json\n{"summary":"ok","done":true}\n``` '
+        self.assertEqual(agent.parse(reply), {"summary": "ok", "done": True})
+
+    def test_parse_extracts_json_surrounded_by_prose(self):
+        reply = 'Here is the result:\n{"summary":"ok","done":true}\nThat is all.'
+        self.assertEqual(agent.parse(reply), {"summary": "ok", "done": True})
+
+    def test_parse_handles_braces_inside_json_string(self):
+        reply = 'Result: {"summary":"literal {brace} inside text","done":true} end'
+        self.assertEqual(
+            agent.parse(reply),
+            {"summary": "literal {brace} inside text", "done": True},
+        )
+
+    def test_parse_returns_empty_dict_for_malformed_json(self):
+        self.assertEqual(agent.parse('Result: {"summary": broken}'), {})
+
+    def test_parse_returns_empty_dict_for_json_array(self):
+        self.assertEqual(agent.parse('[{"summary":"not an object"}]'), {})
+
+
 if __name__ == "__main__":
     unittest.main()
