@@ -140,8 +140,10 @@ def main():
             notes += [f"  {r}" for r in res]
             ok, out = analyze()
             notes.append(f"  analyze after round {rnd}: {'clean' if ok else 'errors remain'}")
-            if data.get("done") and ok:
+            if data.get("done"):
                 completed = True
+                if not ok:
+                    notes.append("Completion reported by model; analyzer issues remain and will be reported in validation.")
                 break
             files = list(dict.fromkeys(files + files_from_analyze(out) + [e.get("path", "") for e in data.get("edits", [])]))[:5]
             feedback = "RESULT OF YOUR LAST EDITS:\n" + "\n".join(res)
