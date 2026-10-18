@@ -106,12 +106,12 @@ def parse(reply):
     # Accept JSON directly or wrapped in a Markdown code fence.
     cleaned = reply.strip()
     if cleaned.startswith(chr(96) * 3):
-        cleaned = re.sub(r"^```(?:json)?\\s*", "", cleaned, count=1, flags=re.I)
-        cleaned = re.sub(r"\\s*```$", "", cleaned, count=1)
+        cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, count=1, flags=re.I)
+        cleaned = re.sub(r"\s*```$", "", cleaned, count=1)
     try:
         data = json.loads(cleaned)
     except json.JSONDecodeError:
-        match = re.search(r"\\{.*\\}", cleaned, re.S)
+        match = re.search(r"\{.*\}", cleaned, re.S)
         if not match:
             return {}
         try:
