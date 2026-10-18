@@ -1,0 +1,67 @@
+name: Meow Agent Smoke Test
+
+on:
+  push:
+    branches: [fix/meow-agent-diagnostics]
+    paths:
+      - ".github/workflows/meow-agent-smoke-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: meow-agent-smoke-test
+  cancel-in-progress: true
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout diagnostic branch only
+        uses: actions/checkout@v4
+        with:
+          ref: fix/meow-agent-diagnostics
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.4"
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Prepare agent context
+        run: |
+          set -euo pipefail
+          mkdir -p agent
+          cp AGENT.md agent/AGENT.md
+          cp PROGRESS.md agent/PROGRESS.md
+
+      - name: Run one tiny isolated task
+        timeout-minutes: 4
+        env:
+          TASK: "Add one concise HTML comment to README.md near the top stating that Meow AI is a Persian-friendly English-learning app. Do not change any other content."
+          FILES: "README.md"
+          MAX_ROUNDS: "1"
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL || 'https://openrouter.ai/api/v1' }}
+          MODEL: ${{ vars.MEOW_AGENT_MODEL || 'openrouter/free' }}
+        run: |
+          set -euo pipefail
+          if [ -z "${LLM_API_KEY:-}" ]; then
+            echo "::error::Configure the LLM_API_KEY repository secret first."
+            exit 1
+          fi
+          cp README.md /tmp/README.before
+          python agent.py
+          diff -u /tmp/README.before README.md
+          echo "::error::Agent made no README change; smoke test did not demonstrate an edit."
+          exit 1
