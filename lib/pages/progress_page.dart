@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../localization.dart';
 import '../services/a1_progress_service.dart';
+import '../services/a2_progress_service.dart';
 import '../services/progress_service.dart';
 import '../data/levels/a2/a2_data.dart';
 import '../data/levels/a1/basics/a1_basics_data.dart';
@@ -71,17 +72,13 @@ class _ProgressPageState extends State<ProgressPage> {
     // -----------------------------
     // A2
     // -----------------------------
-    int a2Completed = 0;
-
-    for (final lesson in a2Lessons) {
-      final completed = prefs.getBool(
-        'a2_lesson_completed_${lesson.id}',
-      );
-
-      if (completed == true) {
-        a2Completed++;
-      }
-    }
+    // Read through the canonical progress service so legacy completion
+    // flags are migrated before the progress summary is calculated.
+    final a2CompletedIds =
+        await A2ProgressService.getCompletedLessons();
+    final a2Completed = a2CompletedIds
+        .where((id) => a2Lessons.any((lesson) => lesson.id == id))
+        .length;
 
     // A2 final exam
     final a2ExamCompleted =
