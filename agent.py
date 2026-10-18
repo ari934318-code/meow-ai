@@ -263,6 +263,7 @@ def main():
             notes.append("analyzer output at start (last 2500 chars):\\n" + out[-2500:])
         feedback = ""
         for rnd in range(1, MAX_ROUNDS + 1):
+            edits_rejected = False
             user = (f"TASK: {TASK}\n\nRECENT PROGRESS LOG:\n{past}\n\nPROJECT FILES:\n{tree()}\n\n"
                     f"ANALYZER OUTPUT:\n{out}\n\nFILE CONTENTS:\n{read_files(files)}\n\n{feedback}")
             reply = chat([{"role": "system", "content": rules}, {"role": "user", "content": user}])
@@ -311,9 +312,7 @@ def main():
             )
             if not ok:
                 notes.append(f"  analyzer output after round {rnd} (last 2500 chars):\\n{out[-2500:]}")
-            if data.get("done") and no_regressions and not (
-                not read_only and "edits_rejected" in locals() and edits_rejected
-            ):
+            if data.get("done") and no_regressions and not edits_rejected:
                 completed = True
                 if not ok:
                     notes.append(
