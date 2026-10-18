@@ -28,7 +28,14 @@ def chat(messages):
     for attempt in range(2):
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
-                return json.load(r)["choices"][0]["message"]["content"]
+                payload = json.load(r)
+            try:
+                content = payload["choices"][0]["message"]["content"]
+            except (KeyError, IndexError, TypeError) as exc:
+                raise RuntimeError("Invalid model response: missing choices[0].message.content") from exc
+            if not isinstance(content, str) or not content.strip():
+                raise RuntimeError("Invalid model response: content must be a non-empty string")
+            return content
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="replace")[:300]
             if e.code in (413, 429) or "rate" in detail.lower() or "quota" in detail.lower():
@@ -36,6 +43,8 @@ def chat(messages):
             if e.code >= 500 and attempt == 0:
                 time.sleep(5); continue
             raise RuntimeError(f"HTTP {e.code}: {detail}")
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            raise RuntimeError(f"Invalid model response JSON: {exc.__class__.__name__}") from exc
 
 
 def run(cmd, timeout=120):
