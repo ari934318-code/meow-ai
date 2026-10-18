@@ -267,25 +267,17 @@ class AgentSafetyTests(unittest.TestCase):
 
 
     def test_chat_rejects_missing_response_shape(self):
-        response = mock.MagicMock()
-        response.__enter__.return_value.read.return_value = b'{"unexpected": true}'
-        response.__enter__.return_value.__class__ = object
-        with mock.patch.object(agent.urllib.request, "urlopen", return_value=response):
-            with self.assertRaisesRegex(RuntimeError, "missing choices"):
-                agent.chat([{"role": "user", "content": "test"}])
+        with self.assertRaisesRegex(RuntimeError, "missing choices"):
+            agent.extract_model_content({"unexpected": True})
 
     def test_chat_rejects_empty_model_content(self):
-        response = mock.MagicMock()
-        response.__enter__.return_value.__class__ = object
-        response.__enter__.return_value.__enter__.return_value = response.__enter__.return_value
-        with mock.patch.object(agent.urllib.request, "urlopen") as urlopen:
-            urlopen.return_value.__enter__.return_value.__enter__.return_value = None
-            fake_response = mock.MagicMock()
-            fake_response.__enter__.return_value = fake_response
-            fake_response.__enter__.return_value.read.return_value = b'{"choices":[{"message":{"content":""}}]}'
-            urlopen.return_value = fake_response
-            with self.assertRaisesRegex(RuntimeError, "non-empty string"):
-                agent.chat([{"role": "user", "content": "test"}])
+        payload = {"choices": [{"message": {"content": "  "}}]}
+        with self.assertRaisesRegex(RuntimeError, "non-empty string"):
+            agent.extract_model_content(payload)
+
+    def test_chat_accepts_valid_model_content(self):
+        payload = {"choices": [{"message": {"content": '{"done":true}'}}]}
+        self.assertEqual(agent.extract_model_content(payload), '{"done":true}')
 
     def test_parse_accepts_raw_json(self):
         self.assertEqual(agent.parse('{"summary":"ok","done":true}'), {"summary": "ok", "done": True})
