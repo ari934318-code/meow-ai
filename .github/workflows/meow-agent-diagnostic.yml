@@ -1,0 +1,64 @@
+name: Meow Agent Read-Only Diagnostics
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Diagnostic question or task (must not modify files)"
+        required: true
+        type: string
+      files:
+        description: "Optional comma-separated file paths to inspect"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: meow-agent-read-only-diagnostics
+  cancel-in-progress: true
+
+jobs:
+  diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.4"
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run read-only checks
+        env:
+          TASK: ${{ inputs.task }}
+          FILES: ${{ inputs.files }}
+        run: |
+          set -euo pipefail
+          echo "Diagnostic task: $TASK"
+          echo "Requested files: ${FILES:-<none>}"
+          python -m py_compile agent.py
+          flutter analyze
+          flutter test
+
+      - name: Report read-only guarantee
+        if: always()
+        run: |
+          echo "This workflow uses contents: read, does not expose a write token, does not run the LLM agent, and has no commit/push/PR steps."
