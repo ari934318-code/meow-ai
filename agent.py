@@ -38,14 +38,48 @@ def chat(messages):
             raise RuntimeError(f"HTTP {e.code}: {detail}")
 
 
-def run(cmd, timeout=900):
-    p = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
-    return p.returncode, (p.stdout + p.stderr)
+def run(cmd, timeout=120):
+    """Run diagnostics with live output and a bounded runtime."""
+    print(f"$ {cmd}", flush=True)
+    started = time.monotonic()
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT, text=True, bufsize=1)
+    chunks = []
+    try:
+        while True:
+            line = p.stdout.readline()
+            if line:
+                print(line, end="", flush=True)
+                chunks.append(line)
+                if sum(map(len, chunks)) > 20000:
+                    chunks = ["".join(chunks)[-12000:]]
+            elif p.poll() is not None:
+                break
+            if time.monotonic() - started > timeout:
+                p.kill()
+                p.wait()
+                raise subprocess.TimeoutExpired(cmd, timeout, output="".join(chunks))
+        return p.returncode, "".join(chunks)
+    except subprocess.TimeoutExpired:
+        print(f"\\n::error::Command timed out after {timeout}s: {cmd}", flush=True)
+        raise
+    finally:
+        if p.stdout:
+            p.stdout.close()
 
 
 def analyze():
-    code, out = run("flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings")
-    return code == 0, out[-6000:]
+    try:
+        code, out = run(
+            "flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings",
+            timeout=120,
+        )
+        return code == 0, out[-6000:]
+    except subprocess.TimeoutExpired as exc:
+        captured = exc.output or ""
+        if isinstance(captured, bytes):
+            captured = captured.decode(errors="replace")
+        return False, (str(captured) + "\\nERROR: flutter analyze timed out after 120 seconds.")[-6000:]
 
 
 def files_from_analyze(out):
@@ -150,6 +184,12 @@ def main():
     past = PROGRESS.read_text()[-2500:] if PROGRESS.exists() else ""
     notes, status = [], "finished"
     completed = False
+    read_only = bool(re.search(
+        r"READ[- ]ONLY DIAGNOSTIC MODE|do not modify.*files|no files? (?:may be )?modified",
+        TASK, re.I | re.S,
+    ))
+    if read_only:
+        print("READ-ONLY MODE: file edits and repository progress writes are disabled.", flush=True)
     try:
         ok, out = analyze()
         requested_files = files_from_task(TASK)
@@ -167,6 +207,14 @@ def main():
                 preview = " ".join(reply.split())[:1200]
                 notes.append(f"round {rnd}: model response was not valid agent JSON; preview: {preview}")
                 res = []
+            elif read_only:
+                res = []
+                notes.append(f"round {rnd} (read-only): {data.get('summary', '(no summary)')}")
+                notes.append("Model-proposed edits were intentionally not applied.")
+                if data.get("edits"):
+                    notes.append(f"Model suggested {len(data['edits'])} edit(s); none were applied.")
+                completed = True
+                break
             else:
                 res = apply_edits(data.get("edits", []))
                 notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
@@ -189,8 +237,11 @@ def main():
     if status == "finished" and not completed:
         status = "FAILED"
         notes.append("agent did not confirm completion within the allowed rounds, or analyzer errors remain")
-    log_progress(status, notes)
-    print("\n".join(notes))
+    if not read_only:
+        log_progress(status, notes)
+    else:
+        notes.append("READ-ONLY CONFIRMED: skipped PROGRESS.md and PR-body writes.")
+    print("\\n".join(notes), flush=True)
     if status != "finished":
         sys.exit(1)
 
