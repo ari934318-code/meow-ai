@@ -32,6 +32,24 @@ void main() {
     });
 
 
+    test('final exam references only existing lesson IDs and unique question IDs', () {
+      final knownLessonIds = expectedIds.toSet();
+      final questionIds = <String>{};
+
+      for (final question in a1BasicsExamQuestions) {
+        expect(knownLessonIds.contains(question.lessonId), isTrue,
+            reason: 'Exam question has unknown lesson ID: ' + question.lessonId);
+        expect(question.id.trim(), isNotEmpty);
+        expect(questionIds.add(question.id), isTrue,
+            reason: 'Duplicate exam question ID: ' + question.id);
+        expect(question.question.trim(), isNotEmpty);
+        expect(question.correctAnswer.trim(), isNotEmpty);
+        if (!question.isSpeaking) {
+          expect(question.options.contains(question.correctAnswer), isTrue,
+              reason: 'Correct answer is not an option for ' + question.id);
+        }
+      }
+    });
     test('final exam covers every A1 Basics lesson with enough MC questions', () {
       final multipleChoice = a1BasicsExamQuestions
           .where((question) => !question.isSpeaking)
