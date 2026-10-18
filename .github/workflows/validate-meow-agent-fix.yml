@@ -60,5 +60,14 @@ jobs:
         run: flutter analyze --no-pub --no-fatal-infos --no-fatal-warnings lib/data/levels/a1/basics test/a1_basics_data_integrity_test.dart
 
       - name: Run Flutter tests
-        if: always()
         run: flutter test --no-pub
+
+      - name: Build debug APK
+        run: flutter build apk --debug --no-pub
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: meow-ai-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
