@@ -150,11 +150,52 @@ def tree():
 
 
 def safe_path(rel):
-    p = (ROOT / rel).resolve()
-    if ROOT not in p.parents:
+    if not isinstance(rel, str) or not rel.strip():
+        return None
+    candidate = pathlib.Path(rel)
+    if candidate.is_absolute():
+        return None
+    # Reject symlinks in every existing path component to avoid redirecting writes.
+    current = ROOT
+    for part in candidate.parts:
+        if part in ("", ".", ".."):
+            if part == "..":
+                return None
+            continue
+        current = current / part
+        if current.is_symlink():
+            return None
+    p = (ROOT / candidate).resolve()
+    if p == ROOT or ROOT not in p.parents:
         return None
     r = p.relative_to(ROOT).as_posix()
-    return None if r.startswith(PROTECTED) else p
+    protected_roots = tuple(item.rstrip("/") for item in PROTECTED)
+    if any(r == protected or r.startswith(protected + "/") for protected in protected_roots):
+        return None
+    return p
+
+
+def write_text_atomically(path, content):
+    """Write UTF-8 content via a temporary sibling and replace the destination."""
+    temporary = None
+    try:
+        import tempfile
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent,
+            prefix=".meow-agent-", suffix=".tmp", delete=False,
+        ) as handle:
+            temporary = pathlib.Path(handle.name)
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    except OSError:
+        if temporary is not None:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                pass
+        raise
 
 
 def apply_edits(edits):
@@ -183,8 +224,17 @@ def apply_edits(edits):
             if p.exists():
                 log.append(f"SKIP {rel}: file exists (use old/new)")
                 continue
-            p.parent.mkdir(parents=True, exist_ok=True)
-            p.write_text(new, encoding="utf-8")
+            try:
+                p.parent.mkdir(parents=True, exist_ok=True)
+                # Re-check after creating parents in case a symlink appeared.
+                p = safe_path(rel)
+                if p is None or p.exists():
+                    log.append(f"SKIP {rel}: path became unsafe or file appeared")
+                    continue
+                write_text_atomically(p, new)
+            except OSError as exc:
+                log.append(f"SKIP {rel}: write failed ({exc.__class__.__name__})")
+                continue
             log.append(f"CREATED {rel}")
             continue
         if not p.is_file():
@@ -195,7 +245,20 @@ def apply_edits(edits):
         if matches != 1:
             log.append(f"SKIP {rel}: 'old' matched {matches} times (need exactly 1)")
             continue
-        p.write_text(txt.replace(old, new, 1), encoding="utf-8")
+        try:
+            # Re-check immediately before replacing to reject newly introduced symlinks.
+            p = safe_path(rel)
+            if p is None or not p.is_file():
+                log.append(f"SKIP {rel}: path became unsafe")
+                continue
+            latest = p.read_text(encoding="utf-8")
+            if latest.count(old) != 1:
+                log.append(f"SKIP {rel}: file changed before write")
+                continue
+            write_text_atomically(p, latest.replace(old, new, 1))
+        except OSError as exc:
+            log.append(f"SKIP {rel}: write failed ({exc.__class__.__name__})")
+            continue
         log.append(f"EDITED {rel}")
     if len(edits) > 8:
         log.append(f"SKIP {len(edits) - 8} additional edits: limit is 8")
