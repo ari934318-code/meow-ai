@@ -48,7 +48,7 @@ jobs:
       - name: Run one isolated Python maintenance task
         timeout-minutes: 4
         env:
-          TASK: "In agent.py, extract the existing read-only task detection regex from main() into a helper function named is_read_only_task(task). Keep its behavior exactly the same and make main() call the helper. In test_agent_safety.py, add unit tests proving it returns True for 'READ-ONLY DIAGNOSTIC MODE: inspect only' and 'do not modify any files', and False for 'Fix a typo in README.md'. Only edit agent.py and test_agent_safety.py. Do not change any other files."
+          TASK: "Fix the response parsing weakness exposed by the previous failed run. In agent.py, improve parse(reply) so it can safely extract one JSON object surrounded by explanatory prose, including braces inside JSON string values, while still returning {} for malformed or non-object JSON. Preserve support for raw JSON and fenced JSON. In test_agent_safety.py, add focused unit tests for raw JSON, fenced JSON, prose surrounding JSON, a string value containing braces, malformed JSON, and a JSON array. Only edit agent.py and test_agent_safety.py. Do not change any other files."
           FILES: "agent.py,test_agent_safety.py"
           MAX_ROUNDS: "1"
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
