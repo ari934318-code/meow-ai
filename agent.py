@@ -56,6 +56,20 @@ def files_from_analyze(out):
     return seen[:4]
 
 
+def files_from_task(task):
+    """Include explicitly mentioned repository file paths in the model context."""
+    candidates = re.findall(
+        r"(?<![A-Za-z0-9_./-])(?:[A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+\.(?:py|md|yaml|yml|dart|json)(?![A-Za-z0-9_.-])",
+        task,
+    )
+    found = []
+    for rel in candidates:
+        path = (ROOT / rel).resolve()
+        if ROOT in path.parents and path.is_file() and rel not in found:
+            found.append(rel)
+    return found[:5]
+
+
 def read_files(paths):
     parts = []
     for p in paths:
@@ -68,7 +82,7 @@ def read_files(paths):
 
 
 def tree():
-    _, out = run("git ls-files lib test pubspec.yaml | head -150")
+    _, out = run("git ls-files lib test pubspec.yaml agent.py AGENT.md | head -160")
     return out
 
 
@@ -103,16 +117,26 @@ def apply_edits(edits):
 
 
 def parse(reply):
-    reply = re.sub(r"^```(?:json)?|```$", "", reply.strip(), flags=re.M).strip()
+    # Accept JSON directly or wrapped in a Markdown code fence.
+    cleaned = reply.strip()
+    if cleaned.startswith(chr(96) * 3):
+        cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, count=1, flags=re.I)
+        cleaned = re.sub(r"\s*```$", "", cleaned, count=1)
     try:
-        return json.loads(reply)
+        data = json.loads(cleaned)
     except json.JSONDecodeError:
-        m = re.search(r"\{.*\}", reply, re.S)
-        return json.loads(m.group(0)) if m else {}
+        match = re.search(r"\{.*\}", cleaned, re.S)
+        if not match:
+            return {}
+        try:
+            data = json.loads(match.group(0))
+        except json.JSONDecodeError:
+            return {}
+    return data if isinstance(data, dict) else {}
 
 
 def log_progress(status, notes):
-    stamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     entry = f"\n## {stamp} — {status}\nTask: {TASK}\nModel: {MODEL}\n" + "\n".join(f"- {n}" for n in notes) + "\n"
     with PROGRESS.open("a") as f:
         f.write(entry)
@@ -128,18 +152,29 @@ def main():
     completed = False
     try:
         ok, out = analyze()
-        files = FILES or files_from_analyze(out)
+        requested_files = files_from_task(TASK)
+        files = list(dict.fromkeys(FILES + requested_files + files_from_analyze(out)))[:5]
         notes.append(f"analyze at start: {'clean' if ok else 'errors'}; context files: {files or 'none'}")
+        if not ok:
+            notes.append("analyzer output at start (last 2500 chars):\\n" + out[-2500:])
         feedback = ""
         for rnd in range(1, MAX_ROUNDS + 1):
             user = (f"TASK: {TASK}\n\nRECENT PROGRESS LOG:\n{past}\n\nPROJECT FILES:\n{tree()}\n\n"
                     f"ANALYZER OUTPUT:\n{out}\n\nFILE CONTENTS:\n{read_files(files)}\n\n{feedback}")
-            data = parse(chat([{"role": "system", "content": rules}, {"role": "user", "content": user}]))
-            res = apply_edits(data.get("edits", []))
-            notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
-            notes += [f"  {r}" for r in res]
+            reply = chat([{"role": "system", "content": rules}, {"role": "user", "content": user}])
+            data = parse(reply)
+            if not any(key in data for key in ("summary", "edits", "done")):
+                preview = " ".join(reply.split())[:1200]
+                notes.append(f"round {rnd}: model response was not valid agent JSON; preview: {preview}")
+                res = []
+            else:
+                res = apply_edits(data.get("edits", []))
+                notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
+                notes += [f"  {r}" for r in res]
             ok, out = analyze()
             notes.append(f"  analyze after round {rnd}: {'clean' if ok else 'errors remain'}")
+            if not ok:
+                notes.append(f"  analyzer output after round {rnd} (last 2500 chars):\\n{out[-2500:]}")
             if data.get("done") and ok:
                 completed = True
                 break
