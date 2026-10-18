@@ -48,7 +48,7 @@ jobs:
       - name: Run one tiny isolated task
         timeout-minutes: 4
         env:
-          TASK: "Add exactly one concise HTML comment near the top of README.md saying that Meow AI helps Persian speakers practice English. Do not change any other content."
+          TASK: "Add exactly one concise HTML comment near the top of README.md stating that Meow AI is built with Flutter. Do not change any other content."
           FILES: "README.md"
           MAX_ROUNDS: "1"
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
