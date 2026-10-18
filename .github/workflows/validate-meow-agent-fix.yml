@@ -14,6 +14,7 @@ on:
   pull_request:
     paths:
       - "agent.py"
+      - "test_agent_safety.py"
       - "lib/**"
       - "test/**"
       - "pubspec.yaml"
