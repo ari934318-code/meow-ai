@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-import 'a1_data.dart';
-import 'a1_models.dart';
-import 'localization.dart';
+import '../data/levels/a1/a1_data.dart';
+import '../data/levels/a1/a1_models.dart';
+
+
+extension _A1LessonsTranslation on BuildContext {
+  String tr(String english, String persian) =>
+      Localizations.localeOf(this).languageCode == 'fa' ? persian : english;
+}
 
 class A1LessonsPage extends StatelessWidget {
   const A1LessonsPage({super.key});
