@@ -158,24 +158,47 @@ def safe_path(rel):
 
 
 def apply_edits(edits):
+    """Apply only well-formed, bounded edits to paths inside the repository."""
     log = []
-    for e in edits[:8]:
-        rel, old, new = e.get("path", ""), e.get("old", ""), e.get("new", "")
+    if not isinstance(edits, list):
+        return ["SKIP edits: expected a list"]
+    for index, edit in enumerate(edits[:8]):
+        if not isinstance(edit, dict):
+            log.append(f"SKIP edit {index + 1}: expected an object")
+            continue
+        rel = edit.get("path")
+        old = edit.get("old", "")
+        new = edit.get("new")
+        if not isinstance(rel, str) or not rel.strip():
+            log.append(f"SKIP edit {index + 1}: invalid path")
+            continue
+        if not isinstance(old, str) or not isinstance(new, str):
+            log.append(f"SKIP {rel}: 'old' and 'new' must be strings")
+            continue
         p = safe_path(rel)
         if p is None:
-            log.append(f"SKIP {rel}: path not allowed"); continue
+            log.append(f"SKIP {rel}: path not allowed")
+            continue
         if old == "":
             if p.exists():
-                log.append(f"SKIP {rel}: file exists (use old/new)"); continue
-            p.parent.mkdir(parents=True, exist_ok=True); p.write_text(new)
-            log.append(f"CREATED {rel}"); continue
+                log.append(f"SKIP {rel}: file exists (use old/new)")
+                continue
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text(new, encoding="utf-8")
+            log.append(f"CREATED {rel}")
+            continue
         if not p.is_file():
-            log.append(f"SKIP {rel}: not found"); continue
-        txt = p.read_text()
-        if txt.count(old) != 1:
-            log.append(f"SKIP {rel}: 'old' matched {txt.count(old)} times (need exactly 1)"); continue
-        p.write_text(txt.replace(old, new, 1))
+            log.append(f"SKIP {rel}: not found")
+            continue
+        txt = p.read_text(encoding="utf-8")
+        matches = txt.count(old)
+        if matches != 1:
+            log.append(f"SKIP {rel}: 'old' matched {matches} times (need exactly 1)")
+            continue
+        p.write_text(txt.replace(old, new, 1), encoding="utf-8")
         log.append(f"EDITED {rel}")
+    if len(edits) > 8:
+        log.append(f"SKIP {len(edits) - 8} additional edits: limit is 8")
     return log
 
 
