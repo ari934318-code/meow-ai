@@ -20,6 +20,17 @@ class QuotaStop(Exception):
     pass
 
 
+def extract_model_content(payload):
+    """Validate the OpenAI-compatible response envelope before using its text."""
+    try:
+        content = payload["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as exc:
+        raise RuntimeError("Invalid model response: missing choices[0].message.content") from exc
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError("Invalid model response: content must be a non-empty string")
+    return content
+
+
 def chat(messages):
     body = json.dumps({"model": MODEL, "messages": messages, "temperature": 0.2}).encode()
     req = urllib.request.Request(
@@ -29,13 +40,7 @@ def chat(messages):
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
                 payload = json.load(r)
-            try:
-                content = payload["choices"][0]["message"]["content"]
-            except (KeyError, IndexError, TypeError) as exc:
-                raise RuntimeError("Invalid model response: missing choices[0].message.content") from exc
-            if not isinstance(content, str) or not content.strip():
-                raise RuntimeError("Invalid model response: content must be a non-empty string")
-            return content
+            return extract_model_content(payload)
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="replace")[:300]
             if e.code in (413, 429) or "rate" in detail.lower() or "quota" in detail.lower():
