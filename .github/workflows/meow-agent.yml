@@ -64,6 +64,7 @@ jobs:
           cp PROGRESS.md agent/PROGRESS.md
 
       - name: Run agent
+        timeout-minutes: 8
         env:
           TASK: ${{ inputs.task }}
           FILES: ${{ inputs.files }}
