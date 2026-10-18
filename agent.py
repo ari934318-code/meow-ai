@@ -85,6 +85,40 @@ def files_from_analyze(out):
     return seen[:4]
 
 
+
+def analyzer_diagnostics(out):
+    """Return stable analyzer diagnostic signatures, ignoring line/column shifts."""
+    diagnostics = set()
+    for line in out.splitlines():
+        parts = [part.strip() for part in line.split("•")]
+        if len(parts) < 3:
+            continue
+        severity = parts[0].lower()
+        if severity not in {"error", "warning", "info"}:
+            continue
+        location_index = next(
+            (i for i, part in enumerate(parts)
+             if re.search(r"(?:lib|test)/[^ \t:]+\.dart:\d+:\d+", part)),
+            None,
+        )
+        if location_index is None or location_index < 2:
+            continue
+        message = parts[1]
+        code = parts[location_index + 1] if location_index + 1 < len(parts) else ""
+        diagnostics.add((severity, message, code))
+    return diagnostics
+
+
+def analysis_has_no_regressions(baseline_ok, baseline_out, current_ok, current_out):
+    """Accept pre-existing analyzer failures only when edits add no diagnostics."""
+    if current_ok:
+        return True
+    if baseline_ok:
+        return False
+    baseline = analyzer_diagnostics(baseline_out)
+    current = analyzer_diagnostics(current_out)
+    return bool(baseline) and current.issubset(baseline)
+
 def files_from_task(task):
     """Include explicitly mentioned repository file paths in the model context."""
     candidates = re.findall(
@@ -189,7 +223,11 @@ def main():
         ok, out = analyze()
         requested_files = files_from_task(TASK)
         files = list(dict.fromkeys(FILES + requested_files + files_from_analyze(out)))[:5]
+        baseline_ok, baseline_out = ok, out
+        baseline_diagnostics = analyzer_diagnostics(out)
         notes.append(f"analyze at start: {'clean' if ok else 'errors'}; context files: {files or 'none'}")
+        if not ok and baseline_diagnostics:
+            notes.append(f"baseline analyzer diagnostics tracked: {len(baseline_diagnostics)}")
         if not ok:
             notes.append("analyzer output at start (last 2500 chars):\\n" + out[-2500:])
         feedback = ""
@@ -215,11 +253,22 @@ def main():
                 notes.append(f"round {rnd}: {data.get('summary', '(no summary)')}")
                 notes += [f"  {r}" for r in res]
             ok, out = analyze()
-            notes.append(f"  analyze after round {rnd}: {'clean' if ok else 'errors remain'}")
+            no_regressions = analysis_has_no_regressions(
+                baseline_ok, baseline_out, ok, out
+            )
+            notes.append(
+                f"  analyze after round {rnd}: "
+                f"{'clean' if ok else ('baseline errors only' if no_regressions else 'errors remain/new diagnostics')}"
+            )
             if not ok:
                 notes.append(f"  analyzer output after round {rnd} (last 2500 chars):\\n{out[-2500:]}")
-            if data.get("done") and ok:
+            if data.get("done") and no_regressions:
                 completed = True
+                if not ok:
+                    notes.append(
+                        "  completed: analyzer still has baseline diagnostics, "
+                        "but this round introduced no new parsed diagnostics"
+                    )
                 break
             files = list(dict.fromkeys(files + files_from_analyze(out) + [e.get("path", "") for e in data.get("edits", [])]))[:5]
             feedback = "RESULT OF YOUR LAST EDITS:\n" + "\n".join(res)
