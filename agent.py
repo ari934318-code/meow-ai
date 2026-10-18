@@ -360,9 +360,36 @@ def main():
             print(f"round {rnd}: model response received ({len(reply)} characters)", flush=True)
             data = parse(reply)
             if not any(key in data for key in ("summary", "edits", "done")):
-                preview = " ".join(reply.split())[:1200]
-                notes.append(f"round {rnd}: model response was not valid agent JSON; preview: {preview}")
+                # Free models sometimes wrap the required JSON in tool-call syntax or prose.
+                # Make one bounded format-repair request before treating the round as failed.
+                notes.append(f"round {rnd}: invalid JSON response; requesting one format-only retry")
+                repair_messages = [
+                    {"role": "system", "content": rules},
+                    {"role": "user", "content": (
+                        "Your previous response was not a valid JSON object. Return ONLY one valid JSON object "
+                        'with keys "summary" (string), "edits" (array), and "done" (boolean). '
+                        "Do not include markdown fences, prose, tool calls, or XML. "
+                        "Preserve the intended result of your previous response, and do not invent edits.\n\n"
+                        "Previous response:\n" + reply[:12000]
+                    )},
+                ]
+                try:
+                    repaired_reply = chat(repair_messages)
+                    repaired_data = parse(repaired_reply)
+                    if any(key in repaired_data for key in ("summary", "edits", "done")):
+                        reply, data = repaired_reply, repaired_data
+                        notes.append(f"round {rnd}: format-only retry returned parseable JSON")
+                    else:
+                        preview = " ".join(repaired_reply.split())[:500]
+                        notes.append(f"round {rnd}: format retry also invalid; preview: {preview}")
+                except Exception as exc:
+                    notes.append(f"round {rnd}: format retry failed ({exc.__class__.__name__})")
+            if not any(key in data for key in ("summary", "edits", "done")):
                 res = []
+                if read_only:
+                    notes.append("read-only diagnostic could not be completed because the model did not return valid JSON")
+                    completed = False
+                    break
             elif read_only:
                 res = []
                 notes.append(f"round {rnd} (read-only): {data.get('summary', '(no summary)')}")
