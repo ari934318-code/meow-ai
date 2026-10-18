@@ -34,6 +34,8 @@ class AgentSafetyTests(unittest.TestCase):
             root = pathlib.Path(tmp)
             existing = root / "sample.txt"
             existing.write_text("original")
+            (root / "agent").mkdir()
+            (root / "agent" / "AGENT.md").write_text("test rules")
             progress = root / "agent" / "PROGRESS.md"
             pr_body = root / "pr_body.md"
 
